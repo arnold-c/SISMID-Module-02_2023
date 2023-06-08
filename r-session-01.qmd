@@ -5,20 +5,75 @@ execute:
 
 # R Session 01 {.unnumbered}
 
-A simple example based on Allison Horst's [Palmer Penguins](https://allisonhorst.github.io/palmerpenguins/) dataset. Here we look at how penguin body mass varies across both sex and species (use the provided inputs to filter the dataset by bill length and island):
 
 ```{ojs}
 //| panel: input
-viewof bill_length_min = Inputs.range(
-  [32, 50], 
-  {value: 35, step: 1, label: "Bill length (min):"}
+viewof beta = Inputs.range(
+  [0.0, 2.0],
+  {value: 0.25, step: 0.01, label: "Infectivity rate"}
 )
-viewof islands = Inputs.checkbox(
-  ["Torgersen", "Biscoe", "Dream"], 
-  { value: ["Torgersen", "Biscoe"], 
-    label: "Islands:"
+viewof dur_inf = Inputs.range(
+  [0.0, 20],
+  {value: 8.0, step: 0.5, label: "Duration of Infection"}
+)
+
+viewof I0 = Inputs.range(
+  [0.0, 1.0],
+  {value: 0.01, dt: 0.01, label: "Initial fraction infected"}
+)
+
+viewof area = Inputs.toggle(
+  {label: "Cumulative Area plot", value: false}
+)
+
+R0 = beta * dur_inf
+
+md`${tex`R_0 = ${R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`
+```
+
+
+```{ojs}
+function sir(dydt, y, t) {
+  var gamma = 1 / dur_inf
+
+  dydt[0] = -beta * y[0] * y[1]
+  dydt[1] = beta * y[0] * y[1] - gamma * y[1]
+  dydt[2] = gamma * y[1]
+}
+```
+
+```{ojs}
+import {odeRK4} from '@rreusser/integration@3064'
+import { aq, op } from '@uwdata/arquero'
+```
+
+```{ojs}
+function simulate(f, t0, y0, dt, tmax) {
+  var t = t0
+  var y = y0
+  var i = 0
+
+  var tsim = [t0]
+  var ysim = [y0]
+
+  for (t = t0 + dt; t <= tmax; t += dt) {
+    ysim.push(odeRK4([], ysim[i], f, dt))
+    tsim.push(t)
+    i += 1
   }
-)
+  
+  return aq.table({
+    t: tsim,
+    S: ysim.map(d => d[0]),
+    I: ysim.map(d => d[1]),
+    R: ysim.map(d => d[2])
+    })
+}
+```
+
+```{ojs}
+sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], 0.01, 200)
+sir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
 ```
 
 ::: {.panel-tabset}
@@ -26,40 +81,20 @@ viewof islands = Inputs.checkbox(
 ## Plot
 
 ```{ojs}
-Plot.rectY(filtered, 
-  Plot.binX(
-    {y: "count"}, 
-    {x: "body_mass_g", fill: "species", thresholds: 20}
-  ))
-  .plot({
-    facet: {
-      data: filtered,
-      x: "sex",
-      y: "species",
-      marginRight: 80
-    },
-    marks: [
-      Plot.frame(),
-    ]
-  }
-)
+Plot.plot({
+  color: {legend: true, domain: ["S", "I", "R"]},
+  marks: [
+    area ?
+      Plot.areaY(sir_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
+      Plot.lineY(sir_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 3})
+  ]
+})
 ```
 
 ## Data
 
 ```{ojs}
-Inputs.table(filtered)
+sir_sol.view()
 ```
 
 :::
-
-```{ojs}
-data = FileAttachment("palmer-penguins.csv").csv({ typed: true })
-```
-
-```{ojs}
-filtered = data.filter(function(penguin) {
-  return bill_length_min < penguin.bill_length_mm &&
-         islands.includes(penguin.island);
-})
-```
