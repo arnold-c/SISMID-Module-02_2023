@@ -6,8 +6,7 @@ execute:
     echo: false
 ---
 
-# R Session 01 {.unnumbered}
-
+# R Session 01 
 
 ```{ojs}
 //| panel: input

@@ -21,7 +21,7 @@ book:
         - r-session-01.qmd
     - part: "Day 2"
       chapters: 
-        - lecture-01.qmd
+        - lecture-02.qmd
         - r-session-02.qmd
         - r-session-03.qmd
     - references.qmd

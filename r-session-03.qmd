@@ -16,7 +16,7 @@ execute:
     warning: false
 ---
 
-# R Session 03 {.unnumbered}
+# R Session 03
 
 ```{r}
 library(here)

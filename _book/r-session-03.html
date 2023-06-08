@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Matthew Ferrari">
 <meta name="author" content="Callum Arnold-Leps">
-<title>SISMID Module 2 Materials (2023) - R Session 03</title>
+<title>SISMID Module 2 Materials (2023) - 5&nbsp; R Session 03</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -127,7 +127,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">R Session 03</h1>
+      <h1 class="quarto-secondary-nav-title">
+<span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Session 03</span>
+</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -180,12 +182,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lecture-01.html" class="sidebar-item-text sidebar-link">Lecture 01</a>
+  <a href="./lecture-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Lecture 01</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-01.html" class="sidebar-item-text sidebar-link">R Session 01</a>
+  <a href="./r-session-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Session 01</span></a>
   </div>
 </li>
       </ul>
@@ -200,17 +202,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lecture-01.html" class="sidebar-item-text sidebar-link">Lecture 01</a>
+  <a href="./lecture-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Lecture 02</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-02.html" class="sidebar-item-text sidebar-link">R Session 02</a>
+  <a href="./r-session-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R Session 02</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-03.html" class="sidebar-item-text sidebar-link active">R Session 03</a>
+  <a href="./r-session-03.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Session 03</span></a>
   </div>
 </li>
       </ul>
@@ -226,36 +228,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#estimating-r_0" id="toc-estimating-r_0" class="nav-link active" data-scroll-target="#estimating-r_0">Estimating <span class="math inline">\(R_0\)</span></a></li>
+<li><a href="#estimating-r_0" id="toc-estimating-r_0" class="nav-link active" data-scroll-target="#estimating-r_0"><span class="toc-section-number">5.1</span>  Estimating <span class="math inline">\(R_0\)</span></a></li>
   <li>
-<a href="#estimating-r_0-from-the-final-outbreak-size" id="toc-estimating-r_0-from-the-final-outbreak-size" class="nav-link" data-scroll-target="#estimating-r_0-from-the-final-outbreak-size">Estimating <span class="math inline">\(R_0\)</span> from the final outbreak size</a>
+<a href="#estimating-r_0-from-the-final-outbreak-size" id="toc-estimating-r_0-from-the-final-outbreak-size" class="nav-link" data-scroll-target="#estimating-r_0-from-the-final-outbreak-size"><span class="toc-section-number">5.2</span>  Estimating <span class="math inline">\(R_0\)</span> from the final outbreak size</a>
   <ul class="collapse">
-<li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
+<li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1"><span class="toc-section-number">5.2.1</span>  Exercise 1</a></li>
   </ul>
 </li>
   <li>
-<a href="#linear-approximation" id="toc-linear-approximation" class="nav-link" data-scroll-target="#linear-approximation">Linear Approximation</a>
+<a href="#linear-approximation" id="toc-linear-approximation" class="nav-link" data-scroll-target="#linear-approximation"><span class="toc-section-number">5.3</span>  Linear Approximation</a>
   <ul class="collapse">
-<li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">Exercise 2</a></li>
-  <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3">Exercise 3</a></li>
-  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4">Exercise 4</a></li>
+<li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2"><span class="toc-section-number">5.3.1</span>  Exercise 2</a></li>
+  <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3"><span class="toc-section-number">5.3.2</span>  Exercise 3</a></li>
+  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4"><span class="toc-section-number">5.3.3</span>  Exercise 4</a></li>
   </ul>
 </li>
-  <li><a href="#estimating-dynamical-parameters-with-least-squares" id="toc-estimating-dynamical-parameters-with-least-squares" class="nav-link" data-scroll-target="#estimating-dynamical-parameters-with-least-squares">Estimating dynamical parameters with least squares</a></li>
-  <li><a href="#dynamical-model" id="toc-dynamical-model" class="nav-link" data-scroll-target="#dynamical-model">Dynamical Model</a></li>
-  <li><a href="#objective-function" id="toc-objective-function" class="nav-link" data-scroll-target="#objective-function">Objective function</a></li>
+  <li><a href="#estimating-dynamical-parameters-with-least-squares" id="toc-estimating-dynamical-parameters-with-least-squares" class="nav-link" data-scroll-target="#estimating-dynamical-parameters-with-least-squares"><span class="toc-section-number">5.4</span>  Estimating dynamical parameters with least squares</a></li>
+  <li><a href="#dynamical-model" id="toc-dynamical-model" class="nav-link" data-scroll-target="#dynamical-model"><span class="toc-section-number">5.5</span>  Dynamical Model</a></li>
+  <li><a href="#objective-function" id="toc-objective-function" class="nav-link" data-scroll-target="#objective-function"><span class="toc-section-number">5.6</span>  Objective function</a></li>
   <li>
-<a href="#optimization" id="toc-optimization" class="nav-link" data-scroll-target="#optimization">Optimization</a>
+<a href="#optimization" id="toc-optimization" class="nav-link" data-scroll-target="#optimization"><span class="toc-section-number">5.7</span>  Optimization</a>
   <ul class="collapse">
-<li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5">Exercise 5</a></li>
-  <li><a href="#exercise-6" id="toc-exercise-6" class="nav-link" data-scroll-target="#exercise-6">Exercise 6</a></li>
+<li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5"><span class="toc-section-number">5.7.1</span>  Exercise 5</a></li>
+  <li><a href="#exercise-6" id="toc-exercise-6" class="nav-link" data-scroll-target="#exercise-6"><span class="toc-section-number">5.7.2</span>  Exercise 6</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/r-session-03.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">R Session 03</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">
+<span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Session 03</span>
+</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 <p class="subtitle lead">Estimation</p>
 </div>
 
@@ -300,7 +304,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://desolve.r-forge.r-project.org/">deSolve</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="estimating-r_0" class="level2"><h2 class="anchored" data-anchor-id="estimating-r_0">Estimating <span class="math inline">\(R_0\)</span>
+<section id="estimating-r_0" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="estimating-r_0">
+<span class="header-section-number">5.1</span> Estimating <span class="math inline">\(R_0\)</span>
 </h2>
 <p>So far in this class we have focused on the <strong>theory</strong> of infectious disease. Often, however, we will want to apply this theory to particular situations. One of the key applied problems in epidemic modeling is the estimation of <span class="math inline">\(R_0\)</span> from outbreak data. In this session, we study two methods for estimating <span class="math inline">\(R_0\)</span> from an epidemic curve. As a running example, we will use the data on influenza in a British boarding school.</p>
 <div class="cell">
@@ -311,7 +316,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="r-session-03_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="estimating-r_0-from-the-final-outbreak-size" class="level2"><h2 class="anchored" data-anchor-id="estimating-r_0-from-the-final-outbreak-size">Estimating <span class="math inline">\(R_0\)</span> from the final outbreak size</h2>
+</section><section id="estimating-r_0-from-the-final-outbreak-size" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="estimating-r_0-from-the-final-outbreak-size">
+<span class="header-section-number">5.2</span> Estimating <span class="math inline">\(R_0\)</span> from the final outbreak size</h2>
 <p>Our first approach is to estimate <span class="math inline">\(R_0\)</span> from the final outbreak size. Although unhelpful at the early stages of an epidemic (before the final epidemic size is observed), this method is nonetheless a useful tool for <span class="math inline">\({post hoc}\)</span> analysis. The method is general and can be motivated by the following argument (Keeling and Rohani 2007): First, we assume that the epidemic is started by a single infectious individual in a completely susceptible population. On average, this individual infects <span class="math inline">\(R_0\)</span> others. The probability a particular individual escaped infection is therefore <span class="math inline">\(e^{-R_0/N}\)</span>. If <span class="math inline">\(Z\)</span> individuals have been infected, the probability of an individual escaping infection from all potential sources is <span class="math inline">\(e^{-ZR_0/N}\)</span>. It follows that at the end of the epidemic a proportion <span class="math inline">\(R(\infty)=Z/N\)</span> have been infected and the fraction remaining susceptible is <span class="math inline">\(S(\infty)=e^{-R(\infty)R_0}\)</span>, which is equal to <span class="math inline">\(1-R(\infty)\)</span>, giving</p>
 <p><span class="math display">\[
 \label{R0-estimator}
@@ -323,9 +329,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   \hat{R_0} = \frac{log(1-Z/N)}{-Z/N},
 \]</span></p>
 <p>which, in this case, evaluates to <span class="math inline">\(\frac{log(1-512/764)}{-512/764} = 1.655\)</span>.</p>
-<section id="exercise-1" class="level3"><h3 class="anchored" data-anchor-id="exercise-1">Exercise 1</h3>
+<section id="exercise-1" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="exercise-1">
+<span class="header-section-number">5.2.1</span> Exercise 1</h3>
 <p>This equation shows the important one-to-one relationship between <span class="math inline">\(R_0\)</span> and the final epidemic size. Plot the relationship between the total epidemic size and <span class="math inline">\(R_0\)</span> for the complete range of values between 0 and 1.</p>
-</section></section><section id="linear-approximation" class="level2"><h2 class="anchored" data-anchor-id="linear-approximation">Linear Approximation</h2>
+</section></section><section id="linear-approximation" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="linear-approximation">
+<span class="header-section-number">5.3</span> Linear Approximation</h2>
 <p>The next method we introduce takes advantage of the fact that during the early stages of an outbreak, the number of infected individuals is given approximately as <span class="math inline">\(Y(t) \approx Y_0 e^{((R_0-1)(\gamma + \mu)t)}\)</span>. Taking logarithms of both sides, we have <span class="math inline">\(log(Y(t)) \approx log(Y_0) + (R_0-1)(\gamma + \mu)t\)</span>, showing that the log of the number of infected individuals is approximately linear in time with a slope that reflects both <span class="math inline">\(R_0\)</span> and the recovery rate.</p>
 <p>This suggests that a simple linear regression fit to the first several data points on a log-scale, corrected to account for <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\mu\)</span>, provides a rough and ready estimate of <span class="math inline">\(R_0\)</span>. For flu, we can assume <span class="math inline">\(\mu =0\)</span> because the epidemic occurred over a time period during which natural mortality is negligible. Further, assuming an infectious period of about 2.5 days, we use <span class="math inline">\(\gamma = (2.5)^{-1} = 0.4\)</span> for the correction. Fitting to the first four data points, we obtain the slope as follows.</p>
 <div class="cell">
@@ -359,13 +367,17 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 </div>
 </div>
 <p>Rearranging the linear equation above and denoting the slope coefficient by <span class="math inline">\(\hat \beta_1\)</span> we have the estimator <span class="math inline">\(\hat R_0 = \hat \beta_1 / \gamma +1\)</span> giving <span class="math inline">\(\hat R_0=1.094913/0.4+1 \approx 3.7\)</span>.</p>
-<section id="exercise-2" class="level3"><h3 class="anchored" data-anchor-id="exercise-2">Exercise 2</h3>
+<section id="exercise-2" class="level3" data-number="5.3.1"><h3 data-number="5.3.1" class="anchored" data-anchor-id="exercise-2">
+<span class="header-section-number">5.3.1</span> Exercise 2</h3>
 <p>Our estimate assumes that boys remained infectious during the natural course of infection. The original report on this epidemic indicates that boys found to have symptoms were immediately confined to bed in the infirmary. The report also indicates that only 1 out of 130 adults at the school exhibited any symptoms. It is reasonable, then, to suppose that transmission in each case ceased once he had been admitted to the infirmary. Supposing admission happened within 24 hours of the onset of symptoms. How does this affect our estimate of <span class="math inline">\(R_0\)</span>? Twelve hours?</p>
-</section><section id="exercise-3" class="level3"><h3 class="anchored" data-anchor-id="exercise-3">Exercise 3</h3>
+</section><section id="exercise-3" class="level3" data-number="5.3.2"><h3 data-number="5.3.2" class="anchored" data-anchor-id="exercise-3">
+<span class="header-section-number">5.3.2</span> Exercise 3</h3>
 <p>Biweekly data for outbreaks of measles in three communities in Niamey, Niger are provided in the dataframe <span class="math inline">\(\tt niamey\)</span>. Use this method to obtain estimates of <span class="math inline">\(R_0\)</span> for measles from the first community assuming that the infectious period is approximately two weeks or <span class="math inline">\(14/365 \approx 0.0384\)</span> years.</p>
-</section><section id="exercise-4" class="level3"><h3 class="anchored" data-anchor-id="exercise-4">Exercise 4</h3>
+</section><section id="exercise-4" class="level3" data-number="5.3.3"><h3 data-number="5.3.3" class="anchored" data-anchor-id="exercise-4">
+<span class="header-section-number">5.3.3</span> Exercise 4</h3>
 <p>A defect with this method is that it uses only a small fraction of the information that might be available, <strong>i.e.</strong>, the first few data points. Indeed, there is nothing in the method that tells one how many data points to use–this is a matter of judgment. Further, there is a tradeoff in that as more and more data points are used the precision of the estimate increases, but this comes at a cost of additional bias. Plot the estimate of <span class="math inline">\(R_0\)</span> obtained from <span class="math inline">\(n=3, 4, 5, ...\)</span> data points against the standard error of the slope from the regression analysis to show this tradeoff.</p>
-</section></section><section id="estimating-dynamical-parameters-with-least-squares" class="level2"><h2 class="anchored" data-anchor-id="estimating-dynamical-parameters-with-least-squares">Estimating dynamical parameters with least squares</h2>
+</section></section><section id="estimating-dynamical-parameters-with-least-squares" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="estimating-dynamical-parameters-with-least-squares">
+<span class="header-section-number">5.4</span> Estimating dynamical parameters with least squares</h2>
 <p>The objective of the previous exercise was to estimate <span class="math inline">\(R_0\)</span>. Knowing <span class="math inline">\(R_0\)</span> is critical to understanding the dynamics of any epidemic system. It is, however, a composite quantity and is not sufficient to completely describe the epidemic trajectory. For this, we require estimates for all parameters of the model. In this exercise, we introduce a simple approach to model estimation called <strong>least squares fitting</strong>, sometimes called <strong>trajectory matching</strong>. The basic idea is that we find the values of the model parameters that minimize the squared differences between model predictions and the observed data. To demonstrate least squares fitting, we consider an outbreak of measles in Niamey, Niger, reported on by Grais et al.&nbsp;2006 (Grais, R.F., <em>et al.</em> 2006. Estimating transmission intensity for a measles outbreak in Niamey, Niger: lessons for intervention. <em>Transactions of the Royal Society of Tropical Medicine and Hygiene</em> 100:867-873.).</p>
 <div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">niamey</span><span class="op">[</span><span class="fl">5</span>,<span class="fl">3</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">0</span>  <span class="co">#replace a "NA"</span></span>
@@ -381,7 +393,8 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <p><img src="r-session-03_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="dynamical-model" class="level2"><h2 class="anchored" data-anchor-id="dynamical-model">Dynamical Model</h2>
+</section><section id="dynamical-model" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="dynamical-model">
+<span class="header-section-number">5.5</span> Dynamical Model</h2>
 <p>First, we write a specialized function for simulating the <span class="math inline">\(SIR\)</span> model in a case where the removal rate is ``hard-wired’’ and with no demography.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">closed.sir.model</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, <span class="va">params</span><span class="op">)</span> <span class="op">{</span>  <span class="co">#SIR model equations</span></span>
@@ -393,7 +406,8 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dX</span>,<span class="va">dY</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="objective-function" class="level2"><h2 class="anchored" data-anchor-id="objective-function">Objective function</h2>
+</section><section id="objective-function" class="level2" data-number="5.6"><h2 data-number="5.6" class="anchored" data-anchor-id="objective-function">
+<span class="header-section-number">5.6</span> Objective function</h2>
 <p>Now we set up a function that will calculate the sum of the squared differences between the observations and the model at any parameterization (more commonly known as “sum of squared errors”). In general, this is called the <strong>objective function</strong> because it is the quantity that optimization seeks to minimize.</p>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sse.sir</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">params0</span>,<span class="va">data</span>,<span class="va">site</span><span class="op">)</span><span class="op">{</span>  <span class="co">#function to calculate squared errors</span></span>
@@ -408,7 +422,8 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice that the code for <code>sse.sir</code> makes use of the following modeling trick. We know that <span class="math inline">\(\beta\)</span>, <span class="math inline">\(X_0\)</span>, and <span class="math inline">\(Y_0\)</span> must be positive, but our search to optimize these parameters will be over the entire number line. We could constrain the search using a more sophisticated algorithm, but this might introduce other problems (i.e., stability at the boundaries). Instead, we parameterize our objective function (<code>sse.sir</code>) in terms of some alternative variables <span class="math inline">\(log(\beta)\)</span>, <span class="math inline">\(log(X_0)\)</span>, and <span class="math inline">\(log(Y_0)\)</span>. While these numbers range from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span> (the range of our search) they map to our model parameters on a range from <span class="math inline">\(0\)</span> to <span class="math inline">\(\infty\)</span> (the range that is biologically meaningful).</p>
-</section><section id="optimization" class="level2"><h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
+</section><section id="optimization" class="level2" data-number="5.7"><h2 data-number="5.7" class="anchored" data-anchor-id="optimization">
+<span class="header-section-number">5.7</span> Optimization</h2>
 <p>Our final step is to use the function <code>optim</code> to find the values of <span class="math inline">\(\beta\)</span>, <span class="math inline">\(X_0\)</span>, and <span class="math inline">\(Y_0\)</span> that minimize the sum of squared errors as calculated using our function.</p>
 <div class="cell">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">params0</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3.2</span>,<span class="fl">7.3</span>,<span class="op">-</span><span class="fl">2.6</span><span class="op">)</span>  <span class="co">#initial guess</span></span>
@@ -450,9 +465,11 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <p><img src="r-session-03_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<section id="exercise-5" class="level3"><h3 class="anchored" data-anchor-id="exercise-5">Exercise 5</h3>
+<section id="exercise-5" class="level3" data-number="5.7.1"><h3 data-number="5.7.1" class="anchored" data-anchor-id="exercise-5">
+<span class="header-section-number">5.7.1</span> Exercise 5</h3>
 <p>To make things easier, we have assumed the infectious period is known to be 14 days. In terms of years, <span class="math inline">\(\gamma = (365/14)^{-1} \approx 0.0384\)</span>. Now, modify the code above to estimate <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\beta\)</span> simultaneously.</p>
-</section><section id="exercise-6" class="level3"><h3 class="anchored" data-anchor-id="exercise-6">Exercise 6</h3>
+</section><section id="exercise-6" class="level3" data-number="5.7.2"><h3 data-number="5.7.2" class="anchored" data-anchor-id="exercise-6">
+<span class="header-section-number">5.7.2</span> Exercise 6</h3>
 <p>What happens if one or both of the other unknowns (<span class="math inline">\(X_0\)</span> and <span class="math inline">\(Y_0\)</span>) is fixed instead of <span class="math inline">\(\gamma\)</span>?</p>
 
 
@@ -758,7 +775,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./r-session-02.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">R Session 02</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R Session 02</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -785,7 +802,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">    warning: false</span></span>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="fu"># R Session 03 {.unnumbered}</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="fu"># R Session 03</span></span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
