@@ -1,0 +1,69 @@
+project:
+  type: book
+
+book:
+  title: "SISMID Module 2 Materials (2023)"
+  subtitle: "Mathematical Models of Infectious Diseases"
+  author:
+    - name: "Callum Arnold"
+      url: https://callumarnold.com
+      affiliation: Pennsylvania State University
+      orcid: 0000-0002-3245-6956
+  date: "6/07/2023"
+  chapters:
+    - index.qmd
+    - part: "Pre-Requisites"
+      chapters:
+      - install-r.qmd
+    - part: "Day 1"
+      chapters: 
+        - lecture-01.qmd
+        - r-session-01.qmd
+    - part: "Day 2"
+      chapters: 
+        - lecture-01.qmd
+        - r-session-02.qmd
+        - r-session-03.qmd
+    - references.qmd
+  repo-url: https://github.com/arnold-c/SISMID-02_2023
+  repo-actions: [edit]
+  sidebar:
+    search: true
+    border: true
+
+bibliography: references.bib
+
+license: "CC BY"
+
+# Default for table of contents
+toc: true
+toc-title: Table of contents
+toc-location: right
+
+# Default knitr options
+execute:
+  echo: true
+  message: true
+  warning: true
+  cache: false
+
+# Default author
+author:
+  - name: Callum Arnold-Leps
+    url: https://callumarnold.com
+    affiliation: Pennsylvania State University
+    orcid: 0000-0002-3245-6956
+
+# Default fields for citation
+citation: true
+
+format:
+  html:
+    theme:
+      light: [cosmo, format/_fonts.scss, format/_light.scss]
+      dark: [cosmo, format/_fonts.scss, format/_dark.scss]
+    code-copy: true
+    code-fold: false
+    code-overflow: wrap
+    code-link: true
+    code-tools: true
