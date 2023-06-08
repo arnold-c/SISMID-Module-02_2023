@@ -30,8 +30,16 @@ So far in this class we have focused on the **theory** of infectious disease. Of
 
 ```{r}
 load(here::here("data", "R-estimation-data.RData"))
-plot(flu,type='b',log='y',main='Epidemic in a British boarding school', cex.main=0.85,
- xlab='Day', ylab='Active influenza cases')
+
+plot(
+  flu,
+  type = 'b',
+  log = 'y',
+  main = 'Epidemic in a British boarding school',
+  cex.main=0.85,
+  xlab='Day',
+  ylab='Active influenza cases'
+)
 ```
 
 ## Estimating $R_0$ from the final outbreak size 
@@ -39,8 +47,8 @@ plot(flu,type='b',log='y',main='Epidemic in a British boarding school', cex.main
 Our first approach is to estimate $R_0$ from the final outbreak size. Although unhelpful at the early stages of an epidemic (before the final epidemic size is observed), this method is nonetheless a useful tool for ${post hoc}$ analysis. The method is general and can be motivated by the following argument (Keeling and Rohani 2007): First, we assume that the epidemic is started by a single infectious individual in a completely susceptible population. On average, this individual infects $R_0$ others. The probability a particular individual escaped infection is therefore $e^{-R_0/N}$. If $Z$ individuals have been infected, the probability of an individual escaping infection from all potential sources is $e^{-ZR_0/N}$. It follows that at the end of the epidemic a proportion $R(\infty)=Z/N$ have been infected and the fraction remaining susceptible is $S(\infty)=e^{-R(\infty)R_0}$, which is equal to $1-R(\infty)$, giving
 
 $$
-\label{R0-estimator}
-1-R(\infty)-e^{-R(\infty)R_0}=0
+  \label{R0-estimator}
+  1 - R(\infty) - e^{-R(\infty)R_0} = 0
 $$
 
 Rearranging, we have the estimator
@@ -66,9 +74,10 @@ the epidemic occurred over a time period during which natural mortality is negli
 of about 2.5 days, we use $\gamma = (2.5)^{-1} = 0.4$ for the correction. Fitting to the first four data points, we obtain the slope as follows.
 
 ```{r}
-model<-lm(log(flu[1:4])~day[1:4],data=flu);  #fit a linear model
+model <- lm(log(flu[1:4]) ~ day[1:4], data = flu);  #fit a linear model
 summary(model)         #summary statistics for fit model
-slope<-coef(model)[2]  #extract slope parameter
+
+slope <- coef(model)[2]  #extract slope parameter
 slope                 #print to screen
 ```
 
@@ -89,16 +98,27 @@ A defect with this method is that it uses only a small fraction of the informati
 The objective of the previous exercise was to estimate $R_0$. Knowing $R_0$ is critical to understanding the dynamics of any epidemic system. It is, however, a composite quantity and is not sufficient to completely describe the epidemic trajectory. For this, we require estimates for all parameters of the model. In this exercise, we introduce a simple approach to model estimation called **least squares fitting**, sometimes called **trajectory matching**. The basic idea is that we find the values of the model parameters that minimize the squared differences between model predictions and the observed data. To demonstrate least squares fitting, we consider an outbreak of measles in Niamey, Niger, reported on by Grais et al. 2006 (Grais, R.F., *et al.* 2006. Estimating transmission intensity for a measles outbreak in Niamey, Niger: lessons for intervention. *Transactions of the Royal Society of Tropical Medicine and Hygiene* 100:867-873.).
 
 ```{r}
-niamey[5,3]<-0  #replace a "NA"
-niamey<-data.frame(biweek=rep(seq(1,16),3),site=c(rep(1,16),rep(2,16),rep(3,16)),
-                   cases=c(niamey[,1],niamey[,2],niamey[,3])) #define "biweeks"
+niamey[5,3] <- 0  #replace a "NA"
+niamey <- data.frame(
+  biweek = rep(seq(1, 16), 3),
+  site = c(rep(1, 16), rep(2, 16), rep(3, 16)),
+  cases = c(niamey[, 1], niamey[, 2], niamey[, 3])
+) #define "biweeks"
 ```
 
 ```{r}
-plot(niamey$biweek,niamey$cases,type='p',col=niamey$site,xlab='Biweek',ylab='Cases')
-lines(niamey$biweek[niamey$site==1],niamey$cases[niamey$site==1])
-lines(niamey$biweek[niamey$site==2],niamey$cases[niamey$site==2],col=2)
-lines(niamey$biweek[niamey$site==3],niamey$cases[niamey$site==3],col=3)
+plot(
+  niamey$biweek,
+  niamey$cases,
+  type='p',
+  col = niamey$site,
+  xlab = 'Biweek',
+  ylab = 'Cases'
+)
+
+lines(niamey$biweek[niamey$site == 1], niamey$cases[niamey$site == 1]) 
+lines(niamey$biweek[niamey$site == 2], niamey$cases[niamey$site == 2],col = 2)
+lines(niamey$biweek[niamey$site == 3], niamey$cases[niamey$site == 3],col = 3)
 ```
 
 ## Dynamical Model
@@ -106,13 +126,14 @@ lines(niamey$biweek[niamey$site==3],niamey$cases[niamey$site==3],col=3)
 First, we write a specialized function for simulating the $SIR$ model in a case where the removal rate is ``hard-wired'' and with no demography.
 
 ```{r}
-closed.sir.model <- function (t, x, params) {  #SIR model equations
+closed_sir_model <- function (t, x, params) {  #SIR model equations
   X <- x[1]
   Y <- x[2]
   beta <- params
-  dX <- -beta*X*Y
-  dY <- beta*X*Y-(365/13)*Y
-  list(c(dX,dY))
+  dX <- - beta * X * Y
+  dY <- beta * X * Y -(365 / 13) * Y
+  
+  list(c(dX, dY))
 }
 ```
 
@@ -121,58 +142,113 @@ closed.sir.model <- function (t, x, params) {  #SIR model equations
 Now we set up a function that will calculate the sum of the squared differences between the observations and the model at any parameterization (more commonly known as "sum of squared errors"). In general, this is called the **objective function** because it is the quantity that optimization seeks to minimize.
 
 ```{r}
-sse.sir <- function(params0,data,site){  #function to calculate squared errors
-  data<-data[data$site==site,]    #working dataset, based on site
-  t <- data[,1]*14/365            #time in biweeks
-  cases <- data[,3]               #number of cases
+sse_sir <- function(params0, data, site){  #function to calculate squared errors
+  data <- data[data$site == site, ]    #working dataset, based on site
+  t <- data[, 1] * 14 / 365            #time in biweeks
+  cases <- data[, 3]               #number of cases
   beta <- exp(params0[1])            #parameter beta
   X0 <- exp(params0[2])           #initial susceptibles
   Y0 <- exp(params0[3])           #initial infected        
-  out <- as.data.frame(deSolve::ode(c(X=X0,Y=Y0),times=t,closed.sir.model,beta,hmax=1/120))
-  sum((out$Y-cases)^2)       #sum of squared errors that is returned to the optim function
+  
+  out <- as.data.frame(
+    deSolve::ode(
+      c(X = X0, Y = Y0),
+      times = t,
+      closed_sir_model,
+      beta,
+      hmax = 1/120
+    )
+  )
+
+  sum((out$Y - cases)^2)       #sum of squared errors that is returned to the optim function
 }
 ```
 
-Notice that the code for `sse.sir` makes use of the following modeling trick. We know that $\beta$, $X_0$, and $Y_0$ must be positive, but our search to optimize these parameters will be over the entire number line.  We could constrain the search using a more sophisticated algorithm, but this might introduce other problems (i.e., stability at the boundaries). Instead, we parameterize our objective function (`sse.sir`) in terms of some alternative variables $log(\beta)$, $log(X_0)$, and $log(Y_0)$. While these numbers range from $-\infty$ to $\infty$ (the range of our search) they map to our model parameters on a range from $0$ to $\infty$ (the range that is biologically meaningful).
+Notice that the code for `sse_sir` makes use of the following modeling trick. We know that $\beta$, $X_0$, and $Y_0$ must be positive, but our search to optimize these parameters will be over the entire number line.  We could constrain the search using a more sophisticated algorithm, but this might introduce other problems (i.e., stability at the boundaries). Instead, we parameterize our objective function (`sse_sir`) in terms of some alternative variables $log(\beta)$, $log(X_0)$, and $log(Y_0)$. While these numbers range from $-\infty$ to $\infty$ (the range of our search) they map to our model parameters on a range from $0$ to $\infty$ (the range that is biologically meaningful).
 
 ## Optimization 
 
 Our final step is to use the function `optim` to find the values of $\beta$, $X_0$, and $Y_0$ that minimize the sum of squared errors as calculated using our function.
 
 ```{r}
-params0<-c(-3.2,7.3,-2.6)  #initial guess
-fit1 <- optim(params0,sse.sir,data=niamey,site=1) #fit
+params0 <- c(-3.2, 7.3, -2.6)  #initial guess
+fit1 <- optim(params0, sse_sir, data = niamey, site = 1) #fit
 exp(fit1$par)  #back-transform parameters
-fit2 <- optim(params0,sse.sir,data=niamey,site=2) #fit
-exp(fit2$par)  #back-transform parameters
-fit3 <- optim(params0,sse.sir,data=niamey,site=3) #fit
 
+fit2 <- optim(params0, sse_sir, data = niamey, site = 2) #fit
+exp(fit2$par)  #back-transform parameters
+
+fit3 <- optim(params0, sse_sir, data = niamey, site = 3) #fit
 ```
 
 Finally, we plot these fits against the data.
 
 ```{r}
 par(mfrow=c(3,1))   #set up plotting area for multiple panels
-plot(cases~biweek,data=subset(niamey,site==1),type='b',col='blue', pch=21) #plot site 1
-t <- subset(niamey,site==1)[,1]*14/365
-mod.pred<-as.data.frame(deSolve::ode(c(X=exp(fit1$par[2]),Y=exp(fit1$par[3])),times=t,
-                              closed.sir.model,exp(fit1$par[1]),hmax=1/120))
+plot(
+  cases ~ biweek,
+  data = subset(niamey, site == 1),
+  type = 'b',
+  col = 'blue',
+  pch = 21
+) #plot site 1
+
+t <- subset(niamey, site == 1)[, 1] * 14 / 365
+
+mod_pred <-as.data.frame(
+  deSolve::ode(
+    c(X = exp(fit1$par[2]),
+    Y = exp(fit1$par[3])),
+    times = t,
+    closed_sir_model,
+    exp(fit1$par[1]),
+    hmax=1/120
+  )
+)
                               #obtain model predictions
-lines(mod.pred$Y~subset(niamey,site==1)[,1]) #and plot as a line
+lines(mod_pred$Y ~ subset(niamey, site == 1)[, 1]) #and plot as a line
 
-plot(cases~biweek,data=subset(niamey,site==2),type='b',col=site) #site 2
-t <- subset(niamey,site==2)[,1]*14/365
-mod.pred<-as.data.frame(deSolve::ode(c(X=exp(fit2$par[2]),Y=exp(fit2$par[3])),times=t,
-                              closed.sir.model,exp(fit2$par[1]),hmax=1/120))
-lines(mod.pred$Y~subset(niamey,site==2)[,1])
+plot(
+  cases ~ biweek,
+  data = subset(niamey, site == 2),
+  type = 'b',
+  col = site
+) #site 2
 
+t <- subset(niamey, site == 2)[, 1] * 14 / 365
 
-plot(cases~biweek,data=subset(niamey,site==3),type='b',col=site) #site 3
-t <- subset(niamey,site==3)[,1]*14/365
-mod.pred<-as.data.frame(deSolve::ode(c(X=exp(fit3$par[2]),Y=exp(fit3$par[3])),times=t,
-                              closed.sir.model,exp(fit3$par[1]),hmax=1/120))
-lines(mod.pred$Y~subset(niamey,site==3)[,1])
+mod_pred <- as.data.frame(
+  deSolve::ode(
+    c(X = exp(fit2$par[2]), Y = exp(fit2$par[3])),
+    times = t,
+    closed_sir_model,
+    exp(fit2$par[1]),
+    hmax = 1/120
+  )
+)
 
+lines(mod_pred$Y ~ subset(niamey, site == 2)[, 1])
+
+plot(
+  cases ~ biweek,
+  data = subset(niamey, site == 3),
+  type = 'b',
+  col = site
+) #site 3
+
+t <- subset(niamey, site == 3)[, 1] * 14 / 365
+
+mod_pred <-as.data.frame(
+  deSolve::ode(
+    c(X = exp(fit3$par[2]), Y = exp(fit3$par[3])),
+    times = t,
+    closed_sir_model,
+    exp(fit3$par[1]),
+    hmax = 1/120
+  )
+)
+
+lines(mod_pred$Y ~ subset(niamey, site == 3)[, 1])
 ```
 
 ### Exercise 5 
