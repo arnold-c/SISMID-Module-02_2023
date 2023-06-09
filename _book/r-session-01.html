@@ -129,6 +129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -239,11 +240,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </div>
 </nav>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#questions" id="toc-questions" class="nav-link active" data-scroll-target="#questions"><span class="toc-section-number">2.1</span>  Questions</a>
+  <ul class="collapse">
+  <li><a href="#developing-intuition-in-a-closed-population" id="toc-developing-intuition-in-a-closed-population" class="nav-link" data-scroll-target="#developing-intuition-in-a-closed-population"><span class="toc-section-number">2.1.1</span>  Developing intuition in a closed population</a></li>
+  <li><a href="#exploring-the-effect-of-births-and-deaths" id="toc-exploring-the-effect-of-births-and-deaths" class="nav-link" data-scroll-target="#exploring-the-effect-of-births-and-deaths"><span class="toc-section-number">2.1.2</span>  Exploring the effect of births and deaths</a></li>
+  <li><a href="#effects-of-interventions" id="toc-effects-of-interventions" class="nav-link" data-scroll-target="#effects-of-interventions"><span class="toc-section-number">2.1.3</span>  Effects of interventions</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/r-session-01.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -278,11 +290,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell panel-input card bg-light p-2">
 <div class="sourceCode cell-code hidden" id="cb1" data-startfrom="13" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 12;"><span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>viewof beta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.25</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Transmission rate"</span>}</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Transmission rate"</span>}</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>viewof dur_inf <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">8.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Duration of Infection (days)"</span>}</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">6.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Duration of Infection (days)"</span>}</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>viewof I0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
@@ -292,11 +304,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>viewof area <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>(</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">label</span><span class="op">:</span> <span class="st">"Cumulative Area plot"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>}</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>R0 <span class="op">=</span> beta <span class="op">*</span> dur_inf</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -325,29 +333,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-5" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-6" data-nodetype="expression">
-
-</div>
-</div>
-</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="37" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 36;"><span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sir</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span>beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="33" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 32;"><span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sir</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span>beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-2" data-nodetype="declaration">
 
@@ -355,8 +349,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="48" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 47;"><span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {odeRK4} <span class="im">from</span> <span class="st">'@rreusser/integration@3064'</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { aq<span class="op">,</span> op } <span class="im">from</span> <span class="st">'@uwdata/arquero'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="44" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 43;"><span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {odeRK4} <span class="im">from</span> <span class="st">'@rreusser/integration@3064'</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { aq<span class="op">,</span> op } <span class="im">from</span> <span class="st">'@uwdata/arquero'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-1" data-nodetype="declaration">
@@ -373,27 +367,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="52" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 51;"><span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">simulate</span>(f<span class="op">,</span> t0<span class="op">,</span> y0<span class="op">,</span> dt<span class="op">,</span> tmax) {</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> t <span class="op">=</span> t0</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> y <span class="op">=</span> y0</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> i <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> tsim <span class="op">=</span> [t0]</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> ysim <span class="op">=</span> [y0]</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (t <span class="op">=</span> t0 <span class="op">+</span> dt<span class="op">;</span> t <span class="op">&lt;=</span> tmax<span class="op">;</span> t <span class="op">+=</span> dt) {</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    ysim<span class="op">.</span><span class="fu">push</span>(<span class="fu">odeRK4</span>([]<span class="op">,</span> ysim[i]<span class="op">,</span> f<span class="op">,</span> dt))</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    tsim<span class="op">.</span><span class="fu">push</span>(t)</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    i <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="dt">t</span><span class="op">:</span> tsim<span class="op">,</span></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="dt">S</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">0</span>])<span class="op">,</span></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="dt">I</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">1</span>])<span class="op">,</span></span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="dt">R</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">2</span>])</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="48" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 47;"><span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">simulate</span>(f<span class="op">,</span> t0<span class="op">,</span> y0<span class="op">,</span> dt<span class="op">,</span> tmax) {</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> t <span class="op">=</span> t0</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> y <span class="op">=</span> y0</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> tsim <span class="op">=</span> [t0]</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> ysim <span class="op">=</span> [y0]</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (t <span class="op">=</span> t0 <span class="op">+</span> dt<span class="op">;</span> t <span class="op">&lt;=</span> tmax<span class="op">;</span> t <span class="op">+=</span> dt) {</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    ysim<span class="op">.</span><span class="fu">push</span>(<span class="fu">odeRK4</span>([]<span class="op">,</span> ysim[i]<span class="op">,</span> f<span class="op">,</span> dt))</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    tsim<span class="op">.</span><span class="fu">push</span>(t)</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    <span class="dt">t</span><span class="op">:</span> tsim<span class="op">,</span></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    <span class="dt">S</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="dt">I</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">1</span>])<span class="op">,</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="dt">R</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">2</span>])</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-4" data-nodetype="declaration">
 
@@ -401,8 +395,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="77" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 76;"><span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>sir_sol <span class="op">=</span> <span class="fu">simulate</span>(sir<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dv">200</span>)</span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>sir_sol_long <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'t'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="73" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 72;"><span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>sir_sol <span class="op">=</span> <span class="fu">simulate</span>(sir<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dv">200</span>)</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>sir_sol_long <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'t'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-5-1" data-nodetype="declaration">
@@ -423,20 +417,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="85" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 84;"><span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]}<span class="op">,</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
-<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
-<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]}<span class="op">,</span></span>
-<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>    area <span class="op">?</span></span>
-<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(sir_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span>}) <span class="op">:</span></span>
-<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(sir_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})</span>
-<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="82" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 81;"><span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>closed_R0 <span class="op">=</span> beta <span class="op">*</span> dur_inf</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>closed_R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<div id="ojs-cell-6" data-nodetype="expression">
+<div>
+<div id="ojs-cell-6-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="87" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 86;"><span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]}<span class="op">,</span></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]}<span class="op">,</span></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>    area <span class="op">?</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(sir_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span>}) <span class="op">:</span></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(sir_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="expression">
 
 </div>
 </div>
@@ -444,47 +457,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell panel-input card bg-light p-2">
-<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="104" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 103;"><span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>viewof births <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.5</span>]<span class="op">,</span></span>
-<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Birth rate"</span>}</span>
-<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>viewof tmax <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">200.0</span><span class="op">,</span> <span class="fl">500.0</span>]<span class="op">,</span></span>
-<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">200.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">50.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Maximum simulation time"</span>}</span>
-<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="106" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 105;"><span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>viewof births <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.5</span>]<span class="op">,</span></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Birth rate"</span>}</span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>viewof tmax <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">200.0</span><span class="op">,</span> <span class="fl">500.0</span>]<span class="op">,</span></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">200.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">50.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Maximum simulation time"</span>}</span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-7-1" data-nodetype="declaration">
+<div id="ojs-cell-8-1" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-7-2" data-nodetype="declaration">
+<div id="ojs-cell-8-2" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="115" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 114;"><span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sir_births</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
-<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
-<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">+</span> births <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> y[<span class="dv">0</span>])</span>
-<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">2</span>]</span>
-<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div id="ojs-cell-8" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="126" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 125;"><span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a>sir_births_sol <span class="op">=</span> <span class="fu">simulate</span>(sir_births<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> tmax)</span>
-<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>sir_births_sol_long <span class="op">=</span> sir_births_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'t'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="118" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 117;"><span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>demographic_R0 <span class="op">=</span> beta <span class="op">/</span> ((<span class="dv">1</span><span class="op">/</span>dur_inf) <span class="op">+</span> births)</span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>demographic_R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-9-1" data-nodetype="declaration">
@@ -494,27 +494,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-9-2" data-nodetype="declaration">
+<div id="ojs-cell-9-2" data-nodetype="expression">
 
 </div>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="130" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 129;"><span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb10-131"><a href="#cb10-131" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]}<span class="op">,</span></span>
-<span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
-<span id="cb10-134"><a href="#cb10-134" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
-<span id="cb10-135"><a href="#cb10-135" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]}<span class="op">,</span></span>
-<span id="cb10-136"><a href="#cb10-136" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a>    area <span class="op">?</span></span>
-<span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(sir_births_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span>}) <span class="op">:</span></span>
-<span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(sir_births_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})</span>
-<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="123" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 122;"><span id="cb10-123"><a href="#cb10-123" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sir_demographic</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
+<span id="cb10-124"><a href="#cb10-124" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
+<span id="cb10-125"><a href="#cb10-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-126"><a href="#cb10-126" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">+</span> births <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> y[<span class="dv">0</span>])</span>
+<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb10-128"><a href="#cb10-128" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">2</span>]</span>
+<span id="cb10-129"><a href="#cb10-129" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<div id="ojs-cell-10" data-nodetype="expression">
+<div id="ojs-cell-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb11" data-startfrom="134" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 133;"><span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>sir_demographic_sol <span class="op">=</span> <span class="fu">simulate</span>(sir_demographic<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> tmax)</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>sir_demographic_sol_long <span class="op">=</span> sir_demographic_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'t'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-11-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-11-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb12" data-startfrom="138" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 137;"><span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]}<span class="op">,</span></span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]}<span class="op">,</span></span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>    area <span class="op">?</span></span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(sir_demographic_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span>}) <span class="op">:</span></span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(sir_demographic_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})</span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-12" data-nodetype="expression">
 
 </div>
 </div>
@@ -522,15 +554,120 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
+<section id="questions" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="questions"><span class="header-section-number">2.1</span> Questions</h2>
+<section id="developing-intuition-in-a-closed-population" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="developing-intuition-in-a-closed-population"><span class="header-section-number">2.1.1</span> Developing intuition in a closed population</h3>
+<p>To begin with, let’s consider a closed population (no births or deaths), and a low initial fraction infected. The initial values are set so that <span class="math inline">\(R_0 = 1.8\)</span>, with a duration of infection of 6 days (roughly similar to circulating influenza).</p>
+<section id="what-happens-if-we-increase-the-transmission-rate" class="level4" data-number="2.1.1.1">
+<h4 data-number="2.1.1.1" class="anchored" data-anchor-id="what-happens-if-we-increase-the-transmission-rate"><span class="header-section-number">2.1.1.1</span> What happens if we increase the transmission rate?</h4>
+<p>Play around with the slider for the transmission rate.</p>
+<section id="what-happens-to-the-epidemic-curve" class="level5" data-number="2.1.1.1.1">
+<h5 data-number="2.1.1.1.1" class="anchored" data-anchor-id="what-happens-to-the-epidemic-curve"><span class="header-section-number">2.1.1.1.1</span> What happens to the epidemic curve?</h5>
+</section>
+<section id="what-happens-to-the-peak-fraction-infected" class="level5" data-number="2.1.1.1.2">
+<h5 data-number="2.1.1.1.2" class="anchored" data-anchor-id="what-happens-to-the-peak-fraction-infected"><span class="header-section-number">2.1.1.1.2</span> What happens to the peak fraction infected?</h5>
+</section>
+<section id="what-happens-to-the-total-fraction-infected" class="level5" data-number="2.1.1.1.3">
+<h5 data-number="2.1.1.1.3" class="anchored" data-anchor-id="what-happens-to-the-total-fraction-infected"><span class="header-section-number">2.1.1.1.3</span> What happens to the total fraction infected?</h5>
+</section>
+<section id="what-happens-to-the-duration-of-the-epidemic" class="level5" data-number="2.1.1.1.4">
+<h5 data-number="2.1.1.1.4" class="anchored" data-anchor-id="what-happens-to-the-duration-of-the-epidemic"><span class="header-section-number">2.1.1.1.4</span> What happens to the duration of the epidemic?</h5>
+</section>
+<section id="what-happens-to-the-final-size-equilibrium-of-the-epidemic" class="level5" data-number="2.1.1.1.5">
+<h5 data-number="2.1.1.1.5" class="anchored" data-anchor-id="what-happens-to-the-final-size-equilibrium-of-the-epidemic"><span class="header-section-number">2.1.1.1.5</span> What happens to the final size (equilibrium) of the epidemic?</h5>
+</section>
+</section>
+</section>
+<section id="exploring-the-effect-of-births-and-deaths" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="exploring-the-effect-of-births-and-deaths"><span class="header-section-number">2.1.2</span> Exploring the effect of births and deaths</h3>
+<p>Now let’s consider a population with births and deaths. Move “Demographics” panel above.</p>
+<section id="what-happens-if-we-increase-the-birth-rate-above-0" class="level4" data-number="2.1.2.1">
+<h4 data-number="2.1.2.1" class="anchored" data-anchor-id="what-happens-if-we-increase-the-birth-rate-above-0"><span class="header-section-number">2.1.2.1</span> What happens if we increase the birth rate (above 0)?</h4>
+<section id="what-happens-to-r_0" class="level5" data-number="2.1.2.1.1">
+<h5 data-number="2.1.2.1.1" class="anchored" data-anchor-id="what-happens-to-r_0"><span class="header-section-number">2.1.2.1.1</span> What happens to <span class="math inline">\(R_0\)</span>?</h5>
+</section>
+<section id="what-happens-to-the-epidemic-curve-1" class="level5" data-number="2.1.2.1.2">
+<h5 data-number="2.1.2.1.2" class="anchored" data-anchor-id="what-happens-to-the-epidemic-curve-1"><span class="header-section-number">2.1.2.1.2</span> What happens to the epidemic curve?</h5>
+</section>
+<section id="what-happens-to-the-peak-fraction-infected-1" class="level5" data-number="2.1.2.1.3">
+<h5 data-number="2.1.2.1.3" class="anchored" data-anchor-id="what-happens-to-the-peak-fraction-infected-1"><span class="header-section-number">2.1.2.1.3</span> What happens to the peak fraction infected?</h5>
+</section>
+<section id="what-happens-to-the-total-fraction-infected-1" class="level5" data-number="2.1.2.1.4">
+<h5 data-number="2.1.2.1.4" class="anchored" data-anchor-id="what-happens-to-the-total-fraction-infected-1"><span class="header-section-number">2.1.2.1.4</span> What happens to the total fraction infected?</h5>
+</section>
+<section id="what-happens-to-the-duration-of-the-epidemic-1" class="level5" data-number="2.1.2.1.5">
+<h5 data-number="2.1.2.1.5" class="anchored" data-anchor-id="what-happens-to-the-duration-of-the-epidemic-1"><span class="header-section-number">2.1.2.1.5</span> What happens to the duration of the epidemic?</h5>
+</section>
+<section id="what-happens-to-the-final-size-equilibrium-of-the-epidemic-1" class="level5" data-number="2.1.2.1.6">
+<h5 data-number="2.1.2.1.6" class="anchored" data-anchor-id="what-happens-to-the-final-size-equilibrium-of-the-epidemic-1"><span class="header-section-number">2.1.2.1.6</span> What happens to the final size (equilibrium) of the epidemic?</h5>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You may want to increase the maximum simulation time.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="effects-of-interventions" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="effects-of-interventions"><span class="header-section-number">2.1.3</span> Effects of interventions</h3>
+<section id="intervention-effects-transmission" class="level4" data-number="2.1.3.1">
+<h4 data-number="2.1.3.1" class="anchored" data-anchor-id="intervention-effects-transmission"><span class="header-section-number">2.1.3.1</span> Intervention effects transmission</h4>
+<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-transmission-by-50" class="level5" data-number="2.1.3.1.1">
+<h5 data-number="2.1.3.1.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-transmission-by-50"><span class="header-section-number">2.1.3.1.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces transmission by 50%?</h5>
+</section>
+<section id="how-could-we-incorporate-this-into-the-model" class="level5" data-number="2.1.3.1.2">
+<h5 data-number="2.1.3.1.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model"><span class="header-section-number">2.1.3.1.2</span> How could we incorporate this into the model?</h5>
+</section>
+<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results" class="level5" data-number="2.1.3.1.3">
+<h5 data-number="2.1.3.1.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results"><span class="header-section-number">2.1.3.1.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
+</section>
+</section>
+<section id="intervention-effects-duration-of-infection" class="level4" data-number="2.1.3.2">
+<h4 data-number="2.1.3.2" class="anchored" data-anchor-id="intervention-effects-duration-of-infection"><span class="header-section-number">2.1.3.2</span> Intervention effects duration of infection</h4>
+<p>We could imagine that an intervention could also reduce the duration of infection, say, for example, Tamiflu for influenza.</p>
+<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-duration-of-infection-by-50" class="level5" data-number="2.1.3.2.1">
+<h5 data-number="2.1.3.2.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-duration-of-infection-by-50"><span class="header-section-number">2.1.3.2.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the duration of infection by 50%?</h5>
+</section>
+<section id="how-could-we-incorporate-this-into-the-model-1" class="level5" data-number="2.1.3.2.2">
+<h5 data-number="2.1.3.2.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model-1"><span class="header-section-number">2.1.3.2.2</span> How could we incorporate this into the model?</h5>
+</section>
+<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-1" class="level5" data-number="2.1.3.2.3">
+<h5 data-number="2.1.3.2.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-1"><span class="header-section-number">2.1.3.2.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
+</section>
+</section>
+<section id="intervention-effects-proportion-of-population-susceptible" class="level4" data-number="2.1.3.3">
+<h4 data-number="2.1.3.3" class="anchored" data-anchor-id="intervention-effects-proportion-of-population-susceptible"><span class="header-section-number">2.1.3.3</span> Intervention effects proportion of population susceptible</h4>
+<p>We could imagine that an intervention could also reduce the proportion of the population susceptible, say, for example, a vaccine.</p>
+<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-proportion-of-the-population-susceptible-by-50" class="level5" data-number="2.1.3.3.1">
+<h5 data-number="2.1.3.3.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-proportion-of-the-population-susceptible-by-50"><span class="header-section-number">2.1.3.3.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the proportion of the population susceptible by 50%?</h5>
+</section>
+<section id="how-could-we-incorporate-this-into-the-model-2" class="level5" data-number="2.1.3.3.2">
+<h5 data-number="2.1.3.3.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model-2"><span class="header-section-number">2.1.3.3.2</span> How could we incorporate this into the model?</h5>
+</section>
+<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-2" class="level5" data-number="2.1.3.3.3">
+<h5 data-number="2.1.3.3.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-2"><span class="header-section-number">2.1.3.3.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
 
 
 <!-- -->
 
+</section>
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"viewof beta = Inputs.range(\n  [0.0, 2.0],\n  {value: 0.25, step: 0.01, label: \"Transmission rate\"}\n)\nviewof dur_inf = Inputs.range(\n  [0.0, 20],\n  {value: 8.0, step: 0.5, label: \"Duration of Infection (days)\"}\n)\n\nviewof I0 = Inputs.range(\n  [0.0, 1.0],\n  {value: 0.01, step: 0.01, label: \"Initial fraction infected\"}\n)\n\nviewof area = Inputs.toggle(\n  {label: \"Cumulative Area plot\", value: false}\n)\n\nR0 = beta * dur_inf\n\nmd`${tex`R_0 = ${R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"function sir(dydt, y, t) {\n  var gamma = 1 / dur_inf\n\n  dydt[0] = -beta * y[0] * y[1]\n  dydt[1] = beta * y[0] * y[1] - gamma * y[1]\n  dydt[2] = gamma * y[1]\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"import {odeRK4} from '@rreusser/integration@3064'\nimport { aq, op } from '@uwdata/arquero'\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"function simulate(f, t0, y0, dt, tmax) {\n  var t = t0\n  var y = y0\n  var i = 0\n\n  var tsim = [t0]\n  var ysim = [y0]\n\n  for (t = t0 + dt; t <= tmax; t += dt) {\n    ysim.push(odeRK4([], ysim[i], f, dt))\n    tsim.push(t)\n    i += 1\n  }\n  \n  return aq.table({\n    t: tsim,\n    S: ysim.map(d => d[0]),\n    I: ysim.map(d => d[1]),\n    R: ysim.map(d => d[2])\n    })\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], 0.01, 200)\nsir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"Plot.plot({\n  color: {legend: true, domain: [\"S\", \"I\", \"R\"]},\n  grid: true,\n  width: 1000,\n  height: 600,\n  y: {domain: [0, 1]},\n  marks: [\n    area ?\n      Plot.areaY(sir_sol_long, {x: \"t\", y: \"Fraction\", fill: \"State\"}) :\n      Plot.lineY(sir_sol_long, {x: \"t\", y: \"Fraction\", stroke: \"State\", strokeWidth: 3})\n  ]\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"viewof births = Inputs.range(\n  [0.0, 0.5],\n  {value: 0.05, step: 0.001, label: \"Birth rate\"}\n)\n\nviewof tmax = Inputs.range(\n  [200.0, 500.0],\n  {value: 200.0, step: 50.0, label: \"Maximum simulation time\"}\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"function sir_births(dydt, y, t) {\n  var gamma = 1 / dur_inf\n\n  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])\n  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]\n  dydt[2] = gamma * y[1] - births * y[2]\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"sir_births_sol = simulate(sir_births, 0, [1.0-I0, I0, 0.0], 0.01, tmax)\nsir_births_sol_long = sir_births_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"Plot.plot({\n  color: {legend: true, domain: [\"S\", \"I\", \"R\"]},\n  grid: true,\n  width: 1000,\n  height: 600,\n  y: {domain: [0, 1]},\n  marks: [\n    area ?\n      Plot.areaY(sir_births_sol_long, {x: \"t\", y: \"Fraction\", fill: \"State\"}) :\n      Plot.lineY(sir_births_sol_long, {x: \"t\", y: \"Fraction\", stroke: \"State\", strokeWidth: 3})\n  ]\n})\n"},{"methodName":"interpretQuiet","source":"shinyInput('beta')"},{"methodName":"interpretQuiet","source":"shinyInput('dur_inf')"},{"methodName":"interpretQuiet","source":"shinyInput('I0')"},{"methodName":"interpretQuiet","source":"shinyInput('area')"},{"methodName":"interpretQuiet","source":"shinyInput('births')"},{"methodName":"interpretQuiet","source":"shinyInput('tmax')"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"viewof beta = Inputs.range(\n  [0.0, 2.0],\n  {value: 0.3, step: 0.01, label: \"Transmission rate\"}\n)\nviewof dur_inf = Inputs.range(\n  [0.0, 20],\n  {value: 6.0, step: 0.5, label: \"Duration of Infection (days)\"}\n)\n\nviewof I0 = Inputs.range(\n  [0.0, 1.0],\n  {value: 0.01, step: 0.01, label: \"Initial fraction infected\"}\n)\n\nviewof area = Inputs.toggle(\n  {label: \"Cumulative Area plot\", value: false}\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"function sir(dydt, y, t) {\n  var gamma = 1 / dur_inf\n\n  dydt[0] = -beta * y[0] * y[1]\n  dydt[1] = beta * y[0] * y[1] - gamma * y[1]\n  dydt[2] = gamma * y[1]\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"import {odeRK4} from '@rreusser/integration@3064'\nimport { aq, op } from '@uwdata/arquero'\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"function simulate(f, t0, y0, dt, tmax) {\n  var t = t0\n  var y = y0\n  var i = 0\n\n  var tsim = [t0]\n  var ysim = [y0]\n\n  for (t = t0 + dt; t <= tmax; t += dt) {\n    ysim.push(odeRK4([], ysim[i], f, dt))\n    tsim.push(t)\n    i += 1\n  }\n  \n  return aq.table({\n    t: tsim,\n    S: ysim.map(d => d[0]),\n    I: ysim.map(d => d[1]),\n    R: ysim.map(d => d[2])\n    })\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], 0.01, 200)\nsir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"closed_R0 = beta * dur_inf\n\nmd`${tex`R_0 = ${closed_R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"Plot.plot({\n  color: {legend: true, domain: [\"S\", \"I\", \"R\"]},\n  grid: true,\n  width: 1000,\n  height: 600,\n  y: {domain: [0, 1]},\n  marks: [\n    area ?\n      Plot.areaY(sir_sol_long, {x: \"t\", y: \"Fraction\", fill: \"State\"}) :\n      Plot.lineY(sir_sol_long, {x: \"t\", y: \"Fraction\", stroke: \"State\", strokeWidth: 3})\n  ]\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"viewof births = Inputs.range(\n  [0.0, 0.5],\n  {value: 0.05, step: 0.001, label: \"Birth rate\"}\n)\n\nviewof tmax = Inputs.range(\n  [200.0, 500.0],\n  {value: 200.0, step: 50.0, label: \"Maximum simulation time\"}\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"demographic_R0 = beta / ((1/dur_inf) + births)\n\nmd`${tex`R_0 = ${demographic_R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"function sir_demographic(dydt, y, t) {\n  var gamma = 1 / dur_inf\n\n  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])\n  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]\n  dydt[2] = gamma * y[1] - births * y[2]\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-11","inline":false,"source":"sir_demographic_sol = simulate(sir_demographic, 0, [1.0-I0, I0, 0.0], 0.01, tmax)\nsir_demographic_sol_long = sir_demographic_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})\n"},{"methodName":"interpret","cellName":"ojs-cell-12","inline":false,"source":"Plot.plot({\n  color: {legend: true, domain: [\"S\", \"I\", \"R\"]},\n  grid: true,\n  width: 1000,\n  height: 600,\n  y: {domain: [0, 1]},\n  marks: [\n    area ?\n      Plot.areaY(sir_demographic_sol_long, {x: \"t\", y: \"Fraction\", fill: \"State\"}) :\n      Plot.lineY(sir_demographic_sol_long, {x: \"t\", y: \"Fraction\", stroke: \"State\", strokeWidth: 3})\n  ]\n})\n"},{"methodName":"interpretQuiet","source":"shinyInput('beta')"},{"methodName":"interpretQuiet","source":"shinyInput('dur_inf')"},{"methodName":"interpretQuiet","source":"shinyInput('I0')"},{"methodName":"interpretQuiet","source":"shinyInput('area')"},{"methodName":"interpretQuiet","source":"shinyInput('births')"},{"methodName":"interpretQuiet","source":"shinyInput('tmax')"}]}
 </script>
 <script type="module">
 window._ojs.paths.runtimeToDoc = "../..";
@@ -838,7 +975,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="./lecture-01.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Lecture 01</span></span>
@@ -850,151 +987,217 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">    page-layout: full</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">    echo: false</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu"># R Session 01 </span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">//| panel: input</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>viewof beta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.25</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Transmission rate"</span>}</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>viewof dur_inf <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">8.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Duration of Infection (days)"</span>}</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>viewof I0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span>]<span class="op">,</span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Initial fraction infected"</span>}</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>viewof area <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>(</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">label</span><span class="op">:</span> <span class="st">"Cumulative Area plot"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>}</span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>R0 <span class="op">=</span> beta <span class="op">*</span> dur_inf</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sir</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span>beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {odeRK4} <span class="im">from</span> <span class="st">'@rreusser/integration@3064'</span></span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { aq<span class="op">,</span> op } <span class="im">from</span> <span class="st">'@uwdata/arquero'</span></span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">simulate</span>(f<span class="op">,</span> t0<span class="op">,</span> y0<span class="op">,</span> dt<span class="op">,</span> tmax) {</span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> t <span class="op">=</span> t0</span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> y <span class="op">=</span> y0</span>
-<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> i <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> tsim <span class="op">=</span> [t0]</span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> ysim <span class="op">=</span> [y0]</span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (t <span class="op">=</span> t0 <span class="op">+</span> dt<span class="op">;</span> t <span class="op">&lt;=</span> tmax<span class="op">;</span> t <span class="op">+=</span> dt) {</span>
-<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>    ysim<span class="op">.</span><span class="fu">push</span>(<span class="fu">odeRK4</span>([]<span class="op">,</span> ysim[i]<span class="op">,</span> f<span class="op">,</span> dt))</span>
-<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>    tsim<span class="op">.</span><span class="fu">push</span>(t)</span>
-<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>    i <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
-<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>    <span class="dt">t</span><span class="op">:</span> tsim<span class="op">,</span></span>
-<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>    <span class="dt">S</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">0</span>])<span class="op">,</span></span>
-<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>    <span class="dt">I</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">1</span>])<span class="op">,</span></span>
-<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    <span class="dt">R</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">2</span>])</span>
-<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>sir_sol <span class="op">=</span> <span class="fu">simulate</span>(sir<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dv">200</span>)</span>
-<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>sir_sol_long <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'t'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span>
-<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="vs">::: {.panel-tabset}</span></span>
-<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a><span class="vs">## Closed Population</span></span>
-<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]}<span class="op">,</span></span>
-<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
-<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
-<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]}<span class="op">,</span></span>
-<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>    area <span class="op">?</span></span>
-<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(sir_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span>}) <span class="op">:</span></span>
-<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(sir_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})</span>
-<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a><span class="vs">## Demographics</span></span>
-<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="co">//| panel: input</span></span>
-<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>viewof births <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.5</span>]<span class="op">,</span></span>
-<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Birth rate"</span>}</span>
-<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>viewof tmax <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">200.0</span><span class="op">,</span> <span class="fl">500.0</span>]<span class="op">,</span></span>
-<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">200.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">50.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Maximum simulation time"</span>}</span>
-<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sir_births</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
-<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
-<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">+</span> births <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> y[<span class="dv">0</span>])</span>
-<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">2</span>]</span>
-<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a>sir_births_sol <span class="op">=</span> <span class="fu">simulate</span>(sir_births<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> tmax)</span>
-<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a>sir_births_sol_long <span class="op">=</span> sir_births_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'t'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span>
-<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]}<span class="op">,</span></span>
-<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
-<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
-<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]}<span class="op">,</span></span>
-<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a>    area <span class="op">?</span></span>
-<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(sir_births_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span>}) <span class="op">:</span></span>
-<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(sir_births_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})</span>
-<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
-<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a><span class="vs">:::</span></span>
+<div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">    page-layout: full</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">    echo: false</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu"># R Session 01 </span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">//| panel: input</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>viewof beta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Transmission rate"</span>}</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>viewof dur_inf <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">6.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Duration of Infection (days)"</span>}</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>viewof I0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span>]<span class="op">,</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Initial fraction infected"</span>}</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>viewof area <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>(</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">label</span><span class="op">:</span> <span class="st">"Cumulative Area plot"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>}</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sir</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span>beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {odeRK4} <span class="im">from</span> <span class="st">'@rreusser/integration@3064'</span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { aq<span class="op">,</span> op } <span class="im">from</span> <span class="st">'@uwdata/arquero'</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">simulate</span>(f<span class="op">,</span> t0<span class="op">,</span> y0<span class="op">,</span> dt<span class="op">,</span> tmax) {</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> t <span class="op">=</span> t0</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> y <span class="op">=</span> y0</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> tsim <span class="op">=</span> [t0]</span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> ysim <span class="op">=</span> [y0]</span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (t <span class="op">=</span> t0 <span class="op">+</span> dt<span class="op">;</span> t <span class="op">&lt;=</span> tmax<span class="op">;</span> t <span class="op">+=</span> dt) {</span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>    ysim<span class="op">.</span><span class="fu">push</span>(<span class="fu">odeRK4</span>([]<span class="op">,</span> ysim[i]<span class="op">,</span> f<span class="op">,</span> dt))</span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>    tsim<span class="op">.</span><span class="fu">push</span>(t)</span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>    i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>    <span class="dt">t</span><span class="op">:</span> tsim<span class="op">,</span></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>    <span class="dt">S</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a>    <span class="dt">I</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">1</span>])<span class="op">,</span></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a>    <span class="dt">R</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">2</span>])</span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a>sir_sol <span class="op">=</span> <span class="fu">simulate</span>(sir<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dv">200</span>)</span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>sir_sol_long <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'t'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a><span class="vs">::: {.panel-tabset}</span></span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a><span class="vs">## Closed Population</span></span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a>closed_R0 <span class="op">=</span> beta <span class="op">*</span> dur_inf</span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>closed_R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]}<span class="op">,</span></span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
+<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
+<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]}<span class="op">,</span></span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a>    area <span class="op">?</span></span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(sir_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span>}) <span class="op">:</span></span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(sir_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})</span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a><span class="vs">## Demographics</span></span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a><span class="co">//| panel: input</span></span>
+<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a>viewof births <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.5</span>]<span class="op">,</span></span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Birth rate"</span>}</span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a>viewof tmax <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a>  [<span class="fl">200.0</span><span class="op">,</span> <span class="fl">500.0</span>]<span class="op">,</span></span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="fl">200.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">50.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Maximum simulation time"</span>}</span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a>demographic_R0 <span class="op">=</span> beta <span class="op">/</span> ((<span class="dv">1</span><span class="op">/</span>dur_inf) <span class="op">+</span> births)</span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>demographic_R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sir_demographic</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">+</span> births <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> y[<span class="dv">0</span>])</span>
+<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">2</span>]</span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>sir_demographic_sol <span class="op">=</span> <span class="fu">simulate</span>(sir_demographic<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> tmax)</span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>sir_demographic_sol_long <span class="op">=</span> sir_demographic_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'t'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]}<span class="op">,</span></span>
+<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]}<span class="op">,</span></span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>    area <span class="op">?</span></span>
+<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(sir_demographic_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span>}) <span class="op">:</span></span>
+<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(sir_demographic_sol_long<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Fraction"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})</span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a><span class="vs">```</span></span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a><span class="vs">:::</span></span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a><span class="vs">## Questions</span></span>
+<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a><span class="vs">### Developing intuition in a closed population</span></span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a><span class="vs">To begin with, let's consider a closed population (no births or deaths), and a low initial fraction infected.</span></span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a><span class="vs">The initial values are set so that $R_0 = 1.8$, with a duration of infection of 6 days (roughly similar to circulating influenza).</span></span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a><span class="vs">#### What happens if we increase the transmission rate?</span></span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a><span class="vs">Play around with the slider for the transmission rate.</span></span>
+<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the epidemic curve?</span></span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the peak fraction infected?</span></span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the total fraction infected?</span></span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the duration of the epidemic?</span></span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the final size (equilibrium) of the epidemic?</span></span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a><span class="vs">### Exploring the effect of births and deaths</span></span>
+<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a><span class="vs">Now let's consider a population with births and deaths.</span></span>
+<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a><span class="vs">Move "Demographics" panel above.</span></span>
+<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a><span class="vs">#### What happens if we increase the birth rate (above 0)?</span></span>
+<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to $R_0$?</span></span>
+<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the epidemic curve?</span></span>
+<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the peak fraction infected?</span></span>
+<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the total fraction infected?</span></span>
+<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the duration of the epidemic?</span></span>
+<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What happens to the final size (equilibrium) of the epidemic?</span></span>
+<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a><span class="vs">::: {.callout-tip}</span></span>
+<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a><span class="vs">You may want to increase the maximum simulation time.</span></span>
+<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a><span class="vs">:::</span></span>
+<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a><span class="vs">### Effects of interventions</span></span>
+<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a><span class="vs">#### Intervention effects transmission</span></span>
+<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a><span class="vs">##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces transmission by 50%?</span></span>
+<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a><span class="vs">##### How could we incorporate this into the model?</span></span>
+<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What are the core assumptions being made in this model, and how might they affect the results?</span></span>
+<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a><span class="vs">#### Intervention effects duration of infection</span></span>
+<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a><span class="vs">We could imagine that an intervention could also reduce the duration of infection, say, for example, Tamiflu for influenza.</span></span>
+<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a><span class="vs">##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the duration of infection by 50%?</span></span>
+<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a><span class="vs">##### How could we incorporate this into the model?</span></span>
+<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What are the core assumptions being made in this model, and how might they affect the results?</span></span>
+<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a><span class="vs">#### Intervention effects proportion of population susceptible</span></span>
+<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a><span class="vs">We could imagine that an intervention could also reduce the proportion of the population susceptible, say, for example, a vaccine.</span></span>
+<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a><span class="vs">##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the proportion of the population susceptible by 50%?</span></span>
+<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a><span class="vs">##### How could we incorporate this into the model?</span></span>
+<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a><span class="vs">##### What are the core assumptions being made in this model, and how might they affect the results?</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

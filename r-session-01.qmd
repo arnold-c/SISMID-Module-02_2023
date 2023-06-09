@@ -12,11 +12,11 @@ execute:
 //| panel: input
 viewof beta = Inputs.range(
   [0.0, 2.0],
-  {value: 0.25, step: 0.01, label: "Transmission rate"}
+  {value: 0.3, step: 0.01, label: "Transmission rate"}
 )
 viewof dur_inf = Inputs.range(
   [0.0, 20],
-  {value: 8.0, step: 0.5, label: "Duration of Infection (days)"}
+  {value: 6.0, step: 0.5, label: "Duration of Infection (days)"}
 )
 
 viewof I0 = Inputs.range(
@@ -27,10 +27,6 @@ viewof I0 = Inputs.range(
 viewof area = Inputs.toggle(
   {label: "Cumulative Area plot", value: false}
 )
-
-R0 = beta * dur_inf
-
-md`${tex`R_0 = ${R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`
 ```
 
 
@@ -83,6 +79,12 @@ sir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
 ## Closed Population
 
 ```{ojs}
+closed_R0 = beta * dur_inf
+
+md`${tex`R_0 = ${closed_R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`
+```
+
+```{ojs}
 Plot.plot({
   color: {legend: true, domain: ["S", "I", "R"]},
   grid: true,
@@ -113,7 +115,13 @@ viewof tmax = Inputs.range(
 ```
 
 ```{ojs}
-function sir_births(dydt, y, t) {
+demographic_R0 = beta / ((1/dur_inf) + births)
+
+md`${tex`R_0 = ${demographic_R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`
+```
+
+```{ojs}
+function sir_demographic(dydt, y, t) {
   var gamma = 1 / dur_inf
 
   dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])
@@ -123,8 +131,8 @@ function sir_births(dydt, y, t) {
 ```
 
 ```{ojs}
-sir_births_sol = simulate(sir_births, 0, [1.0-I0, I0, 0.0], 0.01, tmax)
-sir_births_sol_long = sir_births_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
+sir_demographic_sol = simulate(sir_demographic, 0, [1.0-I0, I0, 0.0], 0.01, tmax)
+sir_demographic_sol_long = sir_demographic_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
 ```
 
 ```{ojs}
@@ -136,10 +144,68 @@ Plot.plot({
   y: {domain: [0, 1]},
   marks: [
     area ?
-      Plot.areaY(sir_births_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
-      Plot.lineY(sir_births_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 3})
+      Plot.areaY(sir_demographic_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
+      Plot.lineY(sir_demographic_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 3})
   ]
 })
 ```
 
 :::
+
+## Questions
+### Developing intuition in a closed population
+
+To begin with, let's consider a closed population (no births or deaths), and a low initial fraction infected.
+The initial values are set so that $R_0 = 1.8$, with a duration of infection of 6 days (roughly similar to circulating influenza).
+
+#### What happens if we increase the transmission rate?
+
+Play around with the slider for the transmission rate.
+
+##### What happens to the epidemic curve?
+##### What happens to the peak fraction infected?
+##### What happens to the total fraction infected?
+##### What happens to the duration of the epidemic?
+##### What happens to the final size (equilibrium) of the epidemic?
+
+
+### Exploring the effect of births and deaths
+
+Now let's consider a population with births and deaths.
+Move "Demographics" panel above.
+
+#### What happens if we increase the birth rate (above 0)?
+
+##### What happens to $R_0$?
+##### What happens to the epidemic curve?
+##### What happens to the peak fraction infected?
+##### What happens to the total fraction infected?
+##### What happens to the duration of the epidemic?
+##### What happens to the final size (equilibrium) of the epidemic?
+
+::: {.callout-tip}
+You may want to increase the maximum simulation time.
+:::
+
+### Effects of interventions
+#### Intervention effects transmission
+
+##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces transmission by 50%?
+##### How could we incorporate this into the model?
+##### What are the core assumptions being made in this model, and how might they affect the results?
+
+#### Intervention effects duration of infection
+
+We could imagine that an intervention could also reduce the duration of infection, say, for example, Tamiflu for influenza.
+
+##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the duration of infection by 50%?
+##### How could we incorporate this into the model?
+##### What are the core assumptions being made in this model, and how might they affect the results?
+
+#### Intervention effects proportion of population susceptible
+
+We could imagine that an intervention could also reduce the proportion of the population susceptible, say, for example, a vaccine.
+
+##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the proportion of the population susceptible by 50%?
+##### How could we incorporate this into the model?
+##### What are the core assumptions being made in this model, and how might they affect the results?
