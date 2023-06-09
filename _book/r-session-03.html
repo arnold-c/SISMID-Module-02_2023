@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.2.475">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Callum Arnold">
 <meta name="author" content="Matthew Ferrari">
-<meta name="author" content="Callum Arnold-Leps">
-<title>SISMID Module 2 Materials (2023) - 5&nbsp; R Session 03</title>
+<title>SISMID Module 2 Materials (2023) - 9&nbsp; R Session 03</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,8 +91,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
-<link href="./r-session-02.html" rel="prev">
+<link href="./lecture-07.html" rel="next">
+<link href="./lecture-06.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -128,7 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
       <h1 class="quarto-secondary-nav-title">
-<span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Session 03</span>
+<span class="chapter-number">9</span>&nbsp; <span class="chapter-title">R Session 03</span>
 </h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
@@ -154,7 +154,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="list-unstyled mt-1">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -182,12 +182,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lecture-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Lecture 01</span></a>
+  <a href="./lecture-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Intro to Modeling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Session 01</span></a>
+  <a href="./lecture-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basics of SIR Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-session-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R Session 01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture-03.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herd Immunity &amp; Vaccination</span></a>
   </div>
 </li>
       </ul>
@@ -202,17 +212,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lecture-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Lecture 02</span></a>
+  <a href="./lecture-04.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Heterogeneity in Models</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R Session 02</span></a>
+  <a href="./lecture-05.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Age Structured Models</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-03.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Session 03</span></a>
+  <a href="./r-session-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">R Session 02</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Parameter Estimation (<span class="math inline">\(R_0\)</span>)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-session-03.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">R Session 03</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Day 3</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Confronting Models with Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture-08.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Stochastic Models</span></a>
   </div>
 </li>
       </ul>
@@ -228,29 +268,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#estimating-r_0" id="toc-estimating-r_0" class="nav-link active" data-scroll-target="#estimating-r_0"><span class="toc-section-number">5.1</span>  Estimating <span class="math inline">\(R_0\)</span></a></li>
+<li><a href="#estimating-r_0" id="toc-estimating-r_0" class="nav-link active" data-scroll-target="#estimating-r_0"><span class="toc-section-number">9.1</span>  Estimating <span class="math inline">\(R_0\)</span></a></li>
   <li>
-<a href="#estimating-r_0-from-the-final-outbreak-size" id="toc-estimating-r_0-from-the-final-outbreak-size" class="nav-link" data-scroll-target="#estimating-r_0-from-the-final-outbreak-size"><span class="toc-section-number">5.2</span>  Estimating <span class="math inline">\(R_0\)</span> from the final outbreak size</a>
+<a href="#estimating-r_0-from-the-final-outbreak-size" id="toc-estimating-r_0-from-the-final-outbreak-size" class="nav-link" data-scroll-target="#estimating-r_0-from-the-final-outbreak-size"><span class="toc-section-number">9.2</span>  Estimating <span class="math inline">\(R_0\)</span> from the final outbreak size</a>
   <ul class="collapse">
-<li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1"><span class="toc-section-number">5.2.1</span>  Exercise 1</a></li>
+<li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1"><span class="toc-section-number">9.2.1</span>  Exercise 1</a></li>
   </ul>
 </li>
   <li>
-<a href="#linear-approximation" id="toc-linear-approximation" class="nav-link" data-scroll-target="#linear-approximation"><span class="toc-section-number">5.3</span>  Linear Approximation</a>
+<a href="#linear-approximation" id="toc-linear-approximation" class="nav-link" data-scroll-target="#linear-approximation"><span class="toc-section-number">9.3</span>  Linear Approximation</a>
   <ul class="collapse">
-<li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2"><span class="toc-section-number">5.3.1</span>  Exercise 2</a></li>
-  <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3"><span class="toc-section-number">5.3.2</span>  Exercise 3</a></li>
-  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4"><span class="toc-section-number">5.3.3</span>  Exercise 4</a></li>
+<li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2"><span class="toc-section-number">9.3.1</span>  Exercise 2</a></li>
+  <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3"><span class="toc-section-number">9.3.2</span>  Exercise 3</a></li>
+  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4"><span class="toc-section-number">9.3.3</span>  Exercise 4</a></li>
   </ul>
 </li>
-  <li><a href="#estimating-dynamical-parameters-with-least-squares" id="toc-estimating-dynamical-parameters-with-least-squares" class="nav-link" data-scroll-target="#estimating-dynamical-parameters-with-least-squares"><span class="toc-section-number">5.4</span>  Estimating dynamical parameters with least squares</a></li>
-  <li><a href="#dynamical-model" id="toc-dynamical-model" class="nav-link" data-scroll-target="#dynamical-model"><span class="toc-section-number">5.5</span>  Dynamical Model</a></li>
-  <li><a href="#objective-function" id="toc-objective-function" class="nav-link" data-scroll-target="#objective-function"><span class="toc-section-number">5.6</span>  Objective function</a></li>
+  <li><a href="#estimating-dynamical-parameters-with-least-squares" id="toc-estimating-dynamical-parameters-with-least-squares" class="nav-link" data-scroll-target="#estimating-dynamical-parameters-with-least-squares"><span class="toc-section-number">9.4</span>  Estimating dynamical parameters with least squares</a></li>
+  <li><a href="#dynamical-model" id="toc-dynamical-model" class="nav-link" data-scroll-target="#dynamical-model"><span class="toc-section-number">9.5</span>  Dynamical Model</a></li>
+  <li><a href="#objective-function" id="toc-objective-function" class="nav-link" data-scroll-target="#objective-function"><span class="toc-section-number">9.6</span>  Objective function</a></li>
   <li>
-<a href="#optimization" id="toc-optimization" class="nav-link" data-scroll-target="#optimization"><span class="toc-section-number">5.7</span>  Optimization</a>
+<a href="#optimization" id="toc-optimization" class="nav-link" data-scroll-target="#optimization"><span class="toc-section-number">9.7</span>  Optimization</a>
   <ul class="collapse">
-<li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5"><span class="toc-section-number">5.7.1</span>  Exercise 5</a></li>
-  <li><a href="#exercise-6" id="toc-exercise-6" class="nav-link" data-scroll-target="#exercise-6"><span class="toc-section-number">5.7.2</span>  Exercise 6</a></li>
+<li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5"><span class="toc-section-number">9.7.1</span>  Exercise 5</a></li>
+  <li><a href="#exercise-6" id="toc-exercise-6" class="nav-link" data-scroll-target="#exercise-6"><span class="toc-section-number">9.7.2</span>  Exercise 6</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/r-session-03.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
@@ -258,7 +298,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">
-<span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Session 03</span>
+<span class="chapter-number">9</span>&nbsp; <span class="chapter-title">R Session 03</span>
 </h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 <p class="subtitle lead">Estimation</p>
 </div>
@@ -269,7 +309,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <div class="quarto-title-meta-heading">Affiliation</div>
   
     <div class="quarto-title-meta-contents">
-    <a href="http://theferrarilab.com">Matthew Ferrari</a> <a href="https://orcid.org/0000-0001-5251-8168" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+    <a href="https://callumarnold.com">Callum Arnold</a> <a href="https://orcid.org/0000-0002-3245-6956" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
   </div>
     <div class="quarto-title-meta-contents">
         <p class="affiliation">
@@ -277,7 +317,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </p>
       </div>
       <div class="quarto-title-meta-contents">
-    <a href="https://callumarnold.com">Callum Arnold-Leps</a> <a href="https://orcid.org/0000-0002-3245-6956" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+    <a href="http://theferrarilab.com">Matthew Ferrari</a> <a href="https://orcid.org/0000-0001-5251-8168" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
   </div>
     <div class="quarto-title-meta-contents">
         <p class="affiliation">
@@ -304,8 +344,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://desolve.r-forge.r-project.org/">deSolve</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="estimating-r_0" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="estimating-r_0">
-<span class="header-section-number">5.1</span> Estimating <span class="math inline">\(R_0\)</span>
+<section id="estimating-r_0" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="estimating-r_0">
+<span class="header-section-number">9.1</span> Estimating <span class="math inline">\(R_0\)</span>
 </h2>
 <p>So far in this class we have focused on the <strong>theory</strong> of infectious disease. Often, however, we will want to apply this theory to particular situations. One of the key applied problems in epidemic modeling is the estimation of <span class="math inline">\(R_0\)</span> from outbreak data. In this session, we study two methods for estimating <span class="math inline">\(R_0\)</span> from an epidemic curve. As a running example, we will use the data on influenza in a British boarding school.</p>
 <div class="cell">
@@ -324,8 +364,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="r-session-03_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="estimating-r_0-from-the-final-outbreak-size" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="estimating-r_0-from-the-final-outbreak-size">
-<span class="header-section-number">5.2</span> Estimating <span class="math inline">\(R_0\)</span> from the final outbreak size</h2>
+</section><section id="estimating-r_0-from-the-final-outbreak-size" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="estimating-r_0-from-the-final-outbreak-size">
+<span class="header-section-number">9.2</span> Estimating <span class="math inline">\(R_0\)</span> from the final outbreak size</h2>
 <p>Our first approach is to estimate <span class="math inline">\(R_0\)</span> from the final outbreak size. Although unhelpful at the early stages of an epidemic (before the final epidemic size is observed), this method is nonetheless a useful tool for <span class="math inline">\({post hoc}\)</span> analysis. The method is general and can be motivated by the following argument (Keeling and Rohani 2007): First, we assume that the epidemic is started by a single infectious individual in a completely susceptible population. On average, this individual infects <span class="math inline">\(R_0\)</span> others. The probability a particular individual escaped infection is therefore <span class="math inline">\(e^{-R_0/N}\)</span>. If <span class="math inline">\(Z\)</span> individuals have been infected, the probability of an individual escaping infection from all potential sources is <span class="math inline">\(e^{-ZR_0/N}\)</span>. It follows that at the end of the epidemic a proportion <span class="math inline">\(R(\infty)=Z/N\)</span> have been infected and the fraction remaining susceptible is <span class="math inline">\(S(\infty)=e^{-R(\infty)R_0}\)</span>, which is equal to <span class="math inline">\(1-R(\infty)\)</span>, giving</p>
 <p><span class="math display">\[
   \label{R0-estimator}
@@ -337,11 +377,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   \hat{R_0} = \frac{log(1-Z/N)}{-Z/N},
 \]</span></p>
 <p>which, in this case, evaluates to <span class="math inline">\(\frac{log(1-512/764)}{-512/764} = 1.655\)</span>.</p>
-<section id="exercise-1" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="exercise-1">
-<span class="header-section-number">5.2.1</span> Exercise 1</h3>
+<section id="exercise-1" class="level3" data-number="9.2.1"><h3 data-number="9.2.1" class="anchored" data-anchor-id="exercise-1">
+<span class="header-section-number">9.2.1</span> Exercise 1</h3>
 <p>This equation shows the important one-to-one relationship between <span class="math inline">\(R_0\)</span> and the final epidemic size. Plot the relationship between the total epidemic size and <span class="math inline">\(R_0\)</span> for the complete range of values between 0 and 1.</p>
-</section></section><section id="linear-approximation" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="linear-approximation">
-<span class="header-section-number">5.3</span> Linear Approximation</h2>
+</section></section><section id="linear-approximation" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="linear-approximation">
+<span class="header-section-number">9.3</span> Linear Approximation</h2>
 <p>The next method we introduce takes advantage of the fact that during the early stages of an outbreak, the number of infected individuals is given approximately as <span class="math inline">\(Y(t) \approx Y_0 e^{((R_0-1)(\gamma + \mu)t)}\)</span>. Taking logarithms of both sides, we have <span class="math inline">\(log(Y(t)) \approx log(Y_0) + (R_0-1)(\gamma + \mu)t\)</span>, showing that the log of the number of infected individuals is approximately linear in time with a slope that reflects both <span class="math inline">\(R_0\)</span> and the recovery rate.</p>
 <p>This suggests that a simple linear regression fit to the first several data points on a log-scale, corrected to account for <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\mu\)</span>, provides a rough and ready estimate of <span class="math inline">\(R_0\)</span>. For flu, we can assume <span class="math inline">\(\mu =0\)</span> because the epidemic occurred over a time period during which natural mortality is negligible. Further, assuming an infectious period of about 2.5 days, we use <span class="math inline">\(\gamma = (2.5)^{-1} = 0.4\)</span> for the correction. Fitting to the first four data points, we obtain the slope as follows.</p>
 <div class="cell">
@@ -375,17 +415,17 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 </div>
 </div>
 <p>Rearranging the linear equation above and denoting the slope coefficient by <span class="math inline">\(\hat \beta_1\)</span> we have the estimator <span class="math inline">\(\hat R_0 = \hat \beta_1 / \gamma +1\)</span> giving <span class="math inline">\(\hat R_0=1.094913/0.4+1 \approx 3.7\)</span>.</p>
-<section id="exercise-2" class="level3" data-number="5.3.1"><h3 data-number="5.3.1" class="anchored" data-anchor-id="exercise-2">
-<span class="header-section-number">5.3.1</span> Exercise 2</h3>
+<section id="exercise-2" class="level3" data-number="9.3.1"><h3 data-number="9.3.1" class="anchored" data-anchor-id="exercise-2">
+<span class="header-section-number">9.3.1</span> Exercise 2</h3>
 <p>Our estimate assumes that boys remained infectious during the natural course of infection. The original report on this epidemic indicates that boys found to have symptoms were immediately confined to bed in the infirmary. The report also indicates that only 1 out of 130 adults at the school exhibited any symptoms. It is reasonable, then, to suppose that transmission in each case ceased once he had been admitted to the infirmary. Supposing admission happened within 24 hours of the onset of symptoms. How does this affect our estimate of <span class="math inline">\(R_0\)</span>? Twelve hours?</p>
-</section><section id="exercise-3" class="level3" data-number="5.3.2"><h3 data-number="5.3.2" class="anchored" data-anchor-id="exercise-3">
-<span class="header-section-number">5.3.2</span> Exercise 3</h3>
+</section><section id="exercise-3" class="level3" data-number="9.3.2"><h3 data-number="9.3.2" class="anchored" data-anchor-id="exercise-3">
+<span class="header-section-number">9.3.2</span> Exercise 3</h3>
 <p>Biweekly data for outbreaks of measles in three communities in Niamey, Niger are provided in the dataframe <span class="math inline">\(\tt niamey\)</span>. Use this method to obtain estimates of <span class="math inline">\(R_0\)</span> for measles from the first community assuming that the infectious period is approximately two weeks or <span class="math inline">\(14/365 \approx 0.0384\)</span> years.</p>
-</section><section id="exercise-4" class="level3" data-number="5.3.3"><h3 data-number="5.3.3" class="anchored" data-anchor-id="exercise-4">
-<span class="header-section-number">5.3.3</span> Exercise 4</h3>
+</section><section id="exercise-4" class="level3" data-number="9.3.3"><h3 data-number="9.3.3" class="anchored" data-anchor-id="exercise-4">
+<span class="header-section-number">9.3.3</span> Exercise 4</h3>
 <p>A defect with this method is that it uses only a small fraction of the information that might be available, <strong>i.e.</strong>, the first few data points. Indeed, there is nothing in the method that tells one how many data points to use–this is a matter of judgment. Further, there is a tradeoff in that as more and more data points are used the precision of the estimate increases, but this comes at a cost of additional bias. Plot the estimate of <span class="math inline">\(R_0\)</span> obtained from <span class="math inline">\(n=3, 4, 5, ...\)</span> data points against the standard error of the slope from the regression analysis to show this tradeoff.</p>
-</section></section><section id="estimating-dynamical-parameters-with-least-squares" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="estimating-dynamical-parameters-with-least-squares">
-<span class="header-section-number">5.4</span> Estimating dynamical parameters with least squares</h2>
+</section></section><section id="estimating-dynamical-parameters-with-least-squares" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="estimating-dynamical-parameters-with-least-squares">
+<span class="header-section-number">9.4</span> Estimating dynamical parameters with least squares</h2>
 <p>The objective of the previous exercise was to estimate <span class="math inline">\(R_0\)</span>. Knowing <span class="math inline">\(R_0\)</span> is critical to understanding the dynamics of any epidemic system. It is, however, a composite quantity and is not sufficient to completely describe the epidemic trajectory. For this, we require estimates for all parameters of the model. In this exercise, we introduce a simple approach to model estimation called <strong>least squares fitting</strong>, sometimes called <strong>trajectory matching</strong>. The basic idea is that we find the values of the model parameters that minimize the squared differences between model predictions and the observed data. To demonstrate least squares fitting, we consider an outbreak of measles in Niamey, Niger, reported on by Grais et al.&nbsp;2006 (Grais, R.F., <em>et al.</em> 2006. Estimating transmission intensity for a measles outbreak in Niamey, Niger: lessons for intervention. <em>Transactions of the Royal Society of Tropical Medicine and Hygiene</em> 100:867-873.).</p>
 <div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">niamey</span><span class="op">[</span><span class="fl">5</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span>  <span class="co">#replace a "NA"</span></span>
@@ -412,8 +452,8 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <p><img src="r-session-03_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="dynamical-model" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="dynamical-model">
-<span class="header-section-number">5.5</span> Dynamical Model</h2>
+</section><section id="dynamical-model" class="level2" data-number="9.5"><h2 data-number="9.5" class="anchored" data-anchor-id="dynamical-model">
+<span class="header-section-number">9.5</span> Dynamical Model</h2>
 <p>First, we write a specialized function for simulating the <span class="math inline">\(SIR\)</span> model in a case where the removal rate is ``hard-wired’’ and with no demography.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">closed_sir_model</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, <span class="va">params</span><span class="op">)</span> <span class="op">{</span>  <span class="co">#SIR model equations</span></span>
@@ -426,8 +466,8 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dX</span>, <span class="va">dY</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="objective-function" class="level2" data-number="5.6"><h2 data-number="5.6" class="anchored" data-anchor-id="objective-function">
-<span class="header-section-number">5.6</span> Objective function</h2>
+</section><section id="objective-function" class="level2" data-number="9.6"><h2 data-number="9.6" class="anchored" data-anchor-id="objective-function">
+<span class="header-section-number">9.6</span> Objective function</h2>
 <p>Now we set up a function that will calculate the sum of the squared differences between the observations and the model at any parameterization (more commonly known as “sum of squared errors”). In general, this is called the <strong>objective function</strong> because it is the quantity that optimization seeks to minimize.</p>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sse_sir</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">params0</span>, <span class="va">data</span>, <span class="va">site</span><span class="op">)</span><span class="op">{</span>  <span class="co">#function to calculate squared errors</span></span>
@@ -452,8 +492,8 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice that the code for <code>sse_sir</code> makes use of the following modeling trick. We know that <span class="math inline">\(\beta\)</span>, <span class="math inline">\(X_0\)</span>, and <span class="math inline">\(Y_0\)</span> must be positive, but our search to optimize these parameters will be over the entire number line. We could constrain the search using a more sophisticated algorithm, but this might introduce other problems (i.e., stability at the boundaries). Instead, we parameterize our objective function (<code>sse_sir</code>) in terms of some alternative variables <span class="math inline">\(log(\beta)\)</span>, <span class="math inline">\(log(X_0)\)</span>, and <span class="math inline">\(log(Y_0)\)</span>. While these numbers range from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span> (the range of our search) they map to our model parameters on a range from <span class="math inline">\(0\)</span> to <span class="math inline">\(\infty\)</span> (the range that is biologically meaningful).</p>
-</section><section id="optimization" class="level2" data-number="5.7"><h2 data-number="5.7" class="anchored" data-anchor-id="optimization">
-<span class="header-section-number">5.7</span> Optimization</h2>
+</section><section id="optimization" class="level2" data-number="9.7"><h2 data-number="9.7" class="anchored" data-anchor-id="optimization">
+<span class="header-section-number">9.7</span> Optimization</h2>
 <p>Our final step is to use the function <code>optim</code> to find the values of <span class="math inline">\(\beta\)</span>, <span class="math inline">\(X_0\)</span>, and <span class="math inline">\(Y_0\)</span> that minimize the sum of squared errors as calculated using our function.</p>
 <div class="cell">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">params0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3.2</span>, <span class="fl">7.3</span>, <span class="op">-</span><span class="fl">2.6</span><span class="op">)</span>  <span class="co">#initial guess</span></span>
@@ -540,11 +580,11 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <p><img src="r-session-03_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<section id="exercise-5" class="level3" data-number="5.7.1"><h3 data-number="5.7.1" class="anchored" data-anchor-id="exercise-5">
-<span class="header-section-number">5.7.1</span> Exercise 5</h3>
+<section id="exercise-5" class="level3" data-number="9.7.1"><h3 data-number="9.7.1" class="anchored" data-anchor-id="exercise-5">
+<span class="header-section-number">9.7.1</span> Exercise 5</h3>
 <p>To make things easier, we have assumed the infectious period is known to be 14 days. In terms of years, <span class="math inline">\(\gamma = (365/14)^{-1} \approx 0.0384\)</span>. Now, modify the code above to estimate <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\beta\)</span> simultaneously.</p>
-</section><section id="exercise-6" class="level3" data-number="5.7.2"><h3 data-number="5.7.2" class="anchored" data-anchor-id="exercise-6">
-<span class="header-section-number">5.7.2</span> Exercise 6</h3>
+</section><section id="exercise-6" class="level3" data-number="9.7.2"><h3 data-number="9.7.2" class="anchored" data-anchor-id="exercise-6">
+<span class="header-section-number">9.7.2</span> Exercise 6</h3>
 <p>What happens if one or both of the other unknowns (<span class="math inline">\(X_0\)</span> and <span class="math inline">\(Y_0\)</span>) is fixed instead of <span class="math inline">\(\gamma\)</span>?</p>
 
 
@@ -849,275 +889,268 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./r-session-02.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R Session 02</span></span>
+      <a href="./lecture-06.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Parameter Estimation (<span class="math inline">\(R_0\)</span>)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./lecture-07.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Confronting Models with Data</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb17" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Estimation"</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">    - name: Matthew Ferrari</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">      url: http://theferrarilab.com</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">      affiliation: Pennsylvania State University</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">      orcid: 0000-0001-5251-8168</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - name: Callum Arnold-Leps</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">      url: https://callumarnold.com</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">      affiliation: Pennsylvania State University</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">      orcid: 0000-0002-3245-6956</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="an">abstract-title:</span><span class="co"> ""</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">    *Materials adapted from John Drake and Pej Rohani*</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">    warning: false</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="fu"># R Session 03</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="an">abstract-title:</span><span class="co"> ""</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">    *Materials adapted from John Drake and Pej Rohani*</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">    warning: false</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="an">metadata-files:</span><span class="co"> </span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">  - metadata/matthewferrari.yml</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="fu"># R Session 03</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating $R_0$</span></span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>So far in this class we have focused on the **theory** of infectious disease. Often, however, we will want to apply this theory to particular situations. One of the key applied problems in epidemic modeling is the estimation of $R_0$ from outbreak data. In this session, we study two methods for estimating $R_0$ from an epidemic curve.  As a running example, we will use the data on influenza in a British boarding school.</span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"R-estimation-data.RData"</span>))</span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>  flu,</span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'b'</span>,</span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">log =</span> <span class="st">'y'</span>,</span>
-<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">'Epidemic in a British boarding school'</span>,</span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex.main=</span><span class="fl">0.85</span>,</span>
-<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab=</span><span class="st">'Day'</span>,</span>
-<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab=</span><span class="st">'Active influenza cases'</span></span>
-<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating $R_0$ from the final outbreak size </span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating $R_0$</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>So far in this class we have focused on the **theory** of infectious disease. Often, however, we will want to apply this theory to particular situations. One of the key applied problems in epidemic modeling is the estimation of $R_0$ from outbreak data. In this session, we study two methods for estimating $R_0$ from an epidemic curve.  As a running example, we will use the data on influenza in a British boarding school.</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"R-estimation-data.RData"</span>))</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>  flu,</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'b'</span>,</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">log =</span> <span class="st">'y'</span>,</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">'Epidemic in a British boarding school'</span>,</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex.main=</span><span class="fl">0.85</span>,</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab=</span><span class="st">'Day'</span>,</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab=</span><span class="st">'Active influenza cases'</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating $R_0$ from the final outbreak size </span></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>Our first approach is to estimate $R_0$ from the final outbreak size. Although unhelpful at the early stages of an epidemic (before the final epidemic size is observed), this method is nonetheless a useful tool for ${post hoc}$ analysis. The method is general and can be motivated by the following argument (Keeling and Rohani 2007): First, we assume that the epidemic is started by a single infectious individual in a completely susceptible population. On average, this individual infects $R_0$ others. The probability a particular individual escaped infection is therefore $e^{-R_0/N}$. If $Z$ individuals have been infected, the probability of an individual escaping infection from all potential sources is $e^{-ZR_0/N}$. It follows that at the end of the epidemic a proportion $R(\infty)=Z/N$ have been infected and the fraction remaining susceptible is $S(\infty)=e^{-R(\infty)R_0}$, which is equal to $1-R(\infty)$, giving</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>  \label{R0-estimator}</span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>  1 - R(\infty) - e^{-R(\infty)R_0} = 0</span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>Our first approach is to estimate $R_0$ from the final outbreak size. Although unhelpful at the early stages of an epidemic (before the final epidemic size is observed), this method is nonetheless a useful tool for ${post hoc}$ analysis. The method is general and can be motivated by the following argument (Keeling and Rohani 2007): First, we assume that the epidemic is started by a single infectious individual in a completely susceptible population. On average, this individual infects $R_0$ others. The probability a particular individual escaped infection is therefore $e^{-R_0/N}$. If $Z$ individuals have been infected, the probability of an individual escaping infection from all potential sources is $e^{-ZR_0/N}$. It follows that at the end of the epidemic a proportion $R(\infty)=Z/N$ have been infected and the fraction remaining susceptible is $S(\infty)=e^{-R(\infty)R_0}$, which is equal to $1-R(\infty)$, giving</span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>Rearranging, we have the estimator</span>
 <span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>  \label{R0-estimator}</span>
-<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>  1 - R(\infty) - e^{-R(\infty)R_0} = 0</span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>  \label{R0-estimator-2}</span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>  \hat{R_0} = \frac{log(1-Z/N)}{-Z/N},</span>
 <span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>Rearranging, we have the estimator</span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>which, in this case, evaluates to $\frac{log(1-512/764)}{-512/764} = 1.655$.</span>
 <span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>  \label{R0-estimator-2}</span>
-<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>  \hat{R_0} = \frac{log(1-Z/N)}{-Z/N},</span>
-<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a>which, in this case, evaluates to $\frac{log(1-512/764)}{-512/764} = 1.655$.</span>
-<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 1 </span></span>
-<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a>This equation shows the important one-to-one relationship between $R_0$ and the final epidemic size. Plot the relationship</span>
-<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a>between the total epidemic size and $R_0$ for the complete range of values between 0 and 1.</span>
-<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear Approximation </span></span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 1 </span></span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>This equation shows the important one-to-one relationship between $R_0$ and the final epidemic size. Plot the relationship</span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>between the total epidemic size and $R_0$ for the complete range of values between 0 and 1.</span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear Approximation </span></span>
+<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>The next method we introduce takes advantage of the fact that during the early stages of an outbreak, the number of infected individuals is given approximately as $Y(t) \approx Y_0 e^{((R_0-1)(\gamma + \mu)t)}$. Taking logarithms of both sides, we have  $log(Y(t)) \approx log(Y_0) + (R_0-1)(\gamma + \mu)t$, showing that the log of the number of infected individuals is approximately linear in time with a slope that reflects both $R_0$ and the recovery rate.</span>
+<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a>This suggests that a simple linear regression fit to the first several data points on a log-scale, corrected to account for</span>
+<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a>$\gamma$ and $\mu$, provides a rough and ready estimate of $R_0$. For flu, we can assume $\mu =0$ because</span>
+<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a>the epidemic occurred over a time period during which natural mortality is negligible. Further, assuming an infectious period </span>
+<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a>of about 2.5 days, we use $\gamma = (2.5)^{-1} = 0.4$ for the correction. Fitting to the first four data points, we obtain the slope as follows.</span>
 <span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a>The next method we introduce takes advantage of the fact that during the early stages of an outbreak, the number of infected individuals is given approximately as $Y(t) \approx Y_0 e^{((R_0-1)(\gamma + \mu)t)}$. Taking logarithms of both sides, we have  $log(Y(t)) \approx log(Y_0) + (R_0-1)(\gamma + \mu)t$, showing that the log of the number of infected individuals is approximately linear in time with a slope that reflects both $R_0$ and the recovery rate.</span>
-<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a>This suggests that a simple linear regression fit to the first several data points on a log-scale, corrected to account for</span>
-<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a>$\gamma$ and $\mu$, provides a rough and ready estimate of $R_0$. For flu, we can assume $\mu =0$ because</span>
-<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a>the epidemic occurred over a time period during which natural mortality is negligible. Further, assuming an infectious period </span>
-<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a>of about 2.5 days, we use $\gamma = (2.5)^{-1} = 0.4$ for the correction. Fitting to the first four data points, we obtain the slope as follows.</span>
-<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(flu[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]) <span class="sc">~</span> day[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">data =</span> flu);  <span class="co">#fit a linear model</span></span>
-<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)         <span class="co">#summary statistics for fit model</span></span>
-<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fu">coef</span>(model)[<span class="dv">2</span>]  <span class="co">#extract slope parameter</span></span>
-<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a>slope                 <span class="co">#print to screen</span></span>
-<span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a>Rearranging the linear equation above and denoting the slope coefficient by $\hat \beta_1$ we have the estimator $\hat R_0 = \hat \beta_1 / \gamma +1$ giving $\hat R_0=1.094913/0.4+1 \approx 3.7$.</span>
-<span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 2</span></span>
-<span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a>Our estimate assumes that boys remained infectious during the natural course of infection. The original report on this epidemic indicates that boys found to have symptoms were immediately confined to bed in the infirmary. The report also indicates that only 1 out of 130 adults at the school exhibited any symptoms. It is reasonable, then, to suppose that transmission in each case ceased once he had been admitted to the infirmary. Supposing admission happened within 24 hours of the onset of symptoms. How does this affect our estimate of $R_0$? Twelve hours?</span>
+<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(flu[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]) <span class="sc">~</span> day[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">data =</span> flu);  <span class="co">#fit a linear model</span></span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)         <span class="co">#summary statistics for fit model</span></span>
+<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fu">coef</span>(model)[<span class="dv">2</span>]  <span class="co">#extract slope parameter</span></span>
+<span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a>slope                 <span class="co">#print to screen</span></span>
+<span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a>Rearranging the linear equation above and denoting the slope coefficient by $\hat \beta_1$ we have the estimator $\hat R_0 = \hat \beta_1 / \gamma +1$ giving $\hat R_0=1.094913/0.4+1 \approx 3.7$.</span>
+<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 2</span></span>
+<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a>Our estimate assumes that boys remained infectious during the natural course of infection. The original report on this epidemic indicates that boys found to have symptoms were immediately confined to bed in the infirmary. The report also indicates that only 1 out of 130 adults at the school exhibited any symptoms. It is reasonable, then, to suppose that transmission in each case ceased once he had been admitted to the infirmary. Supposing admission happened within 24 hours of the onset of symptoms. How does this affect our estimate of $R_0$? Twelve hours?</span>
+<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 3 </span></span>
+<span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a>Biweekly data for outbreaks of measles in three communities in Niamey, Niger are provided in the dataframe $\tt niamey$. Use this method to obtain estimates of $R_0$ for measles from the first community assuming that the infectious period is approximately two weeks or $14/365 \approx 0.0384$ years.</span>
+<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 4</span></span>
+<span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a>A defect with this method is that it uses only a small fraction of the information that might be available, **i.e.**, the first few data points. Indeed, there is nothing in the method that tells one how many data points to use--this is a matter of judgment. Further, there is a tradeoff in that as more and more data points are used the precision of the estimate increases, but this comes at a cost of additional bias. Plot the estimate of $R_0$ obtained from $n=3, 4, 5, ...$ data points against the standard error of the slope from the regression analysis to show this tradeoff.</span>
+<span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-94"><a href="#cb17-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-95"><a href="#cb17-95" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 3 </span></span>
-<span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a>Biweekly data for outbreaks of measles in three communities in Niamey, Niger are provided in the dataframe $\tt niamey$. Use this method to obtain estimates of $R_0$ for measles from the first community assuming that the infectious period is approximately two weeks or $14/365 \approx 0.0384$ years.</span>
-<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-98"><a href="#cb17-98" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 4</span></span>
-<span id="cb17-99"><a href="#cb17-99" aria-hidden="true" tabindex="-1"></a>A defect with this method is that it uses only a small fraction of the information that might be available, **i.e.**, the first few data points. Indeed, there is nothing in the method that tells one how many data points to use--this is a matter of judgment. Further, there is a tradeoff in that as more and more data points are used the precision of the estimate increases, but this comes at a cost of additional bias. Plot the estimate of $R_0$ obtained from $n=3, 4, 5, ...$ data points against the standard error of the slope from the regression analysis to show this tradeoff.</span>
-<span id="cb17-100"><a href="#cb17-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-102"><a href="#cb17-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating dynamical parameters with least squares</span></span>
-<span id="cb17-103"><a href="#cb17-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-104"><a href="#cb17-104" aria-hidden="true" tabindex="-1"></a>The objective of the previous exercise was to estimate $R_0$. Knowing $R_0$ is critical to understanding the dynamics of any epidemic system. It is, however, a composite quantity and is not sufficient to completely describe the epidemic trajectory. For this, we require estimates for all parameters of the model. In this exercise, we introduce a simple approach to model estimation called **least squares fitting**, sometimes called **trajectory matching**. The basic idea is that we find the values of the model parameters that minimize the squared differences between model predictions and the observed data. To demonstrate least squares fitting, we consider an outbreak of measles in Niamey, Niger, reported on by Grais et al. 2006 (Grais, R.F., *et al.* 2006. Estimating transmission intensity for a measles outbreak in Niamey, Niger: lessons for intervention. *Transactions of the Royal Society of Tropical Medicine and Hygiene* 100:867-873.).</span>
-<span id="cb17-105"><a href="#cb17-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a>niamey[<span class="dv">5</span>,<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">0</span>  <span class="co">#replace a "NA"</span></span>
-<span id="cb17-110"><a href="#cb17-110" aria-hidden="true" tabindex="-1"></a>niamey <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb17-111"><a href="#cb17-111" aria-hidden="true" tabindex="-1"></a>  <span class="at">biweek =</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">16</span>), <span class="dv">3</span>),</span>
-<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a>  <span class="at">site =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">16</span>), <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">16</span>), <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">16</span>)),</span>
-<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a>  <span class="at">cases =</span> <span class="fu">c</span>(niamey[, <span class="dv">1</span>], niamey[, <span class="dv">2</span>], niamey[, <span class="dv">3</span>])</span>
-<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a>) <span class="co">#define "biweeks"</span></span>
-<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-116"><a href="#cb17-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a>  niamey<span class="sc">$</span>biweek,</span>
-<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a>  niamey<span class="sc">$</span>cases,</span>
-<span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a>  <span class="at">type=</span><span class="st">'p'</span>,</span>
-<span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> niamey<span class="sc">$</span>site,</span>
-<span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">'Biweek'</span>,</span>
-<span id="cb17-126"><a href="#cb17-126" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">'Cases'</span></span>
-<span id="cb17-127"><a href="#cb17-127" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-95"><a href="#cb17-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating dynamical parameters with least squares</span></span>
+<span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a>The objective of the previous exercise was to estimate $R_0$. Knowing $R_0$ is critical to understanding the dynamics of any epidemic system. It is, however, a composite quantity and is not sufficient to completely describe the epidemic trajectory. For this, we require estimates for all parameters of the model. In this exercise, we introduce a simple approach to model estimation called **least squares fitting**, sometimes called **trajectory matching**. The basic idea is that we find the values of the model parameters that minimize the squared differences between model predictions and the observed data. To demonstrate least squares fitting, we consider an outbreak of measles in Niamey, Niger, reported on by Grais et al. 2006 (Grais, R.F., *et al.* 2006. Estimating transmission intensity for a measles outbreak in Niamey, Niger: lessons for intervention. *Transactions of the Royal Society of Tropical Medicine and Hygiene* 100:867-873.).</span>
+<span id="cb17-98"><a href="#cb17-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-102"><a href="#cb17-102" aria-hidden="true" tabindex="-1"></a>niamey[<span class="dv">5</span>,<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">0</span>  <span class="co">#replace a "NA"</span></span>
+<span id="cb17-103"><a href="#cb17-103" aria-hidden="true" tabindex="-1"></a>niamey <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb17-104"><a href="#cb17-104" aria-hidden="true" tabindex="-1"></a>  <span class="at">biweek =</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">16</span>), <span class="dv">3</span>),</span>
+<span id="cb17-105"><a href="#cb17-105" aria-hidden="true" tabindex="-1"></a>  <span class="at">site =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">16</span>), <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">16</span>), <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">16</span>)),</span>
+<span id="cb17-106"><a href="#cb17-106" aria-hidden="true" tabindex="-1"></a>  <span class="at">cases =</span> <span class="fu">c</span>(niamey[, <span class="dv">1</span>], niamey[, <span class="dv">2</span>], niamey[, <span class="dv">3</span>])</span>
+<span id="cb17-107"><a href="#cb17-107" aria-hidden="true" tabindex="-1"></a>) <span class="co">#define "biweeks"</span></span>
+<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a>  niamey<span class="sc">$</span>biweek,</span>
+<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a>  niamey<span class="sc">$</span>cases,</span>
+<span id="cb17-116"><a href="#cb17-116" aria-hidden="true" tabindex="-1"></a>  <span class="at">type=</span><span class="st">'p'</span>,</span>
+<span id="cb17-117"><a href="#cb17-117" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> niamey<span class="sc">$</span>site,</span>
+<span id="cb17-118"><a href="#cb17-118" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">'Biweek'</span>,</span>
+<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">'Cases'</span></span>
+<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(niamey<span class="sc">$</span>biweek[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">1</span>], niamey<span class="sc">$</span>cases[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">1</span>]) </span>
+<span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(niamey<span class="sc">$</span>biweek[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">2</span>], niamey<span class="sc">$</span>cases[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">2</span>],<span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(niamey<span class="sc">$</span>biweek[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">3</span>], niamey<span class="sc">$</span>cases[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">3</span>],<span class="at">col =</span> <span class="dv">3</span>)</span>
+<span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-126"><a href="#cb17-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-127"><a href="#cb17-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dynamical Model</span></span>
 <span id="cb17-128"><a href="#cb17-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-129"><a href="#cb17-129" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(niamey<span class="sc">$</span>biweek[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">1</span>], niamey<span class="sc">$</span>cases[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">1</span>]) </span>
-<span id="cb17-130"><a href="#cb17-130" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(niamey<span class="sc">$</span>biweek[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">2</span>], niamey<span class="sc">$</span>cases[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">2</span>],<span class="at">col =</span> <span class="dv">2</span>)</span>
-<span id="cb17-131"><a href="#cb17-131" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(niamey<span class="sc">$</span>biweek[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">3</span>], niamey<span class="sc">$</span>cases[niamey<span class="sc">$</span>site <span class="sc">==</span> <span class="dv">3</span>],<span class="at">col =</span> <span class="dv">3</span>)</span>
-<span id="cb17-132"><a href="#cb17-132" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-133"><a href="#cb17-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-134"><a href="#cb17-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dynamical Model</span></span>
-<span id="cb17-135"><a href="#cb17-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-136"><a href="#cb17-136" aria-hidden="true" tabindex="-1"></a>First, we write a specialized function for simulating the $SIR$ model in a case where the removal rate is ``hard-wired'' and with no demography.</span>
-<span id="cb17-137"><a href="#cb17-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-140"><a href="#cb17-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-141"><a href="#cb17-141" aria-hidden="true" tabindex="-1"></a>closed_sir_model <span class="ot">&lt;-</span> <span class="cf">function</span> (t, x, params) {  <span class="co">#SIR model equations</span></span>
-<span id="cb17-142"><a href="#cb17-142" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> x[<span class="dv">1</span>]</span>
-<span id="cb17-143"><a href="#cb17-143" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> x[<span class="dv">2</span>]</span>
-<span id="cb17-144"><a href="#cb17-144" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> params</span>
-<span id="cb17-145"><a href="#cb17-145" aria-hidden="true" tabindex="-1"></a>  dX <span class="ot">&lt;-</span> <span class="sc">-</span> beta <span class="sc">*</span> X <span class="sc">*</span> Y</span>
-<span id="cb17-146"><a href="#cb17-146" aria-hidden="true" tabindex="-1"></a>  dY <span class="ot">&lt;-</span> beta <span class="sc">*</span> X <span class="sc">*</span> Y <span class="sc">-</span>(<span class="dv">365</span> <span class="sc">/</span> <span class="dv">13</span>) <span class="sc">*</span> Y</span>
-<span id="cb17-147"><a href="#cb17-147" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-148"><a href="#cb17-148" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="fu">c</span>(dX, dY))</span>
-<span id="cb17-149"><a href="#cb17-149" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-150"><a href="#cb17-150" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-151"><a href="#cb17-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-152"><a href="#cb17-152" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objective function</span></span>
-<span id="cb17-153"><a href="#cb17-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-154"><a href="#cb17-154" aria-hidden="true" tabindex="-1"></a>Now we set up a function that will calculate the sum of the squared differences between the observations and the model at any parameterization (more commonly known as "sum of squared errors"). In general, this is called the **objective function** because it is the quantity that optimization seeks to minimize.</span>
-<span id="cb17-155"><a href="#cb17-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-158"><a href="#cb17-158" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-159"><a href="#cb17-159" aria-hidden="true" tabindex="-1"></a>sse_sir <span class="ot">&lt;-</span> <span class="cf">function</span>(params0, data, site){  <span class="co">#function to calculate squared errors</span></span>
-<span id="cb17-160"><a href="#cb17-160" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> data[data<span class="sc">$</span>site <span class="sc">==</span> site, ]    <span class="co">#working dataset, based on site</span></span>
-<span id="cb17-161"><a href="#cb17-161" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">&lt;-</span> data[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">14</span> <span class="sc">/</span> <span class="dv">365</span>            <span class="co">#time in biweeks</span></span>
-<span id="cb17-162"><a href="#cb17-162" aria-hidden="true" tabindex="-1"></a>  cases <span class="ot">&lt;-</span> data[, <span class="dv">3</span>]               <span class="co">#number of cases</span></span>
-<span id="cb17-163"><a href="#cb17-163" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> <span class="fu">exp</span>(params0[<span class="dv">1</span>])            <span class="co">#parameter beta</span></span>
-<span id="cb17-164"><a href="#cb17-164" aria-hidden="true" tabindex="-1"></a>  X0 <span class="ot">&lt;-</span> <span class="fu">exp</span>(params0[<span class="dv">2</span>])           <span class="co">#initial susceptibles</span></span>
-<span id="cb17-165"><a href="#cb17-165" aria-hidden="true" tabindex="-1"></a>  Y0 <span class="ot">&lt;-</span> <span class="fu">exp</span>(params0[<span class="dv">3</span>])           <span class="co">#initial infected        </span></span>
-<span id="cb17-166"><a href="#cb17-166" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-167"><a href="#cb17-167" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
-<span id="cb17-168"><a href="#cb17-168" aria-hidden="true" tabindex="-1"></a>    deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
-<span id="cb17-169"><a href="#cb17-169" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="at">X =</span> X0, <span class="at">Y =</span> Y0),</span>
-<span id="cb17-170"><a href="#cb17-170" aria-hidden="true" tabindex="-1"></a>      <span class="at">times =</span> t,</span>
-<span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a>      closed_sir_model,</span>
-<span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a>      beta,</span>
-<span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a>      <span class="at">hmax =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">120</span></span>
-<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb17-176"><a href="#cb17-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>((out<span class="sc">$</span>Y <span class="sc">-</span> cases)<span class="sc">^</span><span class="dv">2</span>)       <span class="co">#sum of squared errors that is returned to the optim function</span></span>
-<span id="cb17-178"><a href="#cb17-178" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-179"><a href="#cb17-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-180"><a href="#cb17-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-181"><a href="#cb17-181" aria-hidden="true" tabindex="-1"></a>Notice that the code for <span class="in">`sse_sir`</span> makes use of the following modeling trick. We know that $\beta$, $X_0$, and $Y_0$ must be positive, but our search to optimize these parameters will be over the entire number line.  We could constrain the search using a more sophisticated algorithm, but this might introduce other problems (i.e., stability at the boundaries). Instead, we parameterize our objective function (<span class="in">`sse_sir`</span>) in terms of some alternative variables $log(\beta)$, $log(X_0)$, and $log(Y_0)$. While these numbers range from $-\infty$ to $\infty$ (the range of our search) they map to our model parameters on a range from $0$ to $\infty$ (the range that is biologically meaningful).</span>
-<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a><span class="fu">## Optimization </span></span>
-<span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a>Our final step is to use the function <span class="in">`optim`</span> to find the values of $\beta$, $X_0$, and $Y_0$ that minimize the sum of squared errors as calculated using our function.</span>
+<span id="cb17-129"><a href="#cb17-129" aria-hidden="true" tabindex="-1"></a>First, we write a specialized function for simulating the $SIR$ model in a case where the removal rate is ``hard-wired'' and with no demography.</span>
+<span id="cb17-130"><a href="#cb17-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-133"><a href="#cb17-133" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-134"><a href="#cb17-134" aria-hidden="true" tabindex="-1"></a>closed_sir_model <span class="ot">&lt;-</span> <span class="cf">function</span> (t, x, params) {  <span class="co">#SIR model equations</span></span>
+<span id="cb17-135"><a href="#cb17-135" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> x[<span class="dv">1</span>]</span>
+<span id="cb17-136"><a href="#cb17-136" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> x[<span class="dv">2</span>]</span>
+<span id="cb17-137"><a href="#cb17-137" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> params</span>
+<span id="cb17-138"><a href="#cb17-138" aria-hidden="true" tabindex="-1"></a>  dX <span class="ot">&lt;-</span> <span class="sc">-</span> beta <span class="sc">*</span> X <span class="sc">*</span> Y</span>
+<span id="cb17-139"><a href="#cb17-139" aria-hidden="true" tabindex="-1"></a>  dY <span class="ot">&lt;-</span> beta <span class="sc">*</span> X <span class="sc">*</span> Y <span class="sc">-</span>(<span class="dv">365</span> <span class="sc">/</span> <span class="dv">13</span>) <span class="sc">*</span> Y</span>
+<span id="cb17-140"><a href="#cb17-140" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-141"><a href="#cb17-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="fu">c</span>(dX, dY))</span>
+<span id="cb17-142"><a href="#cb17-142" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-143"><a href="#cb17-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-144"><a href="#cb17-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-145"><a href="#cb17-145" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objective function</span></span>
+<span id="cb17-146"><a href="#cb17-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-147"><a href="#cb17-147" aria-hidden="true" tabindex="-1"></a>Now we set up a function that will calculate the sum of the squared differences between the observations and the model at any parameterization (more commonly known as "sum of squared errors"). In general, this is called the **objective function** because it is the quantity that optimization seeks to minimize.</span>
+<span id="cb17-148"><a href="#cb17-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-151"><a href="#cb17-151" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-152"><a href="#cb17-152" aria-hidden="true" tabindex="-1"></a>sse_sir <span class="ot">&lt;-</span> <span class="cf">function</span>(params0, data, site){  <span class="co">#function to calculate squared errors</span></span>
+<span id="cb17-153"><a href="#cb17-153" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> data[data<span class="sc">$</span>site <span class="sc">==</span> site, ]    <span class="co">#working dataset, based on site</span></span>
+<span id="cb17-154"><a href="#cb17-154" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">&lt;-</span> data[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">14</span> <span class="sc">/</span> <span class="dv">365</span>            <span class="co">#time in biweeks</span></span>
+<span id="cb17-155"><a href="#cb17-155" aria-hidden="true" tabindex="-1"></a>  cases <span class="ot">&lt;-</span> data[, <span class="dv">3</span>]               <span class="co">#number of cases</span></span>
+<span id="cb17-156"><a href="#cb17-156" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> <span class="fu">exp</span>(params0[<span class="dv">1</span>])            <span class="co">#parameter beta</span></span>
+<span id="cb17-157"><a href="#cb17-157" aria-hidden="true" tabindex="-1"></a>  X0 <span class="ot">&lt;-</span> <span class="fu">exp</span>(params0[<span class="dv">2</span>])           <span class="co">#initial susceptibles</span></span>
+<span id="cb17-158"><a href="#cb17-158" aria-hidden="true" tabindex="-1"></a>  Y0 <span class="ot">&lt;-</span> <span class="fu">exp</span>(params0[<span class="dv">3</span>])           <span class="co">#initial infected        </span></span>
+<span id="cb17-159"><a href="#cb17-159" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-160"><a href="#cb17-160" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
+<span id="cb17-161"><a href="#cb17-161" aria-hidden="true" tabindex="-1"></a>    deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
+<span id="cb17-162"><a href="#cb17-162" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="at">X =</span> X0, <span class="at">Y =</span> Y0),</span>
+<span id="cb17-163"><a href="#cb17-163" aria-hidden="true" tabindex="-1"></a>      <span class="at">times =</span> t,</span>
+<span id="cb17-164"><a href="#cb17-164" aria-hidden="true" tabindex="-1"></a>      closed_sir_model,</span>
+<span id="cb17-165"><a href="#cb17-165" aria-hidden="true" tabindex="-1"></a>      beta,</span>
+<span id="cb17-166"><a href="#cb17-166" aria-hidden="true" tabindex="-1"></a>      <span class="at">hmax =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">120</span></span>
+<span id="cb17-167"><a href="#cb17-167" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-168"><a href="#cb17-168" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-169"><a href="#cb17-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-170"><a href="#cb17-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>((out<span class="sc">$</span>Y <span class="sc">-</span> cases)<span class="sc">^</span><span class="dv">2</span>)       <span class="co">#sum of squared errors that is returned to the optim function</span></span>
+<span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a>Notice that the code for <span class="in">`sse_sir`</span> makes use of the following modeling trick. We know that $\beta$, $X_0$, and $Y_0$ must be positive, but our search to optimize these parameters will be over the entire number line.  We could constrain the search using a more sophisticated algorithm, but this might introduce other problems (i.e., stability at the boundaries). Instead, we parameterize our objective function (<span class="in">`sse_sir`</span>) in terms of some alternative variables $log(\beta)$, $log(X_0)$, and $log(Y_0)$. While these numbers range from $-\infty$ to $\infty$ (the range of our search) they map to our model parameters on a range from $0$ to $\infty$ (the range that is biologically meaningful).</span>
+<span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-176"><a href="#cb17-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Optimization </span></span>
+<span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-178"><a href="#cb17-178" aria-hidden="true" tabindex="-1"></a>Our final step is to use the function <span class="in">`optim`</span> to find the values of $\beta$, $X_0$, and $Y_0$ that minimize the sum of squared errors as calculated using our function.</span>
+<span id="cb17-179"><a href="#cb17-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a>params0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">3.2</span>, <span class="fl">7.3</span>, <span class="sc">-</span><span class="fl">2.6</span>)  <span class="co">#initial guess</span></span>
+<span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">optim</span>(params0, sse_sir, <span class="at">data =</span> niamey, <span class="at">site =</span> <span class="dv">1</span>) <span class="co">#fit</span></span>
+<span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(fit1<span class="sc">$</span>par)  <span class="co">#back-transform parameters</span></span>
 <span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a>params0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">3.2</span>, <span class="fl">7.3</span>, <span class="sc">-</span><span class="fl">2.6</span>)  <span class="co">#initial guess</span></span>
-<span id="cb17-191"><a href="#cb17-191" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">optim</span>(params0, sse_sir, <span class="at">data =</span> niamey, <span class="at">site =</span> <span class="dv">1</span>) <span class="co">#fit</span></span>
-<span id="cb17-192"><a href="#cb17-192" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(fit1<span class="sc">$</span>par)  <span class="co">#back-transform parameters</span></span>
-<span id="cb17-193"><a href="#cb17-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-194"><a href="#cb17-194" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">optim</span>(params0, sse_sir, <span class="at">data =</span> niamey, <span class="at">site =</span> <span class="dv">2</span>) <span class="co">#fit</span></span>
-<span id="cb17-195"><a href="#cb17-195" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(fit2<span class="sc">$</span>par)  <span class="co">#back-transform parameters</span></span>
-<span id="cb17-196"><a href="#cb17-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-197"><a href="#cb17-197" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">optim</span>(params0, sse_sir, <span class="at">data =</span> niamey, <span class="at">site =</span> <span class="dv">3</span>) <span class="co">#fit</span></span>
-<span id="cb17-198"><a href="#cb17-198" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-199"><a href="#cb17-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-200"><a href="#cb17-200" aria-hidden="true" tabindex="-1"></a>Finally, we plot these fits against the data.</span>
-<span id="cb17-201"><a href="#cb17-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-204"><a href="#cb17-204" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-205"><a href="#cb17-205" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))   <span class="co">#set up plotting area for multiple panels</span></span>
-<span id="cb17-206"><a href="#cb17-206" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb17-207"><a href="#cb17-207" aria-hidden="true" tabindex="-1"></a>  cases <span class="sc">~</span> biweek,</span>
-<span id="cb17-208"><a href="#cb17-208" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">1</span>),</span>
-<span id="cb17-209"><a href="#cb17-209" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'b'</span>,</span>
-<span id="cb17-210"><a href="#cb17-210" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">'blue'</span>,</span>
-<span id="cb17-211"><a href="#cb17-211" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">21</span></span>
-<span id="cb17-212"><a href="#cb17-212" aria-hidden="true" tabindex="-1"></a>) <span class="co">#plot site 1</span></span>
-<span id="cb17-213"><a href="#cb17-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-214"><a href="#cb17-214" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">1</span>)[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">14</span> <span class="sc">/</span> <span class="dv">365</span></span>
-<span id="cb17-215"><a href="#cb17-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-216"><a href="#cb17-216" aria-hidden="true" tabindex="-1"></a>mod_pred <span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(</span>
-<span id="cb17-217"><a href="#cb17-217" aria-hidden="true" tabindex="-1"></a>  deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
-<span id="cb17-218"><a href="#cb17-218" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="at">X =</span> <span class="fu">exp</span>(fit1<span class="sc">$</span>par[<span class="dv">2</span>]),</span>
-<span id="cb17-219"><a href="#cb17-219" aria-hidden="true" tabindex="-1"></a>    <span class="at">Y =</span> <span class="fu">exp</span>(fit1<span class="sc">$</span>par[<span class="dv">3</span>])),</span>
-<span id="cb17-220"><a href="#cb17-220" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> t,</span>
-<span id="cb17-221"><a href="#cb17-221" aria-hidden="true" tabindex="-1"></a>    closed_sir_model,</span>
-<span id="cb17-222"><a href="#cb17-222" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(fit1<span class="sc">$</span>par[<span class="dv">1</span>]),</span>
-<span id="cb17-223"><a href="#cb17-223" aria-hidden="true" tabindex="-1"></a>    <span class="at">hmax=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">120</span></span>
-<span id="cb17-224"><a href="#cb17-224" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb17-225"><a href="#cb17-225" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-226"><a href="#cb17-226" aria-hidden="true" tabindex="-1"></a>                              <span class="co">#obtain model predictions</span></span>
-<span id="cb17-227"><a href="#cb17-227" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(mod_pred<span class="sc">$</span>Y <span class="sc">~</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">1</span>)[, <span class="dv">1</span>]) <span class="co">#and plot as a line</span></span>
+<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">optim</span>(params0, sse_sir, <span class="at">data =</span> niamey, <span class="at">site =</span> <span class="dv">2</span>) <span class="co">#fit</span></span>
+<span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(fit2<span class="sc">$</span>par)  <span class="co">#back-transform parameters</span></span>
+<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">optim</span>(params0, sse_sir, <span class="at">data =</span> niamey, <span class="at">site =</span> <span class="dv">3</span>) <span class="co">#fit</span></span>
+<span id="cb17-191"><a href="#cb17-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-192"><a href="#cb17-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-193"><a href="#cb17-193" aria-hidden="true" tabindex="-1"></a>Finally, we plot these fits against the data.</span>
+<span id="cb17-194"><a href="#cb17-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-197"><a href="#cb17-197" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-198"><a href="#cb17-198" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))   <span class="co">#set up plotting area for multiple panels</span></span>
+<span id="cb17-199"><a href="#cb17-199" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb17-200"><a href="#cb17-200" aria-hidden="true" tabindex="-1"></a>  cases <span class="sc">~</span> biweek,</span>
+<span id="cb17-201"><a href="#cb17-201" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb17-202"><a href="#cb17-202" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'b'</span>,</span>
+<span id="cb17-203"><a href="#cb17-203" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">'blue'</span>,</span>
+<span id="cb17-204"><a href="#cb17-204" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">21</span></span>
+<span id="cb17-205"><a href="#cb17-205" aria-hidden="true" tabindex="-1"></a>) <span class="co">#plot site 1</span></span>
+<span id="cb17-206"><a href="#cb17-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-207"><a href="#cb17-207" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">1</span>)[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">14</span> <span class="sc">/</span> <span class="dv">365</span></span>
+<span id="cb17-208"><a href="#cb17-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-209"><a href="#cb17-209" aria-hidden="true" tabindex="-1"></a>mod_pred <span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(</span>
+<span id="cb17-210"><a href="#cb17-210" aria-hidden="true" tabindex="-1"></a>  deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
+<span id="cb17-211"><a href="#cb17-211" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="at">X =</span> <span class="fu">exp</span>(fit1<span class="sc">$</span>par[<span class="dv">2</span>]),</span>
+<span id="cb17-212"><a href="#cb17-212" aria-hidden="true" tabindex="-1"></a>    <span class="at">Y =</span> <span class="fu">exp</span>(fit1<span class="sc">$</span>par[<span class="dv">3</span>])),</span>
+<span id="cb17-213"><a href="#cb17-213" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> t,</span>
+<span id="cb17-214"><a href="#cb17-214" aria-hidden="true" tabindex="-1"></a>    closed_sir_model,</span>
+<span id="cb17-215"><a href="#cb17-215" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(fit1<span class="sc">$</span>par[<span class="dv">1</span>]),</span>
+<span id="cb17-216"><a href="#cb17-216" aria-hidden="true" tabindex="-1"></a>    <span class="at">hmax=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">120</span></span>
+<span id="cb17-217"><a href="#cb17-217" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-218"><a href="#cb17-218" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-219"><a href="#cb17-219" aria-hidden="true" tabindex="-1"></a>                              <span class="co">#obtain model predictions</span></span>
+<span id="cb17-220"><a href="#cb17-220" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(mod_pred<span class="sc">$</span>Y <span class="sc">~</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">1</span>)[, <span class="dv">1</span>]) <span class="co">#and plot as a line</span></span>
+<span id="cb17-221"><a href="#cb17-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-222"><a href="#cb17-222" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb17-223"><a href="#cb17-223" aria-hidden="true" tabindex="-1"></a>  cases <span class="sc">~</span> biweek,</span>
+<span id="cb17-224"><a href="#cb17-224" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">2</span>),</span>
+<span id="cb17-225"><a href="#cb17-225" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'b'</span>,</span>
+<span id="cb17-226"><a href="#cb17-226" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> site</span>
+<span id="cb17-227"><a href="#cb17-227" aria-hidden="true" tabindex="-1"></a>) <span class="co">#site 2</span></span>
 <span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-229"><a href="#cb17-229" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a>  cases <span class="sc">~</span> biweek,</span>
-<span id="cb17-231"><a href="#cb17-231" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">2</span>),</span>
-<span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'b'</span>,</span>
-<span id="cb17-233"><a href="#cb17-233" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> site</span>
-<span id="cb17-234"><a href="#cb17-234" aria-hidden="true" tabindex="-1"></a>) <span class="co">#site 2</span></span>
-<span id="cb17-235"><a href="#cb17-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-236"><a href="#cb17-236" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">2</span>)[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">14</span> <span class="sc">/</span> <span class="dv">365</span></span>
-<span id="cb17-237"><a href="#cb17-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-238"><a href="#cb17-238" aria-hidden="true" tabindex="-1"></a>mod_pred <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
-<span id="cb17-239"><a href="#cb17-239" aria-hidden="true" tabindex="-1"></a>  deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
-<span id="cb17-240"><a href="#cb17-240" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="at">X =</span> <span class="fu">exp</span>(fit2<span class="sc">$</span>par[<span class="dv">2</span>]), <span class="at">Y =</span> <span class="fu">exp</span>(fit2<span class="sc">$</span>par[<span class="dv">3</span>])),</span>
-<span id="cb17-241"><a href="#cb17-241" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> t,</span>
-<span id="cb17-242"><a href="#cb17-242" aria-hidden="true" tabindex="-1"></a>    closed_sir_model,</span>
-<span id="cb17-243"><a href="#cb17-243" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(fit2<span class="sc">$</span>par[<span class="dv">1</span>]),</span>
-<span id="cb17-244"><a href="#cb17-244" aria-hidden="true" tabindex="-1"></a>    <span class="at">hmax =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">120</span></span>
-<span id="cb17-245"><a href="#cb17-245" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb17-246"><a href="#cb17-246" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-247"><a href="#cb17-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-248"><a href="#cb17-248" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(mod_pred<span class="sc">$</span>Y <span class="sc">~</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">2</span>)[, <span class="dv">1</span>])</span>
+<span id="cb17-229"><a href="#cb17-229" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">2</span>)[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">14</span> <span class="sc">/</span> <span class="dv">365</span></span>
+<span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-231"><a href="#cb17-231" aria-hidden="true" tabindex="-1"></a>mod_pred <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
+<span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a>  deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
+<span id="cb17-233"><a href="#cb17-233" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="at">X =</span> <span class="fu">exp</span>(fit2<span class="sc">$</span>par[<span class="dv">2</span>]), <span class="at">Y =</span> <span class="fu">exp</span>(fit2<span class="sc">$</span>par[<span class="dv">3</span>])),</span>
+<span id="cb17-234"><a href="#cb17-234" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> t,</span>
+<span id="cb17-235"><a href="#cb17-235" aria-hidden="true" tabindex="-1"></a>    closed_sir_model,</span>
+<span id="cb17-236"><a href="#cb17-236" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(fit2<span class="sc">$</span>par[<span class="dv">1</span>]),</span>
+<span id="cb17-237"><a href="#cb17-237" aria-hidden="true" tabindex="-1"></a>    <span class="at">hmax =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">120</span></span>
+<span id="cb17-238"><a href="#cb17-238" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-239"><a href="#cb17-239" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-240"><a href="#cb17-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-241"><a href="#cb17-241" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(mod_pred<span class="sc">$</span>Y <span class="sc">~</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">2</span>)[, <span class="dv">1</span>])</span>
+<span id="cb17-242"><a href="#cb17-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-243"><a href="#cb17-243" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb17-244"><a href="#cb17-244" aria-hidden="true" tabindex="-1"></a>  cases <span class="sc">~</span> biweek,</span>
+<span id="cb17-245"><a href="#cb17-245" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">3</span>),</span>
+<span id="cb17-246"><a href="#cb17-246" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'b'</span>,</span>
+<span id="cb17-247"><a href="#cb17-247" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> site</span>
+<span id="cb17-248"><a href="#cb17-248" aria-hidden="true" tabindex="-1"></a>) <span class="co">#site 3</span></span>
 <span id="cb17-249"><a href="#cb17-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-250"><a href="#cb17-250" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb17-251"><a href="#cb17-251" aria-hidden="true" tabindex="-1"></a>  cases <span class="sc">~</span> biweek,</span>
-<span id="cb17-252"><a href="#cb17-252" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">3</span>),</span>
-<span id="cb17-253"><a href="#cb17-253" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'b'</span>,</span>
-<span id="cb17-254"><a href="#cb17-254" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> site</span>
-<span id="cb17-255"><a href="#cb17-255" aria-hidden="true" tabindex="-1"></a>) <span class="co">#site 3</span></span>
-<span id="cb17-256"><a href="#cb17-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-257"><a href="#cb17-257" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">3</span>)[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">14</span> <span class="sc">/</span> <span class="dv">365</span></span>
-<span id="cb17-258"><a href="#cb17-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-259"><a href="#cb17-259" aria-hidden="true" tabindex="-1"></a>mod_pred <span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(</span>
-<span id="cb17-260"><a href="#cb17-260" aria-hidden="true" tabindex="-1"></a>  deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
-<span id="cb17-261"><a href="#cb17-261" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="at">X =</span> <span class="fu">exp</span>(fit3<span class="sc">$</span>par[<span class="dv">2</span>]), <span class="at">Y =</span> <span class="fu">exp</span>(fit3<span class="sc">$</span>par[<span class="dv">3</span>])),</span>
-<span id="cb17-262"><a href="#cb17-262" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> t,</span>
-<span id="cb17-263"><a href="#cb17-263" aria-hidden="true" tabindex="-1"></a>    closed_sir_model,</span>
-<span id="cb17-264"><a href="#cb17-264" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(fit3<span class="sc">$</span>par[<span class="dv">1</span>]),</span>
-<span id="cb17-265"><a href="#cb17-265" aria-hidden="true" tabindex="-1"></a>    <span class="at">hmax =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">120</span></span>
-<span id="cb17-266"><a href="#cb17-266" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-250"><a href="#cb17-250" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">3</span>)[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">14</span> <span class="sc">/</span> <span class="dv">365</span></span>
+<span id="cb17-251"><a href="#cb17-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-252"><a href="#cb17-252" aria-hidden="true" tabindex="-1"></a>mod_pred <span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(</span>
+<span id="cb17-253"><a href="#cb17-253" aria-hidden="true" tabindex="-1"></a>  deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
+<span id="cb17-254"><a href="#cb17-254" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="at">X =</span> <span class="fu">exp</span>(fit3<span class="sc">$</span>par[<span class="dv">2</span>]), <span class="at">Y =</span> <span class="fu">exp</span>(fit3<span class="sc">$</span>par[<span class="dv">3</span>])),</span>
+<span id="cb17-255"><a href="#cb17-255" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> t,</span>
+<span id="cb17-256"><a href="#cb17-256" aria-hidden="true" tabindex="-1"></a>    closed_sir_model,</span>
+<span id="cb17-257"><a href="#cb17-257" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(fit3<span class="sc">$</span>par[<span class="dv">1</span>]),</span>
+<span id="cb17-258"><a href="#cb17-258" aria-hidden="true" tabindex="-1"></a>    <span class="at">hmax =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">120</span></span>
+<span id="cb17-259"><a href="#cb17-259" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-260"><a href="#cb17-260" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-261"><a href="#cb17-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-262"><a href="#cb17-262" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(mod_pred<span class="sc">$</span>Y <span class="sc">~</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">3</span>)[, <span class="dv">1</span>])</span>
+<span id="cb17-263"><a href="#cb17-263" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-264"><a href="#cb17-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-265"><a href="#cb17-265" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 5 </span></span>
+<span id="cb17-266"><a href="#cb17-266" aria-hidden="true" tabindex="-1"></a>To make things easier, we have assumed the infectious period is known to be 14 days. In terms of years, </span>
+<span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a>  $\gamma =  (365/14)^{-1} \approx 0.0384$. Now, modify the code above to estimate $\gamma$ and $\beta$ simultaneously.</span>
 <span id="cb17-268"><a href="#cb17-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-269"><a href="#cb17-269" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(mod_pred<span class="sc">$</span>Y <span class="sc">~</span> <span class="fu">subset</span>(niamey, site <span class="sc">==</span> <span class="dv">3</span>)[, <span class="dv">1</span>])</span>
-<span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-271"><a href="#cb17-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-272"><a href="#cb17-272" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 5 </span></span>
-<span id="cb17-273"><a href="#cb17-273" aria-hidden="true" tabindex="-1"></a>To make things easier, we have assumed the infectious period is known to be 14 days. In terms of years, </span>
-<span id="cb17-274"><a href="#cb17-274" aria-hidden="true" tabindex="-1"></a>  $\gamma =  (365/14)^{-1} \approx 0.0384$. Now, modify the code above to estimate $\gamma$ and $\beta$ simultaneously.</span>
-<span id="cb17-275"><a href="#cb17-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-276"><a href="#cb17-276" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 6  </span></span>
-<span id="cb17-277"><a href="#cb17-277" aria-hidden="true" tabindex="-1"></a>What happens if one or both of the other unknowns ($X_0$ and $Y_0$) is fixed instead of $\gamma$?</span>
+<span id="cb17-269"><a href="#cb17-269" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercise 6  </span></span>
+<span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a>What happens if one or both of the other unknowns ($X_0$ and $Y_0$) is fixed instead of $\gamma$?</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

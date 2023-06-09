@@ -18,12 +18,20 @@ book:
     - part: "Day 1"
       chapters: 
         - lecture-01.qmd
+        - lecture-02.qmd
         - r-session-01.qmd
+        - lecture-03.qmd
     - part: "Day 2"
       chapters: 
-        - lecture-02.qmd
+        - lecture-04.qmd
+        - lecture-05.qmd
         - r-session-02.qmd
+        - lecture-06.qmd
         - r-session-03.qmd
+    - part: "Day 3"
+      chapters: 
+        - lecture-07.qmd
+        - lecture-08.qmd
     - references.qmd
   repo-url: https://github.com/arnold-c/SISMID-02_2023
   repo-actions: [edit]
@@ -49,7 +57,7 @@ execute:
 
 # Default author
 author:
-  - name: Callum Arnold-Leps
+  - name: Callum Arnold
     url: https://callumarnold.com
     affiliation: Pennsylvania State University
     orcid: 0000-0002-3245-6956

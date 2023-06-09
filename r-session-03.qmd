@@ -1,19 +1,12 @@
 ---
 subtitle: "Estimation"
-author:
-    - name: Matthew Ferrari
-      url: http://theferrarilab.com
-      affiliation: Pennsylvania State University
-      orcid: 0000-0001-5251-8168
-    - name: Callum Arnold-Leps
-      url: https://callumarnold.com
-      affiliation: Pennsylvania State University
-      orcid: 0000-0002-3245-6956
 abstract-title: ""
 abstract: |
     *Materials adapted from John Drake and Pej Rohani*
 execute:
     warning: false
+metadata-files: 
+  - metadata/matthewferrari.yml
 ---
 
 # R Session 03

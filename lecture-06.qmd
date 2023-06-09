@@ -1,0 +1,13 @@
+---
+title: Parameter Estimation ($R_0$)
+format:
+    html:
+        page-layout: full
+metadata-files: 
+  - metadata/matthewferrari.yml
+---
+
+```{=html}
+<iframe class="slide-deck" src="https://docs.google.com/presentation/d/e/2PACX-1vQWw1RkNk_4loKxM_Jnkp0ygFR0HxFUzXLPTo77_TwKupsiN_V5HqTCMr34PWHqGw/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1023" height="606" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+```
+

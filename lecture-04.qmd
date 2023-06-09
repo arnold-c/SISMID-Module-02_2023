@@ -1,0 +1,11 @@
+---
+title: Heterogeneity in Models
+format:
+    html:
+        page-layout: full
+---
+
+```{=html}
+<iframe class="slide-deck" src="https://docs.google.com/presentation/d/e/2PACX-1vRvpG2vxHw4O5_TNJAWocDRzMz5ohyHMuxZeM7zrO2I9ouBGMAkOJCRyaMoABkgTWOocSGPMDNiZiJ_/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1023" height="606" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+```
+

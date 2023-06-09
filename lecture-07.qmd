@@ -1,0 +1,12 @@
+---
+title: Confronting Models with Data
+format:
+    html:
+        page-layout: full
+metadata-files: 
+  - metadata/micaelamartinez.yml
+---
+
+```{=html}
+<iframe class="slide-deck" src="https://docs.google.com/presentation/d/e/2PACX-1vRamBKnOU3c0nFZnGIOPIDZFc0pS3VTHyGHSIoGMwf_L1uTzcx7nil-0LjuWAoWGw/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1023" height="606" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+```

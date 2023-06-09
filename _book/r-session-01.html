@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Callum Arnold-Leps">
+<meta name="author" content="Callum Arnold">
 
-<title>SISMID Module 2 Materials (2023) - 2&nbsp; R Session 01</title>
+<title>SISMID Module 2 Materials (2023) - 3&nbsp; R Session 01</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -94,8 +94,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./lecture-02.html" rel="next">
-<link href="./lecture-01.html" rel="prev">
+<link href="./lecture-03.html" rel="next">
+<link href="./lecture-02.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -139,7 +139,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Session 01</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R Session 01</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -196,12 +196,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lecture-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Lecture 01</span></a>
+  <a href="./lecture-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Intro to Modeling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-01.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Session 01</span></a>
+  <a href="./lecture-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basics of SIR Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-session-01.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R Session 01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture-03.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herd Immunity &amp; Vaccination</span></a>
   </div>
 </li>
       </ul>
@@ -216,17 +226,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lecture-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Lecture 02</span></a>
+  <a href="./lecture-04.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Heterogeneity in Models</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R Session 02</span></a>
+  <a href="./lecture-05.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Age Structured Models</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r-session-03.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Session 03</span></a>
+  <a href="./r-session-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">R Session 02</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Parameter Estimation (<span class="math inline">\(R_0\)</span>)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-session-03.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">R Session 03</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Day 3</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Confronting Models with Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture-08.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Stochastic Models</span></a>
   </div>
 </li>
       </ul>
@@ -245,11 +285,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#questions" id="toc-questions" class="nav-link active" data-scroll-target="#questions"><span class="toc-section-number">2.1</span>  Questions</a>
+  <li><a href="#questions" id="toc-questions" class="nav-link active" data-scroll-target="#questions"><span class="toc-section-number">3.1</span>  Questions</a>
   <ul class="collapse">
-  <li><a href="#developing-intuition-in-a-closed-population" id="toc-developing-intuition-in-a-closed-population" class="nav-link" data-scroll-target="#developing-intuition-in-a-closed-population"><span class="toc-section-number">2.1.1</span>  Developing intuition in a closed population</a></li>
-  <li><a href="#exploring-the-effect-of-births-and-deaths" id="toc-exploring-the-effect-of-births-and-deaths" class="nav-link" data-scroll-target="#exploring-the-effect-of-births-and-deaths"><span class="toc-section-number">2.1.2</span>  Exploring the effect of births and deaths</a></li>
-  <li><a href="#effects-of-interventions" id="toc-effects-of-interventions" class="nav-link" data-scroll-target="#effects-of-interventions"><span class="toc-section-number">2.1.3</span>  Effects of interventions</a></li>
+  <li><a href="#developing-intuition-in-a-closed-population" id="toc-developing-intuition-in-a-closed-population" class="nav-link" data-scroll-target="#developing-intuition-in-a-closed-population"><span class="toc-section-number">3.1.1</span>  Developing intuition in a closed population</a></li>
+  <li><a href="#exploring-the-effect-of-births-and-deaths" id="toc-exploring-the-effect-of-births-and-deaths" class="nav-link" data-scroll-target="#exploring-the-effect-of-births-and-deaths"><span class="toc-section-number">3.1.2</span>  Exploring the effect of births and deaths</a></li>
+  <li><a href="#effects-of-interventions" id="toc-effects-of-interventions" class="nav-link" data-scroll-target="#effects-of-interventions"><span class="toc-section-number">3.1.3</span>  Effects of interventions</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/r-session-01.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
@@ -259,7 +299,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Session 01</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R Session 01</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -268,7 +308,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <div class="quarto-title-meta-heading">Affiliation</div>
   
     <div class="quarto-title-meta-contents">
-    <a href="https://callumarnold.com">Callum Arnold-Leps</a> <a href="https://orcid.org/0000-0002-3245-6956" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+    <a href="https://callumarnold.com">Callum Arnold</a> <a href="https://orcid.org/0000-0002-3245-6956" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
   </div>
     <div class="quarto-title-meta-contents">
         <p class="affiliation">
@@ -665,53 +705,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<section id="questions" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="questions"><span class="header-section-number">2.1</span> Questions</h2>
-<section id="developing-intuition-in-a-closed-population" class="level3" data-number="2.1.1">
-<h3 data-number="2.1.1" class="anchored" data-anchor-id="developing-intuition-in-a-closed-population"><span class="header-section-number">2.1.1</span> Developing intuition in a closed population</h3>
+<section id="questions" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="questions"><span class="header-section-number">3.1</span> Questions</h2>
+<section id="developing-intuition-in-a-closed-population" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="developing-intuition-in-a-closed-population"><span class="header-section-number">3.1.1</span> Developing intuition in a closed population</h3>
 <p>To begin with, let’s consider a closed population (no births or deaths), and a low initial fraction infected. The initial values are set so that <span class="math inline">\(R_0 = 1.8\)</span>, with a duration of infection of 6 days (roughly similar to circulating influenza).</p>
-<section id="what-happens-if-we-increase-the-transmission-rate" class="level4" data-number="2.1.1.1">
-<h4 data-number="2.1.1.1" class="anchored" data-anchor-id="what-happens-if-we-increase-the-transmission-rate"><span class="header-section-number">2.1.1.1</span> What happens if we increase the transmission rate?</h4>
+<section id="what-happens-if-we-increase-the-transmission-rate" class="level4" data-number="3.1.1.1">
+<h4 data-number="3.1.1.1" class="anchored" data-anchor-id="what-happens-if-we-increase-the-transmission-rate"><span class="header-section-number">3.1.1.1</span> What happens if we increase the transmission rate?</h4>
 <p>Play around with the slider for the transmission rate.</p>
-<section id="what-happens-to-the-epidemic-curve" class="level5" data-number="2.1.1.1.1">
-<h5 data-number="2.1.1.1.1" class="anchored" data-anchor-id="what-happens-to-the-epidemic-curve"><span class="header-section-number">2.1.1.1.1</span> What happens to the epidemic curve?</h5>
+<section id="what-happens-to-the-epidemic-curve" class="level5" data-number="3.1.1.1.1">
+<h5 data-number="3.1.1.1.1" class="anchored" data-anchor-id="what-happens-to-the-epidemic-curve"><span class="header-section-number">3.1.1.1.1</span> What happens to the epidemic curve?</h5>
 </section>
-<section id="what-happens-to-the-peak-fraction-infected" class="level5" data-number="2.1.1.1.2">
-<h5 data-number="2.1.1.1.2" class="anchored" data-anchor-id="what-happens-to-the-peak-fraction-infected"><span class="header-section-number">2.1.1.1.2</span> What happens to the peak fraction infected?</h5>
+<section id="what-happens-to-the-peak-fraction-infected" class="level5" data-number="3.1.1.1.2">
+<h5 data-number="3.1.1.1.2" class="anchored" data-anchor-id="what-happens-to-the-peak-fraction-infected"><span class="header-section-number">3.1.1.1.2</span> What happens to the peak fraction infected?</h5>
 </section>
-<section id="what-happens-to-the-total-fraction-infected" class="level5" data-number="2.1.1.1.3">
-<h5 data-number="2.1.1.1.3" class="anchored" data-anchor-id="what-happens-to-the-total-fraction-infected"><span class="header-section-number">2.1.1.1.3</span> What happens to the total fraction infected?</h5>
+<section id="what-happens-to-the-total-fraction-infected" class="level5" data-number="3.1.1.1.3">
+<h5 data-number="3.1.1.1.3" class="anchored" data-anchor-id="what-happens-to-the-total-fraction-infected"><span class="header-section-number">3.1.1.1.3</span> What happens to the total fraction infected?</h5>
 </section>
-<section id="what-happens-to-the-duration-of-the-epidemic" class="level5" data-number="2.1.1.1.4">
-<h5 data-number="2.1.1.1.4" class="anchored" data-anchor-id="what-happens-to-the-duration-of-the-epidemic"><span class="header-section-number">2.1.1.1.4</span> What happens to the duration of the epidemic?</h5>
+<section id="what-happens-to-the-duration-of-the-epidemic" class="level5" data-number="3.1.1.1.4">
+<h5 data-number="3.1.1.1.4" class="anchored" data-anchor-id="what-happens-to-the-duration-of-the-epidemic"><span class="header-section-number">3.1.1.1.4</span> What happens to the duration of the epidemic?</h5>
 </section>
-<section id="what-happens-to-the-final-size-equilibrium-of-the-epidemic" class="level5" data-number="2.1.1.1.5">
-<h5 data-number="2.1.1.1.5" class="anchored" data-anchor-id="what-happens-to-the-final-size-equilibrium-of-the-epidemic"><span class="header-section-number">2.1.1.1.5</span> What happens to the final size (equilibrium) of the epidemic?</h5>
+<section id="what-happens-to-the-final-size-equilibrium-of-the-epidemic" class="level5" data-number="3.1.1.1.5">
+<h5 data-number="3.1.1.1.5" class="anchored" data-anchor-id="what-happens-to-the-final-size-equilibrium-of-the-epidemic"><span class="header-section-number">3.1.1.1.5</span> What happens to the final size (equilibrium) of the epidemic?</h5>
 </section>
 </section>
 </section>
-<section id="exploring-the-effect-of-births-and-deaths" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="exploring-the-effect-of-births-and-deaths"><span class="header-section-number">2.1.2</span> Exploring the effect of births and deaths</h3>
+<section id="exploring-the-effect-of-births-and-deaths" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="exploring-the-effect-of-births-and-deaths"><span class="header-section-number">3.1.2</span> Exploring the effect of births and deaths</h3>
 <p>Now let’s consider a population with births and deaths. Move “Demographics” panel above.</p>
-<section id="what-happens-if-we-increase-the-birth-rate-above-0" class="level4" data-number="2.1.2.1">
-<h4 data-number="2.1.2.1" class="anchored" data-anchor-id="what-happens-if-we-increase-the-birth-rate-above-0"><span class="header-section-number">2.1.2.1</span> What happens if we increase the birth rate (above 0)?</h4>
-<section id="what-happens-to-r_0" class="level5" data-number="2.1.2.1.1">
-<h5 data-number="2.1.2.1.1" class="anchored" data-anchor-id="what-happens-to-r_0"><span class="header-section-number">2.1.2.1.1</span> What happens to <span class="math inline">\(R_0\)</span>?</h5>
+<section id="what-happens-if-we-increase-the-birth-rate-above-0" class="level4" data-number="3.1.2.1">
+<h4 data-number="3.1.2.1" class="anchored" data-anchor-id="what-happens-if-we-increase-the-birth-rate-above-0"><span class="header-section-number">3.1.2.1</span> What happens if we increase the birth rate (above 0)?</h4>
+<section id="what-happens-to-r_0" class="level5" data-number="3.1.2.1.1">
+<h5 data-number="3.1.2.1.1" class="anchored" data-anchor-id="what-happens-to-r_0"><span class="header-section-number">3.1.2.1.1</span> What happens to <span class="math inline">\(R_0\)</span>?</h5>
 </section>
-<section id="what-happens-to-the-epidemic-curve-1" class="level5" data-number="2.1.2.1.2">
-<h5 data-number="2.1.2.1.2" class="anchored" data-anchor-id="what-happens-to-the-epidemic-curve-1"><span class="header-section-number">2.1.2.1.2</span> What happens to the epidemic curve?</h5>
+<section id="what-happens-to-the-epidemic-curve-1" class="level5" data-number="3.1.2.1.2">
+<h5 data-number="3.1.2.1.2" class="anchored" data-anchor-id="what-happens-to-the-epidemic-curve-1"><span class="header-section-number">3.1.2.1.2</span> What happens to the epidemic curve?</h5>
 </section>
-<section id="what-happens-to-the-peak-fraction-infected-1" class="level5" data-number="2.1.2.1.3">
-<h5 data-number="2.1.2.1.3" class="anchored" data-anchor-id="what-happens-to-the-peak-fraction-infected-1"><span class="header-section-number">2.1.2.1.3</span> What happens to the peak fraction infected?</h5>
+<section id="what-happens-to-the-peak-fraction-infected-1" class="level5" data-number="3.1.2.1.3">
+<h5 data-number="3.1.2.1.3" class="anchored" data-anchor-id="what-happens-to-the-peak-fraction-infected-1"><span class="header-section-number">3.1.2.1.3</span> What happens to the peak fraction infected?</h5>
 </section>
-<section id="what-happens-to-the-total-fraction-infected-1" class="level5" data-number="2.1.2.1.4">
-<h5 data-number="2.1.2.1.4" class="anchored" data-anchor-id="what-happens-to-the-total-fraction-infected-1"><span class="header-section-number">2.1.2.1.4</span> What happens to the total fraction infected?</h5>
+<section id="what-happens-to-the-total-fraction-infected-1" class="level5" data-number="3.1.2.1.4">
+<h5 data-number="3.1.2.1.4" class="anchored" data-anchor-id="what-happens-to-the-total-fraction-infected-1"><span class="header-section-number">3.1.2.1.4</span> What happens to the total fraction infected?</h5>
 </section>
-<section id="what-happens-to-the-duration-of-the-epidemic-1" class="level5" data-number="2.1.2.1.5">
-<h5 data-number="2.1.2.1.5" class="anchored" data-anchor-id="what-happens-to-the-duration-of-the-epidemic-1"><span class="header-section-number">2.1.2.1.5</span> What happens to the duration of the epidemic?</h5>
+<section id="what-happens-to-the-duration-of-the-epidemic-1" class="level5" data-number="3.1.2.1.5">
+<h5 data-number="3.1.2.1.5" class="anchored" data-anchor-id="what-happens-to-the-duration-of-the-epidemic-1"><span class="header-section-number">3.1.2.1.5</span> What happens to the duration of the epidemic?</h5>
 </section>
-<section id="what-happens-to-the-final-size-equilibrium-of-the-epidemic-1" class="level5" data-number="2.1.2.1.6">
-<h5 data-number="2.1.2.1.6" class="anchored" data-anchor-id="what-happens-to-the-final-size-equilibrium-of-the-epidemic-1"><span class="header-section-number">2.1.2.1.6</span> What happens to the final size (equilibrium) of the epidemic?</h5>
+<section id="what-happens-to-the-final-size-equilibrium-of-the-epidemic-1" class="level5" data-number="3.1.2.1.6">
+<h5 data-number="3.1.2.1.6" class="anchored" data-anchor-id="what-happens-to-the-final-size-equilibrium-of-the-epidemic-1"><span class="header-section-number">3.1.2.1.6</span> What happens to the final size (equilibrium) of the epidemic?</h5>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -729,44 +769,44 @@ Tip
 </section>
 </section>
 </section>
-<section id="effects-of-interventions" class="level3" data-number="2.1.3">
-<h3 data-number="2.1.3" class="anchored" data-anchor-id="effects-of-interventions"><span class="header-section-number">2.1.3</span> Effects of interventions</h3>
-<section id="intervention-effects-transmission" class="level4" data-number="2.1.3.1">
-<h4 data-number="2.1.3.1" class="anchored" data-anchor-id="intervention-effects-transmission"><span class="header-section-number">2.1.3.1</span> Intervention effects transmission</h4>
-<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-transmission-by-50" class="level5" data-number="2.1.3.1.1">
-<h5 data-number="2.1.3.1.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-transmission-by-50"><span class="header-section-number">2.1.3.1.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces transmission by 50%?</h5>
+<section id="effects-of-interventions" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="effects-of-interventions"><span class="header-section-number">3.1.3</span> Effects of interventions</h3>
+<section id="intervention-effects-transmission" class="level4" data-number="3.1.3.1">
+<h4 data-number="3.1.3.1" class="anchored" data-anchor-id="intervention-effects-transmission"><span class="header-section-number">3.1.3.1</span> Intervention effects transmission</h4>
+<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-transmission-by-50" class="level5" data-number="3.1.3.1.1">
+<h5 data-number="3.1.3.1.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-transmission-by-50"><span class="header-section-number">3.1.3.1.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces transmission by 50%?</h5>
 </section>
-<section id="how-could-we-incorporate-this-into-the-model" class="level5" data-number="2.1.3.1.2">
-<h5 data-number="2.1.3.1.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model"><span class="header-section-number">2.1.3.1.2</span> How could we incorporate this into the model?</h5>
+<section id="how-could-we-incorporate-this-into-the-model" class="level5" data-number="3.1.3.1.2">
+<h5 data-number="3.1.3.1.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model"><span class="header-section-number">3.1.3.1.2</span> How could we incorporate this into the model?</h5>
 </section>
-<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results" class="level5" data-number="2.1.3.1.3">
-<h5 data-number="2.1.3.1.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results"><span class="header-section-number">2.1.3.1.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
+<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results" class="level5" data-number="3.1.3.1.3">
+<h5 data-number="3.1.3.1.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results"><span class="header-section-number">3.1.3.1.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
 </section>
 </section>
-<section id="intervention-effects-duration-of-infection" class="level4" data-number="2.1.3.2">
-<h4 data-number="2.1.3.2" class="anchored" data-anchor-id="intervention-effects-duration-of-infection"><span class="header-section-number">2.1.3.2</span> Intervention effects duration of infection</h4>
+<section id="intervention-effects-duration-of-infection" class="level4" data-number="3.1.3.2">
+<h4 data-number="3.1.3.2" class="anchored" data-anchor-id="intervention-effects-duration-of-infection"><span class="header-section-number">3.1.3.2</span> Intervention effects duration of infection</h4>
 <p>We could imagine that an intervention could also reduce the duration of infection, say, for example, Tamiflu for influenza.</p>
-<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-duration-of-infection-by-50" class="level5" data-number="2.1.3.2.1">
-<h5 data-number="2.1.3.2.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-duration-of-infection-by-50"><span class="header-section-number">2.1.3.2.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the duration of infection by 50%?</h5>
+<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-duration-of-infection-by-50" class="level5" data-number="3.1.3.2.1">
+<h5 data-number="3.1.3.2.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-duration-of-infection-by-50"><span class="header-section-number">3.1.3.2.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the duration of infection by 50%?</h5>
 </section>
-<section id="how-could-we-incorporate-this-into-the-model-1" class="level5" data-number="2.1.3.2.2">
-<h5 data-number="2.1.3.2.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model-1"><span class="header-section-number">2.1.3.2.2</span> How could we incorporate this into the model?</h5>
+<section id="how-could-we-incorporate-this-into-the-model-1" class="level5" data-number="3.1.3.2.2">
+<h5 data-number="3.1.3.2.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model-1"><span class="header-section-number">3.1.3.2.2</span> How could we incorporate this into the model?</h5>
 </section>
-<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-1" class="level5" data-number="2.1.3.2.3">
-<h5 data-number="2.1.3.2.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-1"><span class="header-section-number">2.1.3.2.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
+<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-1" class="level5" data-number="3.1.3.2.3">
+<h5 data-number="3.1.3.2.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-1"><span class="header-section-number">3.1.3.2.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
 </section>
 </section>
-<section id="intervention-effects-proportion-of-population-susceptible" class="level4" data-number="2.1.3.3">
-<h4 data-number="2.1.3.3" class="anchored" data-anchor-id="intervention-effects-proportion-of-population-susceptible"><span class="header-section-number">2.1.3.3</span> Intervention effects proportion of population susceptible</h4>
+<section id="intervention-effects-proportion-of-population-susceptible" class="level4" data-number="3.1.3.3">
+<h4 data-number="3.1.3.3" class="anchored" data-anchor-id="intervention-effects-proportion-of-population-susceptible"><span class="header-section-number">3.1.3.3</span> Intervention effects proportion of population susceptible</h4>
 <p>We could imagine that an intervention could also reduce the proportion of the population susceptible, say, for example, a vaccine.</p>
-<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-proportion-of-the-population-susceptible-by-50" class="level5" data-number="2.1.3.3.1">
-<h5 data-number="2.1.3.3.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-proportion-of-the-population-susceptible-by-50"><span class="header-section-number">2.1.3.3.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the proportion of the population susceptible by 50%?</h5>
+<section id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-proportion-of-the-population-susceptible-by-50" class="level5" data-number="3.1.3.3.1">
+<h5 data-number="3.1.3.3.1" class="anchored" data-anchor-id="based-on-your-intuition-from-the-previous-questions-what-do-you-think-will-happen-if-we-enact-an-intervention-that-reduces-the-proportion-of-the-population-susceptible-by-50"><span class="header-section-number">3.1.3.3.1</span> Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the proportion of the population susceptible by 50%?</h5>
 </section>
-<section id="how-could-we-incorporate-this-into-the-model-2" class="level5" data-number="2.1.3.3.2">
-<h5 data-number="2.1.3.3.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model-2"><span class="header-section-number">2.1.3.3.2</span> How could we incorporate this into the model?</h5>
+<section id="how-could-we-incorporate-this-into-the-model-2" class="level5" data-number="3.1.3.3.2">
+<h5 data-number="3.1.3.3.2" class="anchored" data-anchor-id="how-could-we-incorporate-this-into-the-model-2"><span class="header-section-number">3.1.3.3.2</span> How could we incorporate this into the model?</h5>
 </section>
-<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-2" class="level5" data-number="2.1.3.3.3">
-<h5 data-number="2.1.3.3.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-2"><span class="header-section-number">2.1.3.3.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
+<section id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-2" class="level5" data-number="3.1.3.3.3">
+<h5 data-number="3.1.3.3.3" class="anchored" data-anchor-id="what-are-the-core-assumptions-being-made-in-this-model-and-how-might-they-affect-the-results-2"><span class="header-section-number">3.1.3.3.3</span> What are the core assumptions being made in this model, and how might they affect the results?</h5>
 
 
 <!-- -->
@@ -1089,13 +1129,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="./lecture-01.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Lecture 01</span></span>
+      <a href="./lecture-02.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basics of SIR Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./lecture-02.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Lecture 02</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./lecture-03.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herd Immunity &amp; Vaccination</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
