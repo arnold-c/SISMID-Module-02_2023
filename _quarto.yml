@@ -53,7 +53,7 @@ execute:
   echo: true
   message: true
   warning: true
-  cache: false
+  cache: true
 
 # Default author
 author:
