@@ -16,3 +16,18 @@ $navbar-color: $code-bg !default;
 $navbar-padding-y: 1.5rem !default;
 
 /*-- scss:rules --*/
+
+// Bold sidebar part text
+a.sidebar-item-text.sidebar-link.text-start, .sidebar-title>a{
+    font-weight: bold;
+}
+
+// Color sidebar text
+.sidebar-navigation li a {
+    color: $body-color;
+}
+
+// GitHub logo colors in sidebar and TOC navbar
+.bi::before, [class^="bi-"]::before, [class*=" bi-"]::before, #quarto-margin-sidebar .toc-actions .bi:before{
+    color: $body-color;
+}

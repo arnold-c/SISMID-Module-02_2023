@@ -3,3 +3,10 @@
 // Navbar
 $navbar-color: #f5e0dc !default;
 $navbar-padding-y: 1.5rem !default;
+$dark-blue: #222235 !default;
+
+/*-- scss:rules --*/
+
+a.sidebar-item-text.sidebar-link.text-start, .sidebar-title{
+    font-weight: bold;
+}
