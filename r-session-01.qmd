@@ -85,7 +85,11 @@ SIRcolors = ["#1f77b4", "#ff7f0e", "#FF3851"]
 closed_R0 = beta * dur_inf
 closed_R0_str = closed_R0.toLocaleString(undefined, {minimumFractionDigits: 2})
 
+finalsize = sir_sol.get("R", sir_sol.numRows()-1)
+finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})
+
 md`${tex`R_0 = ${closed_R0_str}`}`
+md`${tex`\text{Final size} = ${finalsize_str}`}`
 ```
 
 ```{ojs}
@@ -174,8 +178,16 @@ Plot.plot({
     area ?
       Plot.areaY(sir_demographic_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
       [
-        Plot.ruleY(eq_vals, {y: "Fraction", stroke: "State", strokeWidth: 2, strokeDasharray: [10]}),
-        Plot.lineY(sir_demographic_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 6})
+        demographic_R0 >= 1.0 ?
+          Plot.ruleY(
+            eq_vals,
+            {y: "Fraction", stroke: "State", strokeWidth: 2, strokeDasharray: [10]}
+          ) :
+          null,
+        Plot.lineY(
+          sir_demographic_sol_long,
+          {x: "t", y: "Fraction", stroke: "State", strokeWidth: 6}
+        )
       ]
   ]
 })
@@ -217,6 +229,9 @@ Move "Demographics" panel above.
 ::: {.callout-tip}
 You may want to increase the maximum simulation time.
 :::
+
+When $R_0 < 1$, equilibrium lines are not calculated. Why?
+
 
 ### Effects of interventions
 #### Intervention effects transmission
