@@ -29,7 +29,6 @@ viewof area = Inputs.toggle(
 )
 ```
 
-
 ```{ojs}
 function sir(dydt, y, t) {
   var gamma = 1 / dur_inf
@@ -74,19 +73,31 @@ sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], 0.01, 200)
 sir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
 ```
 
+```{ojs}
+SIRcolors = ["#1f77b4", "#ff7f0e", "#FF3851"]
+```
+
 ::: {.panel-tabset}
 
 ## Closed Population
 
 ```{ojs}
 closed_R0 = beta * dur_inf
+closed_R0_str = closed_R0.toLocaleString(undefined, {minimumFractionDigits: 2})
 
-md`${tex`R_0 = ${closed_R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`
+md`${tex`R_0 = ${closed_R0_str}`}`
 ```
 
 ```{ojs}
 Plot.plot({
-  color: {legend: true, domain: ["S", "I", "R"]},
+  color: {
+    legend: true,
+    domain: ["S", "I", "R"],
+    range: SIRcolors
+  },
+  style: {fontSize: "20px"},
+  marginLeft: 65,
+  marginTop: 40,
   grid: true,
   width: 1000,
   height: 600,
@@ -94,7 +105,7 @@ Plot.plot({
   marks: [
     area ?
       Plot.areaY(sir_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
-      Plot.lineY(sir_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 3})
+      Plot.lineY(sir_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 6})
   ]
 })
 ```
@@ -116,8 +127,18 @@ viewof tmax = Inputs.range(
 
 ```{ojs}
 demographic_R0 = beta / ((1/dur_inf) + births)
+eq_S = 1 / demographic_R0
+eq_I = births / beta * (demographic_R0 - 1)
+eq_R = 1 - (eq_S + eq_I)
 
-md`${tex`R_0 = ${demographic_R0.toLocaleString(undefined, {minimumFractionDigits: 2})}`}`
+eq_vals = aq.table({
+  State: ["S", "I", "R"],
+  Fraction: [eq_S, eq_I, eq_R]
+})
+
+demographic_R0_str = demographic_R0.toLocaleString(undefined, {minimumFractionDigits: 2})
+
+md`${tex`R_0 = ${demographic_R0_str}`}`
 ```
 
 ```{ojs}
@@ -137,7 +158,14 @@ sir_demographic_sol_long = sir_demographic_sol.fold(aq.not('t'), {as: ['State', 
 
 ```{ojs}
 Plot.plot({
-  color: {legend: true, domain: ["S", "I", "R"]},
+  color: {
+    legend: true,
+    domain: ["S", "I", "R"],
+    range: SIRcolors
+  },
+  style: {fontSize: "20px"},
+  marginLeft: 65,
+  marginTop: 40,
   grid: true,
   width: 1000,
   height: 600,
@@ -145,7 +173,10 @@ Plot.plot({
   marks: [
     area ?
       Plot.areaY(sir_demographic_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
-      Plot.lineY(sir_demographic_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 3})
+      [
+        Plot.ruleY(eq_vals, {y: "Fraction", stroke: "State", strokeWidth: 2, strokeDasharray: [10]}),
+        Plot.lineY(sir_demographic_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 6})
+      ]
   ]
 })
 ```
