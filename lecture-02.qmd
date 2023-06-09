@@ -1,1 +1,40 @@
+---
+format:
+    html:
+        page-layout: full
+---
+
 # Lecture 02
+
+This is a test of embedding a Google Slides presentation in a Markdown file.
+Make sure to publish the presentation before embedding the link provided.
+
+````md
+```{=html}
+<iframe class="slide-deck" src="https://quarto-lang.org/slides/2021-09-02-lecture-02.html" frameborder="0" width="1023" height="606" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+```
+````
+```{=html}
+<iframe class="slide-deck" src="https://docs.google.com/presentation/d/e/2PACX-1vTDBohJWa91xh_DqSaVhZ-f8mNboPD0-3IFvfeYQLzvvY_F4TG3IdfpWEZ7Z-txGZa_MznFx8l9LMbA/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1023" height="606" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+```
+
+To embed a PowerPoint presentation, make sure the presentation is published on PowerPoint Online (in OneDrive), and then share > embed.
+PowerPoint seems to be less sharp than Google Slides, so possibly upload to Google Slides first.
+
+````md
+```{=html}
+<iframe src="https://onedrive.live.com/embed?resid=F301B3618031029A%21150808&amp;authkey=!ALCJpwuYIsyKXhc&amp;em=2&amp;wdAr=1.7777777777777777" width="1023px" height="606" frameborder="0">This is an embedded <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by <a target="_blank" href="https://office.com/webapps">Office</a>.</iframe>
+```
+````
+
+```{=html}
+<iframe src="https://onedrive.live.com/embed?resid=F301B3618031029A%21150808&amp;authkey=!ALCJpwuYIsyKXhc&amp;em=2&amp;wdAr=1.7777777777777777" width="1023" height="606" frameborder="0">This is an embedded <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by <a target="_blank" href="https://office.com/webapps">Office</a>.</iframe>
+```
+
+To embed a Quarto RevealJS presentation, create the presentation in `index.qmd` its own folder e.g. `demo/index.qmd`, and use the following code:
+
+````md
+```{=html}
+<iframe class="slide-deck" src="demo/"></iframe>
+```
+````
