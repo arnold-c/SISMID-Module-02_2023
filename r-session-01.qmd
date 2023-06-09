@@ -255,3 +255,5 @@ We could imagine that an intervention could also reduce the proportion of the po
 ##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the proportion of the population susceptible by 50%?
 ##### How could we incorporate this into the model?
 ##### What are the core assumptions being made in this model, and how might they affect the results?
+
+## Appendix {.appendix}

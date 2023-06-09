@@ -1,5 +1,5 @@
 ---
-title: Parameter Estimation ($R_0$)
+title: Parameter Estimation
 format:
     html:
         page-layout: full
