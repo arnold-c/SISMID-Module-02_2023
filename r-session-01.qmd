@@ -12,7 +12,7 @@ execute:
 //| panel: input
 viewof beta = Inputs.range(
   [0.0, 2.0],
-  {value: 0.25, step: 0.01, label: "Infectivity rate"}
+  {value: 0.25, step: 0.01, label: "Transmission rate"}
 )
 viewof dur_inf = Inputs.range(
   [0.0, 20],
@@ -80,7 +80,7 @@ sir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
 
 ::: {.panel-tabset}
 
-## Plot
+## Closed Population
 
 ```{ojs}
 Plot.plot({
@@ -88,6 +88,7 @@ Plot.plot({
   grid: true,
   width: 1000,
   height: 600,
+  y: {domain: [0, 1]},
   marks: [
     area ?
       Plot.areaY(sir_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
@@ -96,10 +97,49 @@ Plot.plot({
 })
 ```
 
-## Data
+## Demographics
 
 ```{ojs}
-sir_sol.view()
+//| panel: input
+viewof births = Inputs.range(
+  [0.0, 0.5],
+  {value: 0.05, step: 0.001, label: "Birth rate"}
+)
+
+viewof tmax = Inputs.range(
+  [200.0, 500.0],
+  {value: 200.0, step: 50.0, label: "Maximum simulation time"}
+)
+```
+
+```{ojs}
+function sir_births(dydt, y, t) {
+  var gamma = 1 / dur_inf
+
+  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])
+  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]
+  dydt[2] = gamma * y[1] - births * y[2]
+}
+```
+
+```{ojs}
+sir_births_sol = simulate(sir_births, 0, [1.0-I0, I0, 0.0], 0.01, tmax)
+sir_births_sol_long = sir_births_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
+```
+
+```{ojs}
+Plot.plot({
+  color: {legend: true, domain: ["S", "I", "R"]},
+  grid: true,
+  width: 1000,
+  height: 600,
+  y: {domain: [0, 1]},
+  marks: [
+    area ?
+      Plot.areaY(sir_births_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
+      Plot.lineY(sir_births_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 3})
+  ]
+})
 ```
 
 :::
