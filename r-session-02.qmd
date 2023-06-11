@@ -17,6 +17,10 @@ library(deSolve)
 library(tidyverse)
 ```
 
+```{r}
+theme_set(theme_minimal())
+```
+
 ## A Model With 2 Classes
 
 We'll start with the simplest mechanistic model of two classes we can think of, which has separate classes for two groups $a$ and $b$. These groups could represent different socioeconomic classes, for example.
@@ -108,42 +112,53 @@ Let's simulate such a model.
 To make things concrete, we'll assume that the transmission rates $\beta$ are greater within groups than between them.
 
 ```{r}
-ba_params <- c(0.005, 0.02, 10)
+ba_params <- c(
+    beta_within = 0.025,
+    beta_between = 0.005,
+    recovery = 10
+)
 ```
 
 ```{r}
 # Here we set up the ODE model that matches the equations above
 ba_model <- function (t, x, p, ...) {     
-    s <- x[c("Sb","Sa")]                  # susceptibles
-    i <- x[c("Ib","Ia")]                  # infecteds
-    r <- x[c("Rb","Ra")]                  # recovereds
-    n <- s + i + r                        # total pop
+    s <- x[c("Sa", "Sb")]   # susceptibles
+    i <- x[c("Ia", "Ib")]   # infecteds
+    r <- x[c("Ra", "Rb")]   # recovereds
     
-    beta1 <- p[1]
-    beta2 <- p[2]
-    gamma <- p[3]
+    beta_within <- p[1]
+    beta_between <- p[2]
+    recovery <- p[3]
 
-    lambda_b <- (beta1 + beta2) * i[1] + beta1 * i[2]      # group B force of infection
-    lambda_a <- beta1 * i[1] + (beta1 + beta2) * i[2]      # group A force of infection
+    # group A force of infection
+    lambda_a <- beta_within * i[1] + beta_between * i[2]
+
+    # group B force of infection
+    lambda_b <- beta_within * i[2] + beta_between * i[1]
     
-    list(
-        c(                               # these are the rates from the 6 equations above
-            -lambda_b * s[1],
-            -lambda_a * s[2],
-            lambda_b * s[1] - gamma * i[1],
-            lambda_a * s[2] - gamma * i[2],
-            gamma * i[1],
-            gamma * i[2]
-        )
-    )
+    list(c(
+        # dSa/dt
+        - lambda_a * s[1],
+        # dSb/dt
+        - lambda_b * s[2],
+        # dIa/dt
+        lambda_a * s[1] - recovery * i[1],
+        # dIb/dt
+        lambda_b * s[2] - recovery * i[2],
+        # dRa/dt
+        recovery * i[1],
+        # dRb/dt
+        recovery * i[2]
+    ))
 }
 ```
 
 ```{r}
-## initial conditions
-ba_yinit <- c(Sb = 2000, Sa = 1000, Ib = 1, Ia = 1, Rb = 0, Ra = 0) # set starting conditions
+# initial conditions
+ba_yinit <- c(Sa = 1000, Sb = 2000, Ia = 1, Ib = 1, Ra = 0, Rb = 0) # set starting conditions
 
-sol_ba <- deSolve::ode(                          # run the ode solver on the model above
+# Run the ODE solver from the deSolve package
+sol_ba <- deSolve::ode(
     y = ba_yinit,
     times = seq(0, 2, by = 0.001),
     func = ba_model,
@@ -152,45 +167,77 @@ sol_ba <- deSolve::ode(                          # run the ode solver on the mod
 ```
 
 ```{r}
-# this code will plot the resulting time series
-plot(sol_ba, mfcol = c(2, 3))
-dim(sol_ba)
-head(sol_ba)
-plot(sol_ba, log = 'y', mfcol = c(2, 3))
+sol_ba_long <- sol_ba %>%
+    as_tibble() %>%
+    mutate(Na = Sa + Ia + Ra, Nb = Sb + Ib + Rb) %>%
+    pivot_longer(
+        cols = -time,
+        names_to = c("state", "group"),
+        names_sep = 1,
+        values_to = "value"
+    ) %>%
+    mutate(
+        state = factor(state, levels = c("S", "I", "R", "N")),
+        group = paste("Group", str_to_upper(group))
+        )
 ```
 
 ```{r}
-plot(sol_ba, mfcol = c(2, 3))
-par(mfcol = c(1,1))
+SIRcolors <- c("#1f77b4", "#ff7f0e", "#FF3851", "#591099")
+
+ggplot(sol_ba_long, aes(x = time, y = value, color = state)) +
+    geom_line(linewidth = 1.5) +
+    facet_wrap(~group, scales = "free_y") +
+    scale_color_manual(
+        values = SIRcolors,
+        labels = c("Susceptible", "Infected", "Recovered", "Total")
+    ) +
+    labs(
+        x = "Time",
+        y = "Number of individuals",
+        color = "State"
+    ) +
+    theme(legend.position = "bottom")
 ```
 
-The results of the above are plotted below:
+::: {.callout-question}
+Despite using the same transmission rates, the epidemic in group B is much larger than in group A.
+Why do you think this is?
+:::
+
+Now let's plot the proportion of individuals in each state for the two groups.
 
 ```{r}
-# plot the proportion of individuals in each state for the two groups
-time <- sol_ba[, 1]                         # time
-y <- sol_ba[, -1]                           # all other variables
-n <- apply(y, 1, sum)                     # population size
-prop <- y / n                             # fractions
+sol_ba_long_props <- sol_ba_long %>%
+    filter(state != "N") %>%
+    mutate(
+        state_group = paste0(state, str_extract_all(group, "[^Group ]")),
+        state_group = factor(state_group, levels = c("RA", "RB", "IA", "IB", "SA", "SB"))
+    ) %>%
+    group_by(time, state_group) %>%
+    mutate(
+        prop = value / sum(ba_yinit)
+    ) %>%
+    ungroup()
+```
 
-subsampled.prop <- prop[seq(1, length(time), by = 10),]
-subsampled.time <- time[seq(1, length(time), by = 10)]
-barplot(
-    t(subsampled.prop),
-    names.arg=subsampled.time,
-    xlab='time',main='Group structure',
-    space = 0,
-    col = c(
-        rgb(0.5, 1, 0.5),
-        rgb(0, 1, 0),
-        rgb(1, 0.5, 0.5),
-        rgb(1, 0, 0),
-        rgb(0.5, 0.5, 1),
-        rgb(0, 0, 1)
-    ),
-    legend = colnames(prop),
-    args.legend = list(bg = "white")
-)
+```{r}
+Scolors <- RColorBrewer::brewer.pal(3, "Blues")[c(2, 3)]
+Icolors <- RColorBrewer::brewer.pal(3, "Oranges")[c(2, 3)]
+Rcolors <- RColorBrewer::brewer.pal(3, "Greens")[c(2, 3)]
+
+ggplot(sol_ba_long_props, aes(x = time, y = prop, fill = state_group)) +
+    geom_area() +
+    scale_fill_manual(
+        values = c(Scolors, Icolors, Rcolors),
+        limits = c("SA", "SB", "IA", "IB", "RA", "RB"),
+    ) +
+    labs(
+        x = "Time",
+        y = "Proportion of individuals",
+        fill = "State"
+    ) +
+    theme(legend.position = "bottom")
 ```
 
 ## A Model With 2 Age Classes
@@ -301,40 +348,53 @@ Now, let's simulate this model, under the same assumptions about transmission ra
 
 ```{r}
 # define the parameters
-demog_params <- c(0.002, 0.002, 10, 100, 20, 60)
+demog_params <- c(
+    beta_within = 0.004,
+    beta_between = 0.002,
+    recovery = 10,
+    births = 80,
+    age_bands = c(20, 60)
+)
 ```
 
 ```{r}
 ja_demog_model <- function (t, x, p, ...) {
-    s <- x[c("Sj","Sa")]                  # susceptibles
-    i <- x[c("Ij","Ia")]                  # infecteds
-    r <- x[c("Rj","Ra")]                  # recovereds
-    n <- s + i + r                        # total pop
+    s <- x[c("Sj", "Sa")]    # susceptibles
+    i <- x[c("Ij", "Ia")]    # infecteds
+    r <- x[c("Rj", "Ra")]    # recovereds
+    n <- s + i + r     # total pop
 
-    beta1_demog <- p[1]
-    beta2_demog <- p[2]
-    demog_params[3] <- p[3]
-    births_demog <- p[4]
-    alpha <- 1 / c(p[5], p[6]) # alpha = 1/da
+    beta_within <- p[1]
+    beta_between <- p[2]
+    recovery <- p[3]
+    births <- p[4]       # births into juvenile class & deaths from adult class
+    aging_j <- 1 / p[5]
+    aging_a <- 1 / p[6]
 
-    lambda_j <- (beta1_demog + beta2_demog) * i[1] +
-        beta1_demog * i[2]      # juv. force of infection 
-    lambda_a <- beta1_demog * i[1] +
-        (beta1_demog + beta2_demog) * i[2]      # adult. force of infection
+    # juv. force of infection 
+    lambda_j <- beta_within * i[1] + beta_between * i[2]
     
-    list(
-        c(
-            -lambda_j * s[1] -alpha[1] * s[1] + births_demog,
-            -lambda_a * s[2] + alpha[1] * s[1] - alpha[2] * s[2],
-            lambda_j * s[1] - demog_params[3] * i[1] - alpha[1] * i[1],
-            lambda_a * s[2] - demog_params[3] * i[2] + alpha[1] * i[1] - alpha[2] * i[2],demog_params[3] * i[1] - alpha[1] * r[1],
-            demog_params[3] * i[2] + alpha[1] * r[1] - alpha[2] * r[2]
-        )
-    )
+    # adult. force of infection
+    lambda_a <- beta_between * i[1] + beta_within * i[2]
+    
+    list(c(
+        # dSj/dt    Note: only adults contribute to births
+        (births) - (lambda_j * s[1]) - (aging_j * s[1]),
+        # dSa/dt
+        -(lambda_a * s[2]) + (aging_j * s[1]) - (aging_a * s[2]),
+        # dIj/dt
+        (lambda_j * s[1]) - (recovery * i[1]) - (aging_j * i[1]),
+        # dIa/dt
+        (lambda_a * s[2]) - (recovery * i[2]) + (aging_j * i[1]) - (aging_a * i[2]),
+        # dRj/dt
+        (recovery* i[1]) - (aging_j * r[1]),
+        # dRa/dt
+        (recovery * i[2]) + (aging_j * r[1]) - (aging_a * r[2])
+    ))
 }
 ```
 
-Note that in this function, $\mu=$ `alpha[2]`, i.e., death, is just like another age class.
+Note that in this function, $\mu=$ `births`, i.e., death, is just like another age class.
 
 ```{r}
 ## initial conditions
@@ -347,71 +407,97 @@ sol_demog <- deSolve::ode(
     parms = demog_params
 )
 
+sol_demog_long <- sol_demog %>%
+    as_tibble() %>%
+    mutate(Nj = Sj + Ij + Rj, Na = Sa + Ia + Ra, N = Nj + Na) %>%
+    pivot_longer(
+        cols = -c(time, N),
+        names_to = c("state", "group"),
+        names_sep = 1,
+        values_to = "value"
+    ) %>%
+    mutate(
+        state = factor(state, levels = c("S", "I", "R", "N")),
+        group = paste("Group", str_to_upper(group))
+    )
 ```
 
 ### Exercise 1: Use this code to plot the number of susceptible, infected, and recovered individuals over time.
+
 ```{r}
-plot(sol_demog, mfcol = c(2, 3))
-dim(sol_demog)
-head(sol_demog)
-plot(sol_demog, log = 'y', mfcol = c(2, 3))
+ggplot(sol_demog_long, aes(x = time, y = value, color = state)) +
+    geom_line(linewidth = 1.5) +
+    facet_wrap(~group, nrow = 2, scales = "free_y") +
+    scale_color_manual(
+        values = SIRcolors,
+        labels = c("Susceptible", "Infected", "Recovered", "Total")
+    ) +
+    labs(
+        x = "Time",
+        y = "Number of individuals",
+        color = "State"
+    ) +
+    theme(legend.position = "bottom")
+```
+
+Note that now that births are replenishing susceptibles, infection persists. The results of the above are plotted here:
+
+Now let's plot the proportion of individuals in each state for the two groups.
+
+```{r}
+sol_demog_long_props <- sol_demog_long %>%
+    filter(state != "N") %>%
+    mutate(
+        state_group = paste0(state, str_extract_all(group, "[^Group ]")),
+        state_group = factor(state_group, levels = c("RA", "RJ", "IA", "IJ", "SA", "SJ"))
+    ) %>%
+    group_by(time, state_group) %>%
+    mutate(
+        prop = value / N
+    ) %>%
+    ungroup()
 ```
 
 ```{r}
-plot(sol_demog, mfcol = c(2, 3))
-par(mfcol = c(1, 1))
+ggplot(sol_demog_long_props, aes(x = time, y = prop, fill = state_group)) +
+    geom_area() +
+    scale_fill_manual(
+        values = c(Scolors, Icolors, Rcolors),
+        limits = c("SA", "SJ", "IA", "IJ", "RA", "RJ")
+    ) +
+    labs(
+        x = "Time",
+        y = "Proportion of individuals",
+        fill = "State"
+    ) +
+    theme(legend.position = "bottom")
 ```
 
-Note that now that births are replenishing susceptibles infection persists. The results of the above are plotted here :
+Now let's plot the equilibrium seroprevalence for each age group.
 
 ```{r}
-#plot the relative proportion of individuals in each category
-par(mfrow = c(1, 2))
-time <- sol_demog[, 1]                         # time
-y <- sol_demog[, -1]                           # all other variables
-n <- apply(y, 1, sum)                     # population size
-prop <- y / n                             # fractions
-subsampled.prop <- prop[seq(1, length(time), by = 10),]
-subsampled.time <- time[seq(1, length(time), by = 10)]
+equil_seroprev <- tail(sol_demog_long) %>%
+    group_by(group) %>%
+    mutate(
+        prop = value / sum(value),
+        group = factor(group, levels = c("Group J", "Group A"))
+    ) %>%
+    ungroup() %>%
+    filter(state == "R")
 
-barplot(
-    t(subsampled.prop),
-    names.arg = subsampled.time,
-    xlab = 'time',
-    main = 'Age structure',
-    space = 0,
-    col = c(
-        rgb(0.5, 1, 0.5),
-        rgb(0, 1, 0),
-        rgb(1, 0.5, 0.5),
-        rgb(1, 0, 0),
-        rgb(0.5, 0.5, 1),
-        rgb(0, 0, 1)
-    ),
-    legend = colnames(prop),
-    args.legend = list(bg = "white"),
-    border = NA
-)
-
-equil <- drop(tail(sol_demog, 1))[-1]
-
-n <- equil[c("Sj", "Sa")] +
-    equil[c("Ij", "Ia")] +
-    equil[c("Rj", "Ra")]
-
-seroprev <- equil[c("Rj", "Ra")] / n # get the proportion in the R class at equilibrium
-names(seroprev) <- c("J", "A")                
-
-# plot the proportion of each age class 
-# that has been previously infected (is in the R class) 
-# and would thus be expected to have antibodies (i.e. seropositive)
-barplot(height = seroprev, width = c(demog_params[5:6]), ylab = "seroprevalence")  
+ggplot(equil_seroprev, aes(x = group, y = prop, fill = group)) +
+    geom_col(position = "identity") +
+    scale_fill_manual(
+        values = c("purple", "orange"),
+        limits = c("Group J", "Group A")
+    ) +
+    labs(
+        x = "Age group",
+        y = "Equilibrium seroprevalence",
+        fill = "Age group"
+    ) +
+    theme(legend.position = "none")
 ```
-
-```{r}
-par(mfrow = c(1, 1))
-```
-
 
 To compute $R_0$, we need to know the stable age distribution (the relative proportion in the juvenile and adult age classes) of the population, which we can find by solving for the disease-free equilibrium: $S_J^*=B/\alpha$ and $S_A^*=B/\mu$.
 
@@ -420,36 +506,42 @@ With the stable age distribution, we can calculate $R_0$ by constructing the nex
 
 ```{r}
 # this code can be re-run to set parameter values
-alpha <- 1 / demog_params[5]
-mu <- 1 / demog_params[6]
-n <- demog_params[4] / c(alpha, mu)
+alpha <- demog_params["age_bands1"]
+mu <- demog_params["age_bands2"]
+n <- demog_params["births"] / c(alpha, mu)
 
 beta_demog <- matrix(c(
-    demog_params[1] + ba_params[2],
-    demog_params[1],
-    demog_params[1],
-    demog_params[1] + ba_params[2]
+    demog_params["beta_within"],
+    demog_params["beta_between"],
+    demog_params["beta_between"],
+    demog_params["beta_within"]
     ),
     nrow = 2,
     ncol = 2
 )
 
-# this command craetes the next generation matrix
+# this command creates the next generation matrix
 ngm <- matrix(
     c(
-        n[1] * beta_demog[1, 1] / (demog_params[3] + alpha) +
-            alpha / (demog_params[3] + mu) * n[1] * beta_demog[1, 2] / (demog_params[3] + mu),
-        n[2] *beta_demog[2, 1] / (demog_params[3] + alpha) +
-            alpha / (demog_params[3] + mu) * n[2] * beta_demog[2, 2] / (demog_params[3] + mu),
-        n[1] * beta_demog[1, 2] / (demog_params[3] + mu),
-        n[2] * beta_demog[2, 2] / (demog_params[3] + mu)
+
+        n[1] * (beta_demog[1, 1] / (demog_params["recovery"] + alpha)) +
+            alpha / (demog_params["recovery"] + mu) *
+            n[1] * beta_demog[1, 2] / (demog_params["recovery"] + mu),
+        
+        n[2] * beta_demog[2, 1] / (demog_params["recovery"] + alpha) +
+            alpha / (demog_params["recovery"] + mu) *
+            n[2] * (beta_demog[2, 2] / (demog_params["recovery"] + mu)),
+
+        n[1] * beta_demog[1, 2] / (demog_params["recovery"] + mu),
+
+        n[2] * beta_demog[2, 2] / (demog_params["recovery"] + mu)
     ),
     nrow = 2,
     ncol = 2
 )
 
 # this command outputs the R0 value
-max(Re(eigen(ngm,only.values=T)$values))
+max(Re(eigen(ngm, only.values=T)$values))
 ```
 
 
@@ -640,7 +732,7 @@ sol_sonly <- deSolve::ode(
     parms = list(
         beta_ages = beta_ages,
         gamma_ages = ages_params[3],
-        births_ages = demog_params[3],
+        births_ages = demog_params["recovery"],
         aging = aging
     )
 )
