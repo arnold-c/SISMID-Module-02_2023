@@ -68,8 +68,8 @@ bibliography: references.bib
 format:
   html:
     theme:
-      light: [cosmo, format/_fonts.scss, format/_light.scss]
-      dark: [cosmo, format/_fonts.scss, format/_dark.scss]
+      light: [cosmo, format/_fonts.scss, format/_light.scss, format/callout-question.scss]
+      dark: [cosmo, format/_fonts.scss, format/_dark.scss, format/callout-question.scss]
     code-copy: true
     code-fold: false
     code-overflow: wrap
