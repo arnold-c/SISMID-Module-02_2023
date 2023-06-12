@@ -348,7 +348,6 @@ purrr::pwalk(
     }
 )
 
-
 par(op)
 ```
 
@@ -500,16 +499,17 @@ ggplot(sol_demog_long_props, aes(x = time, y = prop, fill = state_group)) +
 Now let's plot the equilibrium seroprevalence for each age group.
 
 ```{r}
-equil_seroprev <- tail(sol_demog_long) %>%
-    group_by(group) %>%
+demog_equil_seroprev <- tail(sol_demog_long) %>%
     mutate(
         prop = value / sum(value),
-        group = factor(group, levels = c("Group J", "Group A"))
+        group = factor(group, levels = c("Group J", "Group A")),
+        .by = group
     ) %>%
-    ungroup() %>%
     filter(state == "R")
+```
 
-ggplot(equil_seroprev, aes(x = group, y = prop, fill = group)) +
+```{r}
+ggplot(demog_equil_seroprev, aes(x = group, y = prop, fill = group)) +
     geom_col(position = "identity") +
     scale_fill_manual(
         values = c("purple", "orange"),
@@ -685,10 +685,12 @@ aging %>%
 Now we can put the pieces together to write a simulator for the age-structured SIR dynamics.
 
 ```{r}
+# Using a list instead of a vector to hold the parameters, as beta_ages and aging 
+# are both matrices, so we want to keep them as matrices, rather than flattening
 multistage_params <- list(
     beta_ages = beta_ages,
-    gamma_ages = ages_params[3],
-    births_ages = ages_params[4],
+    gamma_ages = ages_params[4],
+    births_ages = ages_params[5],
     aging = aging
 )
 
@@ -726,14 +728,34 @@ sol_ms <- deSolve::ode(
     parms = multistage_params
 )
 
-time_ms <- sol_ms[, 1]
 infects_ms <- sol_ms[, 1 + iindex]
 ```
 
 ```{r}
-plot(time_ms, apply(infects_ms, 1, sum), type = 'l')
-lines(time_ms, apply(infects_ms[, juvies], 1, sum), col = 'red')
-lines(time_ms, apply(infects_ms[, adults], 1, sum), col = 'blue')
+sol_ms_tibble <- tibble(
+        time = sol_ms[, 1],
+        juvies = apply(infects_ms[, juvies], 1, sum),
+        adults = apply(infects_ms[, adults], 1, sum)
+    ) %>%
+    pivot_longer(
+        cols = c(juvies, adults),
+        names_to = "age_group",
+        values_to = "infections"
+    )
+```
+
+```{r}
+ggplot(sol_ms_tibble, aes(x = time, y = infections, color = age_group)) +
+    geom_line(linewidth = 1.5) +
+    scale_color_manual(
+        values = c("orange", "purple"),
+        labels = c("Adults", "Juveniles")
+    ) +
+    labs(
+        x = "Time",
+        y = "Number of infections",
+        color = "Age group"
+    )
 ```
 
 Let's mimic a situation where we have cross-sectional seroprevalence data (e.g. measures of antibodies that tell you someone is in the R class).
@@ -746,8 +768,23 @@ Use the code below to display the age-specific seroprevalence (i.e., the seropre
 equil_ms <- drop(tail(sol_ms, 1))[-1]
 n_ms <- equil_ms[sindex] + equil_ms[iindex] + equil_ms[rindex]
 seroprev_ms <- equil_ms[rindex] / n_ms
-names(seroprev_ms) <- ages
-barplot(height = seroprev_ms, width = da_ages)
+
+seroprev_ms_tibble <- tibble(
+    age = ages,
+    seroprev = seroprev_ms,
+    width = da_ages
+)
+```
+
+```{r}
+ggplot(seroprev_ms_tibble, aes(x = age, y = seroprev, fill = age)) +
+    geom_col(width = seroprev_ms_tibble$width, just = 1.0, color = "black") +
+    labs(
+        x = "Age",
+        y = "Seroprevalence"
+    ) +
+    scale_x_continuous(breaks = seq(0, 80, 10)) +
+    scale_fill_continuous(low = "#85C1E9", high = "#154360")
 ```
 
 Let's also compute $R_0$.
@@ -756,9 +793,9 @@ We can get that by simulating an infection-free population, which we get by sett
 
 ```{r}
 yinit_sonly <- c(
-    S=c(rep(250,30)),
-    I=c(rep(0,30)),
-    R=c(rep(0,30))
+    S = c(rep(250, 30)),
+    I = c(rep(0, 30)),
+    R = c(rep(0, 30))
 )
 
 sol_sonly <- deSolve::ode(
@@ -773,10 +810,23 @@ sol_sonly <- deSolve::ode(
     )
 )
 
-time_sonly <- sol_sonly[, 1]
-pop <- apply(sol_sonly[, -1], 1 , sum)
+ms_sonly_pop <- tibble(
+    time = sol_sonly[, 1],
+    pop = apply(sol_sonly[, -1], 1 , sum)
+)
+```
 
-plot(time_sonly, pop, type = 'l')
+```{r}
+ggplot(ms_sonly_pop, aes(x = time, y = pop)) +
+    geom_area(fill = SIRcolors[4], alpha = 0.6) +
+    scale_y_continuous(
+        breaks = seq(0, 8000, 2000),
+        limits = c(0, 8000)
+    ) +
+    labs(
+        x = "Time",
+        y = "Population size"
+    )
 ```
 
 Alternatively, we can get the stable age distribution by finding the population structure that balances the birth, aging, and death processes.
@@ -828,9 +878,6 @@ max(
 
 ### Exercise 4: 
 #### a. Change the juvenile and adult contact rates (ages_params[1] and ages_params[2]) to reflect different transmission within groups. Make the juvenile contact rate 0.02 to reflect higher contact among kids (e.g. in schools).
-#### b. Use `image` or `filled.contour` to plot the $\beta$ matrix.
-#### c. Compute $R_0$ for your assumptions.
-#### d. Simulate and plot the age-structured SIR dynamics under your assumptions and record how the age-specific seroprevalence has changed.
 
 ```{r}
 beta1_r <- 0.007
@@ -840,7 +887,11 @@ beta <- matrix(data = beta1_r, nrow = 30, ncol = 30)
 beta[1:20,1:20] <- beta2_r
 beta[6:16,6:16] <- b3_r
 beta_ages <- beta
+```
 
+#### b. Use `image` or `filled.contour` to plot the $\beta$ matrix.
+
+```{r}
 filled.contour(
     ages, ages, beta_ages,
     plot.title=title(
@@ -851,6 +902,10 @@ filled.contour(
 )
 ```
 
+#### c. Compute $R_0$ for your assumptions.
+
+
+#### d. Simulate and plot the age-structured SIR dynamics under your assumptions and record how the age-specific seroprevalence has changed.
 
 ```{r}
 sol_r <- deSolve::ode(
@@ -876,17 +931,13 @@ barplot(height = seroprev_r, width = da_ages)
 ```
 
 ```{r}
-F <- diag(n) %*% multistage_params[["beta_ages"]] +
+F <- diag(n_r) %*% multistage_params[["beta_ages"]] +
     multistage_params[["aging"]] -
     diag(diag(multistage_params[["aging"]]))
 
 V <- diag(multistage_params[["gamma_ages"]] - diag(multistage_params[["aging"]]))
 
-max(
-    Re(
-        eigen(solve(V, F), only.values = TRUE)$values
-    )
-)
+max(Re(eigen(solve(V, F), only.values = TRUE)$values))
 # R0 = 6.53
 infects_r <- sol_r[dim(sol_r)[1],1+iindex]
 sum(ages * infects_r/sum(infects_r))
@@ -894,13 +945,32 @@ sum(infects_r[15:23])
 ```
 
 ```{r}
-sol_r <- as_tibble(sol_r)
-sol_rm <- pivot_longer(sol_r,id="time")
-sol_rm$class <- factor(substr(as.character(sol_rm$variable),start=1,stop=1))
-sol_rm$age <- ages[as.integer(substr(as.character(sol_rm$variable),2,stop=5))]
-ggplot(data=sol_rm)+geom_line(aes(x=time,y=value,col=age,group=age))+facet_grid(class~.,scales="free")
+sol_r_tibble <- as_tibble(sol_r) %>%
+    mutate(across(everything(), as.numeric))
+
+sol_rm <- pivot_longer(
+        sol_r_tibble,
+        cols = -time,
+        names_to = c("state", "age_index"),
+        names_pattern = "(.)(.*)",
+        values_to = "number"
+    ) %>%
+    mutate(
+        age = ages[as.integer(age_index)],
+        state = factor(state, labels = c("S", "I", "R")),
+    )
 ```
 
+```{r}
+ggplot(sol_rm, aes(x = time, y = number, color = age, group = age)) +
+    geom_line(linewidth = 1.5) +
+    facet_wrap(~state, ncol = 1, scale = "free_y") +
+    labs(
+        x = "Time",
+        y = "Number of individuals",
+        color = "Age"
+    )
+```
 
 ## R0 and the mean age of infection
 
