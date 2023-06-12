@@ -578,15 +578,19 @@ beta_ages[1:20, 21:30] <- ages_params["beta_aj"] # lower transmission rate betwe
 beta_ages[21:30, 1:20] <- ages_params["beta_aj"] # lower transmission rate between juveniles and adults
 ```
 
-#WAIFW stands for Who Aquires Infection From Whom
-filled.contour(
-    ages, ages, beta_ages,
-    plot.title = title(
-        main = "WAIFW matrix",
-        xlab = "age",
-        ylab = "age"
+```{r}
+beta_ages %>%
+    as.data.frame.table() %>%
+    mutate(
+        Age_J = rep(ages, 30),
+        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
+    ) %>%
+    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
+    geom_contour_filled(bins = 8) +
+    scale_fill_brewer(
+        palette = "Reds",
+        drop = FALSE
     )
-)
 ```
 
 We'll assume that, at the time of introduction, all children are susceptible, as are adults over 45, but that individuals aged 20--45 have seen the pathogen before and are immune.
@@ -625,22 +629,31 @@ Have a look at the aging matrix, for example by doing:
 ```{r}
 # move fast through the 1-year age classes - negatives are moves out, positives are moves in
 aging[1:5,1:5] 
+```
 
+```{r}
 # don't age between these classes -- e.g. can't age from 1 to 6
 aging[1:5,6:10] 
+```
 
+```{r}
 # move slowly between the wider age classes
 aging[25:30,25:30] 
+```
 
-#plot the aging matrix
-filled.contour(
-    ages, ages, aging,
-    plot.title = title(
-        main = "Aging matrix",
-        xlab = "age",
-        ylab = "age"
+```{r}
+aging %>%
+    as.data.frame.table() %>%
+    mutate(
+        Age_J = rep(ages, 30),
+        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30)))
+    ) %>%
+    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
+    geom_contour_filled() +
+    scale_fill_brewer(
+        palette = "RdBu",
+        drop = FALSE
     )
-)
 ```
 
 ### Exercise 2: What can you say about its structure? How are the different age groups in contact with each other?
