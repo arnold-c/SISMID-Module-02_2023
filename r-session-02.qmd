@@ -78,10 +78,23 @@ purrr::walk(
     }
 )
 
-text(arrpos[1,1] - 0.05, 2/3, quote(lambda[a]), cex = 2)
-text(arrpos[2,1] + 0.05, 2/3, quote(lambda[b]), cex = 2)
-text(arrpos[3,1] - 0.05, 1/3, quote(gamma[a]), cex = 2)
-text(arrpos[4,1] + 0.05, 1/3, quote(gamma[b]), cex = 2)
+purrr::pwalk(
+    .l = list(
+        state = 1:4,
+        xadjust = rep(0.05, 4),
+        yadjust = rep(-0.175, 4),
+        label = rep(c("lambda", "gamma"), 2),
+        label_subscript = rep(c("a", "b"), 2)
+    ),
+    .f = function(state, xadjust, yadjust, label, label_subscript) {
+        text(
+            elpos[state, 1] + xadjust,
+            elpos[state, 2] + yadjust,
+            bquote(.(ensym(label))[.(label_subscript)]),
+            cex = 2
+        )
+    }
+)
 
 par(op)
 ```
@@ -317,13 +330,24 @@ purrr::walk(
     }
 )
 
-text(0.5, arrpos[3,2] + 0.05, quote(alpha), cex = 2)
-text(0.5, arrpos[4,2] + 0.05, quote(alpha), cex = 2)
-text(0.5, arrpos[5,2] + 0.05, quote(alpha), cex = 2)
-text(elpos[4,1] - 0.05, 2/3, quote(lambda[J]), cex = 2)
-text(arrpos[7,1] + 0.05, 2/3, quote(lambda[A]), cex = 2)
-text(arrpos[8,1] - 0.05, 1/3, quote(gamma), cex = 2)
-text(arrpos[9,1] + 0.05, 1/3, quote(gamma), cex = 2)
+purrr::pwalk(
+    .l = list(
+        state = c(seq(2, 7, by = 1), 2, 3, 4, 5),
+        xadjust = c(rep(0.125, 6), rep(0.05, 4)),
+        yadjust = c(rep(0.05, 6), rep(-0.175, 4)),
+        label = c(rep(c("alpha", "mu"), 3), rep("lambda", 2), rep("gamma", 2)),
+        label_subscript = c(rep("", 6), "J", "A", rep("", 2))
+    ),
+    .f = function(state, xadjust, yadjust, label, label_subscript) {
+        text(
+            elpos[state, 1] + xadjust,
+            elpos[state, 2] + yadjust,
+            bquote(.(ensym(label))[.(label_subscript)]),
+            cex = 2
+        )
+    }
+)
+
 
 par(op)
 ```
