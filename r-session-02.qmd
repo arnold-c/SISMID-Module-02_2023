@@ -502,18 +502,20 @@ Now let's plot the equilibrium seroprevalence for each age group.
 demog_equil_seroprev <- tail(sol_demog_long) %>%
     mutate(
         prop = value / sum(value),
-        group = factor(group, levels = c("Group J", "Group A")),
+        group = case_when(group == "Group J" ~ "Juveniles", TRUE ~ "Adults"),
+        group = factor(group, levels = c("Juveniles", "Adults")),
         .by = group
     ) %>%
     filter(state == "R")
 ```
 
 ```{r}
+age_group_colors <- c("#2980B9", "#154360")
+
 ggplot(demog_equil_seroprev, aes(x = group, y = prop, fill = group)) +
     geom_col(position = "identity") +
     scale_fill_manual(
-        values = c("purple", "orange"),
-        limits = c("Group J", "Group A")
+        values = age_group_colors
     ) +
     labs(
         x = "Age group",
@@ -734,13 +736,16 @@ infects_ms <- sol_ms[, 1 + iindex]
 ```{r}
 sol_ms_tibble <- tibble(
         time = sol_ms[, 1],
-        juvies = apply(infects_ms[, juvies], 1, sum),
-        adults = apply(infects_ms[, adults], 1, sum)
+        Juveniles = apply(infects_ms[, juvies], 1, sum),
+        Adults = apply(infects_ms[, adults], 1, sum)
     ) %>%
     pivot_longer(
-        cols = c(juvies, adults),
+        cols = c(Juveniles, Adults),
         names_to = "age_group",
         values_to = "infections"
+    ) %>%
+    mutate(
+        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
     )
 ```
 
@@ -748,8 +753,7 @@ sol_ms_tibble <- tibble(
 ggplot(sol_ms_tibble, aes(x = time, y = infections, color = age_group)) +
     geom_line(linewidth = 1.5) +
     scale_color_manual(
-        values = c("orange", "purple"),
-        labels = c("Adults", "Juveniles")
+        values = age_group_colors
     ) +
     labs(
         x = "Time",
@@ -784,7 +788,7 @@ ggplot(seroprev_ms_tibble, aes(x = age, y = seroprev, fill = age)) +
         y = "Seroprevalence"
     ) +
     scale_x_continuous(breaks = seq(0, 80, 10)) +
-    scale_fill_continuous(low = "#85C1E9", high = "#154360")
+    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
 ```
 
 Let's also compute $R_0$.
