@@ -850,29 +850,31 @@ Alternatively, we can get the stable age distribution by finding the population 
 At equilibrium, we have the matrix equation
 
 $$
- \begin{pmatrix}
+\begin{pmatrix}
     -\alpha_1 & 0 & 0 & \cdots & 0\\
     \alpha_1 & -\alpha_2 & 0 & \cdots & 0\\
     0 & \alpha_2 & -\alpha_3 & \cdots & 0\\
     \vdots &  & \ddots & \ddots & \vdots \\
     0 & \cdots & & \alpha_{29} & -\alpha_{30}\\
-  \end{pmatrix} . \begin{pmatrix}
+\end{pmatrix} .
+\begin{pmatrix}
     n_1 \\ n_2 \\ n_3 \\ \vdots \\ n_{30}
-  \end{pmatrix} + \begin{pmatrix}
+\end{pmatrix} +
+\begin{pmatrix}
     B \\ 0 \\ 0 \\ \vdots \\ 0
-  \end{pmatrix}=
-  \begin{pmatrix}
+\end{pmatrix} =
+\begin{pmatrix}
     0 \\ 0 \\ 0 \\ \vdots \\ 0
-  \end{pmatrix}
+\end{pmatrix}
 $$
 
 To solve this equation in **R**, we can do
 
 ```{r}
-## get stable age distribution
-n <- solve(
+# solve(a, b) solves the equation a %*% x = b for x, so rearrange equation above so b is on the RHS of the equation
+ms_stable_n <- solve(
     aging_mat,
-    -c(multistage_params[["births_ages"]], rep(0, 29))
+    c(-1 * multistage_params[["births_ages"]], rep(0, 29))
 )
 ```
 
@@ -880,7 +882,7 @@ The following lines then compute $R_0$ using the next generation matrix method. 
 This calculation comes from a recipe described in detail previously [@diekmann2000mathematical; @heesterbeekBriefHistoryR02002; @bjornstadAdvancedNextGenerationMatrix2018; @heffernanPerspectivesBasicReproductive2005; @hurfordNextgenerationToolsEvolutionary2009] (we would recommend starting with [@bjornstadAdvancedNextGenerationMatrix2018; and @heffernanPerspectivesBasicReproductive2005]).
 
 ```{r}
-F <- diag(n) %*% multistage_params[["beta_ages"]] +
+F <- diag(ms_stable_n) %*% multistage_params[["beta_ages"]] +
     multistage_params[["aging_mat"]] -
     diag(diag(multistage_params[["aging_mat"]]))
 
@@ -889,6 +891,39 @@ V <- diag(multistage_params[["gamma_ages"]] - diag(multistage_params[["aging_mat
 max(
     Re(
         eigen(solve(V, F), only.values = TRUE)$values
+    )
+)
+```
+
+The steps below are copied from [@bjornstadAdvancedNextGenerationMatrix2018]
+
+1. Identify all n infected compartments
+2. Construct a n × 1 matrix, $\mathbf{F}$, that contains expressions for all completely new infections entering each infected compartment
+3. Construct a n × 1 matrix, $\mathbf{V^−}$, that contains expressions for all losses out of each infected compartment
+4. Construct a n × 1 matrix, $\mathbf{V^+}$, that contains expressions for all gains into each infected compartment that does not represent new infections but transfers among infectious classes
+5. Construct a n × 1 matrix, $\mathbf{V} = \mathbf{V^−} − \mathbf{V^+}$
+6. Generate two n × n Jacobian matrices $f$ and $v$ that are the partial derivatives of $\mathbf{F}$ and $\mathbf{V}$ with respect to the $n$ infectious state variables
+7. Evaluate the matrices at the disease free equilibrium (dfe), and finally
+8. $R_0$ is the greatest eigenvalue of $\mathbf{fv}^{−1}|_{dfe}$.
+
+```{r}
+f <- diag(ms_stable_n) %*% multistage_params[["beta_ages"]]
+
+# Losses occur due to recovery and aging
+v_minus <- rep(multistage_params[["gamma_ages"]], 30) +
+    diag(multistage_params[["aging_mat"]])
+
+# Non-infection gains occur due to aging
+v_plus <- -diag(multistage_params[["aging_mat"]])
+
+# Convert to matrix as required for solve() function
+v <- diag(v_minus - v_plus)
+
+max(
+    Re(
+        # Equivalent to fv^{-1} in the above recipe as solve effectively inverts
+        # V
+        eigen(solve(v, f), only.values = TRUE)$values
     )
 )
 ```
@@ -1290,16 +1325,14 @@ This forms one element of our next generation matrix.
 The other elements look very similar, except there are extra terms when we consider an infected juvenile because there is a (very small) chance they may age during the infectious period and therefore cause new infections as an adult:
 
 $$
-\mathrm{NGM} = \left(
-    \begin{matrix}
+\mathrm{NGM} = \begin{pmatrix}
         \frac{S_J^* \beta_{JJ}}{(\gamma + \alpha)} +
         \frac{\alpha}{(\gamma+\mu)} \frac{S_J^* \beta_{JA}}{(\gamma + \mu)} &
         \frac{S_J^* \beta_{JA}}{(\gamma + \mu)} \\
         \frac{S_A^* \beta_{AJ}}{(\gamma + \alpha)} + 
             \frac{\alpha}{(\gamma + \mu)} \frac{S_A^*\beta_{AA}}{(\gamma+\mu)} &
             \frac{S_A^* \beta_{AA}}{(\gamma + \mu)} 
-    \end{matrix}
-\right)
+    \end{pmatrix}
 $$ {#eq-ngm}
 
 $R_0$ can then be computed as the dominant eigenvalue (i.e., the one with the largest real part) of this matrix. Let's take an example from a model with 2 age classes, from above. First, let's define the components of the next generation matrix:
