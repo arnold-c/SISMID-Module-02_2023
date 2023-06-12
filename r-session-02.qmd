@@ -597,15 +597,24 @@ ages <- c(seq(1, 20, by = 1), seq(25, 65, by = 5), 80) # upper end of age classe
 da_ages <- diff(c(0, ages))                  # widths of age classes
 
 # set up a matrix of contact rates between classes -- more contact within juveniles and adults than between
-beta_ages <- matrix(nrow = 30, ncol = 30)    
-beta_ages[1:20, 1:20] <- ages_params["beta_j"] # transmission rate for juveniles 
-beta_ages[21:30, 21:30] <- ages_params["beta_a"] # transmission rate for adults
-beta_ages[1:20, 21:30] <- ages_params["beta_aj"] # lower transmission rate between juveniles and adults
-beta_ages[21:30, 1:20] <- ages_params["beta_aj"] # lower transmission rate between juveniles and adults
+beta_ages <- matrix(nrow = 30, ncol = 30)
+
+# transmission rate for juveniles
+beta_ages[1:20, 1:20] <- ages_params["beta_j"]
+
+# transmission rate for adults
+beta_ages[21:30, 21:30] <- ages_params["beta_a"]
+
+# lower transmission rate between juveniles and adults
+beta_ages[1:20, 21:30] <- ages_params["beta_aj"]
+
+# lower transmission rate between juveniles and adults
+beta_ages[21:30, 1:20] <- ages_params["beta_aj"]
 ```
 
 ```{r}
 beta_ages %>%
+    # Turn into a data.frame so we can use ggplot()
     as.data.frame.table() %>%
     mutate(
         Age_J = rep(ages, 30),
@@ -645,30 +654,34 @@ adults <- 21:30
 Now, to capture the aging process, it's convenient to define another matrix to hold the rates of movement between age classes.
 
 ```{r}
-aging <- diag(-1 / da_ages)
+# Create a diagonal matrix that holds the rates of aging out of each age class
+# The rows represent the age class you're in, the columns represent the age class
+# you're moving to
+aging_mat <- diag(-1 / da_ages)
 
-aging[row(aging) - col(aging) == 1] <- 1 / head(da_ages, -1)
+# Fill in the rates of aging into each age class
+aging_mat[row(aging_mat) - col(aging_mat) == 1] <- 1 / head(da_ages, -1)
 ```
 
 Have a look at the aging matrix, for example by doing:
 
 ```{r}
 # move fast through the 1-year age classes - negatives are moves out, positives are moves in
-aging[1:5,1:5] 
+aging_mat[1:5,1:5]
 ```
 
 ```{r}
 # don't age between these classes -- e.g. can't age from 1 to 6
-aging[1:5,6:10] 
+aging_mat[1:10,1:10]
 ```
 
 ```{r}
 # move slowly between the wider age classes
-aging[25:30,25:30] 
+aging_mat[25:30,25:30]
 ```
 
 ```{r}
-aging %>%
+aging_mat %>%
     as.data.frame.table() %>%
     mutate(
         Age_J = rep(ages, 30),
@@ -693,7 +706,7 @@ multistage_params <- list(
     beta_ages = beta_ages,
     gamma_ages = ages_params[4],
     births_ages = ages_params[5],
-    aging = aging
+    aging_mat = aging_mat
 )
 
 ja_multistage_model <- function (t, x, p, ...) {
@@ -705,13 +718,13 @@ ja_multistage_model <- function (t, x, p, ...) {
 
     gamma_ages <- p[["gamma_ages"]]   # recovery rate
     births_ages <- p[["births_ages"]] # birth rate
-    aging <- p[["aging"]]
+    aging_mat <- p[["aging_mat"]]
 
     lambda <- beta_mat %*% i        # force of infection
     
-    dsdt <- -lambda * s + aging %*% s
-    didt <- lambda * s + aging %*% i - gamma_ages * i
-    drdt <- aging %*% r + gamma_ages * i 
+    dsdt <- -lambda * s + aging_mat %*% s
+    didt <- lambda * s + aging_mat %*% i - gamma_ages * i
+    drdt <- aging_mat %*% r + gamma_ages * i 
     dsdt[1] <- dsdt[1] + births_ages
     
     list(c(dsdt, didt, drdt))
@@ -810,7 +823,7 @@ sol_sonly <- deSolve::ode(
         beta_ages = beta_ages,
         gamma_ages = ages_params[3],
         births_ages = demog_params["recovery"],
-        aging = aging
+        aging_mat = aging_mat
     )
 )
 
@@ -858,20 +871,20 @@ To solve this equation in **R**, we can do
 ```{r}
 ## get stable age distribution
 n <- solve(
-    aging,
+    aging_mat,
     -c(multistage_params[["births_ages"]], rep(0, 29))
 )
 ```
 
 The following lines then compute $R_0$ using the next generation matrix method. More details are available in the "Bonus" section at the end of the document.
-This calculation comes from a recipe described in detail by **Diekmann & Heesterbeek, 2000** and **Hurford *et. al*, 2010**.
+This calculation comes from a recipe described in detail previously [@diekmann2000mathematical; @heesterbeekBriefHistoryR02002; @bjornstadAdvancedNextGenerationMatrix2018; @heffernanPerspectivesBasicReproductive2005; @hurfordNextgenerationToolsEvolutionary2009] (we would recommend starting with [@bjornstadAdvancedNextGenerationMatrix2018; and @heffernanPerspectivesBasicReproductive2005]).
 
 ```{r}
 F <- diag(n) %*% multistage_params[["beta_ages"]] +
-    multistage_params[["aging"]] -
-    diag(diag(multistage_params[["aging"]]))
+    multistage_params[["aging_mat"]] -
+    diag(diag(multistage_params[["aging_mat"]]))
 
-V <- diag(multistage_params[["gamma_ages"]] - diag(multistage_params[["aging"]]))
+V <- diag(multistage_params[["gamma_ages"]] - diag(multistage_params[["aging_mat"]]))
 
 max(
     Re(
@@ -936,10 +949,10 @@ barplot(height = seroprev_r, width = da_ages)
 
 ```{r}
 F <- diag(n_r) %*% multistage_params[["beta_ages"]] +
-    multistage_params[["aging"]] -
-    diag(diag(multistage_params[["aging"]]))
+    multistage_params[["aging_mat"]] -
+    diag(diag(multistage_params[["aging_mat"]]))
 
-V <- diag(multistage_params[["gamma_ages"]] - diag(multistage_params[["aging"]]))
+V <- diag(multistage_params[["gamma_ages"]] - diag(multistage_params[["aging_mat"]]))
 
 max(Re(eigen(solve(V, F), only.values = TRUE)$values))
 # R0 = 6.53
@@ -1007,7 +1020,7 @@ for(ii in 1:length(scale)){
     params <- list(
         beta_ages = beta_ages,
         gamma_ages = ages_params[3],
-        aging = aging,
+        aging_mat = aging_mat,
         births_ages = demog_params[4]
     )
 
@@ -1026,16 +1039,16 @@ for(ii in 1:length(scale)){
 
     ## get stable age distribution
     n_R0 <- solve(
-        params[["aging"]],
+        params[["aging_mat"]],
         -c(params[["births_ages"]], rep(0, 29))
     )
     ## get R0
     F_R0 <- diag(n_R0) %*% params[["beta_ages"]] +
-        params[["aging"]] -
-        diag(diag(params[["aging"]]))
+        params[["aging_mat"]] -
+        diag(diag(params[["aging_mat"]]))
 
     V_R0 <- diag(params[["gamma_ages"]] -
-        diag(params[["aging"]]))
+        diag(params[["aging_mat"]]))
 
     R0[ii] <- max(
         Re(
@@ -1089,7 +1102,7 @@ for(ii in 1:10){
     params <- list(
         beta_ages = beta_ages,
         gamma_ages = ages_params[3],
-        aging = aging,
+        aging_mat = aging_mat,
         births_ages = births_ages
     )
 
@@ -1108,16 +1121,16 @@ for(ii in 1:10){
 
     ## get stable age distribution
     n_b <- solve(
-        params[["aging"]],
+        params[["aging_mat"]],
         -c(params[["births_ages"]], rep(0, 29))
     )
     ## get R0
     F_R0 <- diag(n_R0) %*% params[["beta_ages"]] +
-        params[["aging"]] -
-        diag(diag(params[["aging"]]))
+        params[["aging_mat"]] -
+        diag(diag(params[["aging_mat"]]))
 
     V_R0 <- diag(params[["gamma_ages"]] -
-        diag(params[["aging"]]))
+        diag(params[["aging_mat"]]))
 
     R0_b[ii] <- max(
         Re(
@@ -1243,17 +1256,17 @@ and compute the $R_0$ for this infection.
 
 ```{r}
 n_p <- solve(
-    multistage_params[["aging"]],
+    multistage_params[["aging_mat"]],
     -c(multistage_params[["births_ages"]], rep(0, 29))
 )
 
 F_p <- diag(n_p) %*% multistage_params[["beta_ages"]] +
-    multistage_params[["aging"]] -
-    diag(diag(multistage_params[["aging"]]))
+    multistage_params[["aging_mat"]] -
+    diag(diag(multistage_params[["aging_mat"]]))
 
 V_p <- diag(
     multistage_params[["gamma_ages"]] -
-        diag(multistage_params[["aging"]])
+        diag(multistage_params[["aging_mat"]])
     )
 
 max(
