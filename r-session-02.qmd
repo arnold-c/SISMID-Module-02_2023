@@ -527,7 +527,7 @@ ggplot(demog_equil_seroprev, aes(x = group, y = prop, fill = group)) +
 
 To compute $R_0$, we need to know the stable age distribution (the relative proportion in the juvenile and adult age classes) of the population, which we can find by solving for the disease-free equilibrium: $S_J^*=B/\alpha$ and $S_A^*=B/\mu$.
 
-With the stable age distribution, we can calculate $R_0$ by constructing the next generation matrix. Details on this method are described in the last section of this worksheet and are not required for completing the exercises in the worksheet. The code below outlines how the next generation matrix is constructed using the $\alpha$ (aging from juvenile to adult), $\mu$ (death), $n$ (total births), $\gamma$ (recovery), $da$ (width of age groups in years), and $\beta$ (transmission) parameters. 
+With the stable age distribution, we can calculate $R_0$ by constructing the next generation matrix. Details on this method are described in the last section of this worksheet (@eq-ngm) and are not required for completing the exercises in the worksheet. The code below outlines how the next generation matrix is constructed using the $\alpha$ (aging from juvenile to adult), $\mu$ (death), $n$ (total births), $\gamma$ (recovery), $da$ (width of age groups in years), and $\beta$ (transmission) parameters. 
 
 
 ```{r}
@@ -1277,14 +1277,17 @@ This forms one element of our next generation matrix.
 The other elements look very similar, except there are extra terms when we consider an infected juvenile because there is a (very small) chance they may age during the infectious period and therefore cause new infections as an adult:
 
 $$
- \mathrm{NGM} = \left(
-  \begin{matrix}
-    \frac{S_J^* \beta_{JJ} }{(\gamma+\alpha)} +\frac{\alpha}{(\gamma+\mu)}\frac{S_J^*\beta_{JA}}{(\gamma+\mu)} &  
-    \frac{S_J^* \beta_{JA}}{(\gamma+\mu)} \\
-    \frac{S_A^* \beta_{AJ} }{(\gamma+\alpha)} +\frac{\alpha}{(\gamma+\mu)}\frac{S_A^*\beta_{AA}}{(\gamma+\mu)} &  \frac{S_A^* \beta_{AA}}{(\gamma+\mu)} 
-  \end{matrix}
+\mathrm{NGM} = \left(
+    \begin{matrix}
+        \frac{S_J^* \beta_{JJ}}{(\gamma + \alpha)} +
+        \frac{\alpha}{(\gamma+\mu)} \frac{S_J^* \beta_{JA}}{(\gamma + \mu)} &
+        \frac{S_J^* \beta_{JA}}{(\gamma + \mu)} \\
+        \frac{S_A^* \beta_{AJ}}{(\gamma + \alpha)} + 
+            \frac{\alpha}{(\gamma + \mu)} \frac{S_A^*\beta_{AA}}{(\gamma+\mu)} &
+            \frac{S_A^* \beta_{AA}}{(\gamma + \mu)} 
+    \end{matrix}
 \right)
-$$
+$$ {#eq-ngm}
 
 $R_0$ can then be computed as the dominant eigenvalue (i.e., the one with the largest real part) of this matrix. Let's take an example from a model with 2 age classes, from above. First, let's define the components of the next generation matrix:
 
