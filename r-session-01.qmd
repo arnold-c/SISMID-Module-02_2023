@@ -7,7 +7,7 @@ execute:
 ---
 
 # R Session 01 
-## Interactive Plot
+## Interactive Plot {#sec-interactive-plots}
 
 ```{ojs}
 //| panel: input
@@ -80,7 +80,7 @@ SIRcolors = ["#1f77b4", "#ff7f0e", "#FF3851"]
 
 ::: {.panel-tabset}
 
-## Closed Population
+### Closed Population
 
 ```{ojs}
 closed_R0 = beta * dur_inf
@@ -115,7 +115,7 @@ Plot.plot({
 })
 ```
 
-## Demographics
+### Demographics
 
 ```{ojs}
 //| panel: input
@@ -382,36 +382,88 @@ This script should live in your SISMID directory, as described [previously]().
 Run it to check you get the same figure output as above.
 :::
 
+### Commenting the code
+
+### Adding in demographics
+
+Now we have a better sense of how the code works, let's add in some demographic structure.
+To recreate the demographic model from the interactive plot in @sec-interactive-plots, we just need to add births and deaths to the system.
+
+Recall the equations for the demographic model:
+
+$$
+\begin{aligned}
+\frac{dS}{dt} &= \mu N - \beta S I - \mu S \\
+\frac{dI}{dt} &= \beta S I - \gamma I - \mu I \\
+\frac{dR}{dt} &= \gamma I - \mu R
+\end{aligned}
+$$ {#eq-demographic-sir}
+
+#### Create a new R script called `01_demographic-sir.R` and copy the code from `S01_basic-sir.R` into it.
+
+#### Rename the function `sir_model()` to `demographic_sir_model()` in your new script (`S01_demographic-sir.R`). 
+
+#### Adapt the function `demographic_sir_model()` to match the above equations (@eq-demographic-sir).
+
+::: {.callout-instructions}
+**SET** birth rate = 0.05
+:::
+
+#### Rename the variables to reflect that we are now working with a demographic model, not the basic SIR model.
 
 
-## Matt Comments
+#### Plot the results of your demographic model. Does it look like this?
 
-### Exercise 1:
-#### Code for closed population
+```{r}
+#| message: false
+#| echo: false
 
-<!-- 1. Set transmission rate to 1 and duration of infection to 4.
-   1. what is R0? what is epidemic final size? Does this make sense given our definition of R0?
-   2. toggle on the cumulative area button and see what the epidemic final size is (approximately)
-      1. At approximately what time does the epidemic end?
-      2. Now change the duration of infection to 2*84= 8 days and change the transmission rate so you get the same R0. How does the epidemic final size compare? At what time (approx) does the epidemic end? (Size is determined by R0, duration is determined by gamma) -->
+sir_demog_model <- function(time, state, params, ... ){
+  transmission <- params["transmission"]
+  recovery <- 1 / params["duration"]
+  birth_rate <- params["birth_rate"]
 
-<!-- 2. Now, imagine that we have a drug (or vaccine) available to everyone that either reduced transmission OR shortened the duration of infection.
-   1. Set transmission to 1 and duration to 8 days. Note the epidemic final size and the time until the epidemic is over. Now, imagine everyone has access to the drug (unrealistic) that reduces transmission by P%, what happens to final size and outbreak duration? (e.g. transmission =1 and duration =8; reduce transmission by .75 and go from final size of 1 to final size of .8. duration from 50 to 100.)
-3. Now, imagine everyone has access to a drug that reduces the duration of infection from 8 to 2 days (75% reduction), what happens to final size and outbreak duration? (e.g. transmission =1 and duration =8; reduce transmission by .75 and go from final size of 1 to final size of .8. duration from 50 to 25.)
+  S <- state["S"]
+  I <- state["I"]
+  R <- state["R"]
 
-Which would you prefer and why? (This is the only really open ended question, but should be pretty straightforward discussion) -->
+  dSdt <- -transmission * S * I + (birth_rate * (1 - S))
+  dIdt <- (transmission * S * I) - (recovery * I) - (birth_rate * I)
+  dRdt <- (recovery * I) - (birth_rate * R)
 
-#### Code with demography (need to do post-session review)
+  return(list(c(dSdt, dIdt, dRdt)))
+}
 
+sir_demog_params <- c(sir_params, birth_rate = 0.05)
 
+sir_demog_sol <- deSolve::ode(
+  y = sir_init_states,
+  times = sim_times,
+  func = sir_demog_model,
+  parms = sir_demog_params
+)
 
-1. What is R0?
-2. What is equilibrium proportion that is susceptible? If you were to test for antibodies against infection in the population, what proportion would you expect to be positive?
-3. At what time (approximately) does the system reach equilibrium?
-4. Change the birth rate to 0.005 — what is the new R0? At what time (approximately) does the system reach equilibrium?
-5. Change the transmission rate to get (approximately) the same R0 as in 1B.1. What is the equilibrium proportion that are susceptible?
-6. What is different about the prevalence of infection (the equilibrium proportion that are infected in the scenarios in 1B.1 and 1B.4 (higher birth rate with same R0 has higher prevalence)
+sir_demog_sol_df <- as_tibble(sir_demog_sol) %>%
+  mutate(
+    across(
+      everything(),
+      as.numeric
+    )
+  ) %>%
+  pivot_longer(
+    cols = -time,
+    names_to = "state",
+    values_to = "proportion"
+  ) %>%
+  mutate(state = factor(state, levels = c("S", "I", "R")))
 
-### Exercise 2: Review and annotate code in R
-
-(We could give them the annotations and have them place them on the code)
+ggplot(sir_demog_sol_df, aes(x = time, y = proportion, color = state)) +
+  geom_line(linewidth = 1.5) +
+  scale_color_manual(values = SIRcolors) +
+  labs(
+    x = "Time",
+    y = "Fraction",
+    color = "State"
+  ) +
+  theme(legend.position = "top")
+```
