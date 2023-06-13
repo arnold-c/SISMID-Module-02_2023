@@ -597,23 +597,25 @@ ages <- c(seq(1, 20, by = 1), seq(25, 65, by = 5), 80) # upper end of age classe
 da_ages <- diff(c(0, ages))                  # widths of age classes
 
 # set up a matrix of contact rates between classes -- more contact within juveniles and adults than between
-beta_ages <- matrix(nrow = 30, ncol = 30)
+ages_beta_mat <- matrix(nrow = 30, ncol = 30)
 
 # transmission rate for juveniles
-beta_ages[1:20, 1:20] <- ages_params["beta_j"]
+ages_beta_mat[1:20, 1:20] <- ages_params["beta_j"]
 
 # transmission rate for adults
-beta_ages[21:30, 21:30] <- ages_params["beta_a"]
+ages_beta_mat[21:30, 21:30] <- ages_params["beta_a"]
 
 # lower transmission rate between juveniles and adults
-beta_ages[1:20, 21:30] <- ages_params["beta_aj"]
+ages_beta_mat[1:20, 21:30] <- ages_params["beta_aj"]
 
 # lower transmission rate between juveniles and adults
-beta_ages[21:30, 1:20] <- ages_params["beta_aj"]
+ages_beta_mat[21:30, 1:20] <- ages_params["beta_aj"]
 ```
 
+<a id="fig-beta-mat"></a>
+
 ```{r}
-beta_ages %>%
+ages_beta_mat %>%
     # Turn into a data.frame so we can use ggplot()
     as.data.frame.table() %>%
     mutate(
@@ -700,12 +702,12 @@ aging_mat %>%
 Now we can put the pieces together to write a simulator for the age-structured SIR dynamics.
 
 ```{r}
-# Using a list instead of a vector to hold the parameters, as beta_ages and aging 
+# Using a list instead of a vector to hold the parameters, as ages_beta_mat and aging 
 # are both matrices, so we want to keep them as matrices, rather than flattening
 multistage_params <- list(
-    beta_ages = beta_ages,
-    gamma_ages = ages_params[4],
-    births_ages = ages_params[5],
+    beta_mat = ages_beta_mat,
+    gamma = ages_params[4],
+    births = ages_params[5],
     aging_mat = aging_mat
 )
 
@@ -714,18 +716,18 @@ ja_multistage_model <- function (t, x, p, ...) {
     i <- x[iindex]                  # infecteds
     r <- x[rindex]                  # recovereds
     
-    beta_mat <- p[["beta_ages"]]    # transmission rate
+    beta_mat <- p[["beta_mat"]]    # transmission rate
 
-    gamma_ages <- p[["gamma_ages"]]   # recovery rate
-    births_ages <- p[["births_ages"]] # birth rate
+    gamma <- p[["gamma"]]   # recovery rate
+    births <- p[["births"]] # birth rate
     aging_mat <- p[["aging_mat"]]
 
     lambda <- beta_mat %*% i        # force of infection
     
     dsdt <- -lambda * s + aging_mat %*% s
-    didt <- lambda * s + aging_mat %*% i - gamma_ages * i
-    drdt <- aging_mat %*% r + gamma_ages * i 
-    dsdt[1] <- dsdt[1] + births_ages
+    didt <- lambda * s + aging_mat %*% i - gamma * i
+    drdt <- aging_mat %*% r + gamma * i 
+    dsdt[1] <- dsdt[1] + births
     
     list(c(dsdt, didt, drdt))
 
@@ -783,8 +785,8 @@ Use the code below to display the age-specific seroprevalence (i.e., the seropre
 
 ```{r}
 equil_ms <- drop(tail(sol_ms, 1))[-1]
-n_ms <- equil_ms[sindex] + equil_ms[iindex] + equil_ms[rindex]
-seroprev_ms <- equil_ms[rindex] / n_ms
+equil_n_ms <- equil_ms[sindex] + equil_ms[iindex] + equil_ms[rindex]
+seroprev_ms <- equil_ms[rindex] / equil_n_ms
 
 seroprev_ms_tibble <- tibble(
     age = ages,
@@ -820,9 +822,9 @@ sol_sonly <- deSolve::ode(
     times = seq(0, 300, by = 1),
     func = ja_multistage_model,
     parms = list(
-        beta_ages = beta_ages,
-        gamma_ages = ages_params[3],
-        births_ages = demog_params["recovery"],
+        beta_mat = ages_beta_mat,
+        gamma = ages_params[3],
+        births = demog_params["recovery"],
         aging_mat = aging_mat
     )
 )
@@ -874,7 +876,7 @@ To solve this equation in **R**, we can do
 # solve(a, b) solves the equation a %*% x = b for x, so rearrange equation above so b is on the RHS of the equation
 ms_stable_n <- solve(
     aging_mat,
-    c(-1 * multistage_params[["births_ages"]], rep(0, 29))
+    c(-1 * multistage_params[["births"]], rep(0, 29))
 )
 ```
 
@@ -882,11 +884,11 @@ The following lines then compute $R_0$ using the next generation matrix method. 
 This calculation comes from a recipe described in detail previously [@diekmann2000mathematical; @heesterbeekBriefHistoryR02002; @bjornstadAdvancedNextGenerationMatrix2018; @heffernanPerspectivesBasicReproductive2005; @hurfordNextgenerationToolsEvolutionary2009] (we would recommend starting with [@bjornstadAdvancedNextGenerationMatrix2018; and @heffernanPerspectivesBasicReproductive2005]).
 
 ```{r}
-F <- diag(ms_stable_n) %*% multistage_params[["beta_ages"]] +
+F <- diag(ms_stable_n) %*% multistage_params[["beta_mat"]] +
     multistage_params[["aging_mat"]] -
     diag(diag(multistage_params[["aging_mat"]]))
 
-V <- diag(multistage_params[["gamma_ages"]] - diag(multistage_params[["aging_mat"]]))
+V <- diag(multistage_params[["gamma"]] - diag(multistage_params[["aging_mat"]]))
 
 max(
     Re(
@@ -907,10 +909,10 @@ The steps below are copied from [@bjornstadAdvancedNextGenerationMatrix2018]
 8. $R_0$ is the greatest eigenvalue of $\mathbf{fv}^{−1}|_{dfe}$.
 
 ```{r}
-f <- diag(ms_stable_n) %*% multistage_params[["beta_ages"]]
+f <- diag(ms_stable_n) %*% multistage_params[["beta_mat"]]
 
 # Losses occur due to recovery and aging
-v_minus <- rep(multistage_params[["gamma_ages"]], 30) +
+v_minus <- rep(multistage_params[["gamma"]], 30) +
     diag(multistage_params[["aging_mat"]])
 
 # Non-infection gains occur due to aging
@@ -932,76 +934,136 @@ max(
 #### a. Change the juvenile and adult contact rates (ages_params[1] and ages_params[2]) to reflect different transmission within groups. Make the juvenile contact rate 0.02 to reflect higher contact among kids (e.g. in schools).
 
 ```{r}
-beta1_r <- 0.007
-beta2_r <- 0.02
-b3_r <- 0.03
-beta <- matrix(data = beta1_r, nrow = 30, ncol = 30)
-beta[1:20,1:20] <- beta2_r
-beta[6:16,6:16] <- b3_r
-beta_ages <- beta
+update_age_beta_mat <- matrix(data = 0.007, nrow = 30, ncol = 30)
+update_age_beta_mat[1:20,1:20] <- 0.02
+update_age_beta_mat[6:16,6:16] <- 0.03
+
+update_age_params <- list(
+    beta_mat = update_age_beta_mat,
+    gamma = ages_params[4],
+    births = ages_params[5],
+    aging_mat = aging_mat
+)
 ```
 
-#### b. Use `image` or `filled.contour` to plot the $\beta$ matrix.
+#### b. Edit the `ggplot` code from [Section 7.3](#fig-beta-mat) to plot the new beta matrix.
 
 ```{r}
-filled.contour(
-    ages, ages, beta_ages,
-    plot.title=title(
-        main = "WAIFW matrix",
-        xlab = "age",
-        ylab = "age"
+update_age_beta_mat %>%
+    # Turn into a data.frame so we can use ggplot()
+    as.data.frame.table() %>%
+    mutate(
+        Age_J = rep(ages, 30),
+        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
+    ) %>%
+    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
+    geom_contour_filled(bins = 8) +
+    scale_fill_brewer(
+        palette = "Reds",
+        drop = FALSE
     )
-)
 ```
 
-#### c. Compute $R_0$ for your assumptions.
+::: {.callout-note}
+You could also use the `fill.contour()` base-R function to plot the beta matrix without needing to do any dataframe modifications, but it doesn't look as nice ...
+:::
 
 
-#### d. Simulate and plot the age-structured SIR dynamics under your assumptions and record how the age-specific seroprevalence has changed.
+#### c. Simulate and plot the age-structured SIR dynamics under your assumptions and record how the age-specific seroprevalence has changed.
 
 ```{r}
-sol_r <- deSolve::ode(
+update_age_sol <- deSolve::ode(
     y = demog_yinit_ages,
-    times = seq(0,400,by=0.1),
+    times = seq(0, 400, by = 0.1),
     func = ja_multistage_model,
-    parms = multistage_params
+    parms = update_age_params
+)
+
+# Get the time series for each infectious age group
+update_age_infects <- update_age_sol[, 1 + iindex]
+```
+
+```{r}
+update_age_sol_tibble <- tibble(
+        time = update_age_sol[, 1],
+        Juveniles = apply(update_age_infects[, juvies], 1, sum),
+        Adults = apply(update_age_infects[, adults], 1, sum)
+    ) %>%
+    pivot_longer(
+        cols = c(Juveniles, Adults),
+        names_to = "age_group",
+        values_to = "infections"
+    ) %>%
+    mutate(
+        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
+    )
+```
+
+```{r}
+ggplot(update_age_sol_tibble, aes(x = time, y = infections, color = age_group)) +
+    geom_line(linewidth = 1.5) +
+    scale_color_manual(
+        values = age_group_colors
+    ) +
+    labs(
+        x = "Time",
+        y = "Number of infections",
+        color = "Age group"
+    )
+```
+
+```{r}
+update_age_equil <- drop(tail(update_age_sol, 1))[-1]
+
+update_age_equil_n <- update_age_equil[sindex] +
+    update_age_equil[iindex] +
+    update_age_equil[rindex]
+
+update_age_seroprev <- update_age_equil[rindex] / update_age_equil_n
+
+update_age_seroprev_tibble <- tibble(
+    age = ages,
+    seroprev = update_age_seroprev,
+    width = da_ages
 )
 ```
 
 ```{r}
-plot(sol_r[, 1], apply(sol_r[, 1 + iindex], 1, sum), type = 'l')
-lines(sol_r[, 1], apply(sol_r[, 1 + iindex[juvies]], 1, sum), col = 'red')
-lines(sol_r[, 1], apply(sol_r[, 1 + iindex[adults]], 1, sum), col = 'blue')
+ggplot(update_age_seroprev_tibble, aes(x = age, y = seroprev, fill = age)) +
+    geom_col(width = update_age_seroprev_tibble$width, just = 1.0, color = "black") +
+    labs(
+        x = "Age",
+        y = "Seroprevalence"
+    ) +
+    scale_x_continuous(breaks = seq(0, 80, 10)) +
+    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
 ```
 
-```{r}
-equil_r <- drop(tail(sol_r, 1))[-1]
-n_r <- equil_r[sindex] + equil_r[iindex] + equil_r[rindex]
-seroprev_r <- equil_r[rindex] / n_r
-names(seroprev_r) <- ages
-barplot(height = seroprev_r, width = da_ages)
-```
+#### d. Compute $R_0$ for your assumptions.
 
 ```{r}
-F <- diag(n_r) %*% multistage_params[["beta_ages"]] +
-    multistage_params[["aging_mat"]] -
-    diag(diag(multistage_params[["aging_mat"]]))
+F <- diag(update_age_equil_n) %*% update_age_beta_mat +
+    update_age_params[["aging_mat"]] -
+    diag(diag(update_age_params[["aging_mat"]]))
 
-V <- diag(multistage_params[["gamma_ages"]] - diag(multistage_params[["aging_mat"]]))
+V <- diag(update_age_params[["gamma_ages"]] - diag(update_age_params[["aging_mat"]]))
 
 max(Re(eigen(solve(V, F), only.values = TRUE)$values))
 # R0 = 6.53
-infects_r <- sol_r[dim(sol_r)[1],1+iindex]
-sum(ages * infects_r/sum(infects_r))
-sum(infects_r[15:23])
+
+# Find the equilibrium values for each infected age group
+update_age_infects_equil <- update_age_infects[dim(update_age_infects)[1], ]
+
+# Estimate R0 using the equilibrium values and how long people stay in each age group
+sum(ages * update_age_infects_equil / sum(update_age_infects_equil))
+
+sum(update_age_infects_equil[15:23])
 ```
 
 ```{r}
-sol_r_tibble <- as_tibble(sol_r) %>%
-    mutate(across(everything(), as.numeric))
-
-sol_rm <- pivot_longer(
-        sol_r_tibble,
+update_age_sol_tibble <- as_tibble(update_age_sol) %>%
+    mutate(across(everything(), as.numeric)) %>%
+    pivot_longer(
         cols = -time,
         names_to = c("state", "age_index"),
         names_pattern = "(.)(.*)",
@@ -1014,7 +1076,7 @@ sol_rm <- pivot_longer(
 ```
 
 ```{r}
-ggplot(sol_rm, aes(x = time, y = number, color = age, group = age)) +
+ggplot(update_age_sol_tibble, aes(x = time, y = number, color = age, group = age)) +
     geom_line(linewidth = 1.5) +
     facet_wrap(~state, ncol = 1, scale = "free_y") +
     labs(
@@ -1031,8 +1093,8 @@ But this time, we'll calculate $R_0$, the mean age of infection, and the number 
 To do so, we'll make a loop and evaluate the code for each of 10 increasing levels of mixing (which whill change R0)
 
 ```{r}
- # a vector of scaling factors, we'll reduce the contact rate 
- # from the original code by each of the values in this vector
+# a vector of scaling factors, we'll reduce the contact rate 
+# from the original code by each of the values in this vector
 scale <- seq(0.2, 1, length = 10) 
 R0 <- numeric() # somewhere to store results for the mean age
 mean_age <- numeric() # somewhere to store results for the mean age
@@ -1049,14 +1111,14 @@ for(ii in 1:length(scale)){
     beta <- matrix(data = beta1, nrow = 30, ncol = 30)
     beta[1:20,1:20] <- beta2
     beta[6:16,6:16] <- b3
-    beta_ages <- beta * scale[ii]
+    beta_mat <- beta * scale[ii]
     #filled.contour(beta)
 
     params <- list(
-        beta_ages = beta_ages,
-        gamma_ages = ages_params[3],
+        beta_mat = beta_mat,
+        gamma = ages_params[3],
         aging_mat = aging_mat,
-        births_ages = demog_params[4]
+        births = demog_params[4]
     )
 
     sol_R0 <- deSolve::ode(
@@ -1075,14 +1137,14 @@ for(ii in 1:length(scale)){
     ## get stable age distribution
     n_R0 <- solve(
         params[["aging_mat"]],
-        -c(params[["births_ages"]], rep(0, 29))
+        -c(params[["births"]], rep(0, 29))
     )
     ## get R0
-    F_R0 <- diag(n_R0) %*% params[["beta_ages"]] +
+    F_R0 <- diag(n_R0) %*% params[["beta_mat"]] +
         params[["aging_mat"]] -
         diag(diag(params[["aging_mat"]]))
 
-    V_R0 <- diag(params[["gamma_ages"]] -
+    V_R0 <- diag(params[["gamma"]] -
         diag(params[["aging_mat"]]))
 
     R0[ii] <- max(
@@ -1130,15 +1192,15 @@ for(ii in 1:10){
     beta <- matrix(data = beta1, nrow = 30, ncol = 30)
     beta[1:20,1:20] <- beta2
     beta[6:16,6:16] <- b3
-    beta_ages <- beta
+    beta_mat <- beta
     births_ages <- births_seq[ii]
     #filled.contour(beta)
 
     params <- list(
-        beta_ages = beta_ages,
-        gamma_ages = ages_params[3],
+        beta_mat = beta_mat,
+        gamma = ages_params[3],
         aging_mat = aging_mat,
-        births_ages = births_ages
+        births = births_ages
     )
 
     sol_b <- deSolve::ode(
@@ -1157,14 +1219,14 @@ for(ii in 1:10){
     ## get stable age distribution
     n_b <- solve(
         params[["aging_mat"]],
-        -c(params[["births_ages"]], rep(0, 29))
+        -c(params[["births"]], rep(0, 29))
     )
     ## get R0
-    F_R0 <- diag(n_R0) %*% params[["beta_ages"]] +
+    F_R0 <- diag(n_R0) %*% params[["beta_mat"]] +
         params[["aging_mat"]] -
         diag(diag(params[["aging_mat"]]))
 
-    V_R0 <- diag(params[["gamma_ages"]] -
+    V_R0 <- diag(params[["gamma"]] -
         diag(params[["aging_mat"]]))
 
     R0_b[ii] <- max(
@@ -1244,10 +1306,10 @@ Let's assume that each contact has a constant probability $q$ of resulting in a 
 
 ```{r}
 q <- 3e-5
-beta_ages <- q * xsym
+ages_beta_mat <- q * xsym
 
 filled.contour(
-    ages,ages,log10(beta_ages),
+    ages,ages,log10(ages_beta_mat),
     plot.title = title(
         main="WAIFW matrix based on POLYMOD data",
         xlab="age", ylab="age"
@@ -1292,15 +1354,15 @@ and compute the $R_0$ for this infection.
 ```{r}
 n_p <- solve(
     multistage_params[["aging_mat"]],
-    -c(multistage_params[["births_ages"]], rep(0, 29))
+    -c(multistage_params[["births"]], rep(0, 29))
 )
 
-F_p <- diag(n_p) %*% multistage_params[["beta_ages"]] +
+F_p <- diag(n_p) %*% multistage_params[["beta_mat"]] +
     multistage_params[["aging_mat"]] -
     diag(diag(multistage_params[["aging_mat"]]))
 
 V_p <- diag(
-    multistage_params[["gamma_ages"]] -
+    multistage_params[["gamma"]] -
         diag(multistage_params[["aging_mat"]])
     )
 
