@@ -7,6 +7,7 @@ execute:
 ---
 
 # R Session 01 
+## Interactive Plot
 
 ```{ojs}
 //| panel: input
@@ -293,6 +294,96 @@ Transmission rate so you get the same $R_0$ in @sec-demog-whatisr0
 
 #### What is the new equilibrium proportion that is susceptible?
 #### What is different about the prevalence of infection (equilibrium proportion that is infected) in the scenarios @sec-demog-whatisr0 and @sec-demog-updatedr0 i.e. higher birth rate with the same $R_0$?
+
+## Exercise 2
+
+Now we have some intuition behind how the different parameters affect the dynamics of the SIR system, let's look at how we can implement this in R.
+Below is some R code that implements the basic closed-population SIR model.
+The purpose of the questions in this exercise is to guide you through the code and help you understand how it works so you can modify it to answer your own questions.
+
+::: {.callout-tip}
+There are a number of useful features throughout this website to help you.
+
+Firstly, clicking on the text `Click to toggle the code` does what it says on the tin - clicking the button will hide the code if open (the default), or show the code if hidden.
+
+Secondly, in the top right corner of each code block, there is a button that looks like a clipboard.
+Clicking this button will copy the code to your clipboard, so you can paste it into your own R session.
+
+Finally, within the code blocks (and, in fact, in the regular text like this section), functions (e.g. `list()`, `pivot_longer()`) that come from a package (i.e., ones we didn't write) show up in a different color.
+In most cases, you can hover your cursor over them (on the part next the the parentheses e.g., `ode()` from the line `deSolve::ode()`), and if they become underlined, you can click on them to go to the documentation for that function.
+This is like searching for the documentation from your R console using `?ode`.
+:::
+
+```{r}
+#| message: false
+#| echo: true
+#| code-fold: show
+
+library(tidyverse)
+library(deSolve)
+
+theme_set(theme_minimal())
+
+sir_model <- function(time, state, params, ... ){
+  transmission <- params["transmission"]
+  recovery <- 1 / params["duration"]
+
+  S <- state["S"]
+  I <- state["I"]
+  R <- state["R"]
+
+  dSdt <- -transmission * S * I
+  dIdt <- (transmission * S * I) - (recovery * I)
+  dRdt <- (recovery * I)
+
+  return(list(c(dSdt, dIdt, dRdt)))
+}
+
+sir_params <- c(transmission = 0.3, duration = 6)
+sir_init_states <- c(S = 0.99, I = 0.01, R = 0)
+sim_times <- seq(0, 200, by = 0.1)
+
+sir_sol <- deSolve::ode(
+  y = sir_init_states,
+  times = sim_times,
+  func = sir_model,
+  parms = sir_params
+)
+
+sir_sol_df <- as_tibble(sir_sol) %>%
+  mutate(
+    across(
+      everything(),
+      as.numeric
+    )
+  ) %>%
+  pivot_longer(
+    cols = -time,
+    names_to = "state",
+    values_to = "proportion"
+  ) %>%
+  mutate(state = factor(state, levels = c("S", "I", "R")))
+
+SIRcolors <- c(S = "#1f77b4", I = "#ff7f0e", R = "#FF3851")
+
+ggplot(sir_sol_df, aes(x = time, y = proportion, color = state)) +
+  geom_line(linewidth = 1.5) +
+  scale_color_manual(values = SIRcolors) +
+  labs(
+    x = "Time",
+    y = "Fraction",
+    color = "State"
+  ) +
+  theme(legend.position = "top")
+```
+
+::: {.callout-instructions}
+Copy the code above into a new R script.
+This script should live in your SISMID directory, as described [previously]().
+Run it to check you get the same figure output as above.
+:::
+
+
 
 ## Matt Comments
 
