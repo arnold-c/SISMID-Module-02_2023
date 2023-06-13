@@ -64,6 +64,8 @@ license: "CC BY-NC"
 
 bibliography: references.bib
 
+crossref:
+  chapters: true
 
 format:
   html:

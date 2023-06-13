@@ -195,65 +195,133 @@ Plot.plot({
 
 :::
 
-## Questions
-### Developing intuition in a closed population
+## Exercise 1
+### Closed Population Model
 
-To begin with, let's consider a closed population (no births or deaths), and a low initial fraction infected.
-The initial values are set so that $R_0 = 1.8$, with a duration of infection of 6 days (roughly similar to circulating influenza).
+::: {.callout-instructions}
+**SET**
 
-#### What happens if we increase the transmission rate?
+Transmission rate = 1
 
-Play around with the slider for the transmission rate.
-
-##### What happens to the epidemic curve?
-##### What happens to the peak fraction infected?
-##### What happens to the total fraction infected?
-##### What happens to the duration of the epidemic?
-##### What happens to the final size (equilibrium) of the epidemic?
-
-
-### Exploring the effect of births and deaths
-
-Now let's consider a population with births and deaths.
-Move "Demographics" panel above.
-
-#### What happens if we increase the birth rate (above 0)?
-
-##### What happens to $R_0$?
-##### What happens to the epidemic curve?
-##### What happens to the peak fraction infected?
-##### What happens to the total fraction infected?
-##### What happens to the duration of the epidemic?
-##### What happens to the final size (equilibrium) of the epidemic?
-
-::: {.callout-tip}
-You may want to increase the maximum simulation time.
+Duration of infection = 4.
 :::
 
-When $R_0 < 1$, equilibrium lines are not calculated. Why?
+#### What is $R_0$? {#sec-whatisr0}
+#### What is epidemic final size?
+#### Does this make sense given our definition of $R_0$?
+
+::: {.callout-instructions}
+Toggle on the cumulative area button and see what the epidemic final size is (approximately)
+:::
+
+#### At approximately what time does the epidemic end?
+
+::: {.callout-instructions}
+**SET**
+
+Duration of infection = 8 days
+
+Transmission rate so you get the same $R_0$ in @sec-whatisr0
+:::
+
+#### How does the epidemic final size compare?
+#### At what time (approx) does the epidemic end?
+
+::: {.callout-note}
+Size is determined by $R_0$, duration is determined by recovery rate $\left(\gamma = \frac{1}{\text{duration of infection}}\right)$
+:::
+
+Now, imagine that we have a drug (or vaccine) available to everyone that either reduced transmission OR shortened the duration of infection.
+
+::: {.callout-instructions}
+**SET**
+
+Transmission rate = 1
+
+Duration of infection = 8 days
+:::
+
+#### Note the epidemic final size and the time until the epidemic is over.
+
+::: {.callout-instructions}
+Now, imagine everyone has access to the drug (unrealistic) that reduces transmission by $P \%$
+:::
+
+#### What happens to the final size and outbreak duration?
+
+Now, imagine everyone has access to a drug that reduces the duration of infection from 8 to 2 days (75% reduction).
+
+#### What happens to the final size and outbreak duration?
+
+::: {.callout-question}
+Which would you prefer and why? (This is the only really open ended question, but should be pretty straightforward discussion)
+:::
+
+### Demographic Model
+
+::: {.callout-instructions}
+**SET:**
+Transmission = 1
+
+Duration = 8
+
+Birth rate = .002
+:::
+
+#### What is $R_0$? {#sec-demog-whatisr0}
+#### What is the equilibrium proportion that is susceptible?
+#### If you were to test for antibodies against infection in the population, what proportion would you expect to be positive?
+
+::: {.callout-note}
+Assume a perfectly accurate serological test
+:::
+
+#### At what time (approximately) does the system reach equilibrium?
+
+::: {.callout-instructions}
+**SET**
+
+Birth rate = 0.005
+:::
+
+#### What is the new $R_0$? {#sec-demog-updatedr0}
+#### At what time (approximately) does the system reach equilibrium?
+
+::: {.callout-instructions}
+Transmission rate so you get the same $R_0$ in @sec-demog-whatisr0
+:::
+
+#### What is the new equilibrium proportion that is susceptible?
+#### What is different about the prevalence of infection (equilibrium proportion that is infected) in the scenarios @sec-demog-whatisr0 and @sec-demog-updatedr0 i.e. higher birth rate with the same $R_0$?
+
+## Matt Comments
+
+### Exercise 1:
+#### Code for closed population
+
+<!-- 1. Set transmission rate to 1 and duration of infection to 4.
+   1. what is R0? what is epidemic final size? Does this make sense given our definition of R0?
+   2. toggle on the cumulative area button and see what the epidemic final size is (approximately)
+      1. At approximately what time does the epidemic end?
+      2. Now change the duration of infection to 2*84= 8 days and change the transmission rate so you get the same R0. How does the epidemic final size compare? At what time (approx) does the epidemic end? (Size is determined by R0, duration is determined by gamma) -->
+
+<!-- 2. Now, imagine that we have a drug (or vaccine) available to everyone that either reduced transmission OR shortened the duration of infection.
+   1. Set transmission to 1 and duration to 8 days. Note the epidemic final size and the time until the epidemic is over. Now, imagine everyone has access to the drug (unrealistic) that reduces transmission by P%, what happens to final size and outbreak duration? (e.g. transmission =1 and duration =8; reduce transmission by .75 and go from final size of 1 to final size of .8. duration from 50 to 100.)
+3. Now, imagine everyone has access to a drug that reduces the duration of infection from 8 to 2 days (75% reduction), what happens to final size and outbreak duration? (e.g. transmission =1 and duration =8; reduce transmission by .75 and go from final size of 1 to final size of .8. duration from 50 to 25.)
+
+Which would you prefer and why? (This is the only really open ended question, but should be pretty straightforward discussion) -->
+
+#### Code with demography (need to do post-session review)
 
 
-### Effects of interventions
-#### Intervention effects transmission
 
-##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces transmission by 50%?
-##### How could we incorporate this into the model?
-##### What are the core assumptions being made in this model, and how might they affect the results?
+1. What is R0?
+2. What is equilibrium proportion that is susceptible? If you were to test for antibodies against infection in the population, what proportion would you expect to be positive?
+3. At what time (approximately) does the system reach equilibrium?
+4. Change the birth rate to 0.005 — what is the new R0? At what time (approximately) does the system reach equilibrium?
+5. Change the transmission rate to get (approximately) the same R0 as in 1B.1. What is the equilibrium proportion that are susceptible?
+6. What is different about the prevalence of infection (the equilibrium proportion that are infected in the scenarios in 1B.1 and 1B.4 (higher birth rate with same R0 has higher prevalence)
 
-#### Intervention effects duration of infection
+### Exercise 2: Review and annotate code in R
 
-We could imagine that an intervention could also reduce the duration of infection, say, for example, Tamiflu for influenza.
-
-##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the duration of infection by 50%?
-##### How could we incorporate this into the model?
-##### What are the core assumptions being made in this model, and how might they affect the results?
-
-#### Intervention effects proportion of population susceptible
-
-We could imagine that an intervention could also reduce the proportion of the population susceptible, say, for example, a vaccine.
-
-##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the proportion of the population susceptible by 50%?
-##### How could we incorporate this into the model?
-##### What are the core assumptions being made in this model, and how might they affect the results?
-
-## Appendix {.appendix}
+(We could give them the annotations and have them place them on the code)
