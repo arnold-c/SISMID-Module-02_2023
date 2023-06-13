@@ -12,11 +12,12 @@ execute:
 
 ```{ojs}
 //| panel: input
-viewof beta = Inputs.range(
+viewof beta_day = Inputs.range(
   [0.0, 2.0],
-  {value: 0.3, step: 0.01, label: "Transmission rate"}
+  {value: 0.3, step: 0.01, label: "Transmission rate (per day)"}
 )
-viewof dur_inf = Inputs.range(
+
+viewof dur_inf_day = Inputs.range(
   [0.0, 20],
   {value: 6.0, step: 0.5, label: "Duration of Infection (days)"}
 )
@@ -32,9 +33,13 @@ viewof area = Inputs.toggle(
 ```
 
 ```{ojs}
-function sir(dydt, y, t) {
-  var gamma = 1 / dur_inf
+beta = beta_day * 365
+dur_inf = dur_inf_day / 365
+gamma = 1 / dur_inf
+```
 
+```{ojs}
+function sir(dydt, y, t) {
   dydt[0] = -beta * y[0] * y[1]
   dydt[1] = beta * y[0] * y[1] - gamma * y[1]
   dydt[2] = gamma * y[1]
@@ -68,10 +73,13 @@ function simulate(f, t0, y0, dt, tmax) {
     R: ysim.map(d => d[2])
     })
 }
+
+dt = 0.01/365
 ```
 
+
 ```{ojs}
-sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], 0.01, 200)
+sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], dt, 200/365)
 sir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
 ```
 
@@ -104,9 +112,11 @@ Plot.plot({
   style: {fontSize: "20px"},
   marginLeft: 65,
   marginTop: 40,
+  marginBottom: 55,
   grid: true,
   width: 1000,
   height: 600,
+  x: {label: "Time (years)"},
   y: {domain: [0, 1]},
   marks: [
     area ?
@@ -120,19 +130,21 @@ Plot.plot({
 
 ```{ojs}
 //| panel: input
-viewof births = Inputs.range(
-  [0.0, 0.5],
-  {value: 0.05, step: 0.001, label: "Birth rate"}
+viewof life_exp = Inputs.range(
+  [40, 100],
+  {value: 50, step: 5, label: "Life expectancy (years)"}
 )
 
 viewof tmax = Inputs.range(
-  [200.0, 500.0],
-  {value: 200.0, step: 50.0, label: "Maximum simulation time"}
+  [100, 200],
+  {value: 1.0, step: 10.0, label: "Maximum simulation time (years)"}
 )
 ```
 
 ```{ojs}
-demographic_R0 = beta / ((1/dur_inf) + births)
+births = 1 / life_exp
+
+demographic_R0 = beta / (gamma + births)
 eq_S = 1 / demographic_R0
 eq_I = births / beta * (demographic_R0 - 1)
 eq_R = 1 - (eq_S + eq_I)
@@ -158,7 +170,7 @@ function sir_demographic(dydt, y, t) {
 ```
 
 ```{ojs}
-sir_demographic_sol = simulate(sir_demographic, 0, [1.0-I0, I0, 0.0], 0.01, tmax)
+sir_demographic_sol = simulate(sir_demographic, 0, [1.0-I0, I0, 0.0], 0.002, tmax)
 sir_demographic_sol_long = sir_demographic_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
 ```
 
@@ -172,9 +184,11 @@ Plot.plot({
   style: {fontSize: "20px"},
   marginLeft: 65,
   marginTop: 40,
+  marginBottom: 55,
   grid: true,
   width: 1000,
   height: 600,
+  x: {label: "Time (years)"},
   y: {domain: [0, 1]},
   marks: [
     area ?
@@ -320,7 +334,6 @@ This is like searching for the documentation from your R console using `?ode`.
 ```{r}
 #| message: false
 #| echo: true
-
 library(tidyverse)
 library(deSolve)
 
@@ -403,7 +416,6 @@ Sometimes that is unavoidable (e.g., you had to look up how to do a particular t
 ```{r}
 #| echo: true
 #| eval: false
-
 # Turn the output from the ODE solver into a tibble (dataframe)
 # so we can manipulate and plot it easily
 sir_sol_df <- as_tibble(sir_sol) %>%
@@ -473,7 +485,6 @@ $$ {#eq-demographic-sir}
 ```{r}
 #| message: false
 #| echo: false
-
 sir_demog_model <- function(time, state, params, ... ){
   transmission <- params["transmission"]
   recovery <- 1 / params["duration"]
@@ -534,7 +545,6 @@ ggplot(sir_demog_sol_df, aes(x = time, y = proportion, color = state)) +
 #| echo: true
 #| eval: false
 #| code-fold: true
-
 library(tidyverse)
 library(deSolve)
 
@@ -600,7 +610,6 @@ ggplot(sir_sol_df, aes(x = time, y = proportion, color = state)) +
 #| echo: true
 #| eval: false
 #| code-fold: true
-
 library(tidyverse)
 library(deSolve)
 
