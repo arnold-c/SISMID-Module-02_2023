@@ -73,7 +73,8 @@ format:
       light: [cosmo, format/_fonts.scss, format/_light.scss, format/_callouts.scss]
       dark: [cosmo, format/_fonts.scss, format/_dark.scss, format/_callouts.scss]
     code-copy: true
-    code-fold: false
+    code-fold: show
+    code-summary: "Click to toggle the code"
     code-overflow: wrap
     code-link: true
     code-tools: true

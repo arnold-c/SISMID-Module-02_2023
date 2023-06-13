@@ -317,7 +317,6 @@ This is like searching for the documentation from your R console using `?ode`.
 ```{r}
 #| message: false
 #| echo: true
-#| code-fold: show
 
 library(tidyverse)
 library(deSolve)
