@@ -332,7 +332,6 @@ This is like searching for the documentation from your R console using `?ode`.
 :::
 
 ```{r}
-#| message: false
 #| echo: true
 library(tidyverse)
 library(deSolve)
@@ -365,18 +364,36 @@ sir_sol <- deSolve::ode(
   parms = sir_params
 )
 
+# Turn the output from the ODE solver into a tibble (dataframe)
+# so we can manipulate and plot it easily
 sir_sol_df <- as_tibble(sir_sol) %>%
+  # Convert all columns to numeric (they are currently type
+  # deSolve so will produce warnings when plotting etc)
   mutate(
+    # Rather than repeatedly type the same function for every
+    # column, use the across() function to apply the function
+    # to a selection of columns
     across(
+      # The cols argument takes a selection of columns to apply
+      # a function to. Here, we want to apply the as.numeric()
+      # function to all columns, so we use the function
+      # everything() to select all columns.
       .cols = everything(),
       .fns = as.numeric
     )
   ) %>%
+  # Convert the dataframe from wide to long format, so we have a
+  # column for the time, a column for the state, and a column
+  # for the proportion of the population in that state at that
+  # time
   pivot_longer(
+    # Don't pivot the time column
     cols = -time,
     names_to = "state",
     values_to = "proportion"
   ) %>%
+  # Update the state column to be a factor, so the plot will
+  # show the states in the correct order
   mutate(state = factor(state, levels = c("S", "I", "R")))
 
 SIRcolors <- c(S = "#1f77b4", I = "#ff7f0e", R = "#FF3851")
@@ -412,42 +429,6 @@ For your code that you view in RStudio (or some other text editor), use one line
 Generally, you want to use comments to explain why you are doing something, not what you are doing.
 Sometimes that is unavoidable (e.g., you had to look up how to do a particular thing in R and need the hints to be able to understand the code), but try to stick to this guideline where possible.
 :::
-
-```{r}
-#| echo: true
-#| eval: false
-# Turn the output from the ODE solver into a tibble (dataframe)
-# so we can manipulate and plot it easily
-sir_sol_df <- as_tibble(sir_sol) %>%
-  # Convert all columns to numeric (they are currently type
-  # deSolve so will produce warnings when plotting etc)
-  mutate(
-    # Rather than repeatedly type the same function for every
-    # column, use the across() function to apply the function
-    # to a selection of columns
-    across(
-      # The cols argument takes a selection of columns to apply
-      # a function to. Here, we want to apply the as.numeric()
-      # function to all columns, so we use the function
-      # everything() to select all columns.
-      .cols = everything(),
-      .fns = as.numeric
-    )
-  ) %>%
-  # Convert the dataframe from wide to long format, so we have a
-  # column for the time, a column for the state, and a column
-  # for the proportion of the population in that state at that
-  # time
-  pivot_longer(
-    # Don't pivot the time column
-    cols = -time,
-    names_to = "state",
-    values_to = "proportion"
-  ) %>%
-  # Update the state column to be a factor, so the plot will
-  # show the states in the correct order
-  mutate(state = factor(state, levels = c("S", "I", "R")))
-```
 
 
 As you're going through the code, if you don't understand what a particular function does, try looking up the documentation for it!
@@ -550,6 +531,28 @@ library(deSolve)
 
 theme_set(theme_minimal())
 
+
+#' Basic SIR model
+#'
+#' A basic SIR model with no demographic structure to be used in deSolve
+#'
+#' @param time deSolve passes the time parameter to the function.
+#' @param state A vector of states.
+#' @param params A vector of parameter values .
+#' @param ... Other arguments passed by deSolve.
+#'
+#' @return A deSolve matrix of states at each time step.
+#' @examples
+#' sir_params <- c(transmission = 0.3, duration = 6)
+#' sir_init_states <- c(S = 0.99, I = 0.01, R = 0)
+#' sim_times <- seq(0, 200, by = 0.1)
+#' 
+#' sir_sol <- deSolve::ode(
+#'    y = sir_init_states,
+#'    times = sim_times,
+#'    func = sir_model,
+#'    parms = sir_params
+#' ))
 sir_model <- function(time, state, params, ... ){
   transmission <- params["transmission"]
   recovery <- 1 / params["duration"]
@@ -615,6 +618,27 @@ library(deSolve)
 
 theme_set(theme_minimal())
 
+#' Demographic SIR model
+#'
+#' An SIR model with births and deaths (constant pop) to be used in deSolve
+#'
+#' @param time deSolve passes the time parameter to the function.
+#' @param state A vector of states.
+#' @param params A vector of parameter values .
+#' @param ... Other arguments passed by deSolve.
+#'
+#' @return A deSolve matrix of states at each time step.
+#' @examples
+#' sir_params <- c(transmission = 0.3, duration = 6, birth_rate = 0.05)
+#' sir_init_states <- c(S = 0.99, I = 0.01, R = 0)
+#' sim_times <- seq(0, 200, by = 0.1)
+#' 
+#' sir_sol <- deSolve::ode(
+#'    y = sir_init_states,
+#'    times = sim_times,
+#'    func = sir_demog_model,
+#'    parms = sir_params
+#' ))
 sir_demog_model <- function(time, state, params, ... ){
   transmission <- params["transmission"]
   recovery <- 1 / params["duration"]
