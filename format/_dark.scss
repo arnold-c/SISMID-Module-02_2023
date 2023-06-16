@@ -27,6 +27,10 @@ a.sidebar-item-text.sidebar-link.text-start, .sidebar-title>a{
     color: $body-color;
 }
 
+div.sidebar.sidebar-navigation.rollup.quarto-sidebar-toggle-contents, nav.sidebar.sidebar-navigation:not(.rollup) {
+    background-color: $code-bg;
+}
+
 // GitHub logo colors in sidebar and TOC navbar
 .bi::before, [class^="bi-"]::before, [class*=" bi-"]::before, #quarto-margin-sidebar .toc-actions .bi:before{
     color: $body-color;

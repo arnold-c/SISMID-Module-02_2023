@@ -2,46 +2,101 @@
 format:
   html:
     page-layout: full
+    code-line-numbers: true
 execute:
     echo: false
 ---
 
 # R Session 01 
+## Interactive Plot {#sec-interactive-plots}
 
 ```{ojs}
-//| panel: input
+init_beta = 0.3
+init_dur_inf = 6.0
+init_I0 = 0.01
+init_births = 0.0
+init_tmax = 200
+```
+
+```{ojs}
+function set(input, value) {
+  input.value = value;
+  input.dispatchEvent(new Event("input", {bubbles: true}));
+}
+```
+
+```{ojs}
+//| panel: sidebar
+
+viewof reset = Inputs.button([
+  ["Reset all sliders", () => {
+    set(viewof beta, init_beta)
+    set(viewof dur_inf, init_dur_inf)
+    set(viewof I0, init_I0)
+    set(viewof births, init_births)
+    set(viewof tmax, init_tmax)
+  }]
+])
+
 viewof beta = Inputs.range(
   [0.0, 2.0],
-  {value: 0.3, step: 0.01, label: "Transmission rate"}
+  {value: init_beta, step: 0.01, label: "Transmission rate (per day)"}
 )
+
 viewof dur_inf = Inputs.range(
   [0.0, 20],
-  {value: 6.0, step: 0.5, label: "Duration of Infection (days)"}
+  {value: init_dur_inf, step: 0.5, label: "Duration of Infection (days)"}
 )
 
 viewof I0 = Inputs.range(
   [0.0, 1.0],
-  {value: 0.01, step: 0.01, label: "Initial fraction infected"}
+  {value: init_I0, step: 0.01, label: "Initial fraction infected"}
+)
+
+viewof births = Inputs.range(
+  [0, 0.05],
+  {value: init_births, step: 0.001, label: "Birth rate"}
+)
+
+viewof tmax = Inputs.range(
+  [200, 600],
+  {value: init_tmax, step: 10.0, label: "Maximum simulation time (years)"}
 )
 
 viewof area = Inputs.toggle(
   {label: "Cumulative Area plot", value: false}
 )
+
+md`${tex`R_0 = ${R0_str}`}`
+
+{
+  if (births == 0){
+    var finalsize = sir_sol.get("R", sir_sol.numRows()-1)
+    var finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})
+
+    return md`${tex`\text{Final size} = ${finalsize_str}`}`
+  } else {
+    return md``
+  }
+}
 ```
 
 ```{ojs}
-function sir(dydt, y, t) {
-  var gamma = 1 / dur_inf
-
-  dydt[0] = -beta * y[0] * y[1]
-  dydt[1] = beta * y[0] * y[1] - gamma * y[1]
-  dydt[2] = gamma * y[1]
-}
+gamma = 1 / dur_inf
+dt = 0.01
 ```
 
 ```{ojs}
 import {odeRK4} from '@rreusser/integration@3064'
 import { aq, op } from '@uwdata/arquero'
+```
+
+```{ojs}
+function sir(dydt, y, t) {
+  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])
+  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]
+  dydt[2] = gamma * y[1] - births * y[2]
+}
 ```
 
 ```{ojs}
@@ -60,7 +115,7 @@ function simulate(f, t0, y0, dt, tmax) {
   }
   
   return aq.table({
-    t: tsim,
+    Time: tsim,
     S: ysim.map(d => d[0]),
     I: ysim.map(d => d[1]),
     R: ysim.map(d => d[2])
@@ -69,95 +124,40 @@ function simulate(f, t0, y0, dt, tmax) {
 ```
 
 ```{ojs}
-sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], 0.01, 200)
-sir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
+sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], dt, tmax)
+sir_sol_long = sir_sol.fold(aq.not('Time'), {as: ['State', 'Fraction']})
 ```
 
 ```{ojs}
 SIRcolors = ["#1f77b4", "#ff7f0e", "#FF3851"]
 ```
 
-::: {.panel-tabset}
-
-## Closed Population
-
 ```{ojs}
-closed_R0 = beta * dur_inf
-closed_R0_str = closed_R0.toLocaleString(undefined, {minimumFractionDigits: 2})
-
-finalsize = sir_sol.get("R", sir_sol.numRows()-1)
-finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})
-
-md`${tex`R_0 = ${closed_R0_str}`}`
-md`${tex`\text{Final size} = ${finalsize_str}`}`
+R0 = beta / (gamma + births)
+R0_str = R0.toLocaleString(undefined, {minimumFractionDigits: 2})
 ```
 
 ```{ojs}
-Plot.plot({
-  color: {
-    legend: true,
-    domain: ["S", "I", "R"],
-    range: SIRcolors
-  },
-  style: {fontSize: "20px"},
-  marginLeft: 65,
-  marginTop: 40,
-  grid: true,
-  width: 1000,
-  height: 600,
-  y: {domain: [0, 1]},
-  marks: [
-    area ?
-      Plot.areaY(sir_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
-      Plot.lineY(sir_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 6})
-  ]
-})
-```
+function calculate_equil(R0){
+  if (births > 0) {
+    var eq_S = 1 / R0
+    var eq_I = births / beta * (R0 - 1)
+    var eq_R = 1 - (eq_S + eq_I)
 
-## Demographics
+    const eq_vals = aq.table({
+      State: ["S", "I", "R"],
+      Fraction: [eq_S, eq_I, eq_R]
+    })
 
-```{ojs}
-//| panel: input
-viewof births = Inputs.range(
-  [0.0, 0.5],
-  {value: 0.05, step: 0.001, label: "Birth rate"}
-)
-
-viewof tmax = Inputs.range(
-  [200.0, 500.0],
-  {value: 200.0, step: 50.0, label: "Maximum simulation time"}
-)
-```
-
-```{ojs}
-demographic_R0 = beta / ((1/dur_inf) + births)
-eq_S = 1 / demographic_R0
-eq_I = births / beta * (demographic_R0 - 1)
-eq_R = 1 - (eq_S + eq_I)
-
-eq_vals = aq.table({
-  State: ["S", "I", "R"],
-  Fraction: [eq_S, eq_I, eq_R]
-})
-
-demographic_R0_str = demographic_R0.toLocaleString(undefined, {minimumFractionDigits: 2})
-
-md`${tex`R_0 = ${demographic_R0_str}`}`
-```
-
-```{ojs}
-function sir_demographic(dydt, y, t) {
-  var gamma = 1 / dur_inf
-
-  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])
-  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]
-  dydt[2] = gamma * y[1] - births * y[2]
+    return eq_vals
+  } else {
+    return null
+  }
 }
 ```
 
 ```{ojs}
-sir_demographic_sol = simulate(sir_demographic, 0, [1.0-I0, I0, 0.0], 0.01, tmax)
-sir_demographic_sol_long = sir_demographic_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
+eq_vals = calculate_equil(R0)
 ```
 
 ```{ojs}
@@ -170,90 +170,503 @@ Plot.plot({
   style: {fontSize: "20px"},
   marginLeft: 65,
   marginTop: 40,
+  marginBottom: 55,
   grid: true,
-  width: 1000,
-  height: 600,
+  width: 800,
+  height: 670,
   y: {domain: [0, 1]},
   marks: [
     area ?
-      Plot.areaY(sir_demographic_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
+      Plot.areaY(sir_sol_long, {x: "Time", y: "Fraction", fill: "State"}) :
       [
-        demographic_R0 >= 1.0 ?
-          Plot.ruleY(
-            eq_vals,
-            {y: "Fraction", stroke: "State", strokeWidth: 2, strokeDasharray: [10]}
-          ) :
-          null,
+        R0 >= 1.0 && births > 0 ?
+        Plot.ruleY(
+          eq_vals,
+          {y: "Fraction", stroke: "State", strokeWidth: 2, strokeDasharray: [10]}
+        ) :
+        null,
         Plot.lineY(
-          sir_demographic_sol_long,
-          {x: "t", y: "Fraction", stroke: "State", strokeWidth: 6}
+          sir_sol_long,
+          {x: "Time", y: "Fraction", stroke: "State", strokeWidth: 6}
         )
       ]
   ]
 })
 ```
 
+## Closed Population Model Intuition
+
+We'll first get develop an intuition for the closed population model.
+We'll then extend this intuition to the open population model.
+When the `Birth rate` slider in the side panel of the interactive figure is set to 0, we have no births or deaths, so their is no replenishment of the susceptible population i.e., it is a closed population.
+
+::: {.callout-note title="SET"}
+Transmission rate = 1
+
+Duration of infection = 4.
 :::
 
-## Questions
-### Developing intuition in a closed population
+### What is $R_0$? {#sec-whatisr0}
+### What is epidemic final size?
+### Does this make sense given our definition of $R_0$?
 
-To begin with, let's consider a closed population (no births or deaths), and a low initial fraction infected.
-The initial values are set so that $R_0 = 1.8$, with a duration of infection of 6 days (roughly similar to circulating influenza).
+::: {.callout appearance="simple"}
+Toggle on the cumulative area button and see what the epidemic final size is (approximately)
+:::
 
-#### What happens if we increase the transmission rate?
+### At approximately what time does the epidemic end?
 
-Play around with the slider for the transmission rate.
+::: {.callout-note title="SET"}
 
-##### What happens to the epidemic curve?
-##### What happens to the peak fraction infected?
-##### What happens to the total fraction infected?
-##### What happens to the duration of the epidemic?
-##### What happens to the final size (equilibrium) of the epidemic?
+Duration of infection = 8 days
+
+Transmission rate so you get the same $R_0$ in @sec-whatisr0
+:::
+
+### How does the epidemic final size compare?
+### At what time (approx) does the epidemic end?
+
+::: {.callout-note}
+Size is determined by $R_0$, duration is determined by recovery rate $\left(\gamma = \frac{1}{\text{duration of infection}}\right)$
+:::
 
 
-### Exploring the effect of births and deaths
+Now, imagine that we have a drug (or vaccine) available to everyone that either reduced transmission OR shortened the duration of infection.
 
-Now let's consider a population with births and deaths.
-Move "Demographics" panel above.
+::: {.callout-note title="SET"}
+Transmission rate = 1
 
-#### What happens if we increase the birth rate (above 0)?
+Duration of infection = 8 days
+:::
 
-##### What happens to $R_0$?
-##### What happens to the epidemic curve?
-##### What happens to the peak fraction infected?
-##### What happens to the total fraction infected?
-##### What happens to the duration of the epidemic?
-##### What happens to the final size (equilibrium) of the epidemic?
+### Note the epidemic final size and the time until the epidemic is over.
+
+::: {.callout appearance="simple"}
+Now, imagine everyone has access to the drug (unrealistic) that reduces transmission by $P \%$
+:::
+
+### What happens to the final size and outbreak duration?
+
+Now, imagine everyone has access to a drug that reduces the duration of infection from 8 to 2 days (75% reduction).
+
+### What happens to the final size and outbreak duration?
+
+::: {.callout-question}
+Which would you prefer and why? (This is the only really open ended question, but should be pretty straightforward discussion)
+:::
+
+## Demographic Model Intuition
+
+::: {.callout-note title="SET"}
+Transmission = 1
+
+Duration = 8
+
+Birth rate = .002
+:::
+
+### What is $R_0$? {#sec-demog-whatisr0}
+### What is the equilibrium proportion that is susceptible?
+### If you were to test for antibodies against infection in the population, what proportion would you expect to be positive?
+
+::: {.callout-note}
+Assume a perfectly accurate serological test
+:::
+
+### At what time (approximately) does the system reach equilibrium?
+
+::: {.callout-note title="SET"}
+Birth rate = 0.005
+:::
+
+### What is the new $R_0$? {#sec-demog-updatedr0}
+### At what time (approximately) does the system reach equilibrium?
+
+::: {.callout-note title="SET"}
+Transmission rate so you get the same $R_0$ in @sec-demog-whatisr0
+:::
+
+### What is the new equilibrium proportion that is susceptible?
+### What is different about the prevalence of infection (equilibrium proportion that is infected) in the scenarios @sec-demog-whatisr0 and @sec-demog-updatedr0 i.e. higher birth rate with the same $R_0$?
+
+## Model Building With R
+### Setting Up A Script
+
+Now we have some intuition behind how the different parameters affect the dynamics of the SIR system, let's look at how we can implement this in R.
+Below is some R code that implements the basic closed-population SIR model.
+The purpose of the questions in this exercise is to guide you through the code and help you understand how it works so you can modify it to answer your own questions.
+
+<a id="quarto-tips"></a>
 
 ::: {.callout-tip}
-You may want to increase the maximum simulation time.
+There are a number of useful features throughout this website to help you.
+
+Firstly, clicking on the text `Click to toggle the code` does what it says on the tin - clicking the button will hide the code if open (the default), or show the code if hidden.
+
+Secondly, in the top right corner of each code block, there is a button that looks like a clipboard.
+Clicking this button will copy the code to your clipboard, so you can paste it into your own R session.
+
+Finally, within the code blocks (and, in fact, in the regular text like this section), functions (e.g. `list()`, `pivot_longer()`) that come from a package (i.e., ones we didn't write) show up in a different color.
+In most cases, you can hover your cursor over them (on the part next the the parentheses e.g., `ode()` from the line `deSolve::ode()`), and if they become underlined, you can click on them to go to the documentation for that function.
+This is like searching for the documentation from your R console using `?ode`.
 :::
 
-When $R_0 < 1$, equilibrium lines are not calculated. Why?
+```{r}
+#| echo: true
+#| message: false
+library(tidyverse)
+library(deSolve)
+
+theme_set(theme_minimal())
+
+sir_model <- function(time, state, params, ... ){
+  transmission <- params["transmission"]
+  recovery <- 1 / params["duration"]
+
+  S <- state["S"]
+  I <- state["I"]
+  R <- state["R"]
+
+  dSdt <- -transmission * S * I
+  dIdt <- (transmission * S * I) - (recovery * I)
+  dRdt <- (recovery * I)
+
+  return(list(c(dSdt, dIdt, dRdt)))
+}
+
+sir_params <- c(transmission = 0.3, duration = 6)
+sir_init_states <- c(S = 0.99, I = 0.01, R = 0)
+sim_times <- seq(0, 200, by = 0.1)
+
+sir_sol <- deSolve::ode(
+  y = sir_init_states,
+  times = sim_times,
+  func = sir_model,
+  parms = sir_params
+)
+
+# Turn the output from the ODE solver into a tibble (dataframe)
+# so we can manipulate and plot it easily
+sir_sol_df <- as_tibble(sir_sol) %>%
+  # Convert all columns to numeric (they are currently type
+  # deSolve so will produce warnings when plotting etc)
+  mutate(
+    # Rather than repeatedly type the same function for every
+    # column, use the across() function to apply the function
+    # to a selection of columns
+    across(
+      # The cols argument takes a selection of columns to apply
+      # a function to. Here, we want to apply the as.numeric()
+      # function to all columns, so we use the function
+      # everything() to select all columns.
+      .cols = everything(),
+      .fns = as.numeric
+    )
+  ) %>%
+  # Convert the dataframe from wide to long format, so we have a
+  # column for the time, a column for the state, and a column
+  # for the proportion of the population in that state at that
+  # time
+  pivot_longer(
+    # Don't pivot the time column
+    cols = -time,
+    names_to = "state",
+    values_to = "proportion"
+  ) %>%
+  # Update the state column to be a factor, so the plot will
+  # show the states in the correct order
+  mutate(state = factor(state, levels = c("S", "I", "R")))
+
+SIRcolors <- c(S = "#1f77b4", I = "#ff7f0e", R = "#FF3851")
+
+ggplot(sir_sol_df, aes(x = time, y = proportion, color = state)) +
+  geom_line(linewidth = 1.5) +
+  scale_color_manual(values = SIRcolors) +
+  labs(
+    x = "Time",
+    y = "Fraction",
+    color = "State"
+  ) +
+  theme(legend.position = "top")
+```
+
+::: {.callout appearance="simple"}
+Copy the code above into a new R script.
+This script should live in your SISMID directory, as described [previously]().
+Run it to check you get the same figure output as above.
+:::
+
+### Commenting the code
+
+For this part of the exercise, go through the basic SIR code and add comments to each section of code explaining what it does.
+To get you started, we've added some comments to the creating of the dataframe object `sir_sol_df` at line 32 in the code block above, as some of the functions used there are a bit more complicated.
+
+::: {.callout-note}
+Normally you would not use nearly as extensive comments.
+Here, I've gone overboard to help you understand what each line does, as some may not be familiar with all the functions used.
+I've also broken up the comments into multiple lines so that it is easier to read on this website.
+For your code that you view in RStudio (or some other text editor), use one line per sentence of the comment i.e., start a new comment line after each period.
+
+Generally, you want to use comments to explain why you are doing something, not what you are doing.
+Sometimes that is unavoidable (e.g., you had to look up how to do a particular thing in R and need the hints to be able to understand the code), but try to stick to this guideline where possible.
+:::
 
 
-### Effects of interventions
-#### Intervention effects transmission
+As you're going through the code, if you don't understand what a particular function does, try looking up the documentation for it!
+You can do this by clicking on the function within the website (as described [above](#quarto-tips)), or by typing `?function_name` into the R console (Google also is your friend here!).
 
-##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces transmission by 50%?
-##### How could we incorporate this into the model?
-##### What are the core assumptions being made in this model, and how might they affect the results?
+### Adding in demographics
 
-#### Intervention effects duration of infection
+Now we have a better sense of how the code works, let's add in some demographic structure.
+To recreate the demographic model from the interactive plot in @sec-interactive-plots, we just need to add births and deaths to the system.
 
-We could imagine that an intervention could also reduce the duration of infection, say, for example, Tamiflu for influenza.
+Recall the equations for the demographic model:
 
-##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the duration of infection by 50%?
-##### How could we incorporate this into the model?
-##### What are the core assumptions being made in this model, and how might they affect the results?
+$$
+\begin{aligned}
+\frac{dS}{dt} &= \mu N - \beta S I - \mu S \\
+\frac{dI}{dt} &= \beta S I - \gamma I - \mu I \\
+\frac{dR}{dt} &= \gamma I - \mu R
+\end{aligned}
+$$ {#eq-demographic-sir}
 
-#### Intervention effects proportion of population susceptible
+#### Create a new R script called `01_demographic-sir.R` and copy the code from `S01_basic-sir.R` into it.
 
-We could imagine that an intervention could also reduce the proportion of the population susceptible, say, for example, a vaccine.
+#### Rename the function `sir_model()` to `demographic_sir_model()` in your new script (`S01_demographic-sir.R`). 
 
-##### Based on your intuition from the previous questions, what do you think will happen if we enact an intervention that reduces the proportion of the population susceptible by 50%?
-##### How could we incorporate this into the model?
-##### What are the core assumptions being made in this model, and how might they affect the results?
+#### Adapt the function `demographic_sir_model()` to match the above equations (@eq-demographic-sir).
+
+::: {.callout-note title="SET"} birth rate = 0.05
+:::
+
+#### Rename the variables to reflect that we are now working with a demographic model, not the basic SIR model.
+
+#### Plot the results of your demographic model. Does it look like this?
+
+```{r}
+#| message: false
+#| echo: false
+sir_demog_model <- function(time, state, params, ... ){
+  transmission <- params["transmission"]
+  recovery <- 1 / params["duration"]
+  birth_rate <- params["birth_rate"]
+
+  S <- state["S"]
+  I <- state["I"]
+  R <- state["R"]
+
+  dSdt <- -transmission * S * I + (birth_rate * (1 - S))
+  dIdt <- (transmission * S * I) - (recovery * I) - (birth_rate * I)
+  dRdt <- (recovery * I) - (birth_rate * R)
+
+  return(list(c(dSdt, dIdt, dRdt)))
+}
+
+sir_demog_params <- c(sir_params, birth_rate = 0.05)
+
+sir_demog_sol <- deSolve::ode(
+  y = sir_init_states,
+  times = sim_times,
+  func = sir_demog_model,
+  parms = sir_demog_params
+)
+
+sir_demog_sol_df <- as_tibble(sir_demog_sol) %>%
+  mutate(
+    across(
+      everything(),
+      as.numeric
+    )
+  ) %>%
+  pivot_longer(
+    cols = -time,
+    names_to = "state",
+    values_to = "proportion"
+  ) %>%
+  mutate(state = factor(state, levels = c("S", "I", "R")))
+
+ggplot(sir_demog_sol_df, aes(x = time, y = proportion, color = state)) +
+  geom_line(linewidth = 1.5) +
+  scale_color_manual(values = SIRcolors) +
+  labs(
+    x = "Time",
+    y = "Fraction",
+    color = "State"
+  ) +
+  theme(legend.position = "top")
+```
+
+#### Update the comments in your code to reflect the changes you have made.
 
 ## Appendix {.appendix}
+### Commented basic SIR code
+
+```{r}
+#| message: false
+#| echo: true
+#| eval: false
+#| code-fold: true
+library(tidyverse)
+library(deSolve)
+
+theme_set(theme_minimal())
+
+
+#' Basic SIR model
+#'
+#' A basic SIR model with no demographic structure to be used in deSolve
+#'
+#' @param time deSolve passes the time parameter to the function.
+#' @param state A vector of states.
+#' @param params A vector of parameter values .
+#' @param ... Other arguments passed by deSolve.
+#'
+#' @return A deSolve matrix of states at each time step.
+#' @examples
+#' sir_params <- c(transmission = 0.3, duration = 6)
+#' sir_init_states <- c(S = 0.99, I = 0.01, R = 0)
+#' sim_times <- seq(0, 200, by = 0.1)
+#' 
+#' sir_sol <- deSolve::ode(
+#'    y = sir_init_states,
+#'    times = sim_times,
+#'    func = sir_model,
+#'    parms = sir_params
+#' ))
+sir_model <- function(time, state, params, ... ){
+  transmission <- params["transmission"]
+  recovery <- 1 / params["duration"]
+
+  S <- state["S"]
+  I <- state["I"]
+  R <- state["R"]
+
+  dSdt <- -transmission * S * I
+  dIdt <- (transmission * S * I) - (recovery * I)
+  dRdt <- (recovery * I)
+
+  return(list(c(dSdt, dIdt, dRdt)))
+}
+
+sir_params <- c(transmission = 0.3, duration = 6)
+sir_init_states <- c(S = 0.99, I = 0.01, R = 0)
+sim_times <- seq(0, 200, by = 0.1)
+
+sir_sol <- deSolve::ode(
+  y = sir_init_states,
+  times = sim_times,
+  func = sir_model,
+  parms = sir_params
+)
+
+sir_sol_df <- as_tibble(sir_sol) %>%
+  mutate(
+    across(
+      everything(),
+      as.numeric
+    )
+  ) %>%
+  pivot_longer(
+    cols = -time,
+    names_to = "state",
+    values_to = "proportion"
+  ) %>%
+  mutate(state = factor(state, levels = c("S", "I", "R")))
+
+SIRcolors <- c(S = "#1f77b4", I = "#ff7f0e", R = "#FF3851")
+
+ggplot(sir_sol_df, aes(x = time, y = proportion, color = state)) +
+  geom_line(linewidth = 1.5) +
+  scale_color_manual(values = SIRcolors) +
+  labs(
+    x = "Time",
+    y = "Fraction",
+    color = "State"
+  ) +
+  theme(legend.position = "top")
+```
+
+### Commented demographic SIR code
+
+```{r}
+#| message: false
+#| echo: true
+#| eval: false
+#| code-fold: true
+library(tidyverse)
+library(deSolve)
+
+theme_set(theme_minimal())
+
+#' Demographic SIR model
+#'
+#' An SIR model with births and deaths (constant pop) to be used in deSolve
+#'
+#' @param time deSolve passes the time parameter to the function.
+#' @param state A vector of states.
+#' @param params A vector of parameter values .
+#' @param ... Other arguments passed by deSolve.
+#'
+#' @return A deSolve matrix of states at each time step.
+#' @examples
+#' sir_params <- c(transmission = 0.3, duration = 6, birth_rate = 0.05)
+#' sir_init_states <- c(S = 0.99, I = 0.01, R = 0)
+#' sim_times <- seq(0, 200, by = 0.1)
+#' 
+#' sir_sol <- deSolve::ode(
+#'    y = sir_init_states,
+#'    times = sim_times,
+#'    func = sir_demog_model,
+#'    parms = sir_params
+#' ))
+sir_demog_model <- function(time, state, params, ... ){
+  transmission <- params["transmission"]
+  recovery <- 1 / params["duration"]
+  birth_rate <- params["birth_rate"]
+
+  S <- state["S"]
+  I <- state["I"]
+  R <- state["R"]
+
+  dSdt <- -transmission * S * I + (birth_rate * (1 - S))
+  dIdt <- (transmission * S * I) - (recovery * I) - (birth_rate * I)
+  dRdt <- (recovery * I) - (birth_rate * R)
+
+  return(list(c(dSdt, dIdt, dRdt)))
+}
+
+sir_demog_params <- c(transmission = 0.3, duration = 6, birth_rate = 0.05)
+sir_init_states <- c(S = 0.99, I = 0.01, R = 0)
+sim_times <- seq(0, 200, by = 0.1)
+
+sir_demog_sol <- deSolve::ode(
+  y = sir_init_states,
+  times = sim_times,
+  func = sir_demog_model,
+  parms = sir_demog_params
+)
+
+sir_demog_sol_df <- as_tibble(sir_demog_sol) %>%
+  mutate(
+    across(
+      everything(),
+      as.numeric
+    )
+  ) %>%
+  pivot_longer(
+    cols = -time,
+    names_to = "state",
+    values_to = "proportion"
+  ) %>%
+  mutate(state = factor(state, levels = c("S", "I", "R")))
+
+ggplot(sir_demog_sol_df, aes(x = time, y = proportion, color = state)) +
+  geom_line(linewidth = 1.5) +
+  scale_color_manual(values = SIRcolors) +
+  labs(
+    x = "Time",
+    y = "Fraction",
+    color = "State"
+  ) +
+  theme(legend.position = "top")
+```
