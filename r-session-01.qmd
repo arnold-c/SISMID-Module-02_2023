@@ -11,30 +11,56 @@ execute:
 ## Interactive Plot {#sec-interactive-plots}
 
 ```{ojs}
+init_beta = 0.3
+init_dur_inf = 6.0
+init_I0 = 0.01
+init_births = 0.0
+init_tmax = 200
+```
+
+```{ojs}
+function set(input, value) {
+  input.value = value;
+  input.dispatchEvent(new Event("input", {bubbles: true}));
+}
+```
+
+```{ojs}
 //| panel: sidebar
+
+viewof reset = Inputs.button([
+  ["Reset all sliders", () => {
+    set(viewof beta, init_beta)
+    set(viewof dur_inf, init_dur_inf)
+    set(viewof I0, init_I0)
+    set(viewof births, init_births)
+    set(viewof tmax, init_tmax)
+  }]
+])
+
 viewof beta = Inputs.range(
   [0.0, 2.0],
-  {value: 0.3, step: 0.01, label: "Transmission rate (per day)"}
+  {value: init_beta, step: 0.01, label: "Transmission rate (per day)"}
 )
 
 viewof dur_inf = Inputs.range(
   [0.0, 20],
-  {value: 6.0, step: 0.5, label: "Duration of Infection (days)"}
+  {value: init_dur_inf, step: 0.5, label: "Duration of Infection (days)"}
 )
 
 viewof I0 = Inputs.range(
   [0.0, 1.0],
-  {value: 0.01, step: 0.01, label: "Initial fraction infected"}
+  {value: init_I0, step: 0.01, label: "Initial fraction infected"}
 )
 
 viewof births = Inputs.range(
   [0, 0.05],
-  {value: 0, step: 0.001, label: "Birth rate"}
+  {value: init_births, step: 0.001, label: "Birth rate"}
 )
 
 viewof tmax = Inputs.range(
   [200, 600],
-  {value: 1.0, step: 10.0, label: "Maximum simulation time (years)"}
+  {value: init_tmax, step: 10.0, label: "Maximum simulation time (years)"}
 )
 
 viewof area = Inputs.toggle(
@@ -147,7 +173,7 @@ Plot.plot({
   marginBottom: 55,
   grid: true,
   width: 800,
-  height: 620,
+  height: 670,
   y: {domain: [0, 1]},
   marks: [
     area ?
@@ -168,8 +194,11 @@ Plot.plot({
 })
 ```
 
-
 ## Closed Population Model Intuition
+
+We'll first get develop an intuition for the closed population model.
+We'll then extend this intuition to the open population model.
+When the `Birth rate` slider in the side panel of the interactive figure is set to 0, we have no births or deaths, so their is no replenishment of the susceptible population i.e., it is a closed population.
 
 ::: {.callout-note title="SET"}
 Transmission rate = 1
