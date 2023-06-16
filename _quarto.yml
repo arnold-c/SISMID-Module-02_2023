@@ -38,6 +38,9 @@ book:
   sidebar:
     search: true
     border: true
+    style: floating
+    pinned: true
+  reader-mode: true
 
 # Default for table of contents
 toc: true

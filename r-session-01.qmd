@@ -11,13 +11,13 @@ execute:
 ## Interactive Plot {#sec-interactive-plots}
 
 ```{ojs}
-//| panel: input
-viewof beta_day = Inputs.range(
+//| panel: sidebar
+viewof beta = Inputs.range(
   [0.0, 2.0],
   {value: 0.3, step: 0.01, label: "Transmission rate (per day)"}
 )
 
-viewof dur_inf_day = Inputs.range(
+viewof dur_inf = Inputs.range(
   [0.0, 20],
   {value: 6.0, step: 0.5, label: "Duration of Infection (days)"}
 )
@@ -27,38 +27,37 @@ viewof I0 = Inputs.range(
   {value: 0.01, step: 0.01, label: "Initial fraction infected"}
 )
 
-viewof area = Inputs.toggle(
-  {label: "Cumulative Area plot", value: false}
-)
-
-viewof life_exp = Inputs.range(
-  [40, 100],
-  {value: 50, step: 5, label: "Life expectancy (years)"}
+viewof births = Inputs.range(
+  [0, 0.05],
+  {value: 0, step: 0.001, label: "Birth rate"}
 )
 
 viewof tmax = Inputs.range(
-  [100, 200],
+  [200, 600],
   {value: 1.0, step: 10.0, label: "Maximum simulation time (years)"}
+)
+
+viewof area = Inputs.toggle(
+  {label: "Cumulative Area plot", value: false}
 )
 ```
 
 ```{ojs}
-beta = beta_day * 365
-dur_inf = dur_inf_day / 365
 gamma = 1 / dur_inf
-```
-
-```{ojs}
-function sir(dydt, y, t) {
-  dydt[0] = -beta * y[0] * y[1]
-  dydt[1] = beta * y[0] * y[1] - gamma * y[1]
-  dydt[2] = gamma * y[1]
-}
+dt = 0.01
 ```
 
 ```{ojs}
 import {odeRK4} from '@rreusser/integration@3064'
 import { aq, op } from '@uwdata/arquero'
+```
+
+```{ojs}
+function sir(dydt, y, t) {
+  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])
+  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]
+  dydt[2] = gamma * y[1] - births * y[2]
+}
 ```
 
 ```{ojs}
@@ -77,98 +76,49 @@ function simulate(f, t0, y0, dt, tmax) {
   }
   
   return aq.table({
-    t: tsim,
+    Time: tsim,
     S: ysim.map(d => d[0]),
     I: ysim.map(d => d[1]),
     R: ysim.map(d => d[2])
     })
 }
-
-dt = 0.01/365
 ```
 
-
 ```{ojs}
-sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], dt, 200/365)
-sir_sol_long = sir_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
+sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], dt, tmax)
+sir_sol_long = sir_sol.fold(aq.not('Time'), {as: ['State', 'Fraction']})
 ```
 
 ```{ojs}
 SIRcolors = ["#1f77b4", "#ff7f0e", "#FF3851"]
 ```
 
-::: {.panel-tabset}
-
-## Closed Population
-
 ```{ojs}
-closed_R0 = beta * dur_inf
-closed_R0_str = closed_R0.toLocaleString(undefined, {minimumFractionDigits: 2})
-
-finalsize = sir_sol.get("R", sir_sol.numRows()-1)
-finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})
-
-md`${tex`R_0 = ${closed_R0_str}`}`
-md`${tex`\text{Final size} = ${finalsize_str}`}`
+R0 = beta / (gamma + births)
+R0_str = R0.toLocaleString(undefined, {minimumFractionDigits: 2})
 ```
 
 ```{ojs}
-Plot.plot({
-  color: {
-    legend: true,
-    domain: ["S", "I", "R"],
-    range: SIRcolors
-  },
-  style: {fontSize: "20px"},
-  marginLeft: 65,
-  marginTop: 40,
-  marginBottom: 55,
-  grid: true,
-  width: 1000,
-  height: 600,
-  x: {label: "Time (years)"},
-  y: {domain: [0, 1]},
-  marks: [
-    area ?
-      Plot.areaY(sir_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
-      Plot.lineY(sir_sol_long, {x: "t", y: "Fraction", stroke: "State", strokeWidth: 6})
-  ]
-})
-```
+function calculate_equil(R0){
+  if (births > 0) {
+    var eq_S = 1 / R0
+    var eq_I = births / beta * (R0 - 1)
+    var eq_R = 1 - (eq_S + eq_I)
 
-## Demographics
+    const eq_vals = aq.table({
+      State: ["S", "I", "R"],
+      Fraction: [eq_S, eq_I, eq_R]
+    })
 
-```{ojs}
-births = 1 / life_exp
-
-demographic_R0 = beta / (gamma + births)
-eq_S = 1 / demographic_R0
-eq_I = births / beta * (demographic_R0 - 1)
-eq_R = 1 - (eq_S + eq_I)
-
-eq_vals = aq.table({
-  State: ["S", "I", "R"],
-  Fraction: [eq_S, eq_I, eq_R]
-})
-
-demographic_R0_str = demographic_R0.toLocaleString(undefined, {minimumFractionDigits: 2})
-
-md`${tex`R_0 = ${demographic_R0_str}`}`
-```
-
-```{ojs}
-function sir_demographic(dydt, y, t) {
-  var gamma = 1 / dur_inf
-
-  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])
-  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]
-  dydt[2] = gamma * y[1] - births * y[2]
+    return eq_vals
+  } else {
+    return null
+  }
 }
 ```
 
 ```{ojs}
-sir_demographic_sol = simulate(sir_demographic, 0, [1.0-I0, I0, 0.0], 0.002, tmax)
-sir_demographic_sol_long = sir_demographic_sol.fold(aq.not('t'), {as: ['State', 'Fraction']})
+eq_vals = calculate_equil(R0)
 ```
 
 ```{ojs}
@@ -184,29 +134,44 @@ Plot.plot({
   marginBottom: 55,
   grid: true,
   width: 1000,
-  height: 600,
-  x: {label: "Time (years)"},
+  height: 800,
   y: {domain: [0, 1]},
   marks: [
     area ?
-      Plot.areaY(sir_demographic_sol_long, {x: "t", y: "Fraction", fill: "State"}) :
+      Plot.areaY(sir_sol_long, {x: "Time", y: "Fraction", fill: "State"}) :
       [
-        demographic_R0 >= 1.0 ?
-          Plot.ruleY(
-            eq_vals,
-            {y: "Fraction", stroke: "State", strokeWidth: 2, strokeDasharray: [10]}
-          ) :
-          null,
+        R0 >= 1.0 && births > 0 ?
+        Plot.ruleY(
+          eq_vals,
+          {y: "Fraction", stroke: "State", strokeWidth: 2, strokeDasharray: [10]}
+        ) :
+        null,
         Plot.lineY(
-          sir_demographic_sol_long,
-          {x: "t", y: "Fraction", stroke: "State", strokeWidth: 6}
+          sir_sol_long,
+          {x: "Time", y: "Fraction", stroke: "State", strokeWidth: 6}
         )
       ]
   ]
 })
 ```
 
-:::
+```{ojs}
+md`${tex`R_0 = ${R0_str}`}`
+```
+
+```{ojs}
+{
+  if (births == 0){
+    var finalsize = sir_sol.get("R", sir_sol.numRows()-1)
+    var finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})
+
+    return md`${tex`\text{Final size} = ${finalsize_str}`}`
+  } else {
+    return md``
+  }
+}
+```
+
 
 ## Closed Population Model Intuition
 
