@@ -1398,6 +1398,19 @@
       ],
       "Hash": "d75b4059d781336efba24021915902b4"
     },
+    "progress": {
+      "Package": "progress",
+      "Version": "1.2.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R6",
+        "crayon",
+        "hms",
+        "prettyunits"
+      ],
+      "Hash": "14dc9f7a3c91ebb14ec5bb9208a07061"
+    },
     "pryr": {
       "Package": "pryr",
       "Version": "0.1.6",

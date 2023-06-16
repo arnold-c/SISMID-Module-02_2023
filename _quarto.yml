@@ -65,7 +65,7 @@ author:
 citation: true
 license: "CC BY-NC"
 
-bibliography: references.bib
+bibliography: SISMID-Module-2.bib
 
 crossref:
   chapters: true
