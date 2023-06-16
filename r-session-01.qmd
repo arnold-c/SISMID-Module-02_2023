@@ -40,6 +40,19 @@ viewof tmax = Inputs.range(
 viewof area = Inputs.toggle(
   {label: "Cumulative Area plot", value: false}
 )
+
+md`${tex`R_0 = ${R0_str}`}`
+
+{
+  if (births == 0){
+    var finalsize = sir_sol.get("R", sir_sol.numRows()-1)
+    var finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})
+
+    return md`${tex`\text{Final size} = ${finalsize_str}`}`
+  } else {
+    return md``
+  }
+}
 ```
 
 ```{ojs}
@@ -133,8 +146,8 @@ Plot.plot({
   marginTop: 40,
   marginBottom: 55,
   grid: true,
-  width: 1000,
-  height: 800,
+  width: 800,
+  height: 620,
   y: {domain: [0, 1]},
   marks: [
     area ?
@@ -153,23 +166,6 @@ Plot.plot({
       ]
   ]
 })
-```
-
-```{ojs}
-md`${tex`R_0 = ${R0_str}`}`
-```
-
-```{ojs}
-{
-  if (births == 0){
-    var finalsize = sir_sol.get("R", sir_sol.numRows()-1)
-    var finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})
-
-    return md`${tex`\text{Final size} = ${finalsize_str}`}`
-  } else {
-    return md``
-  }
-}
 ```
 
 

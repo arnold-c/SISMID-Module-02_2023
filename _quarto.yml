@@ -38,7 +38,7 @@ book:
   sidebar:
     search: true
     border: true
-    style: floating
+    style: docked
     pinned: true
   reader-mode: true
 
