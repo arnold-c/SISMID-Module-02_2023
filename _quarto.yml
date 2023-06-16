@@ -38,6 +38,9 @@ book:
   sidebar:
     search: true
     border: true
+    style: docked
+    pinned: true
+  reader-mode: true
 
 # Default for table of contents
 toc: true
@@ -64,14 +67,17 @@ license: "CC BY-NC"
 
 bibliography: SISMID-Module-2.bib
 
+crossref:
+  chapters: true
 
 format:
   html:
     theme:
-      light: [cosmo, format/_fonts.scss, format/_light.scss, format/callout-question.scss]
-      dark: [cosmo, format/_fonts.scss, format/_dark.scss, format/callout-question.scss]
+      light: [cosmo, format/_fonts.scss, format/_light.scss, format/_callouts.scss]
+      dark: [cosmo, format/_fonts.scss, format/_dark.scss, format/_callouts.scss]
     code-copy: true
-    code-fold: false
+    code-fold: show
+    code-summary: "Click to toggle the code"
     code-overflow: wrap
     code-link: true
     code-tools: true
