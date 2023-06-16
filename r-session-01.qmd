@@ -30,6 +30,16 @@ viewof I0 = Inputs.range(
 viewof area = Inputs.toggle(
   {label: "Cumulative Area plot", value: false}
 )
+
+viewof life_exp = Inputs.range(
+  [40, 100],
+  {value: 50, step: 5, label: "Life expectancy (years)"}
+)
+
+viewof tmax = Inputs.range(
+  [100, 200],
+  {value: 1.0, step: 10.0, label: "Maximum simulation time (years)"}
+)
 ```
 
 ```{ojs}
@@ -89,7 +99,7 @@ SIRcolors = ["#1f77b4", "#ff7f0e", "#FF3851"]
 
 ::: {.panel-tabset}
 
-### Closed Population
+## Closed Population
 
 ```{ojs}
 closed_R0 = beta * dur_inf
@@ -126,20 +136,7 @@ Plot.plot({
 })
 ```
 
-### Demographics
-
-```{ojs}
-//| panel: input
-viewof life_exp = Inputs.range(
-  [40, 100],
-  {value: 50, step: 5, label: "Life expectancy (years)"}
-)
-
-viewof tmax = Inputs.range(
-  [100, 200],
-  {value: 1.0, step: 10.0, label: "Maximum simulation time (years)"}
-)
-```
+## Demographics
 
 ```{ojs}
 births = 1 / life_exp
@@ -211,72 +208,66 @@ Plot.plot({
 
 :::
 
-## Exercise 1
-### Closed Population Model
+## Closed Population Model Intuition
 
-::: {.callout-instructions}
-**SET**
-
+::: {.callout-note title="SET"}
 Transmission rate = 1
 
 Duration of infection = 4.
 :::
 
-#### What is $R_0$? {#sec-whatisr0}
-#### What is epidemic final size?
-#### Does this make sense given our definition of $R_0$?
+### What is $R_0$? {#sec-whatisr0}
+### What is epidemic final size?
+### Does this make sense given our definition of $R_0$?
 
-::: {.callout-instructions}
+::: {.callout appearance="simple"}
 Toggle on the cumulative area button and see what the epidemic final size is (approximately)
 :::
 
-#### At approximately what time does the epidemic end?
+### At approximately what time does the epidemic end?
 
-::: {.callout-instructions}
-**SET**
+::: {.callout-note title="SET"}
 
 Duration of infection = 8 days
 
 Transmission rate so you get the same $R_0$ in @sec-whatisr0
 :::
 
-#### How does the epidemic final size compare?
-#### At what time (approx) does the epidemic end?
+### How does the epidemic final size compare?
+### At what time (approx) does the epidemic end?
 
 ::: {.callout-note}
 Size is determined by $R_0$, duration is determined by recovery rate $\left(\gamma = \frac{1}{\text{duration of infection}}\right)$
 :::
 
+
 Now, imagine that we have a drug (or vaccine) available to everyone that either reduced transmission OR shortened the duration of infection.
 
-::: {.callout-instructions}
-**SET**
-
+::: {.callout-note title="SET"}
 Transmission rate = 1
 
 Duration of infection = 8 days
 :::
 
-#### Note the epidemic final size and the time until the epidemic is over.
+### Note the epidemic final size and the time until the epidemic is over.
 
-::: {.callout-instructions}
+::: {.callout appearance="simple"}
 Now, imagine everyone has access to the drug (unrealistic) that reduces transmission by $P \%$
 :::
 
-#### What happens to the final size and outbreak duration?
+### What happens to the final size and outbreak duration?
 
 Now, imagine everyone has access to a drug that reduces the duration of infection from 8 to 2 days (75% reduction).
 
-#### What happens to the final size and outbreak duration?
+### What happens to the final size and outbreak duration?
 
 ::: {.callout-question}
 Which would you prefer and why? (This is the only really open ended question, but should be pretty straightforward discussion)
 :::
 
-### Demographic Model
+## Demographic Model Intuition
 
-::: {.callout-instructions}
-**SET:**
+::: {.callout-note title="SET"}
 Transmission = 1
 
 Duration = 8
@@ -284,33 +275,32 @@ Duration = 8
 Birth rate = .002
 :::
 
-#### What is $R_0$? {#sec-demog-whatisr0}
-#### What is the equilibrium proportion that is susceptible?
-#### If you were to test for antibodies against infection in the population, what proportion would you expect to be positive?
+### What is $R_0$? {#sec-demog-whatisr0}
+### What is the equilibrium proportion that is susceptible?
+### If you were to test for antibodies against infection in the population, what proportion would you expect to be positive?
 
 ::: {.callout-note}
 Assume a perfectly accurate serological test
 :::
 
-#### At what time (approximately) does the system reach equilibrium?
+### At what time (approximately) does the system reach equilibrium?
 
-::: {.callout-instructions}
-**SET**
-
+::: {.callout-note title="SET"}
 Birth rate = 0.005
 :::
 
-#### What is the new $R_0$? {#sec-demog-updatedr0}
-#### At what time (approximately) does the system reach equilibrium?
+### What is the new $R_0$? {#sec-demog-updatedr0}
+### At what time (approximately) does the system reach equilibrium?
 
-::: {.callout-instructions}
+::: {.callout-note title="SET"}
 Transmission rate so you get the same $R_0$ in @sec-demog-whatisr0
 :::
 
-#### What is the new equilibrium proportion that is susceptible?
-#### What is different about the prevalence of infection (equilibrium proportion that is infected) in the scenarios @sec-demog-whatisr0 and @sec-demog-updatedr0 i.e. higher birth rate with the same $R_0$?
+### What is the new equilibrium proportion that is susceptible?
+### What is different about the prevalence of infection (equilibrium proportion that is infected) in the scenarios @sec-demog-whatisr0 and @sec-demog-updatedr0 i.e. higher birth rate with the same $R_0$?
 
-## Exercise 2
+## Model Building With R
+### Setting Up A Script
 
 Now we have some intuition behind how the different parameters affect the dynamics of the SIR system, let's look at how we can implement this in R.
 Below is some R code that implements the basic closed-population SIR model.
@@ -333,6 +323,7 @@ This is like searching for the documentation from your R console using `?ode`.
 
 ```{r}
 #| echo: true
+#| message: false
 library(tidyverse)
 library(deSolve)
 
@@ -409,7 +400,7 @@ ggplot(sir_sol_df, aes(x = time, y = proportion, color = state)) +
   theme(legend.position = "top")
 ```
 
-::: {.callout-instructions}
+::: {.callout appearance="simple"}
 Copy the code above into a new R script.
 This script should live in your SISMID directory, as described [previously]().
 Run it to check you get the same figure output as above.
@@ -455,8 +446,7 @@ $$ {#eq-demographic-sir}
 
 #### Adapt the function `demographic_sir_model()` to match the above equations (@eq-demographic-sir).
 
-::: {.callout-instructions}
-**SET** birth rate = 0.05
+::: {.callout-note title="SET"} birth rate = 0.05
 :::
 
 #### Rename the variables to reflect that we are now working with a demographic model, not the basic SIR model.
