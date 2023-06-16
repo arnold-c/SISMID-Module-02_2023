@@ -396,7 +396,7 @@ This script should live in your SISMID directory, as described [previously]().
 Run it to check you get the same figure output as above.
 :::
 
-### Commenting the code
+### Commenting the code {#sec-ex-commenting-code}
 
 For this part of the exercise, go through the basic SIR code and add comments to each section of code explaining what it does.
 To get you started, we've added some comments to the creating of the dataframe object `sir_sol_df` at line 32 in the code block above, as some of the functions used there are a bit more complicated.
@@ -415,7 +415,7 @@ Sometimes that is unavoidable (e.g., you had to look up how to do a particular t
 As you're going through the code, if you don't understand what a particular function does, try looking up the documentation for it!
 You can do this by clicking on the function within the website (as described [above](#quarto-tips)), or by typing `?function_name` into the R console (Google also is your friend here!).
 
-### Adding in demographics
+### Adding in demographics {#sec-ex-add-demographics}
 
 Now we have a better sense of how the code works, let's add in some demographic structure.
 To recreate the demographic model from the interactive plot in @sec-interactive-plots, we just need to add births and deaths to the system.
@@ -498,8 +498,8 @@ ggplot(sir_demog_sol_df, aes(x = time, y = proportion, color = state)) +
 
 #### Update the comments in your code to reflect the changes you have made.
 
-## Appendix {.appendix}
-### Commented basic SIR code
+## Exercise Solutions {.appendix}
+### Ex @sec-ex-commenting-code: Commented basic SIR code
 
 ```{r}
 #| message: false
@@ -586,7 +586,7 @@ ggplot(sir_sol_df, aes(x = time, y = proportion, color = state)) +
   theme(legend.position = "top")
 ```
 
-### Commented demographic SIR code
+### Ex @sec-ex-add-demographics: Commented demographic SIR code
 
 ```{r}
 #| message: false
@@ -628,7 +628,7 @@ sir_demog_model <- function(time, state, params, ... ){
   I <- state["I"]
   R <- state["R"]
 
-  dSdt <- -transmission * S * I + (birth_rate * (1 - S))
+  dSdt <- birth_rate -transmission * S * I - (birth_rate * S)
   dIdt <- (transmission * S * I) - (recovery * I) - (birth_rate * I)
   dRdt <- (recovery * I) - (birth_rate * R)
 
