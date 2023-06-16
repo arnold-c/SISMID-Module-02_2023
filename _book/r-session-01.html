@@ -299,15 +299,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="#model-building-with-r" id="toc-model-building-with-r" class="nav-link" data-scroll-target="#model-building-with-r"><span class="header-section-number">3.4</span> Model Building With R</a>
   <ul class="collapse">
 <li><a href="#setting-up-a-script" id="toc-setting-up-a-script" class="nav-link" data-scroll-target="#setting-up-a-script"><span class="header-section-number">3.4.1</span> Setting Up A Script</a></li>
-  <li><a href="#commenting-the-code" id="toc-commenting-the-code" class="nav-link" data-scroll-target="#commenting-the-code"><span class="header-section-number">3.4.2</span> Commenting the code</a></li>
-  <li><a href="#adding-in-demographics" id="toc-adding-in-demographics" class="nav-link" data-scroll-target="#adding-in-demographics"><span class="header-section-number">3.4.3</span> Adding in demographics</a></li>
+  <li><a href="#sec-ex-commenting-code" id="toc-sec-ex-commenting-code" class="nav-link" data-scroll-target="#sec-ex-commenting-code"><span class="header-section-number">3.4.2</span> Commenting the code</a></li>
+  <li><a href="#sec-ex-add-demographics" id="toc-sec-ex-add-demographics" class="nav-link" data-scroll-target="#sec-ex-add-demographics"><span class="header-section-number">3.4.3</span> Adding in demographics</a></li>
   </ul>
 </li>
   <li>
-<a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"><span class="header-section-number">3.5</span> Appendix</a>
+<a href="#exercise-solutions" id="toc-exercise-solutions" class="nav-link" data-scroll-target="#exercise-solutions"><span class="header-section-number">3.5</span> Exercise Solutions</a>
   <ul class="collapse">
-<li><a href="#commented-basic-sir-code" id="toc-commented-basic-sir-code" class="nav-link" data-scroll-target="#commented-basic-sir-code"><span class="header-section-number">3.5.1</span> Commented basic SIR code</a></li>
-  <li><a href="#commented-demographic-sir-code" id="toc-commented-demographic-sir-code" class="nav-link" data-scroll-target="#commented-demographic-sir-code"><span class="header-section-number">3.5.2</span> Commented demographic SIR code</a></li>
+<li><a href="#ex-sec-ex-commenting-code-commented-basic-sir-code" id="toc-ex-sec-ex-commenting-code-commented-basic-sir-code" class="nav-link" data-scroll-target="#ex-sec-ex-commenting-code-commented-basic-sir-code"><span class="header-section-number">3.5.1</span> Ex <span>Section&nbsp;3.4.2</span>: Commented basic SIR code</a></li>
+  <li><a href="#ex-sec-ex-add-demographics-commented-demographic-sir-code" id="toc-ex-sec-ex-add-demographics-commented-demographic-sir-code" class="nav-link" data-scroll-target="#ex-sec-ex-add-demographics-commented-demographic-sir-code"><span class="header-section-number">3.5.2</span> Ex <span>Section&nbsp;3.4.3</span>: Commented demographic SIR code</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/r-session-01.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
@@ -989,7 +989,7 @@ Tip
 </div>
 </div>
 </div>
-</section><section id="commenting-the-code" class="level3" data-number="3.4.2"><h3 data-number="3.4.2" class="anchored" data-anchor-id="commenting-the-code">
+</section><section id="sec-ex-commenting-code" class="level3" data-number="3.4.2"><h3 data-number="3.4.2" class="anchored" data-anchor-id="sec-ex-commenting-code">
 <span class="header-section-number">3.4.2</span> Commenting the code</h3>
 <p>For this part of the exercise, go through the basic SIR code and add comments to each section of code explaining what it does. To get you started, we’ve added some comments to the creating of the dataframe object <code>sir_sol_df</code> at line 32 in the code block above, as some of the functions used there are a bit more complicated.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1007,7 +1007,7 @@ Note
 </div>
 </div>
 <p>As you’re going through the code, if you don’t understand what a particular function does, try looking up the documentation for it! You can do this by clicking on the function within the website (as described <a href="#quarto-tips">above</a>), or by typing <code>?function_name</code> into the R console (Google also is your friend here!).</p>
-</section><section id="adding-in-demographics" class="level3" data-number="3.4.3"><h3 data-number="3.4.3" class="anchored" data-anchor-id="adding-in-demographics">
+</section><section id="sec-ex-add-demographics" class="level3" data-number="3.4.3"><h3 data-number="3.4.3" class="anchored" data-anchor-id="sec-ex-add-demographics">
 <span class="header-section-number">3.4.3</span> Adding in demographics</h3>
 <p>Now we have a better sense of how the code works, let’s add in some demographic structure. To recreate the demographic model from the interactive plot in <a href="#sec-interactive-plots"><span>Section&nbsp;3.1</span></a>, we just need to add births and deaths to the system.</p>
 <p>Recall the equations for the demographic model:</p>
@@ -1036,10 +1036,10 @@ Note
 </div>
 </section><section id="update-the-comments-in-your-code-to-reflect-the-changes-you-have-made." class="level4" data-number="3.4.3.6"><h4 data-number="3.4.3.6" class="anchored" data-anchor-id="update-the-comments-in-your-code-to-reflect-the-changes-you-have-made.">
 <span class="header-section-number">3.4.3.6</span> Update the comments in your code to reflect the changes you have made.</h4>
-</section></section></section><section id="appendix" class="level2 appendix" data-number="3.5"><h2 class="appendix anchored" data-number="3.5" data-anchor-id="appendix">
-<span class="header-section-number">3.5</span> Appendix</h2>
-<section id="commented-basic-sir-code" class="level3" data-number="3.5.1"><h3 data-number="3.5.1" class="anchored" data-anchor-id="commented-basic-sir-code">
-<span class="header-section-number">3.5.1</span> Commented basic SIR code</h3>
+</section></section></section><section id="exercise-solutions" class="level2 appendix" data-number="3.5"><h2 class="appendix anchored" data-number="3.5" data-anchor-id="exercise-solutions">
+<span class="header-section-number">3.5</span> Exercise Solutions</h2>
+<section id="ex-sec-ex-commenting-code-commented-basic-sir-code" class="level3" data-number="3.5.1"><h3 data-number="3.5.1" class="anchored" data-anchor-id="ex-sec-ex-commenting-code-commented-basic-sir-code">
+<span class="header-section-number">3.5.1</span> Ex <a href="#sec-ex-commenting-code"><span>Section&nbsp;3.4.2</span></a>: Commented basic SIR code</h3>
 <div class="cell" data-hash="r-session-01_cache/html/unnamed-chunk-16_958e3c572e6efe3b1de14e74d35688d5">
 <details><summary>Code</summary><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb16-2"><a href="#cb16-2"></a><span class="fu">library</span>(deSolve)</span>
@@ -1121,9 +1121,9 @@ Note
 <span id="cb16-78"><a href="#cb16-78"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section><section id="commented-demographic-sir-code" class="level3" data-number="3.5.2"><h3 data-number="3.5.2" class="anchored" data-anchor-id="commented-demographic-sir-code">
-<span class="header-section-number">3.5.2</span> Commented demographic SIR code</h3>
-<div class="cell" data-hash="r-session-01_cache/html/unnamed-chunk-17_560b72d48b761e2b5084cdc158aa57e3">
+</section><section id="ex-sec-ex-add-demographics-commented-demographic-sir-code" class="level3" data-number="3.5.2"><h3 data-number="3.5.2" class="anchored" data-anchor-id="ex-sec-ex-add-demographics-commented-demographic-sir-code">
+<span class="header-section-number">3.5.2</span> Ex <a href="#sec-ex-add-demographics"><span>Section&nbsp;3.4.3</span></a>: Commented demographic SIR code</h3>
+<div class="cell" data-hash="r-session-01_cache/html/unnamed-chunk-17_241633415ff6f686011987891d3d5a53">
 <details><summary>Code</summary><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb17-2"><a href="#cb17-2"></a><span class="fu">library</span>(deSolve)</span>
 <span id="cb17-3"><a href="#cb17-3"></a></span>
@@ -1159,7 +1159,7 @@ Note
 <span id="cb17-33"><a href="#cb17-33"></a>  I <span class="ot">&lt;-</span> state[<span class="st">"I"</span>]</span>
 <span id="cb17-34"><a href="#cb17-34"></a>  R <span class="ot">&lt;-</span> state[<span class="st">"R"</span>]</span>
 <span id="cb17-35"><a href="#cb17-35"></a></span>
-<span id="cb17-36"><a href="#cb17-36"></a>  dSdt <span class="ot">&lt;-</span> <span class="sc">-</span>transmission <span class="sc">*</span> S <span class="sc">*</span> I <span class="sc">+</span> (birth_rate <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> S))</span>
+<span id="cb17-36"><a href="#cb17-36"></a>  dSdt <span class="ot">&lt;-</span> birth_rate <span class="sc">-</span>transmission <span class="sc">*</span> S <span class="sc">*</span> I <span class="sc">-</span> (birth_rate <span class="sc">*</span> S)</span>
 <span id="cb17-37"><a href="#cb17-37"></a>  dIdt <span class="ot">&lt;-</span> (transmission <span class="sc">*</span> S <span class="sc">*</span> I) <span class="sc">-</span> (recovery <span class="sc">*</span> I) <span class="sc">-</span> (birth_rate <span class="sc">*</span> I)</span>
 <span id="cb17-38"><a href="#cb17-38"></a>  dRdt <span class="ot">&lt;-</span> (recovery <span class="sc">*</span> I) <span class="sc">-</span> (birth_rate <span class="sc">*</span> R)</span>
 <span id="cb17-39"><a href="#cb17-39"></a></span>
@@ -2022,7 +2022,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-424"><a href="#cb18-424"></a>Run it to check you get the same figure output as above.</span>
 <span id="cb18-425"><a href="#cb18-425"></a>:::</span>
 <span id="cb18-426"><a href="#cb18-426"></a></span>
-<span id="cb18-427"><a href="#cb18-427"></a><span class="fu">### Commenting the code</span></span>
+<span id="cb18-427"><a href="#cb18-427"></a><span class="fu">### Commenting the code {#sec-ex-commenting-code}</span></span>
 <span id="cb18-428"><a href="#cb18-428"></a></span>
 <span id="cb18-429"><a href="#cb18-429"></a>For this part of the exercise, go through the basic SIR code and add comments to each section of code explaining what it does.</span>
 <span id="cb18-430"><a href="#cb18-430"></a>To get you started, we've added some comments to the creating of the dataframe object <span class="in">`sir_sol_df`</span> at line 32 in the code block above, as some of the functions used there are a bit more complicated.</span>
@@ -2041,7 +2041,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-443"><a href="#cb18-443"></a>As you're going through the code, if you don't understand what a particular function does, try looking up the documentation for it!</span>
 <span id="cb18-444"><a href="#cb18-444"></a>You can do this by clicking on the function within the website (as described <span class="co">[</span><span class="ot">above</span><span class="co">](#quarto-tips)</span>), or by typing <span class="in">`?function_name`</span> into the R console (Google also is your friend here!).</span>
 <span id="cb18-445"><a href="#cb18-445"></a></span>
-<span id="cb18-446"><a href="#cb18-446"></a><span class="fu">### Adding in demographics</span></span>
+<span id="cb18-446"><a href="#cb18-446"></a><span class="fu">### Adding in demographics {#sec-ex-add-demographics}</span></span>
 <span id="cb18-447"><a href="#cb18-447"></a></span>
 <span id="cb18-448"><a href="#cb18-448"></a>Now we have a better sense of how the code works, let's add in some demographic structure.</span>
 <span id="cb18-449"><a href="#cb18-449"></a>To recreate the demographic model from the interactive plot in @sec-interactive-plots, we just need to add births and deaths to the system.</span>
@@ -2124,8 +2124,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-528"><a href="#cb18-528"></a></span>
 <span id="cb18-529"><a href="#cb18-529"></a><span class="fu">#### Update the comments in your code to reflect the changes you have made.</span></span>
 <span id="cb18-530"><a href="#cb18-530"></a></span>
-<span id="cb18-531"><a href="#cb18-531"></a><span class="fu">## Appendix {.appendix}</span></span>
-<span id="cb18-532"><a href="#cb18-532"></a><span class="fu">### Commented basic SIR code</span></span>
+<span id="cb18-531"><a href="#cb18-531"></a><span class="fu">## Exercise Solutions {.appendix}</span></span>
+<span id="cb18-532"><a href="#cb18-532"></a><span class="fu">### Ex @sec-ex-commenting-code: Commented basic SIR code</span></span>
 <span id="cb18-533"><a href="#cb18-533"></a></span>
 <span id="cb18-536"><a href="#cb18-536"></a><span class="in">```{r}</span></span>
 <span id="cb18-537"><a href="#cb18-537"></a><span class="co">#| message: false</span></span>
@@ -2212,7 +2212,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-618"><a href="#cb18-618"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
 <span id="cb18-619"><a href="#cb18-619"></a><span class="in">```</span></span>
 <span id="cb18-620"><a href="#cb18-620"></a></span>
-<span id="cb18-621"><a href="#cb18-621"></a><span class="fu">### Commented demographic SIR code</span></span>
+<span id="cb18-621"><a href="#cb18-621"></a><span class="fu">### Ex @sec-ex-add-demographics: Commented demographic SIR code</span></span>
 <span id="cb18-622"><a href="#cb18-622"></a></span>
 <span id="cb18-625"><a href="#cb18-625"></a><span class="in">```{r}</span></span>
 <span id="cb18-626"><a href="#cb18-626"></a><span class="co">#| message: false</span></span>
@@ -2254,7 +2254,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-662"><a href="#cb18-662"></a>  I <span class="ot">&lt;-</span> state[<span class="st">"I"</span>]</span>
 <span id="cb18-663"><a href="#cb18-663"></a>  R <span class="ot">&lt;-</span> state[<span class="st">"R"</span>]</span>
 <span id="cb18-664"><a href="#cb18-664"></a></span>
-<span id="cb18-665"><a href="#cb18-665"></a>  dSdt <span class="ot">&lt;-</span> <span class="sc">-</span>transmission <span class="sc">*</span> S <span class="sc">*</span> I <span class="sc">+</span> (birth_rate <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> S))</span>
+<span id="cb18-665"><a href="#cb18-665"></a>  dSdt <span class="ot">&lt;-</span> birth_rate <span class="sc">-</span>transmission <span class="sc">*</span> S <span class="sc">*</span> I <span class="sc">-</span> (birth_rate <span class="sc">*</span> S)</span>
 <span id="cb18-666"><a href="#cb18-666"></a>  dIdt <span class="ot">&lt;-</span> (transmission <span class="sc">*</span> S <span class="sc">*</span> I) <span class="sc">-</span> (recovery <span class="sc">*</span> I) <span class="sc">-</span> (birth_rate <span class="sc">*</span> I)</span>
 <span id="cb18-667"><a href="#cb18-667"></a>  dRdt <span class="ot">&lt;-</span> (recovery <span class="sc">*</span> I) <span class="sc">-</span> (birth_rate <span class="sc">*</span> R)</span>
 <span id="cb18-668"><a href="#cb18-668"></a></span>
