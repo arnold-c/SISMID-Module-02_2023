@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.475">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Matthew Ferrari (adapted from Helen Wearing and Aaron King)">
+<meta name="dcterms.date" content="2022-06-22">
+
+<title>Heterogeneity and Age Structure in SIR Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="hetero_age_2022_07_10_files/libs/clipboard/clipboard.min.js"></script>
+<script src="hetero_age_2022_07_10_files/libs/quarto-html/quarto.js"></script>
+<script src="hetero_age_2022_07_10_files/libs/quarto-html/popper.min.js"></script>
+<script src="hetero_age_2022_07_10_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="hetero_age_2022_07_10_files/libs/quarto-html/anchor.min.js"></script>
+<link href="hetero_age_2022_07_10_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="hetero_age_2022_07_10_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="hetero_age_2022_07_10_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="hetero_age_2022_07_10_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="hetero_age_2022_07_10_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Heterogeneity and Age Structure in SIR Models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Matthew Ferrari (adapted from Helen Wearing and Aaron King) </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 22, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="a-model-with-2-classes" class="level2">
+<h2 class="anchored" data-anchor-id="a-model-with-2-classes">A Model With 2 Classes</h2>
+<p>We’ll start with the simplest mechanistic model of two classes we can think of, which has separate classes for two groups <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. These groups could represent different socioeconomic classes, for example.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-1_2e59e70396696759daf6f44e40194ce2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(diagram)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: diagram</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: shape</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>elpos <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">Sa=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">Sb=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">Ia=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">Ib=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">Ra=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">Rb=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>               )</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>elpos[,<span class="dv">1</span>] <span class="ot">&lt;-</span> (<span class="dv">2</span><span class="sc">*</span>elpos[,<span class="dv">1</span>]<span class="sc">-</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">8</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>elpos[,<span class="dv">2</span>] <span class="ot">&lt;-</span> (<span class="dv">2</span><span class="sc">*</span>elpos[,<span class="dv">2</span>]<span class="sc">-</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">6</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>fromto <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">SaIa=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">SbIb=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">IaRa=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">IbRb=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">6</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">openplotmat</span>(<span class="at">asp=</span><span class="fl">0.9</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>arrpos <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">nrow=</span><span class="fu">nrow</span>(fromto))</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(fromto))){</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  arrpos[i,] <span class="ot">&lt;-</span> <span class="fu">straightarrow</span>(</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                              <span class="at">to=</span>elpos[fromto[i,<span class="dv">2</span>],],</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                              <span class="at">from=</span>elpos[fromto[i,<span class="dv">1</span>],],</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                              <span class="at">arr.pos=</span><span class="fl">0.65</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                              <span class="at">arr.length=</span><span class="fl">0.5</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                              )}</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Sa"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Sa"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Sb"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Sb"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Ia"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Ia"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Ib"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Ib"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Ra"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Ra"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Rb"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Rb"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(arrpos[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">-</span><span class="fl">0.05</span>,<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>,<span class="fu">quote</span>(lambda[a]),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(arrpos[<span class="dv">2</span>,<span class="dv">1</span>]<span class="sc">+</span><span class="fl">0.05</span>,<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>,<span class="fu">quote</span>(lambda[b]),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(arrpos[<span class="dv">3</span>,<span class="dv">1</span>]<span class="sc">-</span><span class="fl">0.05</span>,<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,<span class="fu">quote</span>(gamma[a]),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(arrpos[<span class="dv">4</span>,<span class="dv">1</span>]<span class="sc">+</span><span class="fl">0.05</span>,<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,<span class="fu">quote</span>(gamma[b]),<span class="at">cex=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Which can be written in equations as, <span class="math display">\[
+\begin{aligned}
+    \frac{dS_a}{dt} &amp;= -\lambda_a\,S_a \phantom{-\gamma\,I_b}\\
+    \frac{dS_b}{dt} &amp;= -\lambda_b\,S_b \phantom{-\gamma\,I_b}\\
+    \frac{dI_a}{dt} &amp;= \phantom{-}\lambda_a\,S_a -\gamma\,I_a\\
+    \frac{dI_b}{dt} &amp;= \phantom{-}\lambda_b\,S_b-\gamma\,I_b\\
+    \frac{dR_a}{dt} &amp;= \phantom{-\lambda_a\,S_b}+\gamma\,I_a\\
+    \frac{dR_b}{dt} &amp;= \phantom{-\lambda_a\,S_b}+\gamma\,I_b\\
+  \end{aligned}
+\]</span> The <span class="math inline">\(\lambda\)</span>s denote the group-specific force of infections: <span class="math display">\[
+\begin{aligned}
+        \lambda_a &amp;= \beta_{aa}\,I_a+\beta_{ab}\,I_b\\
+        \lambda_b &amp;= \beta_{ba}\,I_a+\beta_{bb}\,I_b
+\end{aligned}
+\]</span> In this model, each population can infect each other but the infection moves through the populations separately. Let’s simulate such a model. To make things concrete, we’ll assume that the transmission rates <span class="math inline">\(\beta\)</span> are greater within groups than between them.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-2_d4588e33e191c0b506bf4825ebda7525">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="fl">0.005</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b2 <span class="ot">&lt;-</span> <span class="fl">0.02</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-3_a9b4f3f719e67486476f2d670e9a8283">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we set up the ODE model that matches the equations above</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ba.model <span class="ot">&lt;-</span> <span class="cf">function</span> (t, x, ...) {     </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> x[<span class="fu">c</span>(<span class="st">"Sb"</span>,<span class="st">"Sa"</span>)]                  <span class="co"># susceptibles</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> x[<span class="fu">c</span>(<span class="st">"Ib"</span>,<span class="st">"Ia"</span>)]                  <span class="co"># infecteds</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> x[<span class="fu">c</span>(<span class="st">"Rb"</span>,<span class="st">"Ra"</span>)]                  <span class="co"># recovereds</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> s<span class="sc">+</span>i<span class="sc">+</span>r                            <span class="co"># total pop</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  lambda.b <span class="ot">&lt;-</span> (b1<span class="sc">+</span>b2)<span class="sc">*</span>i[<span class="dv">1</span>]<span class="sc">+</span>b1<span class="sc">*</span>i[<span class="dv">2</span>]      <span class="co"># group B force of infection</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  lambda.a <span class="ot">&lt;-</span> b1<span class="sc">*</span>i[<span class="dv">1</span>]<span class="sc">+</span>(b1<span class="sc">+</span>b2)<span class="sc">*</span>i[<span class="dv">2</span>]      <span class="co"># group A force of infection</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>       <span class="fu">c</span>(                               <span class="co"># these are the rates from the 6 equations above</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>         <span class="sc">-</span>lambda.b<span class="sc">*</span>s[<span class="dv">1</span>],</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>         <span class="sc">-</span>lambda.a<span class="sc">*</span>s[<span class="dv">2</span>],</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>          lambda.b<span class="sc">*</span>s[<span class="dv">1</span>]<span class="sc">-</span>gamma<span class="sc">*</span>i[<span class="dv">1</span>],</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>          lambda.a<span class="sc">*</span>s[<span class="dv">2</span>]<span class="sc">-</span>gamma<span class="sc">*</span>i[<span class="dv">2</span>],</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                        gamma<span class="sc">*</span>i[<span class="dv">1</span>],</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                        gamma<span class="sc">*</span>i[<span class="dv">2</span>]</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-4_64e51f91951eddb090d8e7c7750a3c76">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(deSolve)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: deSolve</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## initial conditions</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>yinit <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Sb=</span><span class="dv">2000</span>,<span class="at">Sa=</span><span class="dv">1000</span>,<span class="at">Ib=</span><span class="dv">1</span>,<span class="at">Ia=</span><span class="dv">1</span>,<span class="at">Rb=</span><span class="dv">0</span>,<span class="at">Ra=</span><span class="dv">0</span>) <span class="co"># set starting conditions</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>sol_ba <span class="ot">&lt;-</span> <span class="fu">ode</span>(                          <span class="co"># run the ode solver on the model above</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>yinit,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">times=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">2</span>,<span class="at">by=</span><span class="fl">0.001</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">func=</span>ba.model</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>           )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-5_56836e0ce7d7e8287558a7b344810219">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this code will plot the resulting time series</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sol_ba, <span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(sol_ba)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2001    7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sol_ba)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      time       Sb        Sa       Ib       Ia         Rb         Ra
+[1,] 0.000 2000.000 1000.0000 1.000000 1.000000 0.00000000 0.00000000
+[2,] 0.001 1999.939  999.9696 1.051116 1.020278 0.01025390 0.01010097
+[3,] 0.002 1999.874  999.9385 1.104524 1.041124 0.02103022 0.02040752
+[4,] 0.003 1999.807  999.9065 1.160326 1.062560 0.03235235 0.03092542
+[5,] 0.004 1999.737  999.8737 1.218624 1.084606 0.04424501 0.04166074
+[6,] 0.005 1999.664  999.8401 1.279526 1.107283 0.05673359 0.05261966</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sol_ba,<span class="at">log=</span><span class="st">'y'</span>, <span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in xy.coords(x, y, xlabel, ylabel, log): 1 y value &lt;= 0 omitted from
+logarithmic plot
+
+Warning in xy.coords(x, y, xlabel, ylabel, log): 1 y value &lt;= 0 omitted from
+logarithmic plot</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-6_bf87cc021aafe07059626cbde080940d">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sol_ba, <span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The results of the above are plotted below:</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-7_6cf4403fcd35ed3f1dbee846ab49a8bb">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the proportion of individuals in each state for the two groups</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> sol_ba[,<span class="dv">1</span>]                         <span class="co"># time</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> sol_ba[,<span class="sc">-</span><span class="dv">1</span>]                           <span class="co"># all other variables</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">apply</span>(y,<span class="dv">1</span>,sum)                     <span class="co"># population size</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>prop <span class="ot">&lt;-</span> y<span class="sc">/</span>n                             <span class="co"># fractions</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>subsampled.prop <span class="ot">&lt;-</span> prop[<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(time),<span class="at">by=</span><span class="dv">10</span>),]</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>subsampled.time <span class="ot">&lt;-</span> time[<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(time),<span class="at">by=</span><span class="dv">10</span>)]</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">t</span>(subsampled.prop),</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">names.arg=</span>subsampled.time,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">'time'</span>,<span class="at">main=</span><span class="st">'Group structure'</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">space=</span><span class="dv">0</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">c</span>(</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="fl">0.5</span>,<span class="dv">1</span>,<span class="fl">0.5</span>),</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>),</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="dv">1</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>),</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>),</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="dv">1</span>),</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>          ),</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend =</span> <span class="fu">colnames</span>(prop),</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">args.legend=</span><span class="fu">list</span>(<span class="at">bg=</span><span class="st">"white"</span>)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="a-model-with-2-age-classes" class="level2">
+<h2 class="anchored" data-anchor-id="a-model-with-2-age-classes">A Model With 2 Age Classes</h2>
+<p>Note that age is a special kind of heterogeneity in an epidemic model because individuals necessarily move from one class (younger) to another class (older) in a directional fashion that is independent of the infection and recovery process.</p>
+<!-- Today's first lecture showed how force of infection can vary with age. -->
+<!-- What sort of mechanisms might give rise to these effects? -->
+<!-- Here we'll see to what extent we can infer these mechanisms on the basis of age-specific incidence and seroprevalence data. -->
+<p>We’ll start by introducing age into the model above. So now <span class="math inline">\(a\)</span> becomes juveniles and <span class="math inline">\(b\)</span> becomes adults. And, independent of the disease process, juveniles (of any category) age into adults. Additionally, new juveniles are added through births (always first susceptible) and old individuals are lost to death.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-8_270b1a06b65872d614764130ccaa0fbe">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(diagram)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>elpos <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">B=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">Sj=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">Sa=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">Ij=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">Ia=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">Rj=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>),</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">Ra=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>),</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">Ds=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">Di=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">2</span>),</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">Dr=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">1</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>               )</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>elpos[,<span class="dv">1</span>] <span class="ot">&lt;-</span> (<span class="dv">2</span><span class="sc">*</span>elpos[,<span class="dv">1</span>]<span class="sc">-</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">8</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>elpos[,<span class="dv">2</span>] <span class="ot">&lt;-</span> (<span class="dv">2</span><span class="sc">*</span>elpos[,<span class="dv">2</span>]<span class="sc">-</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">6</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>fromto <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">BSj=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">RaD=</span><span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">10</span>),</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">SjSa=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>),</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">IjIa=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>),</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">RjRa=</span><span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>),</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">SjIj=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>),</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">SaIa=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>),</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">IjRj=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">6</span>),</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">IaRa=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">7</span>),</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">SaD=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">8</span>),</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>                <span class="at">IaD=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">9</span>)  </span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="fu">openplotmat</span>(<span class="at">asp=</span><span class="fl">0.9</span>)</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>arrpos <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">nrow=</span><span class="fu">nrow</span>(fromto))</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(fromto)))</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>  arrpos[i,] <span class="ot">&lt;-</span> <span class="fu">straightarrow</span>(</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>                              <span class="at">to=</span>elpos[fromto[i,<span class="dv">2</span>],],</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>                              <span class="at">from=</span>elpos[fromto[i,<span class="dv">1</span>],],</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>                              <span class="at">arr.pos=</span><span class="fl">0.65</span>,</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>                              <span class="at">arr.length=</span><span class="fl">0.5</span></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>                              )</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"B"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"B"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Sj"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Sj"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Sa"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Sa"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Ij"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Ij"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Ia"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Ia"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Rj"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Rj"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Ra"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"Ra"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Ds"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"D"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Di"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"D"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a><span class="fu">textrect</span>(elpos[<span class="st">"Dr"</span>,],<span class="fl">0.07</span>,<span class="fl">0.07</span>,<span class="at">lab=</span><span class="st">"D"</span>,<span class="at">box.col=</span><span class="fu">gray</span>(<span class="fl">0.7</span>),<span class="at">shadow.col=</span><span class="fu">gray</span>(<span class="fl">0.4</span>),<span class="at">shadow.size=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,arrpos[<span class="dv">3</span>,<span class="dv">2</span>]<span class="sc">+</span><span class="fl">0.05</span>,<span class="fu">quote</span>(alpha),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,arrpos[<span class="dv">4</span>,<span class="dv">2</span>]<span class="sc">+</span><span class="fl">0.05</span>,<span class="fu">quote</span>(alpha),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,arrpos[<span class="dv">5</span>,<span class="dv">2</span>]<span class="sc">+</span><span class="fl">0.05</span>,<span class="fu">quote</span>(alpha),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(arrpos[<span class="dv">6</span>,<span class="dv">1</span>]<span class="sc">-</span><span class="fl">0.05</span>,<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>,<span class="fu">quote</span>(lambda[J]),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(arrpos[<span class="dv">7</span>,<span class="dv">1</span>]<span class="sc">+</span><span class="fl">0.05</span>,<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>,<span class="fu">quote</span>(lambda[A]),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(arrpos[<span class="dv">8</span>,<span class="dv">1</span>]<span class="sc">-</span><span class="fl">0.05</span>,<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,<span class="fu">quote</span>(gamma),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(arrpos[<span class="dv">9</span>,<span class="dv">1</span>]<span class="sc">+</span><span class="fl">0.05</span>,<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,<span class="fu">quote</span>(gamma),<span class="at">cex=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">##text(3/4,arrpos[2,2]+0.05,quote(mu),cex=2)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- $$ -->
+<!-- \begin{aligned} -->
+<!--   \frac{dS_J}{dt} &= -\lambda_J\,S_J \phantom{-\gamma\,I_A}\\ -->
+<!--   \frac{dS_A}{dt} &= -\lambda_A\,S_A \phantom{-\gamma\,I_A}\\ -->
+<!--   \frac{dI_J}{dt} &= \phantom{-}\lambda_J\,S_J -\gamma\,I_J\\ -->
+<!--   \frac{dI_A}{dt} &= \phantom{-}\lambda_A\,S_A-\gamma\,I_A\\ -->
+<!--   \frac{dR_J}{dt} &= \phantom{-\lambda_J\,S_A}+\gamma\,I_J\\ -->
+<!--   \frac{dR_A}{dt} &= \phantom{-\lambda_J\,S_A}+\gamma\,I_A\\ -->
+<!-- \end{aligned} -->
+<!-- $$ The $\lambda$s denote the age-specific force of infections: $$ -->
+<!-- \begin{aligned} -->
+<!--     \lambda_J &= \beta_{JJ}\,I_J+\beta_{JA}\,I_A\\ -->
+<!--     \lambda_A &= \beta_{AJ}\,I_J+\beta_{AA}\,I_A -->
+<!--   \end{aligned} -->
+<!-- $$  -->
+<p>We can do this very simply using the same ingredients that go into the basic SIR model. In that model, the waiting times in the S and I classes are exponential. Let’s assume the same thing about the aging process. We’ll also add in births into the juvenile susceptible class and deaths from the adult classes.</p>
+<p><span class="math display">\[
+  \begin{aligned}
+    \frac{dS_J}{dt} &amp;= -\lambda_J\,S_J \phantom{-\gamma\,I_A}  +B \phantom{-\mu\,S_A}-\alpha\,S_J\\
+    \frac{dS_A}{dt} &amp;= -\lambda_A\,S_A \phantom{-\gamma\,I_A +B} -\mu\,S_A+\alpha\,S_J\\
+    \frac{dI_J}{dt} &amp;= \phantom{-}\lambda_J\,S_J -\gamma\,I_J\phantom{+B-\mu\,S_A}-\alpha\,I_J\\
+    \frac{dI_A}{dt} &amp;= \phantom{-}\lambda_A\,S_A-\gamma\,I_A \phantom{+B} -\mu\,I_A+\alpha\,I_J\\
+    \frac{dR_J}{dt} &amp;= \phantom{-\lambda_J\,S_A}+\gamma\,I_J\phantom{+B-\mu\,S_A}-\alpha\,R_J\\
+    \frac{dR_A}{dt} &amp;= \phantom{-\lambda_J\,S_A}+\gamma\,I_A \phantom{+B}-\mu\,R_A+\alpha\,R_J\\
+  \end{aligned}
+\]</span></p>
+<p>Now, let’s simulate this model, under the same assumptions about transmission rates as above.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-9_65b658290ed090282ce704840cea540a">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define the parameters</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>b1_demog <span class="ot">&lt;-</span> <span class="fl">0.002</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>b2_demog <span class="ot">&lt;-</span> <span class="fl">0.002</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>gamma_demog <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>births_demog <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>da_demog <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">60</span>)                          <span class="co"># alpha = 1/da</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-10_fa58a9888dfafa472eb6910667f5cb6a">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ja.demog.model <span class="ot">&lt;-</span> <span class="cf">function</span> (t, x, ...) {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> x[<span class="fu">c</span>(<span class="st">"Sj"</span>,<span class="st">"Sa"</span>)]                  <span class="co"># susceptibles</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> x[<span class="fu">c</span>(<span class="st">"Ij"</span>,<span class="st">"Ia"</span>)]                  <span class="co"># infecteds</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> x[<span class="fu">c</span>(<span class="st">"Rj"</span>,<span class="st">"Ra"</span>)]                  <span class="co"># recovereds</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> s<span class="sc">+</span>i<span class="sc">+</span>r                            <span class="co"># total pop</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  lambda.j <span class="ot">&lt;-</span> (b1_demog<span class="sc">+</span>b2_demog)<span class="sc">*</span>i[<span class="dv">1</span>]<span class="sc">+</span>b1_demog<span class="sc">*</span>i[<span class="dv">2</span>]      <span class="co"># juv. force of infection </span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  lambda.a <span class="ot">&lt;-</span> b1_demog<span class="sc">*</span>i[<span class="dv">1</span>]<span class="sc">+</span>(b1_demog<span class="sc">+</span>b2_demog)<span class="sc">*</span>i[<span class="dv">2</span>]      <span class="co"># adult. force of infection</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>da_demog</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>       <span class="fu">c</span>(</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>         <span class="sc">-</span>lambda.j<span class="sc">*</span>s[<span class="dv">1</span>]           <span class="sc">-</span>alpha[<span class="dv">1</span>]<span class="sc">*</span>s[<span class="dv">1</span>]<span class="sc">+</span>births_demog,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>         <span class="sc">-</span>lambda.a<span class="sc">*</span>s[<span class="dv">2</span>]           <span class="sc">+</span>alpha[<span class="dv">1</span>]<span class="sc">*</span>s[<span class="dv">1</span>]<span class="sc">-</span>alpha[<span class="dv">2</span>]<span class="sc">*</span>s[<span class="dv">2</span>],</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>          lambda.j<span class="sc">*</span>s[<span class="dv">1</span>]<span class="sc">-</span>gamma_demog<span class="sc">*</span>i[<span class="dv">1</span>]<span class="sc">-</span>alpha[<span class="dv">1</span>]<span class="sc">*</span>i[<span class="dv">1</span>],</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>          lambda.a<span class="sc">*</span>s[<span class="dv">2</span>]<span class="sc">-</span>gamma_demog<span class="sc">*</span>i[<span class="dv">2</span>]<span class="sc">+</span>alpha[<span class="dv">1</span>]<span class="sc">*</span>i[<span class="dv">1</span>]<span class="sc">-</span>alpha[<span class="dv">2</span>]<span class="sc">*</span>i[<span class="dv">2</span>],</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>                        gamma_demog<span class="sc">*</span>i[<span class="dv">1</span>]<span class="sc">-</span>alpha[<span class="dv">1</span>]<span class="sc">*</span>r[<span class="dv">1</span>],</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>                        gamma_demog<span class="sc">*</span>i[<span class="dv">2</span>]<span class="sc">+</span>alpha[<span class="dv">1</span>]<span class="sc">*</span>r[<span class="dv">1</span>]<span class="sc">-</span>alpha[<span class="dv">2</span>]<span class="sc">*</span>r[<span class="dv">2</span>]</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that in this function, <span class="math inline">\(\mu=\)</span> <code>alpha[2]</code>, i.e., death, is just like another age class.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-11_6ac1b42cdbfa9cfd2ba167e87936f6bf">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(deSolve)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">## initial conditions</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>yinit <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Sj=</span><span class="dv">2000</span>,<span class="at">Sa=</span><span class="dv">3000</span>,<span class="at">Ij=</span><span class="dv">0</span>,<span class="at">Ia=</span><span class="dv">1</span>,<span class="at">Rj=</span><span class="dv">0</span>,<span class="at">Ra=</span><span class="dv">1000</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>sol_demog <span class="ot">&lt;-</span> <span class="fu">ode</span>(</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>yinit,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">times=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">200</span>,<span class="at">by=</span><span class="fl">0.1</span>),</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">func=</span>ja.demog.model</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>           )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="exercise-1-use-this-code-to-plot-the-number-of-susceptible-infected-and-recovered-individuals-over-time." class="level3">
+<h3 class="anchored" data-anchor-id="exercise-1-use-this-code-to-plot-the-number-of-susceptible-infected-and-recovered-individuals-over-time.">Exercise 1: Use this code to plot the number of susceptible, infected, and recovered individuals over time.</h3>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-12_519fcf590c9d765ef66cf774646781ff">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sol_demog, <span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(sol_demog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2001    7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sol_demog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     time       Sj       Sa        Ij       Ia        Rj        Ra
+[1,]  0.0 2000.000 3000.000 0.0000000 1.000000 0.0000000 1000.0000
+[2,]  0.1 1999.378 3003.493 0.4177484 1.352520 0.2039670  999.4835
+[3,]  0.2 1998.175 3006.051 0.9535749 2.096184 0.8716958  999.5051
+[4,]  0.3 1996.047 3006.972 1.7614151 3.444930 2.1911836 1000.5532
+[5,]  0.4 1992.393 3005.091 3.0702863 5.782232 4.5364895 1003.4091
+[6,]  0.5 1986.189 2998.473 5.2419033 9.755376 8.5688796 1009.3604</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sol_demog,<span class="at">log=</span><span class="st">'y'</span>,<span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in xy.coords(x, y, xlabel, ylabel, log): 1 y value &lt;= 0 omitted from
+logarithmic plot
+
+Warning in xy.coords(x, y, xlabel, ylabel, log): 1 y value &lt;= 0 omitted from
+logarithmic plot</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-13_5a8bf796d3cbaba7efd7c991acbf466f">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sol_demog, <span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that now that births are replenishing susceptibles infection persists. The results of the above are plotted here :</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-14_f82b6c74953f23ccd9e2f994b7d16422">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot the relative proportion of individuals in each category</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> sol_demog[,<span class="dv">1</span>]                         <span class="co"># time</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> sol_demog[,<span class="sc">-</span><span class="dv">1</span>]                           <span class="co"># all other variables</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">apply</span>(y,<span class="dv">1</span>,sum)                     <span class="co"># population size</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>prop <span class="ot">&lt;-</span> y<span class="sc">/</span>n                             <span class="co"># fractions</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>subsampled.prop <span class="ot">&lt;-</span> prop[<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(time),<span class="at">by=</span><span class="dv">10</span>),]</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>subsampled.time <span class="ot">&lt;-</span> time[<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(time),<span class="at">by=</span><span class="dv">10</span>)]</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">t</span>(subsampled.prop),</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">names.arg=</span>subsampled.time,</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">'time'</span>,<span class="at">main=</span><span class="st">'Age structure'</span>,</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">space=</span><span class="dv">0</span>,</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">c</span>(</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="fl">0.5</span>,<span class="dv">1</span>,<span class="fl">0.5</span>),</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>),</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="dv">1</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>),</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>),</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="dv">1</span>),</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>          ),</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend =</span> <span class="fu">colnames</span>(prop),</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">args.legend=</span><span class="fu">list</span>(<span class="at">bg=</span><span class="st">"white"</span>),</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">border =</span> <span class="cn">NA</span></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>equil <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">tail</span>(sol_demog,<span class="dv">1</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> equil[<span class="fu">c</span>(<span class="st">"Sj"</span>,<span class="st">"Sa"</span>)]<span class="sc">+</span>equil[<span class="fu">c</span>(<span class="st">"Ij"</span>,<span class="st">"Ia"</span>)]<span class="sc">+</span>equil[<span class="fu">c</span>(<span class="st">"Rj"</span>,<span class="st">"Ra"</span>)]</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>seroprev <span class="ot">&lt;-</span> equil[<span class="fu">c</span>(<span class="st">"Rj"</span>,<span class="st">"Ra"</span>)]<span class="sc">/</span>n            <span class="co"># get the proportion in the R class at equilibrium</span></span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(seroprev) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"J"</span>,<span class="st">"A"</span>)                </span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a><span class="co">#plot the proportion of each age class </span></span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a><span class="co"># that has been previously infected (is in the R class) </span></span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a><span class="co"># and would thus be expected to have antibodies (i.e. seropositive)</span></span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">height=</span>seroprev,<span class="at">width=</span>da_demog,<span class="at">ylab=</span><span class="st">"seroprevalence"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-15_bed80baaf3db8166b8abd35aedde83a7">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To compute <span class="math inline">\(R_0\)</span>, we need to know the stable age distribution (the relative proportion in the juvenile and adult age classes) of the population, which we can find by solving for the disease-free equilibrium: <span class="math inline">\(S_J^*=B/\alpha\)</span> and <span class="math inline">\(S_A^*=B/\mu\)</span>.</p>
+<p>With the stable age distribution, we can calculate <span class="math inline">\(R_0\)</span> by constructing the next generation matrix. Details on this method are described in the last section of this worksheet and are not required for completing the exercises in the worksheet. The code below outlines how the next generation matrix is constructed using the <span class="math inline">\(\alpha\)</span> (aging from juvenile to adult), <span class="math inline">\(\mu\)</span> death), <span class="math inline">\(n\)</span> (total births), <span class="math inline">\(\gamma\)</span> (recovery), <span class="math inline">\(da\)</span> (width of age groups in years), and <span class="math inline">\(\beta\)</span> (transmission) parameters.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-16_4f9ed1bef09df800cb3a2acb42b9e14f">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this code can be re-run to set parameter values</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>da_demog[<span class="dv">1</span>]</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>da_demog[<span class="dv">2</span>]</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> births_demog<span class="sc">/</span><span class="fu">c</span>(alpha,mu)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>beta_demog <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(b1_demog<span class="sc">+</span>b2,b1_demog,b1_demog,b1_demog<span class="sc">+</span>b2),<span class="at">nrow=</span><span class="dv">2</span>,<span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># this command craetes the next generation matrix</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>ngm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>              <span class="fu">c</span>(</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>                n[<span class="dv">1</span>]<span class="sc">*</span>beta_demog[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">/</span>(gamma_demog<span class="sc">+</span>alpha)<span class="sc">+</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>                  alpha<span class="sc">/</span>(gamma_demog<span class="sc">+</span>mu)<span class="sc">*</span>n[<span class="dv">1</span>]<span class="sc">*</span>beta_demog[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">/</span>(gamma_demog<span class="sc">+</span>mu),</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>                n[<span class="dv">2</span>]<span class="sc">*</span>beta_demog[<span class="dv">2</span>,<span class="dv">1</span>]<span class="sc">/</span>(gamma_demog<span class="sc">+</span>alpha)<span class="sc">+</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>                  alpha<span class="sc">/</span>(gamma_demog<span class="sc">+</span>mu)<span class="sc">*</span>n[<span class="dv">2</span>]<span class="sc">*</span>beta_demog[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">/</span>(gamma_demog<span class="sc">+</span>mu),</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>                n[<span class="dv">1</span>]<span class="sc">*</span>beta_demog[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">/</span>(gamma_demog<span class="sc">+</span>mu),</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>                n[<span class="dv">2</span>]<span class="sc">*</span>beta_demog[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">/</span>(gamma_demog<span class="sc">+</span>mu)</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>                ),</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">nrow=</span><span class="dv">2</span>,</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol=</span><span class="dv">2</span></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>              )</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a><span class="co"># this command outputs the R0 value</span></span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(<span class="fu">Re</span>(<span class="fu">eigen</span>(ngm,<span class="at">only.values=</span>T)<span class="sc">$</span>values))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13.23485</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="getting-more-realistic-adding-more-age-classes" class="level2">
+<h2 class="anchored" data-anchor-id="getting-more-realistic-adding-more-age-classes">Getting more realistic: adding more age classes</h2>
+<p>In the models above, the aging process follows an exponential distribution, which means that whether an individual is 1~year old or 10 years old, the chance of them becoming an adult is the same! To improve on this, we can assume that the time a juvenile must wait before becoming an adult follows a gamma distribution. This is equivalent to saying that the waiting time is a sum of some number of exponential distributions. This suggests that we can achieve such a distribution by adding age classes to the model, so that becoming an adult means passing through some number of stages. We’ll use 30 age classes, and since they don’t have to be of equal duration, we’ll assume that they’re not. Specifically, we’ll have 20 1-yr age classes to take us up to adulthood and break adults into 10 age classes of 5~yr duration each. The last age class covers age 66-80.</p>
+<p>Now, when we had just two age classes, we could write out each of the equations easily enough, but now that we’re going to have 30, we’ll need to be more systematic. In particular, we’ll need to think of <span class="math inline">\(\beta\)</span> as a matrix of transmission rates. Let’s see how to define such a matrix in <strong>R</strong>. So that we don’t change too many things all at once, let’s keep the same contact structure as in the juvenile-adult model.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-17_f1de5028eb67946d6c741d0acdd1f228">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>b1_ages <span class="ot">&lt;-</span> <span class="fl">0.02</span>  <span class="co">#transmission rate</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>b2_ages <span class="ot">&lt;-</span> <span class="fl">0.01</span>  <span class="co">#transmission rate</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>gamma_ages <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>births_ages <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>,<span class="at">by=</span><span class="dv">1</span>),<span class="fu">seq</span>(<span class="dv">25</span>,<span class="dv">65</span>,<span class="at">by=</span><span class="dv">5</span>),<span class="dv">80</span>) <span class="co"># upper end of age classes</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>da_ages <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">c</span>(<span class="dv">0</span>,ages))                        <span class="co"># widths of age classes</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="co"># set up a matrix of contact rates between classes -- more contact within juveniles and adults than between</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>beta_ages <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow=</span><span class="dv">30</span>,<span class="at">ncol=</span><span class="dv">30</span>)    </span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>beta_ages[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>] <span class="ot">&lt;-</span> b1_ages <span class="co"># transmission rate for juveniles </span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>beta_ages[<span class="dv">21</span><span class="sc">:</span><span class="dv">30</span>,<span class="dv">21</span><span class="sc">:</span><span class="dv">30</span>] <span class="ot">&lt;-</span> b2_ages <span class="co"># transmission rate for adults</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>beta_ages[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,<span class="dv">21</span><span class="sc">:</span><span class="dv">30</span>] <span class="ot">&lt;-</span> b2_ages<span class="sc">/</span><span class="dv">2</span> <span class="co"># lower transmission rate between juveniles and adults</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>beta_ages[<span class="dv">21</span><span class="sc">:</span><span class="dv">30</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>] <span class="ot">&lt;-</span> b2_ages<span class="sc">/</span><span class="dv">2</span> <span class="co"># lower transmission rate between juveniles and adults</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="co">#WAIFW stands for Who Aquires Infection From Whom</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(ages, ages, beta_ages,                </span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">plot.title=</span><span class="fu">title</span>(</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>                 <span class="at">main=</span><span class="st">"WAIFW matrix"</span>,      </span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab=</span><span class="st">"age"</span>,<span class="at">ylab=</span><span class="st">"age"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We’ll assume that, at the time of introduction, all children are susceptible, as are adults over 45, but that individuals aged 20–45 have seen the pathogen before and are immune. The vector <code>yinit</code> expresses these initial conditions.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-18_d169cd1aab6956b1bdf5c3d52bab8270">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>yinit_ages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">S=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">100</span>,<span class="dv">20</span>),<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">5</span>),<span class="fu">rep</span>(<span class="dv">200</span>,<span class="dv">5</span>)),</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">I=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">25</span>),<span class="dv">1</span>,<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>)),</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">R=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">20</span>),<span class="fu">rep</span>(<span class="dv">1000</span>,<span class="dv">5</span>),<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">5</span>))</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>           )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that we’re starting out with 1 infected individual in the 26th age class.</p>
+<p>The codes that follow will be a bit easier to follow if we introduce some indexes that will allow us to pick out certain bits of the <code>yinit</code> vector.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-19_702a479de59fe3ef26707bd18536aa65">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>sindex <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>iindex <span class="ot">&lt;-</span> <span class="dv">31</span><span class="sc">:</span><span class="dv">60</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>rindex <span class="ot">&lt;-</span> <span class="dv">61</span><span class="sc">:</span><span class="dv">90</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>juvies <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>adults <span class="ot">&lt;-</span> <span class="dv">21</span><span class="sc">:</span><span class="dv">30</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, to capture the aging process, it’s convenient to define another matrix to hold the rates of movement between age classes.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-20_a04374eb2a6fe736aa5dcfc47e668c72">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>aging <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="sc">-</span><span class="dv">1</span><span class="sc">/</span>da_ages)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>aging[<span class="fu">row</span>(aging)<span class="sc">-</span><span class="fu">col</span>(aging)<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">head</span>(da_ages,<span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Have a look at the aging matrix, for example by doing:</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-21_f94215e617bb2d6b72625ef069e3a3ab">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># move fast through the 1-year age classes - negatives are moves out, positives are moves in</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>aging[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]   -1    0    0    0    0
+[2,]    1   -1    0    0    0
+[3,]    0    1   -1    0    0
+[4,]    0    0    1   -1    0
+[5,]    0    0    0    1   -1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># don't age between these classes -- e.g. can't age from 1 to 6</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>aging[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    0    0
+[2,]    0    0    0    0    0
+[3,]    0    0    0    0    0
+[4,]    0    0    0    0    0
+[5,]    0    0    0    0    0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># move slowly between the wider age classes</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>aging[<span class="dv">25</span><span class="sc">:</span><span class="dv">30</span>,<span class="dv">25</span><span class="sc">:</span><span class="dv">30</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]        [,6]
+[1,] -0.2  0.0  0.0  0.0  0.0  0.00000000
+[2,]  0.2 -0.2  0.0  0.0  0.0  0.00000000
+[3,]  0.0  0.2 -0.2  0.0  0.0  0.00000000
+[4,]  0.0  0.0  0.2 -0.2  0.0  0.00000000
+[5,]  0.0  0.0  0.0  0.2 -0.2  0.00000000
+[6,]  0.0  0.0  0.0  0.0  0.2 -0.06666667</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot the aging matrix</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(ages, ages, aging,                </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">plot.title=</span><span class="fu">title</span>(</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">main=</span><span class="st">"Aging matrix"</span>,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab=</span><span class="st">"age"</span>,<span class="at">ylab=</span><span class="st">"age"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="exercise-2-what-can-you-say-about-its-structure-how-are-the-different-age-groups-in-contact-with-each-other" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2-what-can-you-say-about-its-structure-how-are-the-different-age-groups-in-contact-with-each-other">Exercise 2: What can you say about its structure? How are the different age groups in contact with each other?</h3>
+<p>Now we can put the pieces together to write a simulator for the age-structured SIR dynamics.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-22_041d8a673e40e37f7a9cf8a938b7363a">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>ja.multistage.model <span class="ot">&lt;-</span> <span class="cf">function</span> (t, x, ...) {</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> x[sindex]                  <span class="co"># susceptibles</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> x[iindex]                  <span class="co"># infecteds</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> x[rindex]                  <span class="co"># recovereds</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> beta_ages<span class="sc">%*%</span>i              <span class="co"># force of infection</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  dsdt <span class="ot">&lt;-</span> <span class="sc">-</span>lambda<span class="sc">*</span>s<span class="sc">+</span>aging<span class="sc">%*%</span>s</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  didt <span class="ot">&lt;-</span>  lambda<span class="sc">*</span>s<span class="sc">+</span>aging<span class="sc">%*%</span>i<span class="sc">-</span>gamma_ages<span class="sc">*</span>i</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  drdt <span class="ot">&lt;-</span>           aging<span class="sc">%*%</span>r<span class="sc">+</span>gamma_ages<span class="sc">*</span>i </span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  dsdt[<span class="dv">1</span>] <span class="ot">&lt;-</span> dsdt[<span class="dv">1</span>]<span class="sc">+</span>births_ages</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>       <span class="fu">c</span>(</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>         dsdt,</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>         didt,</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>         drdt</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can plug this into <code>ode</code> just as we did the simpler models to simulate an epidemic. We’ll then plot the epidemic curve.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-23_5dd87adacc3eddb41e4f679f1ef4bff8">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>sol_ms <span class="ot">&lt;-</span> <span class="fu">ode</span>(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>yinit_ages,</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">times=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,<span class="at">by=</span><span class="fl">0.1</span>),</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">func=</span>ja.multistage.model,</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">parms =</span> <span class="fu">c</span>(<span class="at">beta_ages =</span> beta_ages, <span class="at">aging=</span>aging, <span class="at">births_ages =</span> births_ages)</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>time_ms <span class="ot">&lt;-</span> sol_ms[,<span class="dv">1</span>]</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>infects_ms <span class="ot">&lt;-</span> sol_ms[,<span class="dv">1</span><span class="sc">+</span>iindex]</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(time_ms,<span class="fu">apply</span>(infects_ms,<span class="dv">1</span>,sum),<span class="at">type=</span><span class="st">'l'</span>)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(time_ms,<span class="fu">apply</span>(infects_ms[,juvies],<span class="dv">1</span>,sum),<span class="at">col=</span><span class="st">'red'</span>)</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(time_ms,<span class="fu">apply</span>(infects_ms[,adults],<span class="dv">1</span>,sum),<span class="at">col=</span><span class="st">'blue'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Let’s mimic a situation where we have cross-sectional seroprevalence data (e.g.&nbsp;measures of antibodies that tell you someone is in the R class). In using such data, we’d typically assume that the system was at equilibrium.</p>
+</section>
+<section id="exercise-3-what-does-the-equilibrium-age-specific-seroprevalence-look-like-in-this-example" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3-what-does-the-equilibrium-age-specific-seroprevalence-look-like-in-this-example">Exercise 3: What does the equilibrium age-specific seroprevalence look like in this example?</h3>
+<p>Use the code below to display the age-specific seroprevalence (i.e., the seroprevalence for each age group at equilibrium)</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-24_b0d6fa40688b9cc01a33ceac082910dc">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>equil_ms <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">tail</span>(sol_ms,<span class="dv">1</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>n_ms <span class="ot">&lt;-</span> equil_ms[sindex]<span class="sc">+</span>equil_ms[iindex]<span class="sc">+</span>equil_ms[rindex]</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>seroprev_ms <span class="ot">&lt;-</span> equil_ms[rindex]<span class="sc">/</span>n_ms</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(seroprev_ms) <span class="ot">&lt;-</span> ages</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">height=</span>seroprev_ms,<span class="at">width=</span>da_ages)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Let’s also compute <span class="math inline">\(R_0\)</span>. To do so, we’ll need the stable age distribution. We can get that by simulating an infection-free population, which we get by setting the initial I to all 0s:</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-25_4e784ea23137499f78710937ca66c67b">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>yinit.sonly <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">S=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">250</span>,<span class="dv">30</span>)),</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">I=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">30</span>)),</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">R=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">30</span>))</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>sol_sonly <span class="ot">&lt;-</span> <span class="fu">ode</span>(</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>yinit.sonly,</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">times=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">300</span>,<span class="at">by=</span><span class="dv">1</span>),</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">func=</span>ja.multistage.model,</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">parms =</span> <span class="fu">c</span>(<span class="at">beta=</span>beta, <span class="at">aging=</span>aging, <span class="at">births=</span>births_demog)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>time_sonly <span class="ot">&lt;-</span> sol_sonly[,<span class="dv">1</span>]</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">apply</span>(sol_sonly[,<span class="sc">-</span><span class="dv">1</span>],<span class="dv">1</span>,sum)</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(time_sonly,pop,<span class="at">type=</span><span class="st">'l'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Alternatively, we can get the stable age distribution by finding the population structure that balances the birth, aging, and death processes. At equilibrium, we have the matrix equation <span class="math display">\[
+\begin{pmatrix}
+    -\alpha_1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0\\
+    \alpha_1 &amp; -\alpha_2 &amp; 0 &amp; \cdots &amp; 0\\
+    0 &amp; \alpha_2 &amp; -\alpha_3 &amp; \cdots &amp; 0\\
+    \vdots &amp;  &amp; \ddots &amp; \ddots &amp; \vdots \\
+    0 &amp; \cdots &amp; &amp; \alpha_{29} &amp; -\alpha_{30}\\
+  \end{pmatrix} . \begin{pmatrix}
+    n_1 \\ n_2 \\ n_3 \\ \vdots \\ n_{30}
+  \end{pmatrix} + \begin{pmatrix}
+    B \\ 0 \\ 0 \\ \vdots \\ 0
+  \end{pmatrix}=
+  \begin{pmatrix}
+    0 \\ 0 \\ 0 \\ \vdots \\ 0
+  \end{pmatrix}
+\]</span> To solve this equation in <strong>R</strong>, we can do</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-26_c91c4b000dada8362bca6031661d2be5">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="do">## get stable age distribution</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">solve</span>(aging,<span class="sc">-</span><span class="fu">c</span>(births_ages,<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">29</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The following lines then compute <span class="math inline">\(R_0\)</span> using the next generation matrix method. More details are available in the “Bonus” section at the end of the document. This calculation comes from a recipe described in detail by <strong>Diekmann &amp; Heesterbeek, 2000</strong> and <strong>Hurford <em>et. al</em>, 2010</strong>.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-27_7a9749186330d72fa2375002c56d463a">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>F <span class="ot">&lt;-</span> <span class="fu">diag</span>(n)<span class="sc">%*%</span>beta_ages<span class="sc">+</span>aging<span class="sc">-</span><span class="fu">diag</span>(<span class="fu">diag</span>(aging))</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">diag</span>(gamma_ages<span class="sc">-</span><span class="fu">diag</span>(aging))</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(<span class="fu">Re</span>(<span class="fu">eigen</span>(<span class="fu">solve</span>(V,F),<span class="at">only.values=</span>T)<span class="sc">$</span>values))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.792003</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-28_fc7467d795cfb8a1299b214118aa2b89">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>seroprev1 <span class="ot">&lt;-</span> seroprev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercise-4" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-4">Exercise 4:</h3>
+<section id="a.-change-the-juvenile-and-adult-contact-rates-b1_ages-and-b2_ages-to-reflect-different-transmission-within-groups.-make-the-juvenile-contact-rate-0.02-to-reflect-higher-contact-among-kids-e.g.-in-schools." class="level4">
+<h4 class="anchored" data-anchor-id="a.-change-the-juvenile-and-adult-contact-rates-b1_ages-and-b2_ages-to-reflect-different-transmission-within-groups.-make-the-juvenile-contact-rate-0.02-to-reflect-higher-contact-among-kids-e.g.-in-schools.">a. Change the juvenile and adult contact rates (b1_ages and b2_ages) to reflect different transmission within groups. Make the juvenile contact rate 0.02 to reflect higher contact among kids (e.g.&nbsp;in schools).</h4>
+</section>
+<section id="b.-use-image-or-filled.contour-to-plot-the-beta-matrix." class="level4">
+<h4 class="anchored" data-anchor-id="b.-use-image-or-filled.contour-to-plot-the-beta-matrix.">b. Use <code>image</code> or <code>filled.contour</code> to plot the <span class="math inline">\(\beta\)</span> matrix.</h4>
+</section>
+<section id="c.-compute-r_0-for-your-assumptions." class="level4">
+<h4 class="anchored" data-anchor-id="c.-compute-r_0-for-your-assumptions.">c.&nbsp;Compute <span class="math inline">\(R_0\)</span> for your assumptions.</h4>
+</section>
+<section id="d.-simulate-and-plot-the-age-structured-sir-dynamics-under-your-assumptions-and-record-how-the-age-specific-seroprevalence-has-changed." class="level4">
+<h4 class="anchored" data-anchor-id="d.-simulate-and-plot-the-age-structured-sir-dynamics-under-your-assumptions-and-record-how-the-age-specific-seroprevalence-has-changed.">d.&nbsp;Simulate and plot the age-structured SIR dynamics under your assumptions and record how the age-specific seroprevalence has changed.</h4>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-29_0ad553a27b232ae69b272e26c84aab56">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>b1_r <span class="ot">&lt;-</span> <span class="fl">0.007</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>b2_r <span class="ot">&lt;-</span> <span class="fl">0.02</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>b3_r <span class="ot">&lt;-</span> <span class="fl">0.03</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data=</span>b1_r,<span class="at">nrow=</span><span class="dv">30</span>,<span class="at">ncol=</span><span class="dv">30</span>)</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>beta[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>] <span class="ot">&lt;-</span> b2_r</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>beta[<span class="dv">6</span><span class="sc">:</span><span class="dv">16</span>,<span class="dv">6</span><span class="sc">:</span><span class="dv">16</span>] <span class="ot">&lt;-</span> b3_r</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>beta_ages <span class="ot">&lt;-</span> beta</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(ages, ages, beta_ages,                </span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">plot.title=</span><span class="fu">title</span>(</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">main=</span><span class="st">"WAIFW matrix"</span>,</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab=</span><span class="st">"age"</span>,<span class="at">ylab=</span><span class="st">"age"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>sol_r <span class="ot">&lt;-</span> <span class="fu">ode</span>(</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>yinit_ages,</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">times=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">400</span>,<span class="at">by=</span><span class="fl">0.1</span>),</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">func=</span>ja.multistage.model,</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">parms =</span> <span class="fu">c</span>(<span class="at">beta_ages=</span>beta_ages, <span class="at">aging=</span>aging, <span class="at">births_ages=</span>births_ages)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sol_r[,<span class="dv">1</span>],<span class="fu">apply</span>(sol_r[,<span class="dv">1</span><span class="sc">+</span>iindex],<span class="dv">1</span>,sum),<span class="at">type=</span><span class="st">'l'</span>)</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(sol_r[,<span class="dv">1</span>],<span class="fu">apply</span>(sol_r[,<span class="dv">1</span><span class="sc">+</span>iindex[juvies]],<span class="dv">1</span>,sum),<span class="at">col=</span><span class="st">'red'</span>)</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(sol_r[,<span class="dv">1</span>],<span class="fu">apply</span>(sol_r[,<span class="dv">1</span><span class="sc">+</span>iindex[adults]],<span class="dv">1</span>,sum),<span class="at">col=</span><span class="st">'blue'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-29-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>equil_r <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">tail</span>(sol_r,<span class="dv">1</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>n_r <span class="ot">&lt;-</span> equil_r[sindex]<span class="sc">+</span>equil_r[iindex]<span class="sc">+</span>equil_r[rindex]</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>seroprev_r <span class="ot">&lt;-</span> equil_r[rindex]<span class="sc">/</span>n_r</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(seroprev_r) <span class="ot">&lt;-</span> ages</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">height=</span>seroprev_r,<span class="at">width=</span>da_ages)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-29-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="do">## get stable age distribution</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>n_r <span class="ot">&lt;-</span> <span class="fu">solve</span>(aging,<span class="sc">-</span><span class="fu">c</span>(births_ages,<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">29</span>)))</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="do">## get R0</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>F <span class="ot">&lt;-</span> <span class="fu">diag</span>(n_r)<span class="sc">%*%</span>beta_ages<span class="sc">+</span>aging<span class="sc">-</span><span class="fu">diag</span>(<span class="fu">diag</span>(aging))</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">diag</span>(gamma_ages<span class="sc">-</span><span class="fu">diag</span>(aging))</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(<span class="fu">Re</span>(<span class="fu">eigen</span>(<span class="fu">solve</span>(V,F),<span class="at">only.values=</span>T)<span class="sc">$</span>values))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.526177</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R0 = 6.53</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>infects_r <span class="ot">&lt;-</span> sol_r[<span class="fu">dim</span>(sol_r)[<span class="dv">1</span>],<span class="dv">1</span><span class="sc">+</span>iindex]</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ages <span class="sc">*</span> infects_r<span class="sc">/</span><span class="fu">sum</span>(infects_r))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.076599</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(infects_r[<span class="dv">15</span><span class="sc">:</span><span class="dv">23</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5441408</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-30_f0be7e1b5e2d9d7183c67c782e2b274f">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>seroprev2 <span class="ot">&lt;-</span> seroprev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-31_908521b0464fd43265a00041e30abf86">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>{paint} masked print.tbl_df</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(reshape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: reshape</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>sol_r <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sol_r)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>sol_rm <span class="ot">&lt;-</span> <span class="fu">melt</span>(sol_r,<span class="at">id=</span><span class="st">"time"</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>sol_rm<span class="sc">$</span>class <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">substr</span>(<span class="fu">as.character</span>(sol_rm<span class="sc">$</span>variable),<span class="at">start=</span><span class="dv">1</span>,<span class="at">stop=</span><span class="dv">1</span>))</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>sol_rm<span class="sc">$</span>age <span class="ot">&lt;-</span> ages[<span class="fu">as.integer</span>(<span class="fu">substr</span>(<span class="fu">as.character</span>(sol_rm<span class="sc">$</span>variable),<span class="dv">2</span>,<span class="at">stop=</span><span class="dv">5</span>))]</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>sol_rm)<span class="sc">+</span><span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>time,<span class="at">y=</span>value,<span class="at">col=</span>age,<span class="at">group=</span>age))<span class="sc">+</span><span class="fu">facet_grid</span>(class<span class="sc">~</span>.,<span class="at">scales=</span><span class="st">"free"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="r0-and-the-mean-age-of-infection" class="level2">
+<h2 class="anchored" data-anchor-id="r0-and-the-mean-age-of-infection">R0 and the mean age of infection</h2>
+<p>For simplicity, let’s return to the earlier models with a simple age-class mixing matrix. But this time, we’ll calculate <span class="math inline">\(R_0\)</span>, the mean age of infection, and the number of cases between 15-35 years as we increase the rate of contact. Recall from the rubella and CRS example that the risk of severe disease outcomes depends on the risk of infection in reproductive age women. Recall also that increasing vaccination reduces <span class="math inline">\(R_E\)</span> – so here we’ll evalate at several values of <span class="math inline">\(R_0\)</span> as a proxy for the impact of vaccination. We’ll then calculate how the mean age of infection changes, and specifically how the absolute number of cases among individuals between the ages of 15-35 (as a proxy for reproductive age women) changes. To do so, we’ll make a loop and evaluate the code for each of 10 increasing levels of mixing (which whill change R0)</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-32_555358feecd76348c311d174eb541967">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># a vector of scaling factors, we'll reduce the contact rate </span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># from the original code by each of the values in this vector</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>scale <span class="ot">&lt;-</span> <span class="fu">seq</span>(.<span class="dv">2</span>,<span class="dv">1</span>,<span class="at">length=</span><span class="dv">10</span>) </span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>R0 <span class="ot">&lt;-</span> <span class="fu">numeric</span>() <span class="co"># somewhere to store results for the mean age</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>mean_age <span class="ot">&lt;-</span> <span class="fu">numeric</span>() <span class="co"># somewhere to store results for the mean age</span></span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>sum_cases <span class="ot">&lt;-</span> <span class="fu">numeric</span>() <span class="co"># somewhere to store results for the mean age</span></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a><span class="co"># this loop will run for as many different levels of contact that we specify </span></span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a><span class="co"># for the scale variable </span></span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a><span class="co"># this is the same code as above, but now we've included a multiplier for the </span></span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a><span class="co"># contact matrix</span></span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(scale)){ </span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>  b1 <span class="ot">&lt;-</span> <span class="fl">0.007</span></span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>  b2 <span class="ot">&lt;-</span> <span class="fl">0.02</span></span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a>  b3 <span class="ot">&lt;-</span> <span class="fl">0.03</span></span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data=</span>b1,<span class="at">nrow=</span><span class="dv">30</span>,<span class="at">ncol=</span><span class="dv">30</span>)</span>
+<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a>  beta[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>] <span class="ot">&lt;-</span> b2</span>
+<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a>  beta[<span class="dv">6</span><span class="sc">:</span><span class="dv">16</span>,<span class="dv">6</span><span class="sc">:</span><span class="dv">16</span>] <span class="ot">&lt;-</span> b3</span>
+<span id="cb74-19"><a href="#cb74-19" aria-hidden="true" tabindex="-1"></a>  beta_ages <span class="ot">&lt;-</span> beta <span class="sc">*</span> scale[ii]</span>
+<span id="cb74-20"><a href="#cb74-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filled.contour(beta)</span></span>
+<span id="cb74-21"><a href="#cb74-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-22"><a href="#cb74-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb74-23"><a href="#cb74-23" aria-hidden="true" tabindex="-1"></a>  sol_R0 <span class="ot">&lt;-</span> <span class="fu">ode</span>(</span>
+<span id="cb74-24"><a href="#cb74-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span>yinit_ages,</span>
+<span id="cb74-25"><a href="#cb74-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">times=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">400</span>,<span class="at">by=</span><span class="fl">0.1</span>),</span>
+<span id="cb74-26"><a href="#cb74-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">func=</span>ja.multistage.model,</span>
+<span id="cb74-27"><a href="#cb74-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">parms =</span> <span class="fu">c</span>(<span class="at">beta_ages=</span>beta_ages, <span class="at">aging=</span>aging, <span class="at">births_ages=</span>births_ages)</span>
+<span id="cb74-28"><a href="#cb74-28" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb74-29"><a href="#cb74-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb74-30"><a href="#cb74-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb74-31"><a href="#cb74-31" aria-hidden="true" tabindex="-1"></a>  equil_R0 <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">tail</span>(sol_R0,<span class="dv">1</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb74-32"><a href="#cb74-32" aria-hidden="true" tabindex="-1"></a>  n_R0 <span class="ot">&lt;-</span> equil_R0[sindex]<span class="sc">+</span>equil_R0[iindex]<span class="sc">+</span>equil_R0[rindex]</span>
+<span id="cb74-33"><a href="#cb74-33" aria-hidden="true" tabindex="-1"></a>  seroprev_R0 <span class="ot">&lt;-</span> equil_R0[rindex]<span class="sc">/</span>n_R0</span>
+<span id="cb74-34"><a href="#cb74-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(seroprev_R0) <span class="ot">&lt;-</span> ages</span>
+<span id="cb74-35"><a href="#cb74-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># barplot(height=seroprev,width=da)</span></span>
+<span id="cb74-36"><a href="#cb74-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb74-37"><a href="#cb74-37" aria-hidden="true" tabindex="-1"></a>  <span class="do">## get stable age distribution</span></span>
+<span id="cb74-38"><a href="#cb74-38" aria-hidden="true" tabindex="-1"></a>  n_R0 <span class="ot">&lt;-</span> <span class="fu">solve</span>(aging,<span class="sc">-</span><span class="fu">c</span>(births_ages,<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">29</span>)))</span>
+<span id="cb74-39"><a href="#cb74-39" aria-hidden="true" tabindex="-1"></a>  <span class="do">## get R0</span></span>
+<span id="cb74-40"><a href="#cb74-40" aria-hidden="true" tabindex="-1"></a>  F_R0 <span class="ot">&lt;-</span> <span class="fu">diag</span>(n_R0)<span class="sc">%*%</span>beta_ages<span class="sc">+</span>aging<span class="sc">-</span><span class="fu">diag</span>(<span class="fu">diag</span>(aging))</span>
+<span id="cb74-41"><a href="#cb74-41" aria-hidden="true" tabindex="-1"></a>  V_R0 <span class="ot">&lt;-</span> <span class="fu">diag</span>(gamma_ages<span class="sc">-</span><span class="fu">diag</span>(aging))</span>
+<span id="cb74-42"><a href="#cb74-42" aria-hidden="true" tabindex="-1"></a>  R0[ii] <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">Re</span>(<span class="fu">eigen</span>(<span class="fu">solve</span>(V_R0,F_R0),<span class="at">only.values=</span>T)<span class="sc">$</span>values))</span>
+<span id="cb74-43"><a href="#cb74-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># R0 = 6.53</span></span>
+<span id="cb74-44"><a href="#cb74-44" aria-hidden="true" tabindex="-1"></a>  infects_R0 <span class="ot">&lt;-</span> sol_R0[<span class="fu">dim</span>(sol_R0)[<span class="dv">1</span>],<span class="dv">1</span><span class="sc">+</span>iindex]</span>
+<span id="cb74-45"><a href="#cb74-45" aria-hidden="true" tabindex="-1"></a>  mean_age[ii] <span class="ot">&lt;-</span> <span class="fu">sum</span>(ages <span class="sc">*</span> infects_R0<span class="sc">/</span><span class="fu">sum</span>(infects_R0))</span>
+<span id="cb74-46"><a href="#cb74-46" aria-hidden="true" tabindex="-1"></a>  sum_cases[ii] <span class="ot">&lt;-</span> <span class="fu">sum</span>(infects_R0[<span class="dv">15</span><span class="sc">:</span><span class="dv">23</span>])</span>
+<span id="cb74-47"><a href="#cb74-47" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can make a table of the results and plot mean age and the sum of cases between 15-35 years of age as a function of <span class="math inline">\(R_0\)</span>.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-33_ab9506b29fb08db8d8dd0ab4514043bc">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">R0 =</span> R0, <span class="st">"mean age"</span> <span class="ot">=</span> mean_age, <span class="st">"cases (15-35y)"</span> <span class="ot">=</span> sum_cases)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: right;">R0</th>
+<th style="text-align: right;">mean.age</th>
+<th style="text-align: right;">cases..15.35y.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.349005</td>
+<td style="text-align: right;">29.720681</td>
+<td style="text-align: right;">1.4792882</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1.923933</td>
+<td style="text-align: right;">21.497318</td>
+<td style="text-align: right;">2.1148202</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2.499068</td>
+<td style="text-align: right;">16.404292</td>
+<td style="text-align: right;">2.0147559</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3.074291</td>
+<td style="text-align: right;">13.105915</td>
+<td style="text-align: right;">1.7387261</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3.649562</td>
+<td style="text-align: right;">10.871071</td>
+<td style="text-align: right;">1.4511558</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.224859</td>
+<td style="text-align: right;">9.295660</td>
+<td style="text-align: right;">1.1960211</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.800174</td>
+<td style="text-align: right;">8.145710</td>
+<td style="text-align: right;">0.9815663</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5.375501</td>
+<td style="text-align: right;">7.279760</td>
+<td style="text-align: right;">0.8051295</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5.950836</td>
+<td style="text-align: right;">6.609149</td>
+<td style="text-align: right;">0.6612108</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6.526177</td>
+<td style="text-align: right;">6.076599</td>
+<td style="text-align: right;">0.5441408</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(R0,mean_age,<span class="at">xlab=</span><span class="st">"R0"</span>,<span class="at">ylab=</span><span class="st">"mean age of infection"</span>)</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(R0,sum_cases,<span class="at">xlab=</span><span class="st">"R0"</span>,<span class="at">ylab=</span><span class="st">"total cases between 15-35y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-34_622e0eb5fb84fd6339fbafd7083aefe5">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="exercise-5-try-the-same-as-you-fix-r_0-but-change-the-birth-rate-as-if-new-infants-were-vaccinated-instead-of-changing-the-contact-rate." class="level3">
+<h3 class="anchored" data-anchor-id="exercise-5-try-the-same-as-you-fix-r_0-but-change-the-birth-rate-as-if-new-infants-were-vaccinated-instead-of-changing-the-contact-rate.">Exercise 5: Try the same as you fix <span class="math inline">\(R_0\)</span> but change the birth rate (as if new infants were vaccinated), instead of changing the contact rate.</h3>
+<p>For example, if the birth rate was 100 before, try using a sequence of birth rates ranging from 100 (i.e.&nbsp;no new infants are vaccinated) to 75 (i.e., 25% of new infants are vaccinated). You can use the technique we used above, where we ran the simulation in a loop multiple times, for varying levels of contact, modifying it to run on varying levels of births (e.g., between 75 and 100).</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-35_3492b5a7e036de7975af8f4ead412a07">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>births_seq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">75</span>,<span class="dv">100</span>,<span class="at">length=</span><span class="dv">10</span>)  <span class="co"># a vector of scaling factors, we'll reduce the contact rate from the original code by each of the values in this vector</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>R0_b <span class="ot">&lt;-</span> <span class="fu">numeric</span>() <span class="co"># somewhere to store results for the mean age</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>mean_age_b <span class="ot">&lt;-</span> <span class="fu">numeric</span>() <span class="co"># somewhere to store results for the mean age</span></span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>sum_cases_b <span class="ot">&lt;-</span> <span class="fu">numeric</span>() <span class="co"># somewhere to store results for the mean age</span></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>){</span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a><span class="co">#this is the same code as above, but now we're modifying births</span></span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>  b1 <span class="ot">&lt;-</span> <span class="fl">0.007</span></span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>  b2 <span class="ot">&lt;-</span> <span class="fl">0.02</span></span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>  b3 <span class="ot">&lt;-</span> <span class="fl">0.03</span></span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data=</span>b1,<span class="at">nrow=</span><span class="dv">30</span>,<span class="at">ncol=</span><span class="dv">30</span>)</span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a>  beta[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>] <span class="ot">&lt;-</span> b2</span>
+<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a>  beta[<span class="dv">6</span><span class="sc">:</span><span class="dv">16</span>,<span class="dv">6</span><span class="sc">:</span><span class="dv">16</span>] <span class="ot">&lt;-</span> b3</span>
+<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a>  beta_ages <span class="ot">&lt;-</span> beta</span>
+<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a>  births_ages <span class="ot">&lt;-</span> births_seq[ii]</span>
+<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filled.contour(beta)</span></span>
+<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a>  sol_b <span class="ot">&lt;-</span> <span class="fu">ode</span>(</span>
+<span id="cb78-23"><a href="#cb78-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span>yinit_ages,</span>
+<span id="cb78-24"><a href="#cb78-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">times=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">400</span>,<span class="at">by=</span><span class="fl">0.1</span>),</span>
+<span id="cb78-25"><a href="#cb78-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">func=</span>ja.multistage.model,</span>
+<span id="cb78-26"><a href="#cb78-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">parms =</span> <span class="fu">c</span>(<span class="at">beta_ages=</span>beta_ages, <span class="at">aging=</span>aging, <span class="at">births_ages=</span>birth_ages)</span>
+<span id="cb78-27"><a href="#cb78-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb78-28"><a href="#cb78-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-29"><a href="#cb78-29" aria-hidden="true" tabindex="-1"></a>  equil_b <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">tail</span>(sol_b,<span class="dv">1</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb78-30"><a href="#cb78-30" aria-hidden="true" tabindex="-1"></a>  n_b <span class="ot">&lt;-</span> equil_b[sindex]<span class="sc">+</span>equil_b[iindex]<span class="sc">+</span>equil_b[rindex]</span>
+<span id="cb78-31"><a href="#cb78-31" aria-hidden="true" tabindex="-1"></a>  seroprev_b <span class="ot">&lt;-</span> equil_b[rindex]<span class="sc">/</span>n_b</span>
+<span id="cb78-32"><a href="#cb78-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(seroprev_b) <span class="ot">&lt;-</span> ages</span>
+<span id="cb78-33"><a href="#cb78-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># barplot(height=seroprev,width=da)</span></span>
+<span id="cb78-34"><a href="#cb78-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-35"><a href="#cb78-35" aria-hidden="true" tabindex="-1"></a>  <span class="do">## get stable age distribution</span></span>
+<span id="cb78-36"><a href="#cb78-36" aria-hidden="true" tabindex="-1"></a>  n_b <span class="ot">&lt;-</span> <span class="fu">solve</span>(aging,<span class="sc">-</span><span class="fu">c</span>(births_ages,<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">29</span>)))</span>
+<span id="cb78-37"><a href="#cb78-37" aria-hidden="true" tabindex="-1"></a>  <span class="do">## get R0</span></span>
+<span id="cb78-38"><a href="#cb78-38" aria-hidden="true" tabindex="-1"></a>  F <span class="ot">&lt;-</span> <span class="fu">diag</span>(n_b)<span class="sc">%*%</span>beta_ages<span class="sc">+</span>aging<span class="sc">-</span><span class="fu">diag</span>(<span class="fu">diag</span>(aging))</span>
+<span id="cb78-39"><a href="#cb78-39" aria-hidden="true" tabindex="-1"></a>  V <span class="ot">&lt;-</span> <span class="fu">diag</span>(gamma_ages<span class="sc">-</span><span class="fu">diag</span>(aging))</span>
+<span id="cb78-40"><a href="#cb78-40" aria-hidden="true" tabindex="-1"></a>  R0_b[ii] <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">Re</span>(<span class="fu">eigen</span>(<span class="fu">solve</span>(V,F),<span class="at">only.values=</span>T)<span class="sc">$</span>values))</span>
+<span id="cb78-41"><a href="#cb78-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># R0 = 6.53</span></span>
+<span id="cb78-42"><a href="#cb78-42" aria-hidden="true" tabindex="-1"></a>  infects_b <span class="ot">&lt;-</span> sol_b[<span class="fu">dim</span>(sol_b)[<span class="dv">1</span>],<span class="dv">1</span><span class="sc">+</span>iindex]</span>
+<span id="cb78-43"><a href="#cb78-43" aria-hidden="true" tabindex="-1"></a>  mean_age_b[ii] <span class="ot">&lt;-</span> <span class="fu">sum</span>(ages <span class="sc">*</span> infects_b<span class="sc">/</span><span class="fu">sum</span>(infects_b))</span>
+<span id="cb78-44"><a href="#cb78-44" aria-hidden="true" tabindex="-1"></a>  sum_cases_b[ii] <span class="ot">&lt;-</span> <span class="fu">sum</span>(infects_b[<span class="dv">15</span><span class="sc">:</span><span class="dv">23</span>])</span>
+<span id="cb78-45"><a href="#cb78-45" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-36_5f8b30d5b432afdb6b178610a99a7502">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">births =</span> births_seq, <span class="at">R0 =</span> R0_b, <span class="st">"mean age"</span> <span class="ot">=</span> mean_age_b, </span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"cases (15-35y)"</span> <span class="ot">=</span> sum_cases_b)</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: right;">births</th>
+<th style="text-align: right;">R0</th>
+<th style="text-align: right;">mean.age</th>
+<th style="text-align: right;">cases..15.35y.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">75.00000</td>
+<td style="text-align: right;">4.908047</td>
+<td style="text-align: right;">7.964942</td>
+<td style="text-align: right;">0.7093049</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">77.77778</td>
+<td style="text-align: right;">5.087836</td>
+<td style="text-align: right;">7.683702</td>
+<td style="text-align: right;">0.6913806</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">80.55556</td>
+<td style="text-align: right;">5.267626</td>
+<td style="text-align: right;">7.425096</td>
+<td style="text-align: right;">0.6730883</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">83.33333</td>
+<td style="text-align: right;">5.447417</td>
+<td style="text-align: right;">7.186665</td>
+<td style="text-align: right;">0.6545678</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">86.11111</td>
+<td style="text-align: right;">5.627209</td>
+<td style="text-align: right;">6.966264</td>
+<td style="text-align: right;">0.6359377</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">88.88889</td>
+<td style="text-align: right;">5.807001</td>
+<td style="text-align: right;">6.762021</td>
+<td style="text-align: right;">0.6172979</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">91.66667</td>
+<td style="text-align: right;">5.986794</td>
+<td style="text-align: right;">6.572292</td>
+<td style="text-align: right;">0.5987331</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">94.44444</td>
+<td style="text-align: right;">6.166588</td>
+<td style="text-align: right;">6.395635</td>
+<td style="text-align: right;">0.5803142</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">97.22222</td>
+<td style="text-align: right;">6.346382</td>
+<td style="text-align: right;">6.230778</td>
+<td style="text-align: right;">0.5621003</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">6.526177</td>
+<td style="text-align: right;">6.076599</td>
+<td style="text-align: right;">0.5441408</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(births_seq,mean_age_b,<span class="at">xlab=</span><span class="st">"births"</span>,<span class="at">ylab=</span><span class="st">"mean age of infection"</span>)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(births_seq,sum_cases_b,<span class="at">xlab=</span><span class="st">"births"</span>,<span class="at">ylab=</span><span class="st">"total cases between 15-35y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot(births_seq,R0_b,xlab="births",ylab="R0")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="what-do-real-contact-networks-look-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-do-real-contact-networks-look-like">What do real contact networks look like?</h2>
+<p>The POLYMOD study <strong>Mossong, 2008</strong> was a journal-based look into the contact network in contemporary European society. Let’s have a look what these data tell us about the contact structure.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-37_078a52c76e5bc99815505f7262fac1f0">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>moss <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">url</span>(<span class="st">"http://www.math.mcmaster.ca/~bolker/eeid/data/mossong.csv"</span>),</span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">as.is=</span><span class="cn">TRUE</span></span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>age.categories <span class="ot">&lt;-</span> moss<span class="sc">$</span>contactor[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>moss<span class="sc">$</span>contactor <span class="ot">&lt;-</span> <span class="fu">ordered</span>(moss<span class="sc">$</span>contactor,<span class="at">levels=</span>age.categories)</span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>moss<span class="sc">$</span>contactee <span class="ot">&lt;-</span> <span class="fu">ordered</span>(moss<span class="sc">$</span>contactee,<span class="at">levels=</span>age.categories)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since contacts are symmetric, we’ll need to estimate the symmetric contact matrix.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-38_a742c7c558d8dcec6b6e9afe1e143f59">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">with</span>(</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>           moss,</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">tapply</span>(contact.rate,<span class="fu">list</span>(contactor,contactee),unique)</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>xsym <span class="ot">&lt;-</span> (x1<span class="sc">+</span><span class="fu">t</span>(x1))<span class="sc">/</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-39_4298527a89f1c91c35f0f4047c9c6264">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(ages,ages,<span class="fu">log10</span>(xsym))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>               ages,ages,<span class="fu">log10</span>(xsym),</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">plot.title=</span><span class="fu">title</span>(</span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">main=</span><span class="fu">quote</span>(log[<span class="dv">10</span>](contact<span class="sc">~</span>rate)),</span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab=</span><span class="st">"age"</span>,<span class="at">ylab=</span><span class="st">"age"</span>)</span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>               )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-39-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">height=</span><span class="fu">apply</span>(x1,<span class="dv">1</span>,sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-39-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">height=</span><span class="fu">apply</span>(x1,<span class="dv">2</span>,sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-39-4.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>While this matrix tells us how many contacts are made per year by an individual of each age, it doesn’t tell us anything about the probability that a contact results in communication of infection. Let’s assume that each contact has a constant probability <span class="math inline">\(q\)</span> of resulting in a transmission event.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-40_095a126fa2328a8729f2d7a0eaec809a">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fl">3e-5</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>beta_ages <span class="ot">&lt;-</span> q<span class="sc">*</span>xsym</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(ages,ages,<span class="fu">log10</span>(beta_ages),                </span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">plot.title=</span><span class="fu">title</span>(</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">main=</span><span class="st">"WAIFW matrix based on POLYMOD data"</span>,</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab=</span><span class="st">"age"</span>,<span class="at">ylab=</span><span class="st">"age"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now let’s simulate the introduction of such a pathogen into a population characterized by this contact structure.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-41_a76848f04c6e7b51ac883bcfd3f67d8b">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>sol_p <span class="ot">&lt;-</span> <span class="fu">ode</span>(</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>yinit_ages,</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">times=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">200</span>,<span class="at">by=</span><span class="fl">0.5</span>),</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">func=</span>ja.multistage.model,</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">parms =</span> <span class="fu">c</span>(<span class="at">beta_ages=</span>beta_ages, <span class="at">aging=</span>aging, <span class="at">births=</span>births_ages)</span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> sol_p[,<span class="dv">1</span>]</span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>infects_p <span class="ot">&lt;-</span> sol_p[,<span class="dv">1</span><span class="sc">+</span>iindex]</span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(time,<span class="fu">apply</span>(infects_p,<span class="dv">1</span>,sum),<span class="at">type=</span><span class="st">'l'</span>)</span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(time,<span class="fu">apply</span>(infects_p[,juvies],<span class="dv">1</span>,sum),<span class="at">col=</span><span class="st">'red'</span>)</span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(time,<span class="fu">apply</span>(infects_p[,adults],<span class="dv">1</span>,sum),<span class="at">col=</span><span class="st">'blue'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As before, we can also look at the equilibrium seroprevalence</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-42_8053dd4579e25ea460581ed6c92c14bd">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>equil_p <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">tail</span>(sol_p,<span class="dv">1</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>n_p <span class="ot">&lt;-</span> equil_p[sindex]<span class="sc">+</span>equil_p[iindex]<span class="sc">+</span>equil_p[rindex]</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>seroprev_p <span class="ot">&lt;-</span> equil_p[rindex]<span class="sc">/</span>n_p</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(seroprev_p) <span class="ot">&lt;-</span> ages</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">height=</span>seroprev_p,<span class="at">width=</span>da_ages)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hetero_age_2022_07_10_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>and compute the <span class="math inline">\(R_0\)</span> for this infection.</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-43_79f3bf94a4bf02b751ce36fe7cb4493c">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>n_p <span class="ot">&lt;-</span> <span class="fu">solve</span>(aging,<span class="sc">-</span><span class="fu">c</span>(births_ages,<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">29</span>)))</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>F_p <span class="ot">&lt;-</span> <span class="fu">diag</span>(n_p)<span class="sc">%*%</span>beta_ages<span class="sc">+</span>aging<span class="sc">-</span><span class="fu">diag</span>(<span class="fu">diag</span>(aging))</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>V_p <span class="ot">&lt;-</span> <span class="fu">diag</span>(gamma_ages<span class="sc">-</span><span class="fu">diag</span>(aging))</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(<span class="fu">Re</span>(<span class="fu">eigen</span>(<span class="fu">solve</span>(V_p,F_p),<span class="at">only.values=</span>T)<span class="sc">$</span>values))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.94209</code></pre>
+</div>
+</div>
+<p>How does this R0 value compare to the R0 value obtained from Exercise 4?</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-44_2fa857962ed26af73669734ed1951f21">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="bonus-calculating-r0-using-a-next-generation-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-calculating-r0-using-a-next-generation-matrix">Bonus: Calculating R0 Using a Next Generation Matrix</h2>
+<p>The next generation matrix is a matrix that specifies how many new age-specific infections are generated by a typical infected individual of each age class (in a fully susceptible population). For example, let’s consider an infected adult and ask how many new juvenile infections it generates: this is the product of the number of susceptible juveniles (from the stable age distribution), the per capita transmission rate from adults to juveniles and the average duration of infection, i.e.&nbsp;<span class="math inline">\(S_J^* \times \beta_{JA} \times 1/ (\gamma+\mu)\)</span>. This forms one element of our next generation matrix. The other elements look very similar, except there are extra terms when we consider an infected juvenile because there is a (very small) chance they may age during the infectious period and therefore cause new infections as an adult: <span class="math display">\[
+\mathrm{NGM} = \left(
+  \begin{matrix}
+    \frac{S_J^* \beta_{JJ} }{(\gamma+\alpha)} +\frac{\alpha}{(\gamma+\mu)}\frac{S_J^*\beta_{JA}}{(\gamma+\mu)} &amp;  
+    \frac{S_J^* \beta_{JA}}{(\gamma+\mu)} \\
+    \frac{S_A^* \beta_{AJ} }{(\gamma+\alpha)} +\frac{\alpha}{(\gamma+\mu)}\frac{S_A^*\beta_{AA}}{(\gamma+\mu)} &amp;  \frac{S_A^* \beta_{AA}}{(\gamma+\mu)}
+  \end{matrix}
+\right)
+\]</span></p>
+<p><span class="math inline">\(R_0\)</span> can then be computed as the dominant eigenvalue (i.e., the one with the largest real part) of this matrix. Let’s take an example from a model with 2 age classes, from above. First, let’s define the components of the next generation matrix:</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-45_2235a2aec6e4dc3f795cb595ab8770b3">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>da_ngm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">60</span>) <span class="co"># this classifies the two age groups (0-20, 21-60) </span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>b1_ngm <span class="ot">=</span> <span class="fl">0.005</span></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>b2_ngm <span class="ot">=</span> <span class="fl">0.006</span></span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>alpha_ngm <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>da_ngm[<span class="dv">1</span>]</span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>mu_ngm <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>da_ngm[<span class="dv">2</span>]</span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>n_ngm <span class="ot">&lt;-</span> births_demog<span class="sc">/</span><span class="fu">c</span>(alpha_ngm,mu_ngm)</span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>beta_ngm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(b1_ngm<span class="sc">+</span>b2_ngm,b1_ngm,b1_ngm,b1_ngm<span class="sc">+</span>b2_ngm),<span class="at">nrow=</span><span class="dv">2</span>,<span class="at">ncol=</span><span class="dv">2</span>) </span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>gamma_ngm <span class="ot">=</span> <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The Next Generation Matrix can be calculated in <strong>R</strong> as:</p>
+<div class="cell" data-hash="hetero_age_2022_07_10_cache/html/unnamed-chunk-46_308d300bf632b0ea50feaa9197ff1c3a">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>ngm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">c</span>(</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>                n_ngm[<span class="dv">1</span>]<span class="sc">*</span>beta_ngm[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">/</span>(gamma_ngm<span class="sc">+</span>alpha_ngm)<span class="sc">+</span></span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>                  alpha_ngm<span class="sc">/</span>(gamma_ngm<span class="sc">+</span>mu_ngm)<span class="sc">*</span>n[<span class="dv">1</span>]<span class="sc">*</span>beta_ngm[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">/</span>(gamma_ngm<span class="sc">+</span>mu_ngm),</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>                n_ngm[<span class="dv">2</span>]<span class="sc">*</span>beta_ngm[<span class="dv">2</span>,<span class="dv">1</span>]<span class="sc">/</span>(gamma_ngm<span class="sc">+</span>alpha_ngm)<span class="sc">+</span></span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>                  alpha_ngm<span class="sc">/</span>(gamma_ngm<span class="sc">+</span>mu_ngm)<span class="sc">*</span>n[<span class="dv">2</span>]<span class="sc">*</span>beta_ngm[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">/</span>(gamma_ngm<span class="sc">+</span>mu_ngm),</span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>                n_ngm[<span class="dv">1</span>]<span class="sc">*</span>beta_ngm[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">/</span>(gamma_ngm<span class="sc">+</span>mu_ngm),</span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>                n_ngm[<span class="dv">2</span>]<span class="sc">*</span>beta_ngm[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">/</span>(gamma_ngm<span class="sc">+</span>mu_ngm)</span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>                ),</span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">nrow=</span><span class="dv">2</span>,</span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol=</span><span class="dv">2</span></span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>              )</span>
+<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(ngm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>eigen() decomposition
+$values
+[1] 7.185592 1.592730
+
+$vectors
+           [,1]       [,2]
+[1,] -0.1959422 -0.8584125
+[2,] -0.9806154  0.5129600</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(ngm,<span class="at">only.values=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$values
+[1] 7.185592 1.592730
+
+$vectors
+NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(<span class="fu">Re</span>(<span class="fu">eigen</span>(ngm,<span class="at">only.values=</span>T)<span class="sc">$</span>values))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.185592</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
