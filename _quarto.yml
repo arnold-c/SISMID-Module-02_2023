@@ -38,7 +38,6 @@ book:
   sidebar:
     search: true
     border: true
-    style: docked
     pinned: true
   reader-mode: true
 
@@ -75,9 +74,13 @@ format:
     theme:
       light: [cosmo, format/_fonts.scss, format/_light.scss, format/_callouts.scss]
       dark: [cosmo, format/_fonts.scss, format/_dark.scss, format/_callouts.scss]
+    grid:
+      sidebar-width: 270px
+      body-width: 1000px
+      margin-width: 200px
+      gutter-width: 1rem
     code-copy: true
     code-fold: show
-    code-summary: "Click to toggle the code"
     code-overflow: wrap
     code-link: true
     code-tools: true

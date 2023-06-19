@@ -5,7 +5,12 @@ $navbar-color: #f5e0dc !default;
 $navbar-padding-y: 1.5rem !default;
 $dark-blue: #222235 !default;
 
+
 /*-- scss:rules --*/
+
+// div.sidebar.sidebar-navigation.rollup.quarto-sidebar-toggle-contents, nav.sidebar.sidebar-navigation:not(.rollup) {
+//     background-color: #4e525c;
+// }
 
 a.sidebar-item-text.sidebar-link.text-start, .sidebar-title{
     font-weight: bold;

@@ -15,6 +15,9 @@ $btn-code-copy-color: $code-bg !default;
 $navbar-color: $code-bg !default;
 $navbar-padding-y: 1.5rem !default;
 
+// Sidebar
+// $sidebar-bg: $code-bg !default;
+
 /*-- scss:rules --*/
 
 // Bold sidebar part text
@@ -27,9 +30,6 @@ a.sidebar-item-text.sidebar-link.text-start, .sidebar-title>a{
     color: $body-color;
 }
 
-div.sidebar.sidebar-navigation.rollup.quarto-sidebar-toggle-contents, nav.sidebar.sidebar-navigation:not(.rollup) {
-    background-color: $code-bg;
-}
 
 // GitHub logo colors in sidebar and TOC navbar
 .bi::before, [class^="bi-"]::before, [class*=" bi-"]::before, #quarto-margin-sidebar .toc-actions .bi:before{
