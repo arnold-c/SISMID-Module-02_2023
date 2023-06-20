@@ -10,6 +10,7 @@ metadata-files:
 ---
 
 # R Session 02
+## Load Packages
 
 ```{r}
 library(diagram)
@@ -1134,6 +1135,158 @@ ggplot(update_age_df, aes(x = time, y = number, color = age, group = age)) +
 
 ## R0 and the mean age of infection
 
+To first investigate the relationship between $R_0$ and the mean age of infection, we will assume that the population is completely susceptible and that the force of infection is constant.
+We'll also assume that there is heterogenous mixing i.e. no age structure.
+
+As we've seen, we can calculate the mean age of infection using the equation below:
+
+$$
+A \approx \frac{L}{R_E - 1}
+$${#eq-mean-age}
+
+where $L$ is the life expectancy $\left(L = \frac{1}{\mu}\right)$ and $R_E$ is the effective reproductive number $\left(R_E = R_0 * (1 - p)$ where $p$ is the fraction of individuals vaccinated).
+
+### Interactive Plot
+
+```{ojs}
+//| panel: sidebar
+//| echo: false
+viewof R0 = Inputs.range(
+    [1.0, 10.0],
+    {value: 2.0, step: 0.01, label: md`${tex`R_0`}`}
+)
+
+viewof vacc = Inputs.range(
+    [0.0, 1.0],
+    {value: 0.0, step: 0.01, label: "Vaccination coverage"}
+)
+
+viewof lifeexp = Inputs.range(
+    [50, 100],
+    {value: 75, step: 1, label: "Life expectancy"}
+)
+
+md`${tex`R_E = ${Re_str}`}`
+md`${tex`\text{Mean age of infection} = ${Re_mean_age_str}`}`
+```
+
+```{ojs}
+//| echo: false
+Re = R0 * (1 - vacc)
+Re_str = Re.toLocaleString(undefined, {minimumFractionDigits: 2})
+```
+
+```{ojs}
+//| echo: false
+function calc_mean_age(Re, lifeexp) {
+    if(Re >= 1) {
+        var mean_age = (lifeexp / (Re - 1))
+    } else {
+        var mean_age = Infinity
+    }
+    return mean_age
+}
+```
+
+
+```{ojs}
+//| echo: false
+R0_mean_age = calc_mean_age(R0, lifeexp)
+Re_mean_age = calc_mean_age(Re, lifeexp)
+Re_mean_age_str = Re_mean_age.toLocaleString(undefined, {minimumFractionDigits: 2})
+```
+
+
+```{ojs}
+//| echo: false
+import { aq, op } from '@uwdata/arquero'
+```
+
+
+```{ojs}
+//| echo: false
+function calc_mean_age_arr(vacc, lifeexp, R0_min, R0_max, dR0) {
+    var R0_sim = R0_min
+
+    var R0 = []
+    var Re = []
+    var R0_mean_age = []
+    var Re_mean_age = []
+
+    for (R0_sim = R0_min; R0_sim <= R0_max; R0_sim += dR0) {
+        var Re_sim = R0_sim * (1 - vacc)
+        var R0_mean_age_sim = calc_mean_age(R0_sim, lifeexp)
+        var Re_mean_age_sim = calc_mean_age(Re_sim, lifeexp)
+
+        R0.push(R0_sim)
+        Re.push(Re_sim)
+        R0_mean_age.push(R0_mean_age_sim)
+        Re_mean_age.push(Re_mean_age_sim)
+    }
+
+    return {
+        Re: aq.table({
+                R0: R0,
+                mean_age: Re_mean_age
+            }).filter((d) => d.mean_age <= 100),
+        R0: aq.table({
+                R0: R0,
+                mean_age: R0_mean_age
+            }).filter((d) => d.mean_age <= 100)
+    }
+}
+```
+
+
+```{ojs}
+//| echo: false
+mean_age_arrs = calc_mean_age_arr(vacc, lifeexp, 1.0, 10.0, 0.01)
+```
+
+
+```{ojs}
+//| echo: false
+arrow_start = R0_mean_age <= 100 ? R0_mean_age : 100
+arrow_end = Re_mean_age <= 100 ? Re_mean_age : 100
+```
+
+
+```{ojs}
+//| echo: false
+//| panel: fill
+Plot.plot({
+    color: {
+        legend: true,
+        domain: ["Unvaccinated", "Vaccinated"],
+        range: ["#1f77b4", "#ff7f0e"]
+    },
+    style: {fontSize: "20px"},
+    marginLeft: 65,
+    marginTop: 40,
+    marginBottom: 55,
+    grid: true,
+    width: 800,
+    height: 670,
+    x: {label: "R0", domain: [0, 10]},
+    y: {label: "Mean Age of Infection", domain: [0, 100]},
+    marks: [
+        Plot.line(mean_age_arrs.R0, {x: "R0", y: "mean_age", stroke: "#1f77b4", strokeWidth: 6}),
+        Plot.line(mean_age_arrs.Re, {x: "R0", y: "mean_age", stroke: "#ff7f0e", strokeWidth: 6}),
+        R0_mean_age <= 100 ?
+            Plot.dot(mean_age_arrs.R0, {x: R0, y: R0_mean_age, r: 12, stroke: "#1f77b4", fill: "#1f77b4"}) :
+            null,
+        Re_mean_age <= 100 ?
+            Plot.dot(mean_age_arrs.Re, {x: R0, y: Re_mean_age, r: 12, stroke: "#ff7f0e", fill: "#ff7f0e"}) :
+            null,
+        Plot.arrow(mean_age_arrs.Re, {x1: R0, x2: R0, y1: arrow_start, y2: arrow_end, strokeWidth: 4, headLength: 5, inset: 15})
+    ]
+})
+```
+
+### R Code
+
+Now let's look at how we can investigate this using R.
+Unlike the interactive plot that simply uses @eq-mean-age to calculate the mean age of infection, let's use a more realistic age-structured model.
 For simplicity, let's return to the earlier models with a simple age-class mixing matrix.
 But this time, we'll calculate $R_0$, the mean age of infection, and the number of cases between 15-35 years as we increase the rate of contact. Recall from the rubella and CRS example that the risk of severe disease outcomes depends on the risk of infection in reproductive age women. Recall also that increasing vaccination reduces $R_E$ -- so here we'll evalate at several values of $R_0$ as a proxy for the impact of vaccination. We'll then calculate how the mean age of infection changes, and specifically how the absolute number of cases among individuals between the ages of 15-35 (as a proxy for reproductive age women) changes. 
 To do so, we'll make a loop and evaluate the code for each of 10 increasing levels of mixing (which whill change R0)
