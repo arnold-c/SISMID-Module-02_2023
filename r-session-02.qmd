@@ -1385,96 +1385,168 @@ The POLYMOD study **Mossong, 2008** was a journal-based look into the contact ne
 Let's have a look what these data tell us about the contact structure.
 
 ```{r}
-moss <- read.csv(
+mossong_cont_net <- read.csv(
     url("http://www.math.mcmaster.ca/~bolker/eeid/data/mossong.csv"),
     as.is = TRUE
 )
 
-age_categories <- moss$contactor[1:30]
-moss$contactor <- ordered(moss$contactor, levels = age_categories)
-moss$contactee <- ordered(moss$contactee, levels = age_categories)
+mossong_ages <- unique(mossong_cont_net$contactor)
+mossong_cont_net$contactor <- ordered(mossong_cont_net$contactor, levels = mossong_ages)
+mossong_cont_net$contactee <- ordered(mossong_cont_net$contactee, levels = mossong_ages)
 ```
 
 Since contacts are symmetric, we'll need to estimate the symmetric contact matrix.
 
 ```{r}
-x1 <- with(
-    moss,
-    tapply(contact.rate, list(contactor, contactee), unique)
-)
+mossong_mat <- mossong_cont_net %>%
+    pivot_wider(
+        names_from = contactor,
+        values_from = contact.rate
+    ) %>%
+    select(-contactee) %>%
+    as.matrix()
 
-xsym <- (x1 + t(x1)) / 2
+rownames(mossong_mat) <- mossong_ages
+
+mossong_mat_sym <- (mossong_mat + t(mossong_mat)) / 2
 ```
 
 ```{r}
 #| column: body
 #| out-width: 100%
-filled.contour(
-    ages, ages, log10(xsym),
-    plot.title = title(
-        main = quote(log[10](contact ~ rate)),
-        xlab = "age", ylab = "age"
-    )
-)
+filled.contour(ages, ages, log10(mossong_mat))
 ```
 
 ```{r}
 #| column: body
 #| out-width: 100%
-barplot(height=apply(x1,1,sum))
-barplot(height=apply(x1,2,sum))
+filled.contour(ages, ages, log10(mossong_mat_sym))
+```
+
+```{r}
+mossong_cont_sums <- tibble(
+        age = factor(mossong_ages, levels = mossong_ages),
+        contactees = rowSums(mossong_mat),
+        contactors = colSums(mossong_mat)
+    ) %>%
+    pivot_longer(-age, names_to = "type", values_to = "total_contacts") 
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(mossong_cont_sums, aes(x = age, y = total_contacts, fill = type)) +
+    geom_col(position = "identity", alpha = 0.8) +
+    scale_fill_manual(values = c("slategray4", "navy")) +
+    facet_wrap(
+        ~type,
+        scales = "free_y",
+        labeller = as_labeller(c(
+            contactors = "Total contacts made",
+            contactees = "Total contacts received"
+        ))
+    ) +
+    labs(
+        x = "Age",
+        y = "Total contacts"
+    ) +
+    theme(legend.position = "none")
 ```
 
 While this matrix tells us how many contacts are made per year by an individual of each age, it doesn't tell us anything about the probability that a contact results in communication of infection.
 Let's assume that each contact has a constant probability $q$ of resulting in a transmission event.
 
 ```{r}
+q <- 3e-5
+mossong_beta_mat <- q * mossong_mat_sym
+```
+
+```{r}
 #| column: body
 #| out-width: 100%
-q <- 3e-5
-ages_beta_mat <- q * xsym
-
 filled.contour(
-    ages,ages,log10(ages_beta_mat),
+    ages, ages, log10(mossong_beta_mat),
     plot.title = title(
-        main="WAIFW matrix based on POLYMOD data",
-        xlab="age", ylab="age"
+        main = "WAIFW matrix based on POLYMOD data",
+        xlab = "Age",
+        ylab = "Age"
     )
 )
-
 ```
 
 Now let's simulate the introduction of such a pathogen into a population characterized by this contact structure.
 
 ```{r}
-#| column: body
-#| out-width: 100%
-sol_p <- deSolve::ode(
+mossong_sol <- deSolve::ode(
     y = demog_yinit_ages,
     times = seq(0, 200, by = 0.5),
     func = multistage_model,
     parms = multistage_params
 )
 
-time <- sol_p[, 1]
-infects_p <- sol_p[, 1+iindex]
-plot(time, apply(infects_p, 1, sum), type = 'l')
-lines(time, apply(infects_p[, juvies], 1, sum), col = 'red')
-lines(time, apply(infects_p[, adults], 1, sum), col = 'blue')
+mossong_infecteds <- mossong_sol[, 1 + iindex]
+
+mossong_infecteds_df <- tibble(
+        time = mossong_sol[, 1],
+        Juveniles = apply(mossong_infecteds[, juvies], 1, sum),
+        Adults = apply(mossong_infecteds[, adults], 1, sum)
+    ) %>%
+    pivot_longer(
+        cols = c(Juveniles, Adults),
+        names_to = "age_group",
+        values_to = "infections"
+    ) %>%
+    mutate(
+        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
+    )
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(mossong_infecteds_df, aes(x = time, y = infections, color = age_group)) +
+    geom_line(linewidth = 1.5) +
+    scale_color_manual(
+        values = age_group_colors
+    ) +
+    labs(
+        x = "Time",
+        y = "Number of infections",
+        color = "Age group"
+    )
 ```
 
 As before, we can also look at the equilibrium seroprevalence
 
 ```{r}
-equil_p <- drop(tail(sol_p, 1))[-1]
+mossong_equil <- drop(tail(mossong_sol, 1))[-1]
 
-n_p <- equil_p[sindex] + equil_p[iindex] + equil_p[rindex]
+mossong_equil_n <- mossong_equil[sindex] +
+    mossong_equil[iindex] +
+    mossong_equil[rindex]
 
-seroprev_p <- equil_p[rindex] / n_p
+mossong_equil_seroprev <- mossong_equil[rindex] / mossong_equil_n
 
-names(seroprev_p) <- ages
+mossong_equil_seroprev_df <- tibble(
+    # We can reuse the ages vectors from before as they are the same
+    # as the POLYMOD data
+    age = ages,
+    seroprev = mossong_equil_seroprev,
+    width = da_ages
+)
+```
 
-barplot(height = seroprev_p, width = c(demog_params[5:6]))
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(mossong_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
+    geom_col(width = mossong_equil_seroprev_df$width, just = 1.0, color = "black") +
+    labs(
+        x = "Age",
+        y = "Seroprevalence"
+    ) +
+    scale_x_continuous(breaks = seq(0, 80, 10)) +
+    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
 ```
 
 and compute the $R_0$ for this infection.
@@ -1496,16 +1568,16 @@ V_p <- diag(
 
 max(
     Re(
-        eigen(solve(V_p,F_p),only.values=T)$values
+        eigen(solve(V_p, F_p),only.values=T)$values
     )
 )
 ```
 
-How does this R0 value compare to the R0 value obtained from Exercise 4?
+::: {.callout-important}
+Need to check what's going on here as just recycling previous code and doesn't depend on Mossong Matrix.
+:::
 
-```{r}
-par(mfrow=c(1,1))
-```
+How does this R0 value compare to the R0 value obtained from Exercise 4?
 
 ## Bonus: Calculating R0 Using a Next Generation Matrix
 
@@ -1528,47 +1600,66 @@ $$ {#eq-ngm}
 $R_0$ can then be computed as the dominant eigenvalue (i.e., the one with the largest real part) of this matrix. Let's take an example from a model with 2 age classes, from above. First, let's define the components of the next generation matrix:
 
 ```{r}
-da_ngm <- c(20, 60) # this classifies the two age groups (0-20, 21-60) 
-beta1_ngm = 0.005
-beta2_ngm = 0.006
-alpha_ngm <- 1/da_ngm[1]
-mu_ngm <- 1/da_ngm[2]
-n_ngm <- demog_params[4] / c(alpha_ngm, mu_ngm)
+ngm_params <- c(
+    beta_within = 0.011,
+    beta_between = 0.005,
+    age_band_j = 20,
+    age_band_a = 60,
+    recovery = 10
+)
 
-beta_ngm <- matrix(
-    c(beta1_ngm + beta2_ngm, beta1_ngm, beta1_ngm, beta1_ngm + beta2_ngm),
+alpha_ngm <- 1 / ngm_params["age_band_j"]
+mu_ngm <- 1 / ngm_params["age_band_a"]
+n_ngm <- demog_params["births"] / c(alpha_ngm, mu_ngm)
+
+beta_ngm <- matrix(c(
+    ngm_params["beta_within"],
+    ngm_params["beta_between"],
+    ngm_params["beta_between"],
+    ngm_params["beta_within"]
+    ),
     nrow = 2,
     ncol = 2
 )
-
-gamma_ngm = 10
 ```
-
-
 
 The Next Generation Matrix can be calculated in **R** as:
 
 ```{r}
 ngm <- matrix(
     c(
-        n_ngm[1] * beta_ngm[1,1] / (gamma_ngm+alpha_ngm) +
-            alpha_ngm / (gamma_ngm+mu_ngm) *
-            n[1] *
-            beta_ngm[1,2] / (gamma_ngm+mu_ngm),
-        n_ngm[2] * beta_ngm[2,1] / (gamma_ngm+alpha_ngm) +
-            alpha_ngm / (gamma_ngm+mu_ngm) *
-            n[2] *
-            beta_ngm[2,2] / (gamma_ngm+mu_ngm),
-        n_ngm[1] * beta_ngm[1,2] / (gamma_ngm+mu_ngm),
-        n_ngm[2] * beta_ngm[2,2] / (gamma_ngm+mu_ngm)
-        ),
+        n_ngm[1] * (beta_ngm[1, 1] / (ngm_params["recovery"] + alpha_ngm)) +
+            alpha_ngm / (ngm_params["recovery"] + mu_ngm) *
+            n_ngm[1] * beta_ngm[1, 2] / (ngm_params["recovery"] + mu_ngm),
+        
+        n_ngm[2] * beta_ngm[2, 1] / (ngm_params["recovery"] + alpha_ngm) +
+            alpha_ngm / (ngm_params["recovery"] + mu_ngm) *
+            n_ngm[2] * (beta_ngm[2, 2] / (ngm_params["recovery"] + mu_ngm)),
+
+        n_ngm[1] * beta_ngm[1, 2] / (ngm_params["recovery"] + mu_ngm),
+
+        n_ngm[2] * beta_ngm[2, 2] / (ngm_params["recovery"] + mu_ngm)
+    ),
     nrow = 2,
     ncol = 2
 )
+```
 
+We can then calculate the eigenvalues and eigenvectors of this matrix:
+
+```{r}
 eigen(ngm)
-eigen(ngm, only.values = TRUE)
+```
 
+We can also choose to just output the eigenvalues:
+
+```{r}
+eigen(ngm, only.values = TRUE)
+```
+
+Finally, let's print $R_0$:
+
+```{r}
 max(
     Re(
         eigen(ngm, only.values = TRUE)$values
