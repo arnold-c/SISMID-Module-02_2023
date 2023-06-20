@@ -1144,7 +1144,7 @@ $$
 A \approx \frac{L}{R_E - 1}
 $${#eq-mean-age}
 
-where $L$ is the life expectancy $\left(L = \frac{1}{\mu}\right)$ and $R_E$ is the effective reproductive number $\left(R_E = R_0 * (1 - p)$ where $p$ is the fraction of individuals vaccinated).
+where $L$ is the life expectancy $\left(L = \frac{1}{\mu}\right)$ and $R_E$ is the effective reproductive number ($R_E = R_0 * (1 - p)$ where $p$ is the fraction of individuals vaccinated).
 
 ### Interactive Plot
 
