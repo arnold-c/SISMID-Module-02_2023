@@ -399,46 +399,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="panel-grid layout-sidebar ms-md-0 layout-sidebar-left">
 <div class="cell panel-sidebar card bg-light p-2 g-col-24 g-col-lg-7">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="31" data-source-offset="-1"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 30;"><span id="cb3-31"><a href="#cb3-31"></a>viewof reset <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>([</span>
-<span id="cb3-32"><a href="#cb3-32"></a>  [<span class="st">"Reset all sliders"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb3-33"><a href="#cb3-33"></a>    <span class="kw">set</span>(viewof beta<span class="op">,</span> init_beta)</span>
-<span id="cb3-34"><a href="#cb3-34"></a>    <span class="kw">set</span>(viewof dur_inf<span class="op">,</span> init_dur_inf)</span>
-<span id="cb3-35"><a href="#cb3-35"></a>    <span class="kw">set</span>(viewof I0<span class="op">,</span> init_I0)</span>
-<span id="cb3-36"><a href="#cb3-36"></a>    <span class="kw">set</span>(viewof births<span class="op">,</span> init_births)</span>
-<span id="cb3-37"><a href="#cb3-37"></a>    <span class="kw">set</span>(viewof tmax<span class="op">,</span> init_tmax)</span>
-<span id="cb3-38"><a href="#cb3-38"></a>  }]</span>
-<span id="cb3-39"><a href="#cb3-39"></a>])</span>
-<span id="cb3-40"><a href="#cb3-40"></a></span>
-<span id="cb3-41"><a href="#cb3-41"></a>viewof beta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb3-42"><a href="#cb3-42"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span></span>
-<span id="cb3-43"><a href="#cb3-43"></a>  {<span class="dt">value</span><span class="op">:</span> init_beta<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Transmission rate (per day)"</span>}</span>
-<span id="cb3-44"><a href="#cb3-44"></a>)</span>
-<span id="cb3-45"><a href="#cb3-45"></a></span>
-<span id="cb3-46"><a href="#cb3-46"></a>viewof dur_inf <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb3-47"><a href="#cb3-47"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
-<span id="cb3-48"><a href="#cb3-48"></a>  {<span class="dt">value</span><span class="op">:</span> init_dur_inf<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Duration of Infection (days)"</span>}</span>
-<span id="cb3-49"><a href="#cb3-49"></a>)</span>
-<span id="cb3-50"><a href="#cb3-50"></a></span>
-<span id="cb3-51"><a href="#cb3-51"></a>viewof I0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb3-52"><a href="#cb3-52"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span>]<span class="op">,</span></span>
-<span id="cb3-53"><a href="#cb3-53"></a>  {<span class="dt">value</span><span class="op">:</span> init_I0<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Initial fraction infected"</span>}</span>
-<span id="cb3-54"><a href="#cb3-54"></a>)</span>
-<span id="cb3-55"><a href="#cb3-55"></a></span>
-<span id="cb3-56"><a href="#cb3-56"></a>viewof births <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb3-57"><a href="#cb3-57"></a>  [<span class="dv">0</span><span class="op">,</span> <span class="fl">0.05</span>]<span class="op">,</span></span>
-<span id="cb3-58"><a href="#cb3-58"></a>  {<span class="dt">value</span><span class="op">:</span> init_births<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Birth rate"</span>}</span>
-<span id="cb3-59"><a href="#cb3-59"></a>)</span>
-<span id="cb3-60"><a href="#cb3-60"></a></span>
-<span id="cb3-61"><a href="#cb3-61"></a>viewof tmax <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb3-62"><a href="#cb3-62"></a>  [<span class="dv">200</span><span class="op">,</span> <span class="dv">600</span>]<span class="op">,</span></span>
-<span id="cb3-63"><a href="#cb3-63"></a>  {<span class="dt">value</span><span class="op">:</span> init_tmax<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">10.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Maximum simulation time (years)"</span>}</span>
-<span id="cb3-64"><a href="#cb3-64"></a>)</span>
-<span id="cb3-65"><a href="#cb3-65"></a></span>
-<span id="cb3-66"><a href="#cb3-66"></a>viewof area <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>(</span>
-<span id="cb3-67"><a href="#cb3-67"></a>  {<span class="dt">label</span><span class="op">:</span> <span class="st">"Cumulative Area plot"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>}</span>
-<span id="cb3-68"><a href="#cb3-68"></a>)</span>
-<span id="cb3-69"><a href="#cb3-69"></a></span>
-<span id="cb3-70"><a href="#cb3-70"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>R0_str<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="30" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 29;"><span id="cb3-30"><a href="#cb3-30"></a>viewof reset <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>([</span>
+<span id="cb3-31"><a href="#cb3-31"></a>  [<span class="st">"Reset all sliders"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb3-32"><a href="#cb3-32"></a>    <span class="kw">set</span>(viewof beta<span class="op">,</span> init_beta)</span>
+<span id="cb3-33"><a href="#cb3-33"></a>    <span class="kw">set</span>(viewof dur_inf<span class="op">,</span> init_dur_inf)</span>
+<span id="cb3-34"><a href="#cb3-34"></a>    <span class="kw">set</span>(viewof I0<span class="op">,</span> init_I0)</span>
+<span id="cb3-35"><a href="#cb3-35"></a>    <span class="kw">set</span>(viewof births<span class="op">,</span> init_births)</span>
+<span id="cb3-36"><a href="#cb3-36"></a>    <span class="kw">set</span>(viewof tmax<span class="op">,</span> init_tmax)</span>
+<span id="cb3-37"><a href="#cb3-37"></a>  }]</span>
+<span id="cb3-38"><a href="#cb3-38"></a>])</span>
+<span id="cb3-39"><a href="#cb3-39"></a></span>
+<span id="cb3-40"><a href="#cb3-40"></a>viewof beta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-41"><a href="#cb3-41"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span></span>
+<span id="cb3-42"><a href="#cb3-42"></a>  {<span class="dt">value</span><span class="op">:</span> init_beta<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Transmission rate (per day)"</span>}</span>
+<span id="cb3-43"><a href="#cb3-43"></a>)</span>
+<span id="cb3-44"><a href="#cb3-44"></a></span>
+<span id="cb3-45"><a href="#cb3-45"></a>viewof dur_inf <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-46"><a href="#cb3-46"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb3-47"><a href="#cb3-47"></a>  {<span class="dt">value</span><span class="op">:</span> init_dur_inf<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Duration of Infection (days)"</span>}</span>
+<span id="cb3-48"><a href="#cb3-48"></a>)</span>
+<span id="cb3-49"><a href="#cb3-49"></a></span>
+<span id="cb3-50"><a href="#cb3-50"></a>viewof I0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-51"><a href="#cb3-51"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span>]<span class="op">,</span></span>
+<span id="cb3-52"><a href="#cb3-52"></a>  {<span class="dt">value</span><span class="op">:</span> init_I0<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Initial fraction infected"</span>}</span>
+<span id="cb3-53"><a href="#cb3-53"></a>)</span>
+<span id="cb3-54"><a href="#cb3-54"></a></span>
+<span id="cb3-55"><a href="#cb3-55"></a>viewof births <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-56"><a href="#cb3-56"></a>  [<span class="dv">0</span><span class="op">,</span> <span class="fl">0.05</span>]<span class="op">,</span></span>
+<span id="cb3-57"><a href="#cb3-57"></a>  {<span class="dt">value</span><span class="op">:</span> init_births<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Birth rate"</span>}</span>
+<span id="cb3-58"><a href="#cb3-58"></a>)</span>
+<span id="cb3-59"><a href="#cb3-59"></a></span>
+<span id="cb3-60"><a href="#cb3-60"></a>viewof tmax <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-61"><a href="#cb3-61"></a>  [<span class="dv">200</span><span class="op">,</span> <span class="dv">600</span>]<span class="op">,</span></span>
+<span id="cb3-62"><a href="#cb3-62"></a>  {<span class="dt">value</span><span class="op">:</span> init_tmax<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">10.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Maximum simulation time (years)"</span>}</span>
+<span id="cb3-63"><a href="#cb3-63"></a>)</span>
+<span id="cb3-64"><a href="#cb3-64"></a></span>
+<span id="cb3-65"><a href="#cb3-65"></a>viewof area <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>(</span>
+<span id="cb3-66"><a href="#cb3-66"></a>  {<span class="dt">label</span><span class="op">:</span> <span class="st">"Cumulative Area plot"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>}</span>
+<span id="cb3-67"><a href="#cb3-67"></a>)</span>
+<span id="cb3-68"><a href="#cb3-68"></a></span>
+<span id="cb3-69"><a href="#cb3-69"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>R0_str<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-1" data-nodetype="declaration">
@@ -495,16 +495,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="72" data-source-offset="-918"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 71;"><span id="cb4-72"><a href="#cb4-72"></a>{</span>
-<span id="cb4-73"><a href="#cb4-73"></a>  <span class="cf">if</span> (births <span class="op">==</span> <span class="dv">0</span>){</span>
-<span id="cb4-74"><a href="#cb4-74"></a>    <span class="kw">var</span> finalsize <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">get</span>(<span class="st">"R"</span><span class="op">,</span> sir_sol<span class="op">.</span><span class="fu">numRows</span>()<span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb4-75"><a href="#cb4-75"></a>    <span class="kw">var</span> finalsize_str <span class="op">=</span> finalsize<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})</span>
-<span id="cb4-76"><a href="#cb4-76"></a></span>
-<span id="cb4-77"><a href="#cb4-77"></a>    <span class="cf">return</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{Final size} = </span><span class="sc">${</span>finalsize_str<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
-<span id="cb4-78"><a href="#cb4-78"></a>  } <span class="cf">else</span> {</span>
-<span id="cb4-79"><a href="#cb4-79"></a>    <span class="cf">return</span> <span class="fu">md</span><span class="vs">``</span></span>
-<span id="cb4-80"><a href="#cb4-80"></a>  }</span>
-<span id="cb4-81"><a href="#cb4-81"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="71" data-source-offset="-917"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 70;"><span id="cb4-71"><a href="#cb4-71"></a>{</span>
+<span id="cb4-72"><a href="#cb4-72"></a>  <span class="cf">if</span> (births <span class="op">==</span> <span class="dv">0</span>){</span>
+<span id="cb4-73"><a href="#cb4-73"></a>    <span class="kw">var</span> finalsize <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">get</span>(<span class="st">"R"</span><span class="op">,</span> sir_sol<span class="op">.</span><span class="fu">numRows</span>()<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb4-74"><a href="#cb4-74"></a>    <span class="kw">var</span> finalsize_str <span class="op">=</span> finalsize<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})</span>
+<span id="cb4-75"><a href="#cb4-75"></a></span>
+<span id="cb4-76"><a href="#cb4-76"></a>    <span class="cf">return</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{Final size} = </span><span class="sc">${</span>finalsize_str<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb4-77"><a href="#cb4-77"></a>  } <span class="cf">else</span> {</span>
+<span id="cb4-78"><a href="#cb4-78"></a>    <span class="cf">return</span> <span class="fu">md</span><span class="vs">``</span></span>
+<span id="cb4-79"><a href="#cb4-79"></a>  }</span>
+<span id="cb4-80"><a href="#cb4-80"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-9" data-nodetype="expression">
@@ -515,8 +515,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="panel-fill g-col-24 g-col-lg-17 pt-3 pt-lg-0">
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="85" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 84;"><span id="cb5-85"><a href="#cb5-85"></a>gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
-<span id="cb5-86"><a href="#cb5-86"></a>dt <span class="op">=</span> <span class="fl">0.01</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="84" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 83;"><span id="cb5-84"><a href="#cb5-84"></a>gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
+<span id="cb5-85"><a href="#cb5-85"></a>dt <span class="op">=</span> <span class="fl">0.01</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-4-1" data-nodetype="declaration">
@@ -533,8 +533,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="90" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 89;"><span id="cb6-90"><a href="#cb6-90"></a><span class="im">import</span> {odeRK4} <span class="im">from</span> <span class="st">'@rreusser/integration@3064'</span></span>
-<span id="cb6-91"><a href="#cb6-91"></a><span class="im">import</span> { aq<span class="op">,</span> op } <span class="im">from</span> <span class="st">'@uwdata/arquero'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="89" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 88;"><span id="cb6-89"><a href="#cb6-89"></a><span class="im">import</span> {odeRK4} <span class="im">from</span> <span class="st">'@rreusser/integration@3064'</span></span>
+<span id="cb6-90"><a href="#cb6-90"></a><span class="im">import</span> { aq<span class="op">,</span> op } <span class="im">from</span> <span class="st">'@uwdata/arquero'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-5-1" data-nodetype="declaration">
@@ -551,11 +551,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="94" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 93;"><span id="cb7-94"><a href="#cb7-94"></a><span class="kw">function</span> <span class="fu">sir</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
-<span id="cb7-95"><a href="#cb7-95"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">+</span> births <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> y[<span class="dv">0</span>])</span>
-<span id="cb7-96"><a href="#cb7-96"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb7-97"><a href="#cb7-97"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">2</span>]</span>
-<span id="cb7-98"><a href="#cb7-98"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="93" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 92;"><span id="cb7-93"><a href="#cb7-93"></a><span class="kw">function</span> <span class="fu">sir</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
+<span id="cb7-94"><a href="#cb7-94"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">+</span> births <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> y[<span class="dv">0</span>])</span>
+<span id="cb7-95"><a href="#cb7-95"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb7-96"><a href="#cb7-96"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">2</span>]</span>
+<span id="cb7-97"><a href="#cb7-97"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div id="ojs-cell-6" data-nodetype="declaration">
 
@@ -563,27 +563,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="102" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 101;"><span id="cb8-102"><a href="#cb8-102"></a><span class="kw">function</span> <span class="fu">simulate</span>(f<span class="op">,</span> t0<span class="op">,</span> y0<span class="op">,</span> dt<span class="op">,</span> tmax) {</span>
-<span id="cb8-103"><a href="#cb8-103"></a>  <span class="kw">var</span> t <span class="op">=</span> t0</span>
-<span id="cb8-104"><a href="#cb8-104"></a>  <span class="kw">var</span> y <span class="op">=</span> y0</span>
-<span id="cb8-105"><a href="#cb8-105"></a>  <span class="kw">var</span> i <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb8-106"><a href="#cb8-106"></a></span>
-<span id="cb8-107"><a href="#cb8-107"></a>  <span class="kw">var</span> tsim <span class="op">=</span> [t0]</span>
-<span id="cb8-108"><a href="#cb8-108"></a>  <span class="kw">var</span> ysim <span class="op">=</span> [y0]</span>
-<span id="cb8-109"><a href="#cb8-109"></a></span>
-<span id="cb8-110"><a href="#cb8-110"></a>  <span class="cf">for</span> (t <span class="op">=</span> t0 <span class="op">+</span> dt<span class="op">;</span> t <span class="op">&lt;=</span> tmax<span class="op">;</span> t <span class="op">+=</span> dt) {</span>
-<span id="cb8-111"><a href="#cb8-111"></a>    ysim<span class="op">.</span><span class="fu">push</span>(<span class="fu">odeRK4</span>([]<span class="op">,</span> ysim[i]<span class="op">,</span> f<span class="op">,</span> dt))</span>
-<span id="cb8-112"><a href="#cb8-112"></a>    tsim<span class="op">.</span><span class="fu">push</span>(t)</span>
-<span id="cb8-113"><a href="#cb8-113"></a>    i <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb8-114"><a href="#cb8-114"></a>  }</span>
-<span id="cb8-115"><a href="#cb8-115"></a>  </span>
-<span id="cb8-116"><a href="#cb8-116"></a>  <span class="cf">return</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
-<span id="cb8-117"><a href="#cb8-117"></a>    <span class="dt">Time</span><span class="op">:</span> tsim<span class="op">,</span></span>
-<span id="cb8-118"><a href="#cb8-118"></a>    <span class="dt">S</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">0</span>])<span class="op">,</span></span>
-<span id="cb8-119"><a href="#cb8-119"></a>    <span class="dt">I</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">1</span>])<span class="op">,</span></span>
-<span id="cb8-120"><a href="#cb8-120"></a>    <span class="dt">R</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">2</span>])</span>
-<span id="cb8-121"><a href="#cb8-121"></a>    })</span>
-<span id="cb8-122"><a href="#cb8-122"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="101" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 100;"><span id="cb8-101"><a href="#cb8-101"></a><span class="kw">function</span> <span class="fu">simulate</span>(f<span class="op">,</span> t0<span class="op">,</span> y0<span class="op">,</span> dt<span class="op">,</span> tmax) {</span>
+<span id="cb8-102"><a href="#cb8-102"></a>  <span class="kw">var</span> t <span class="op">=</span> t0</span>
+<span id="cb8-103"><a href="#cb8-103"></a>  <span class="kw">var</span> y <span class="op">=</span> y0</span>
+<span id="cb8-104"><a href="#cb8-104"></a>  <span class="kw">var</span> i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-105"><a href="#cb8-105"></a></span>
+<span id="cb8-106"><a href="#cb8-106"></a>  <span class="kw">var</span> tsim <span class="op">=</span> [t0]</span>
+<span id="cb8-107"><a href="#cb8-107"></a>  <span class="kw">var</span> ysim <span class="op">=</span> [y0]</span>
+<span id="cb8-108"><a href="#cb8-108"></a></span>
+<span id="cb8-109"><a href="#cb8-109"></a>  <span class="cf">for</span> (t <span class="op">=</span> t0 <span class="op">+</span> dt<span class="op">;</span> t <span class="op">&lt;=</span> tmax<span class="op">;</span> t <span class="op">+=</span> dt) {</span>
+<span id="cb8-110"><a href="#cb8-110"></a>    ysim<span class="op">.</span><span class="fu">push</span>(<span class="fu">odeRK4</span>([]<span class="op">,</span> ysim[i]<span class="op">,</span> f<span class="op">,</span> dt))</span>
+<span id="cb8-111"><a href="#cb8-111"></a>    tsim<span class="op">.</span><span class="fu">push</span>(t)</span>
+<span id="cb8-112"><a href="#cb8-112"></a>    i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-113"><a href="#cb8-113"></a>  }</span>
+<span id="cb8-114"><a href="#cb8-114"></a>  </span>
+<span id="cb8-115"><a href="#cb8-115"></a>  <span class="cf">return</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
+<span id="cb8-116"><a href="#cb8-116"></a>    <span class="dt">Time</span><span class="op">:</span> tsim<span class="op">,</span></span>
+<span id="cb8-117"><a href="#cb8-117"></a>    <span class="dt">S</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb8-118"><a href="#cb8-118"></a>    <span class="dt">I</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">1</span>])<span class="op">,</span></span>
+<span id="cb8-119"><a href="#cb8-119"></a>    <span class="dt">R</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">2</span>])</span>
+<span id="cb8-120"><a href="#cb8-120"></a>    })</span>
+<span id="cb8-121"><a href="#cb8-121"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div id="ojs-cell-7" data-nodetype="declaration">
 
@@ -591,8 +591,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="127" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 126;"><span id="cb9-127"><a href="#cb9-127"></a>sir_sol <span class="op">=</span> <span class="fu">simulate</span>(sir<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> dt<span class="op">,</span> tmax)</span>
-<span id="cb9-128"><a href="#cb9-128"></a>sir_sol_long <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'Time'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="126" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 125;"><span id="cb9-126"><a href="#cb9-126"></a>sir_sol <span class="op">=</span> <span class="fu">simulate</span>(sir<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> dt<span class="op">,</span> tmax)</span>
+<span id="cb9-127"><a href="#cb9-127"></a>sir_sol_long <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'Time'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-8-1" data-nodetype="declaration">
@@ -609,7 +609,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="131" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 130;"><span id="cb10-131"><a href="#cb10-131"></a>SIRcolors <span class="op">=</span> [<span class="st">"#1f77b4"</span><span class="op">,</span> <span class="st">"#ff7f0e"</span><span class="op">,</span> <span class="st">"#FF3851"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="130" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 129;"><span id="cb10-130"><a href="#cb10-130"></a>SIRcolors <span class="op">=</span> [<span class="st">"#1f77b4"</span><span class="op">,</span> <span class="st">"#ff7f0e"</span><span class="op">,</span> <span class="st">"#FF3851"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div id="ojs-cell-9" data-nodetype="declaration">
 
@@ -617,8 +617,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="136" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 135;"><span id="cb11-136"><a href="#cb11-136"></a>R0 <span class="op">=</span> beta <span class="op">/</span> (gamma <span class="op">+</span> births)</span>
-<span id="cb11-137"><a href="#cb11-137"></a>R0_str <span class="op">=</span> R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="135" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 134;"><span id="cb11-135"><a href="#cb11-135"></a>R0 <span class="op">=</span> beta <span class="op">/</span> (gamma <span class="op">+</span> births)</span>
+<span id="cb11-136"><a href="#cb11-136"></a>R0_str <span class="op">=</span> R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-10-1" data-nodetype="declaration">
@@ -635,22 +635,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb12" data-startfrom="140" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 139;"><span id="cb12-140"><a href="#cb12-140"></a><span class="kw">function</span> <span class="fu">calculate_equil</span>(R0){</span>
-<span id="cb12-141"><a href="#cb12-141"></a>  <span class="cf">if</span> (births <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb12-142"><a href="#cb12-142"></a>    <span class="kw">var</span> eq_S <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> R0</span>
-<span id="cb12-143"><a href="#cb12-143"></a>    <span class="kw">var</span> eq_I <span class="op">=</span> births <span class="op">/</span> beta <span class="op">*</span> (R0 <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb12-144"><a href="#cb12-144"></a>    <span class="kw">var</span> eq_R <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (eq_S <span class="op">+</span> eq_I)</span>
-<span id="cb12-145"><a href="#cb12-145"></a></span>
-<span id="cb12-146"><a href="#cb12-146"></a>    <span class="kw">const</span> eq_vals <span class="op">=</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
-<span id="cb12-147"><a href="#cb12-147"></a>      <span class="dt">State</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]<span class="op">,</span></span>
-<span id="cb12-148"><a href="#cb12-148"></a>      <span class="dt">Fraction</span><span class="op">:</span> [eq_S<span class="op">,</span> eq_I<span class="op">,</span> eq_R]</span>
-<span id="cb12-149"><a href="#cb12-149"></a>    })</span>
-<span id="cb12-150"><a href="#cb12-150"></a></span>
-<span id="cb12-151"><a href="#cb12-151"></a>    <span class="cf">return</span> eq_vals</span>
-<span id="cb12-152"><a href="#cb12-152"></a>  } <span class="cf">else</span> {</span>
-<span id="cb12-153"><a href="#cb12-153"></a>    <span class="cf">return</span> <span class="kw">null</span></span>
-<span id="cb12-154"><a href="#cb12-154"></a>  }</span>
-<span id="cb12-155"><a href="#cb12-155"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb12" data-startfrom="139" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 138;"><span id="cb12-139"><a href="#cb12-139"></a><span class="kw">function</span> <span class="fu">calculate_equil</span>(R0){</span>
+<span id="cb12-140"><a href="#cb12-140"></a>  <span class="cf">if</span> (births <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb12-141"><a href="#cb12-141"></a>    <span class="kw">var</span> eq_S <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> R0</span>
+<span id="cb12-142"><a href="#cb12-142"></a>    <span class="kw">var</span> eq_I <span class="op">=</span> births <span class="op">/</span> beta <span class="op">*</span> (R0 <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb12-143"><a href="#cb12-143"></a>    <span class="kw">var</span> eq_R <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (eq_S <span class="op">+</span> eq_I)</span>
+<span id="cb12-144"><a href="#cb12-144"></a></span>
+<span id="cb12-145"><a href="#cb12-145"></a>    <span class="kw">const</span> eq_vals <span class="op">=</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
+<span id="cb12-146"><a href="#cb12-146"></a>      <span class="dt">State</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]<span class="op">,</span></span>
+<span id="cb12-147"><a href="#cb12-147"></a>      <span class="dt">Fraction</span><span class="op">:</span> [eq_S<span class="op">,</span> eq_I<span class="op">,</span> eq_R]</span>
+<span id="cb12-148"><a href="#cb12-148"></a>    })</span>
+<span id="cb12-149"><a href="#cb12-149"></a></span>
+<span id="cb12-150"><a href="#cb12-150"></a>    <span class="cf">return</span> eq_vals</span>
+<span id="cb12-151"><a href="#cb12-151"></a>  } <span class="cf">else</span> {</span>
+<span id="cb12-152"><a href="#cb12-152"></a>    <span class="cf">return</span> <span class="kw">null</span></span>
+<span id="cb12-153"><a href="#cb12-153"></a>  }</span>
+<span id="cb12-154"><a href="#cb12-154"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div id="ojs-cell-11" data-nodetype="declaration">
 
@@ -658,14 +658,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="159" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 158;"><span id="cb13-159"><a href="#cb13-159"></a>eq_vals <span class="op">=</span> <span class="fu">calculate_equil</span>(R0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="158" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 157;"><span id="cb13-158"><a href="#cb13-158"></a>eq_vals <span class="op">=</span> <span class="fu">calculate_equil</span>(R0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-display">
 <div id="ojs-cell-12" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
-<div class="cell">
+<div class="panel-fill panel-grid">
+<div class="g-col-24">
+<div class="cell panel-fill">
 <details class="hidden"><summary>Code</summary><div class="sourceCode cell-code hidden" id="cb14" data-startfrom="163" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 162;"><span id="cb14-163"><a href="#cb14-163"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
 <span id="cb14-164"><a href="#cb14-164"></a>  <span class="dt">color</span><span class="op">:</span> {</span>
 <span id="cb14-165"><a href="#cb14-165"></a>    <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
@@ -700,6 +702,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details><div class="cell-output cell-output-display">
 <div id="ojs-cell-13" data-nodetype="expression">
 
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1293,7 +1297,7 @@ Note
 
 
 </section></section></main><!-- /main --><script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"init_beta = 0.3\ninit_dur_inf = 6.0\ninit_I0 = 0.01\ninit_births = 0.0\ninit_tmax = 200\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"function set(input, value) {\n  input.value = value;\n  input.dispatchEvent(new Event(\"input\", {bubbles: true}));\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"\nviewof reset = Inputs.button([\n  [\"Reset all sliders\", () => {\n    set(viewof beta, init_beta)\n    set(viewof dur_inf, init_dur_inf)\n    set(viewof I0, init_I0)\n    set(viewof births, init_births)\n    set(viewof tmax, init_tmax)\n  }]\n])\n\nviewof beta = Inputs.range(\n  [0.0, 2.0],\n  {value: init_beta, step: 0.01, label: \"Transmission rate (per day)\"}\n)\n\nviewof dur_inf = Inputs.range(\n  [0.0, 20],\n  {value: init_dur_inf, step: 0.5, label: \"Duration of Infection (days)\"}\n)\n\nviewof I0 = Inputs.range(\n  [0.0, 1.0],\n  {value: init_I0, step: 0.01, label: \"Initial fraction infected\"}\n)\n\nviewof births = Inputs.range(\n  [0, 0.05],\n  {value: init_births, step: 0.001, label: \"Birth rate\"}\n)\n\nviewof tmax = Inputs.range(\n  [200, 600],\n  {value: init_tmax, step: 10.0, label: \"Maximum simulation time (years)\"}\n)\n\nviewof area = Inputs.toggle(\n  {label: \"Cumulative Area plot\", value: false}\n)\n\nmd`${tex`R_0 = ${R0_str}`}`\n\n{\n  if (births == 0){\n    var finalsize = sir_sol.get(\"R\", sir_sol.numRows()-1)\n    var finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})\n\n    return md`${tex`\\text{Final size} = ${finalsize_str}`}`\n  } else {\n    return md``\n  }\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"gamma = 1 / dur_inf\ndt = 0.01\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"import {odeRK4} from '@rreusser/integration@3064'\nimport { aq, op } from '@uwdata/arquero'\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"function sir(dydt, y, t) {\n  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])\n  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]\n  dydt[2] = gamma * y[1] - births * y[2]\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"function simulate(f, t0, y0, dt, tmax) {\n  var t = t0\n  var y = y0\n  var i = 0\n\n  var tsim = [t0]\n  var ysim = [y0]\n\n  for (t = t0 + dt; t <= tmax; t += dt) {\n    ysim.push(odeRK4([], ysim[i], f, dt))\n    tsim.push(t)\n    i += 1\n  }\n  \n  return aq.table({\n    Time: tsim,\n    S: ysim.map(d => d[0]),\n    I: ysim.map(d => d[1]),\n    R: ysim.map(d => d[2])\n    })\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], dt, tmax)\nsir_sol_long = sir_sol.fold(aq.not('Time'), {as: ['State', 'Fraction']})\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"SIRcolors = [\"#1f77b4\", \"#ff7f0e\", \"#FF3851\"]\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"R0 = beta / (gamma + births)\nR0_str = R0.toLocaleString(undefined, {minimumFractionDigits: 2})\n"},{"methodName":"interpret","cellName":"ojs-cell-11","inline":false,"source":"function calculate_equil(R0){\n  if (births > 0) {\n    var eq_S = 1 / R0\n    var eq_I = births / beta * (R0 - 1)\n    var eq_R = 1 - (eq_S + eq_I)\n\n    const eq_vals = aq.table({\n      State: [\"S\", \"I\", \"R\"],\n      Fraction: [eq_S, eq_I, eq_R]\n    })\n\n    return eq_vals\n  } else {\n    return null\n  }\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-12","inline":false,"source":"eq_vals = calculate_equil(R0)\n"},{"methodName":"interpret","cellName":"ojs-cell-13","inline":false,"source":"Plot.plot({\n  color: {\n    legend: true,\n    domain: [\"S\", \"I\", \"R\"],\n    range: SIRcolors\n  },\n  style: {fontSize: \"20px\"},\n  marginLeft: 65,\n  marginTop: 40,\n  marginBottom: 55,\n  grid: true,\n  width: 800,\n  height: 670,\n  y: {domain: [0, 1]},\n  marks: [\n    area ?\n      Plot.areaY(sir_sol_long, {x: \"Time\", y: \"Fraction\", fill: \"State\"}) :\n      [\n        R0 >= 1.0 && births > 0 ?\n        Plot.ruleY(\n          eq_vals,\n          {y: \"Fraction\", stroke: \"State\", strokeWidth: 2, strokeDasharray: [10]}\n        ) :\n        null,\n        Plot.lineY(\n          sir_sol_long,\n          {x: \"Time\", y: \"Fraction\", stroke: \"State\", strokeWidth: 6}\n        )\n      ]\n  ]\n})\n"},{"methodName":"interpretQuiet","source":"shinyInput('reset')"},{"methodName":"interpretQuiet","source":"shinyInput('beta')"},{"methodName":"interpretQuiet","source":"shinyInput('dur_inf')"},{"methodName":"interpretQuiet","source":"shinyInput('I0')"},{"methodName":"interpretQuiet","source":"shinyInput('births')"},{"methodName":"interpretQuiet","source":"shinyInput('tmax')"},{"methodName":"interpretQuiet","source":"shinyInput('area')"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"init_beta = 0.3\ninit_dur_inf = 6.0\ninit_I0 = 0.01\ninit_births = 0.0\ninit_tmax = 200\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"function set(input, value) {\n  input.value = value;\n  input.dispatchEvent(new Event(\"input\", {bubbles: true}));\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"viewof reset = Inputs.button([\n  [\"Reset all sliders\", () => {\n    set(viewof beta, init_beta)\n    set(viewof dur_inf, init_dur_inf)\n    set(viewof I0, init_I0)\n    set(viewof births, init_births)\n    set(viewof tmax, init_tmax)\n  }]\n])\n\nviewof beta = Inputs.range(\n  [0.0, 2.0],\n  {value: init_beta, step: 0.01, label: \"Transmission rate (per day)\"}\n)\n\nviewof dur_inf = Inputs.range(\n  [0.0, 20],\n  {value: init_dur_inf, step: 0.5, label: \"Duration of Infection (days)\"}\n)\n\nviewof I0 = Inputs.range(\n  [0.0, 1.0],\n  {value: init_I0, step: 0.01, label: \"Initial fraction infected\"}\n)\n\nviewof births = Inputs.range(\n  [0, 0.05],\n  {value: init_births, step: 0.001, label: \"Birth rate\"}\n)\n\nviewof tmax = Inputs.range(\n  [200, 600],\n  {value: init_tmax, step: 10.0, label: \"Maximum simulation time (years)\"}\n)\n\nviewof area = Inputs.toggle(\n  {label: \"Cumulative Area plot\", value: false}\n)\n\nmd`${tex`R_0 = ${R0_str}`}`\n\n{\n  if (births == 0){\n    var finalsize = sir_sol.get(\"R\", sir_sol.numRows()-1)\n    var finalsize_str = finalsize.toLocaleString(undefined, {minimumFractionDigits: 2})\n\n    return md`${tex`\\text{Final size} = ${finalsize_str}`}`\n  } else {\n    return md``\n  }\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"gamma = 1 / dur_inf\ndt = 0.01\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"import {odeRK4} from '@rreusser/integration@3064'\nimport { aq, op } from '@uwdata/arquero'\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"function sir(dydt, y, t) {\n  dydt[0] = - beta * y[0] * y[1] + births * (1 - y[0])\n  dydt[1] = beta * y[0] * y[1] - gamma * y[1] - births * y[1]\n  dydt[2] = gamma * y[1] - births * y[2]\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"function simulate(f, t0, y0, dt, tmax) {\n  var t = t0\n  var y = y0\n  var i = 0\n\n  var tsim = [t0]\n  var ysim = [y0]\n\n  for (t = t0 + dt; t <= tmax; t += dt) {\n    ysim.push(odeRK4([], ysim[i], f, dt))\n    tsim.push(t)\n    i += 1\n  }\n  \n  return aq.table({\n    Time: tsim,\n    S: ysim.map(d => d[0]),\n    I: ysim.map(d => d[1]),\n    R: ysim.map(d => d[2])\n    })\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"sir_sol = simulate(sir, 0, [1.0-I0, I0, 0.0], dt, tmax)\nsir_sol_long = sir_sol.fold(aq.not('Time'), {as: ['State', 'Fraction']})\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"SIRcolors = [\"#1f77b4\", \"#ff7f0e\", \"#FF3851\"]\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"R0 = beta / (gamma + births)\nR0_str = R0.toLocaleString(undefined, {minimumFractionDigits: 2})\n"},{"methodName":"interpret","cellName":"ojs-cell-11","inline":false,"source":"function calculate_equil(R0){\n  if (births > 0) {\n    var eq_S = 1 / R0\n    var eq_I = births / beta * (R0 - 1)\n    var eq_R = 1 - (eq_S + eq_I)\n\n    const eq_vals = aq.table({\n      State: [\"S\", \"I\", \"R\"],\n      Fraction: [eq_S, eq_I, eq_R]\n    })\n\n    return eq_vals\n  } else {\n    return null\n  }\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-12","inline":false,"source":"eq_vals = calculate_equil(R0)\n"},{"methodName":"interpret","cellName":"ojs-cell-13","inline":false,"source":"Plot.plot({\n  color: {\n    legend: true,\n    domain: [\"S\", \"I\", \"R\"],\n    range: SIRcolors\n  },\n  style: {fontSize: \"20px\"},\n  marginLeft: 65,\n  marginTop: 40,\n  marginBottom: 55,\n  grid: true,\n  width: 800,\n  height: 670,\n  y: {domain: [0, 1]},\n  marks: [\n    area ?\n      Plot.areaY(sir_sol_long, {x: \"Time\", y: \"Fraction\", fill: \"State\"}) :\n      [\n        R0 >= 1.0 && births > 0 ?\n        Plot.ruleY(\n          eq_vals,\n          {y: \"Fraction\", stroke: \"State\", strokeWidth: 2, strokeDasharray: [10]}\n        ) :\n        null,\n        Plot.lineY(\n          sir_sol_long,\n          {x: \"Time\", y: \"Fraction\", stroke: \"State\", strokeWidth: 6}\n        )\n      ]\n  ]\n})\n"},{"methodName":"interpretQuiet","source":"shinyInput('reset')"},{"methodName":"interpretQuiet","source":"shinyInput('beta')"},{"methodName":"interpretQuiet","source":"shinyInput('dur_inf')"},{"methodName":"interpretQuiet","source":"shinyInput('I0')"},{"methodName":"interpretQuiet","source":"shinyInput('births')"},{"methodName":"interpretQuiet","source":"shinyInput('tmax')"},{"methodName":"interpretQuiet","source":"shinyInput('area')"}]}
 </script><script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
 window._ojs.paths.runtimeToDoc = "../..";
@@ -1739,140 +1743,140 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-31"><a href="#cb18-31"></a></span>
 <span id="cb18-34"><a href="#cb18-34"></a><span class="in">```{ojs}</span></span>
 <span id="cb18-35"><a href="#cb18-35"></a><span class="co">//| panel: sidebar</span></span>
-<span id="cb18-36"><a href="#cb18-36"></a></span>
-<span id="cb18-37"><a href="#cb18-37"></a>viewof reset <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>([</span>
-<span id="cb18-38"><a href="#cb18-38"></a>  [<span class="st">"Reset all sliders"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb18-39"><a href="#cb18-39"></a>    <span class="kw">set</span>(viewof beta<span class="op">,</span> init_beta)</span>
-<span id="cb18-40"><a href="#cb18-40"></a>    <span class="kw">set</span>(viewof dur_inf<span class="op">,</span> init_dur_inf)</span>
-<span id="cb18-41"><a href="#cb18-41"></a>    <span class="kw">set</span>(viewof I0<span class="op">,</span> init_I0)</span>
-<span id="cb18-42"><a href="#cb18-42"></a>    <span class="kw">set</span>(viewof births<span class="op">,</span> init_births)</span>
-<span id="cb18-43"><a href="#cb18-43"></a>    <span class="kw">set</span>(viewof tmax<span class="op">,</span> init_tmax)</span>
-<span id="cb18-44"><a href="#cb18-44"></a>  }]</span>
-<span id="cb18-45"><a href="#cb18-45"></a>])</span>
-<span id="cb18-46"><a href="#cb18-46"></a></span>
-<span id="cb18-47"><a href="#cb18-47"></a>viewof beta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb18-48"><a href="#cb18-48"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span></span>
-<span id="cb18-49"><a href="#cb18-49"></a>  {<span class="dt">value</span><span class="op">:</span> init_beta<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Transmission rate (per day)"</span>}</span>
-<span id="cb18-50"><a href="#cb18-50"></a>)</span>
-<span id="cb18-51"><a href="#cb18-51"></a></span>
-<span id="cb18-52"><a href="#cb18-52"></a>viewof dur_inf <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb18-53"><a href="#cb18-53"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
-<span id="cb18-54"><a href="#cb18-54"></a>  {<span class="dt">value</span><span class="op">:</span> init_dur_inf<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Duration of Infection (days)"</span>}</span>
-<span id="cb18-55"><a href="#cb18-55"></a>)</span>
-<span id="cb18-56"><a href="#cb18-56"></a></span>
-<span id="cb18-57"><a href="#cb18-57"></a>viewof I0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb18-58"><a href="#cb18-58"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span>]<span class="op">,</span></span>
-<span id="cb18-59"><a href="#cb18-59"></a>  {<span class="dt">value</span><span class="op">:</span> init_I0<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Initial fraction infected"</span>}</span>
-<span id="cb18-60"><a href="#cb18-60"></a>)</span>
-<span id="cb18-61"><a href="#cb18-61"></a></span>
-<span id="cb18-62"><a href="#cb18-62"></a>viewof births <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb18-63"><a href="#cb18-63"></a>  [<span class="dv">0</span><span class="op">,</span> <span class="fl">0.05</span>]<span class="op">,</span></span>
-<span id="cb18-64"><a href="#cb18-64"></a>  {<span class="dt">value</span><span class="op">:</span> init_births<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Birth rate"</span>}</span>
-<span id="cb18-65"><a href="#cb18-65"></a>)</span>
-<span id="cb18-66"><a href="#cb18-66"></a></span>
-<span id="cb18-67"><a href="#cb18-67"></a>viewof tmax <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
-<span id="cb18-68"><a href="#cb18-68"></a>  [<span class="dv">200</span><span class="op">,</span> <span class="dv">600</span>]<span class="op">,</span></span>
-<span id="cb18-69"><a href="#cb18-69"></a>  {<span class="dt">value</span><span class="op">:</span> init_tmax<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">10.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Maximum simulation time (years)"</span>}</span>
-<span id="cb18-70"><a href="#cb18-70"></a>)</span>
-<span id="cb18-71"><a href="#cb18-71"></a></span>
-<span id="cb18-72"><a href="#cb18-72"></a>viewof area <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>(</span>
-<span id="cb18-73"><a href="#cb18-73"></a>  {<span class="dt">label</span><span class="op">:</span> <span class="st">"Cumulative Area plot"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>}</span>
-<span id="cb18-74"><a href="#cb18-74"></a>)</span>
-<span id="cb18-75"><a href="#cb18-75"></a></span>
-<span id="cb18-76"><a href="#cb18-76"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>R0_str<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
-<span id="cb18-77"><a href="#cb18-77"></a></span>
-<span id="cb18-78"><a href="#cb18-78"></a>{</span>
-<span id="cb18-79"><a href="#cb18-79"></a>  <span class="cf">if</span> (births <span class="op">==</span> <span class="dv">0</span>){</span>
-<span id="cb18-80"><a href="#cb18-80"></a>    <span class="kw">var</span> finalsize <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">get</span>(<span class="st">"R"</span><span class="op">,</span> sir_sol<span class="op">.</span><span class="fu">numRows</span>()<span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb18-81"><a href="#cb18-81"></a>    <span class="kw">var</span> finalsize_str <span class="op">=</span> finalsize<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})</span>
-<span id="cb18-82"><a href="#cb18-82"></a></span>
-<span id="cb18-83"><a href="#cb18-83"></a>    <span class="cf">return</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{Final size} = </span><span class="sc">${</span>finalsize_str<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
-<span id="cb18-84"><a href="#cb18-84"></a>  } <span class="cf">else</span> {</span>
-<span id="cb18-85"><a href="#cb18-85"></a>    <span class="cf">return</span> <span class="fu">md</span><span class="vs">``</span></span>
-<span id="cb18-86"><a href="#cb18-86"></a>  }</span>
-<span id="cb18-87"><a href="#cb18-87"></a>}</span>
-<span id="cb18-88"><a href="#cb18-88"></a><span class="in">```</span></span>
-<span id="cb18-89"><a href="#cb18-89"></a></span>
-<span id="cb18-92"><a href="#cb18-92"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-93"><a href="#cb18-93"></a>gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
-<span id="cb18-94"><a href="#cb18-94"></a>dt <span class="op">=</span> <span class="fl">0.01</span></span>
-<span id="cb18-95"><a href="#cb18-95"></a><span class="in">```</span></span>
-<span id="cb18-96"><a href="#cb18-96"></a></span>
-<span id="cb18-99"><a href="#cb18-99"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-100"><a href="#cb18-100"></a><span class="im">import</span> {odeRK4} <span class="im">from</span> <span class="st">'@rreusser/integration@3064'</span></span>
-<span id="cb18-101"><a href="#cb18-101"></a><span class="im">import</span> { aq<span class="op">,</span> op } <span class="im">from</span> <span class="st">'@uwdata/arquero'</span></span>
-<span id="cb18-102"><a href="#cb18-102"></a><span class="in">```</span></span>
-<span id="cb18-103"><a href="#cb18-103"></a></span>
-<span id="cb18-106"><a href="#cb18-106"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-107"><a href="#cb18-107"></a><span class="kw">function</span> <span class="fu">sir</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
-<span id="cb18-108"><a href="#cb18-108"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">+</span> births <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> y[<span class="dv">0</span>])</span>
-<span id="cb18-109"><a href="#cb18-109"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">1</span>]</span>
-<span id="cb18-110"><a href="#cb18-110"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">2</span>]</span>
-<span id="cb18-111"><a href="#cb18-111"></a>}</span>
-<span id="cb18-112"><a href="#cb18-112"></a><span class="in">```</span></span>
-<span id="cb18-113"><a href="#cb18-113"></a></span>
-<span id="cb18-116"><a href="#cb18-116"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-117"><a href="#cb18-117"></a><span class="kw">function</span> <span class="fu">simulate</span>(f<span class="op">,</span> t0<span class="op">,</span> y0<span class="op">,</span> dt<span class="op">,</span> tmax) {</span>
-<span id="cb18-118"><a href="#cb18-118"></a>  <span class="kw">var</span> t <span class="op">=</span> t0</span>
-<span id="cb18-119"><a href="#cb18-119"></a>  <span class="kw">var</span> y <span class="op">=</span> y0</span>
-<span id="cb18-120"><a href="#cb18-120"></a>  <span class="kw">var</span> i <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb18-121"><a href="#cb18-121"></a></span>
-<span id="cb18-122"><a href="#cb18-122"></a>  <span class="kw">var</span> tsim <span class="op">=</span> [t0]</span>
-<span id="cb18-123"><a href="#cb18-123"></a>  <span class="kw">var</span> ysim <span class="op">=</span> [y0]</span>
-<span id="cb18-124"><a href="#cb18-124"></a></span>
-<span id="cb18-125"><a href="#cb18-125"></a>  <span class="cf">for</span> (t <span class="op">=</span> t0 <span class="op">+</span> dt<span class="op">;</span> t <span class="op">&lt;=</span> tmax<span class="op">;</span> t <span class="op">+=</span> dt) {</span>
-<span id="cb18-126"><a href="#cb18-126"></a>    ysim<span class="op">.</span><span class="fu">push</span>(<span class="fu">odeRK4</span>([]<span class="op">,</span> ysim[i]<span class="op">,</span> f<span class="op">,</span> dt))</span>
-<span id="cb18-127"><a href="#cb18-127"></a>    tsim<span class="op">.</span><span class="fu">push</span>(t)</span>
-<span id="cb18-128"><a href="#cb18-128"></a>    i <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb18-129"><a href="#cb18-129"></a>  }</span>
-<span id="cb18-130"><a href="#cb18-130"></a>  </span>
-<span id="cb18-131"><a href="#cb18-131"></a>  <span class="cf">return</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
-<span id="cb18-132"><a href="#cb18-132"></a>    <span class="dt">Time</span><span class="op">:</span> tsim<span class="op">,</span></span>
-<span id="cb18-133"><a href="#cb18-133"></a>    <span class="dt">S</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">0</span>])<span class="op">,</span></span>
-<span id="cb18-134"><a href="#cb18-134"></a>    <span class="dt">I</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">1</span>])<span class="op">,</span></span>
-<span id="cb18-135"><a href="#cb18-135"></a>    <span class="dt">R</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">2</span>])</span>
-<span id="cb18-136"><a href="#cb18-136"></a>    })</span>
-<span id="cb18-137"><a href="#cb18-137"></a>}</span>
-<span id="cb18-138"><a href="#cb18-138"></a><span class="in">```</span></span>
-<span id="cb18-139"><a href="#cb18-139"></a></span>
-<span id="cb18-142"><a href="#cb18-142"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-143"><a href="#cb18-143"></a>sir_sol <span class="op">=</span> <span class="fu">simulate</span>(sir<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> dt<span class="op">,</span> tmax)</span>
-<span id="cb18-144"><a href="#cb18-144"></a>sir_sol_long <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'Time'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span>
-<span id="cb18-145"><a href="#cb18-145"></a><span class="in">```</span></span>
-<span id="cb18-146"><a href="#cb18-146"></a></span>
-<span id="cb18-149"><a href="#cb18-149"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-150"><a href="#cb18-150"></a>SIRcolors <span class="op">=</span> [<span class="st">"#1f77b4"</span><span class="op">,</span> <span class="st">"#ff7f0e"</span><span class="op">,</span> <span class="st">"#FF3851"</span>]</span>
-<span id="cb18-151"><a href="#cb18-151"></a><span class="in">```</span></span>
-<span id="cb18-152"><a href="#cb18-152"></a></span>
-<span id="cb18-155"><a href="#cb18-155"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-156"><a href="#cb18-156"></a>R0 <span class="op">=</span> beta <span class="op">/</span> (gamma <span class="op">+</span> births)</span>
-<span id="cb18-157"><a href="#cb18-157"></a>R0_str <span class="op">=</span> R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})</span>
-<span id="cb18-158"><a href="#cb18-158"></a><span class="in">```</span></span>
-<span id="cb18-159"><a href="#cb18-159"></a></span>
-<span id="cb18-162"><a href="#cb18-162"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-163"><a href="#cb18-163"></a><span class="kw">function</span> <span class="fu">calculate_equil</span>(R0){</span>
-<span id="cb18-164"><a href="#cb18-164"></a>  <span class="cf">if</span> (births <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb18-165"><a href="#cb18-165"></a>    <span class="kw">var</span> eq_S <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> R0</span>
-<span id="cb18-166"><a href="#cb18-166"></a>    <span class="kw">var</span> eq_I <span class="op">=</span> births <span class="op">/</span> beta <span class="op">*</span> (R0 <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb18-167"><a href="#cb18-167"></a>    <span class="kw">var</span> eq_R <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (eq_S <span class="op">+</span> eq_I)</span>
-<span id="cb18-168"><a href="#cb18-168"></a></span>
-<span id="cb18-169"><a href="#cb18-169"></a>    <span class="kw">const</span> eq_vals <span class="op">=</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
-<span id="cb18-170"><a href="#cb18-170"></a>      <span class="dt">State</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]<span class="op">,</span></span>
-<span id="cb18-171"><a href="#cb18-171"></a>      <span class="dt">Fraction</span><span class="op">:</span> [eq_S<span class="op">,</span> eq_I<span class="op">,</span> eq_R]</span>
-<span id="cb18-172"><a href="#cb18-172"></a>    })</span>
-<span id="cb18-173"><a href="#cb18-173"></a></span>
-<span id="cb18-174"><a href="#cb18-174"></a>    <span class="cf">return</span> eq_vals</span>
-<span id="cb18-175"><a href="#cb18-175"></a>  } <span class="cf">else</span> {</span>
-<span id="cb18-176"><a href="#cb18-176"></a>    <span class="cf">return</span> <span class="kw">null</span></span>
-<span id="cb18-177"><a href="#cb18-177"></a>  }</span>
-<span id="cb18-178"><a href="#cb18-178"></a>}</span>
-<span id="cb18-179"><a href="#cb18-179"></a><span class="in">```</span></span>
-<span id="cb18-180"><a href="#cb18-180"></a></span>
-<span id="cb18-183"><a href="#cb18-183"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-184"><a href="#cb18-184"></a>eq_vals <span class="op">=</span> <span class="fu">calculate_equil</span>(R0)</span>
-<span id="cb18-185"><a href="#cb18-185"></a><span class="in">```</span></span>
-<span id="cb18-186"><a href="#cb18-186"></a></span>
-<span id="cb18-189"><a href="#cb18-189"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-36"><a href="#cb18-36"></a>viewof reset <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>([</span>
+<span id="cb18-37"><a href="#cb18-37"></a>  [<span class="st">"Reset all sliders"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb18-38"><a href="#cb18-38"></a>    <span class="kw">set</span>(viewof beta<span class="op">,</span> init_beta)</span>
+<span id="cb18-39"><a href="#cb18-39"></a>    <span class="kw">set</span>(viewof dur_inf<span class="op">,</span> init_dur_inf)</span>
+<span id="cb18-40"><a href="#cb18-40"></a>    <span class="kw">set</span>(viewof I0<span class="op">,</span> init_I0)</span>
+<span id="cb18-41"><a href="#cb18-41"></a>    <span class="kw">set</span>(viewof births<span class="op">,</span> init_births)</span>
+<span id="cb18-42"><a href="#cb18-42"></a>    <span class="kw">set</span>(viewof tmax<span class="op">,</span> init_tmax)</span>
+<span id="cb18-43"><a href="#cb18-43"></a>  }]</span>
+<span id="cb18-44"><a href="#cb18-44"></a>])</span>
+<span id="cb18-45"><a href="#cb18-45"></a></span>
+<span id="cb18-46"><a href="#cb18-46"></a>viewof beta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb18-47"><a href="#cb18-47"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span></span>
+<span id="cb18-48"><a href="#cb18-48"></a>  {<span class="dt">value</span><span class="op">:</span> init_beta<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Transmission rate (per day)"</span>}</span>
+<span id="cb18-49"><a href="#cb18-49"></a>)</span>
+<span id="cb18-50"><a href="#cb18-50"></a></span>
+<span id="cb18-51"><a href="#cb18-51"></a>viewof dur_inf <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb18-52"><a href="#cb18-52"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb18-53"><a href="#cb18-53"></a>  {<span class="dt">value</span><span class="op">:</span> init_dur_inf<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Duration of Infection (days)"</span>}</span>
+<span id="cb18-54"><a href="#cb18-54"></a>)</span>
+<span id="cb18-55"><a href="#cb18-55"></a></span>
+<span id="cb18-56"><a href="#cb18-56"></a>viewof I0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb18-57"><a href="#cb18-57"></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span>]<span class="op">,</span></span>
+<span id="cb18-58"><a href="#cb18-58"></a>  {<span class="dt">value</span><span class="op">:</span> init_I0<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Initial fraction infected"</span>}</span>
+<span id="cb18-59"><a href="#cb18-59"></a>)</span>
+<span id="cb18-60"><a href="#cb18-60"></a></span>
+<span id="cb18-61"><a href="#cb18-61"></a>viewof births <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb18-62"><a href="#cb18-62"></a>  [<span class="dv">0</span><span class="op">,</span> <span class="fl">0.05</span>]<span class="op">,</span></span>
+<span id="cb18-63"><a href="#cb18-63"></a>  {<span class="dt">value</span><span class="op">:</span> init_births<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Birth rate"</span>}</span>
+<span id="cb18-64"><a href="#cb18-64"></a>)</span>
+<span id="cb18-65"><a href="#cb18-65"></a></span>
+<span id="cb18-66"><a href="#cb18-66"></a>viewof tmax <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb18-67"><a href="#cb18-67"></a>  [<span class="dv">200</span><span class="op">,</span> <span class="dv">600</span>]<span class="op">,</span></span>
+<span id="cb18-68"><a href="#cb18-68"></a>  {<span class="dt">value</span><span class="op">:</span> init_tmax<span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">10.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Maximum simulation time (years)"</span>}</span>
+<span id="cb18-69"><a href="#cb18-69"></a>)</span>
+<span id="cb18-70"><a href="#cb18-70"></a></span>
+<span id="cb18-71"><a href="#cb18-71"></a>viewof area <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>(</span>
+<span id="cb18-72"><a href="#cb18-72"></a>  {<span class="dt">label</span><span class="op">:</span> <span class="st">"Cumulative Area plot"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>}</span>
+<span id="cb18-73"><a href="#cb18-73"></a>)</span>
+<span id="cb18-74"><a href="#cb18-74"></a></span>
+<span id="cb18-75"><a href="#cb18-75"></a><span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`R_0 = </span><span class="sc">${</span>R0_str<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb18-76"><a href="#cb18-76"></a></span>
+<span id="cb18-77"><a href="#cb18-77"></a>{</span>
+<span id="cb18-78"><a href="#cb18-78"></a>  <span class="cf">if</span> (births <span class="op">==</span> <span class="dv">0</span>){</span>
+<span id="cb18-79"><a href="#cb18-79"></a>    <span class="kw">var</span> finalsize <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">get</span>(<span class="st">"R"</span><span class="op">,</span> sir_sol<span class="op">.</span><span class="fu">numRows</span>()<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb18-80"><a href="#cb18-80"></a>    <span class="kw">var</span> finalsize_str <span class="op">=</span> finalsize<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})</span>
+<span id="cb18-81"><a href="#cb18-81"></a></span>
+<span id="cb18-82"><a href="#cb18-82"></a>    <span class="cf">return</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{Final size} = </span><span class="sc">${</span>finalsize_str<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb18-83"><a href="#cb18-83"></a>  } <span class="cf">else</span> {</span>
+<span id="cb18-84"><a href="#cb18-84"></a>    <span class="cf">return</span> <span class="fu">md</span><span class="vs">``</span></span>
+<span id="cb18-85"><a href="#cb18-85"></a>  }</span>
+<span id="cb18-86"><a href="#cb18-86"></a>}</span>
+<span id="cb18-87"><a href="#cb18-87"></a><span class="in">```</span></span>
+<span id="cb18-88"><a href="#cb18-88"></a></span>
+<span id="cb18-91"><a href="#cb18-91"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-92"><a href="#cb18-92"></a>gamma <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> dur_inf</span>
+<span id="cb18-93"><a href="#cb18-93"></a>dt <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb18-94"><a href="#cb18-94"></a><span class="in">```</span></span>
+<span id="cb18-95"><a href="#cb18-95"></a></span>
+<span id="cb18-98"><a href="#cb18-98"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-99"><a href="#cb18-99"></a><span class="im">import</span> {odeRK4} <span class="im">from</span> <span class="st">'@rreusser/integration@3064'</span></span>
+<span id="cb18-100"><a href="#cb18-100"></a><span class="im">import</span> { aq<span class="op">,</span> op } <span class="im">from</span> <span class="st">'@uwdata/arquero'</span></span>
+<span id="cb18-101"><a href="#cb18-101"></a><span class="in">```</span></span>
+<span id="cb18-102"><a href="#cb18-102"></a></span>
+<span id="cb18-105"><a href="#cb18-105"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-106"><a href="#cb18-106"></a><span class="kw">function</span> <span class="fu">sir</span>(dydt<span class="op">,</span> y<span class="op">,</span> t) {</span>
+<span id="cb18-107"><a href="#cb18-107"></a>  dydt[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">+</span> births <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> y[<span class="dv">0</span>])</span>
+<span id="cb18-108"><a href="#cb18-108"></a>  dydt[<span class="dv">1</span>] <span class="op">=</span> beta <span class="op">*</span> y[<span class="dv">0</span>] <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">1</span>]</span>
+<span id="cb18-109"><a href="#cb18-109"></a>  dydt[<span class="dv">2</span>] <span class="op">=</span> gamma <span class="op">*</span> y[<span class="dv">1</span>] <span class="op">-</span> births <span class="op">*</span> y[<span class="dv">2</span>]</span>
+<span id="cb18-110"><a href="#cb18-110"></a>}</span>
+<span id="cb18-111"><a href="#cb18-111"></a><span class="in">```</span></span>
+<span id="cb18-112"><a href="#cb18-112"></a></span>
+<span id="cb18-115"><a href="#cb18-115"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-116"><a href="#cb18-116"></a><span class="kw">function</span> <span class="fu">simulate</span>(f<span class="op">,</span> t0<span class="op">,</span> y0<span class="op">,</span> dt<span class="op">,</span> tmax) {</span>
+<span id="cb18-117"><a href="#cb18-117"></a>  <span class="kw">var</span> t <span class="op">=</span> t0</span>
+<span id="cb18-118"><a href="#cb18-118"></a>  <span class="kw">var</span> y <span class="op">=</span> y0</span>
+<span id="cb18-119"><a href="#cb18-119"></a>  <span class="kw">var</span> i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb18-120"><a href="#cb18-120"></a></span>
+<span id="cb18-121"><a href="#cb18-121"></a>  <span class="kw">var</span> tsim <span class="op">=</span> [t0]</span>
+<span id="cb18-122"><a href="#cb18-122"></a>  <span class="kw">var</span> ysim <span class="op">=</span> [y0]</span>
+<span id="cb18-123"><a href="#cb18-123"></a></span>
+<span id="cb18-124"><a href="#cb18-124"></a>  <span class="cf">for</span> (t <span class="op">=</span> t0 <span class="op">+</span> dt<span class="op">;</span> t <span class="op">&lt;=</span> tmax<span class="op">;</span> t <span class="op">+=</span> dt) {</span>
+<span id="cb18-125"><a href="#cb18-125"></a>    ysim<span class="op">.</span><span class="fu">push</span>(<span class="fu">odeRK4</span>([]<span class="op">,</span> ysim[i]<span class="op">,</span> f<span class="op">,</span> dt))</span>
+<span id="cb18-126"><a href="#cb18-126"></a>    tsim<span class="op">.</span><span class="fu">push</span>(t)</span>
+<span id="cb18-127"><a href="#cb18-127"></a>    i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb18-128"><a href="#cb18-128"></a>  }</span>
+<span id="cb18-129"><a href="#cb18-129"></a>  </span>
+<span id="cb18-130"><a href="#cb18-130"></a>  <span class="cf">return</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
+<span id="cb18-131"><a href="#cb18-131"></a>    <span class="dt">Time</span><span class="op">:</span> tsim<span class="op">,</span></span>
+<span id="cb18-132"><a href="#cb18-132"></a>    <span class="dt">S</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb18-133"><a href="#cb18-133"></a>    <span class="dt">I</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">1</span>])<span class="op">,</span></span>
+<span id="cb18-134"><a href="#cb18-134"></a>    <span class="dt">R</span><span class="op">:</span> ysim<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="dv">2</span>])</span>
+<span id="cb18-135"><a href="#cb18-135"></a>    })</span>
+<span id="cb18-136"><a href="#cb18-136"></a>}</span>
+<span id="cb18-137"><a href="#cb18-137"></a><span class="in">```</span></span>
+<span id="cb18-138"><a href="#cb18-138"></a></span>
+<span id="cb18-141"><a href="#cb18-141"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-142"><a href="#cb18-142"></a>sir_sol <span class="op">=</span> <span class="fu">simulate</span>(sir<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> [<span class="fl">1.0</span><span class="op">-</span>I0<span class="op">,</span> I0<span class="op">,</span> <span class="fl">0.0</span>]<span class="op">,</span> dt<span class="op">,</span> tmax)</span>
+<span id="cb18-143"><a href="#cb18-143"></a>sir_sol_long <span class="op">=</span> sir_sol<span class="op">.</span><span class="fu">fold</span>(aq<span class="op">.</span><span class="fu">not</span>(<span class="st">'Time'</span>)<span class="op">,</span> {<span class="dt">as</span><span class="op">:</span> [<span class="st">'State'</span><span class="op">,</span> <span class="st">'Fraction'</span>]})</span>
+<span id="cb18-144"><a href="#cb18-144"></a><span class="in">```</span></span>
+<span id="cb18-145"><a href="#cb18-145"></a></span>
+<span id="cb18-148"><a href="#cb18-148"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-149"><a href="#cb18-149"></a>SIRcolors <span class="op">=</span> [<span class="st">"#1f77b4"</span><span class="op">,</span> <span class="st">"#ff7f0e"</span><span class="op">,</span> <span class="st">"#FF3851"</span>]</span>
+<span id="cb18-150"><a href="#cb18-150"></a><span class="in">```</span></span>
+<span id="cb18-151"><a href="#cb18-151"></a></span>
+<span id="cb18-154"><a href="#cb18-154"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-155"><a href="#cb18-155"></a>R0 <span class="op">=</span> beta <span class="op">/</span> (gamma <span class="op">+</span> births)</span>
+<span id="cb18-156"><a href="#cb18-156"></a>R0_str <span class="op">=</span> R0<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="kw">undefined</span><span class="op">,</span> {<span class="dt">minimumFractionDigits</span><span class="op">:</span> <span class="dv">2</span>})</span>
+<span id="cb18-157"><a href="#cb18-157"></a><span class="in">```</span></span>
+<span id="cb18-158"><a href="#cb18-158"></a></span>
+<span id="cb18-161"><a href="#cb18-161"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-162"><a href="#cb18-162"></a><span class="kw">function</span> <span class="fu">calculate_equil</span>(R0){</span>
+<span id="cb18-163"><a href="#cb18-163"></a>  <span class="cf">if</span> (births <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb18-164"><a href="#cb18-164"></a>    <span class="kw">var</span> eq_S <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> R0</span>
+<span id="cb18-165"><a href="#cb18-165"></a>    <span class="kw">var</span> eq_I <span class="op">=</span> births <span class="op">/</span> beta <span class="op">*</span> (R0 <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb18-166"><a href="#cb18-166"></a>    <span class="kw">var</span> eq_R <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (eq_S <span class="op">+</span> eq_I)</span>
+<span id="cb18-167"><a href="#cb18-167"></a></span>
+<span id="cb18-168"><a href="#cb18-168"></a>    <span class="kw">const</span> eq_vals <span class="op">=</span> aq<span class="op">.</span><span class="fu">table</span>({</span>
+<span id="cb18-169"><a href="#cb18-169"></a>      <span class="dt">State</span><span class="op">:</span> [<span class="st">"S"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">,</span> <span class="st">"R"</span>]<span class="op">,</span></span>
+<span id="cb18-170"><a href="#cb18-170"></a>      <span class="dt">Fraction</span><span class="op">:</span> [eq_S<span class="op">,</span> eq_I<span class="op">,</span> eq_R]</span>
+<span id="cb18-171"><a href="#cb18-171"></a>    })</span>
+<span id="cb18-172"><a href="#cb18-172"></a></span>
+<span id="cb18-173"><a href="#cb18-173"></a>    <span class="cf">return</span> eq_vals</span>
+<span id="cb18-174"><a href="#cb18-174"></a>  } <span class="cf">else</span> {</span>
+<span id="cb18-175"><a href="#cb18-175"></a>    <span class="cf">return</span> <span class="kw">null</span></span>
+<span id="cb18-176"><a href="#cb18-176"></a>  }</span>
+<span id="cb18-177"><a href="#cb18-177"></a>}</span>
+<span id="cb18-178"><a href="#cb18-178"></a><span class="in">```</span></span>
+<span id="cb18-179"><a href="#cb18-179"></a></span>
+<span id="cb18-182"><a href="#cb18-182"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-183"><a href="#cb18-183"></a>eq_vals <span class="op">=</span> <span class="fu">calculate_equil</span>(R0)</span>
+<span id="cb18-184"><a href="#cb18-184"></a><span class="in">```</span></span>
+<span id="cb18-185"><a href="#cb18-185"></a></span>
+<span id="cb18-188"><a href="#cb18-188"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-189"><a href="#cb18-189"></a><span class="co">//| panel: fill</span></span>
 <span id="cb18-190"><a href="#cb18-190"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
 <span id="cb18-191"><a href="#cb18-191"></a>  <span class="dt">color</span><span class="op">:</span> {</span>
 <span id="cb18-192"><a href="#cb18-192"></a>    <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>

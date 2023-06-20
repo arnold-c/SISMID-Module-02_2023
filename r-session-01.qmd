@@ -27,7 +27,6 @@ function set(input, value) {
 
 ```{ojs}
 //| panel: sidebar
-
 viewof reset = Inputs.button([
   ["Reset all sliders", () => {
     set(viewof beta, init_beta)
@@ -161,6 +160,7 @@ eq_vals = calculate_equil(R0)
 ```
 
 ```{ojs}
+//| panel: fill
 Plot.plot({
   color: {
     legend: true,
