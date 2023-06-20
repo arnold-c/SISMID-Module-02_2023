@@ -1411,16 +1411,33 @@ rownames(mossong_mat) <- mossong_ages
 mossong_mat_sym <- (mossong_mat + t(mossong_mat)) / 2
 ```
 
+Here we'll use the `filled.contour` function to visualize the contact matrix, to show you an alternative way of visualizing contact matrices.
+Notices that we are using the raw matrix object, not a long dataframe, as previously.
+
 ```{r}
 #| column: body
 #| out-width: 100%
-filled.contour(ages, ages, log10(mossong_mat))
+filled.contour(
+    ages, ages, log10(mossong_mat),
+    plot.title = title(
+        main = "Log10 of raw contact rate",
+        xlab = "Age of contactor",
+        ylab = "Age of contactee"
+    )
+)
 ```
 
 ```{r}
 #| column: body
 #| out-width: 100%
-filled.contour(ages, ages, log10(mossong_mat_sym))
+filled.contour(
+    ages, ages, log10(mossong_mat_sym),
+    plot.title = title(
+        main = "Log10 of symmetrical contact rate",
+        xlab = "Age of contactor",
+        ylab = "Age of contactee"
+    )
+)
 ```
 
 ```{r}
@@ -1435,22 +1452,29 @@ mossong_cont_sums <- tibble(
 ```{r}
 #| column: body
 #| out-width: 100%
-ggplot(mossong_cont_sums, aes(x = age, y = total_contacts, fill = type)) +
-    geom_col(position = "identity", alpha = 0.8) +
-    scale_fill_manual(values = c("slategray4", "navy")) +
-    facet_wrap(
-        ~type,
-        scales = "free_y",
-        labeller = as_labeller(c(
-            contactors = "Total contacts made",
-            contactees = "Total contacts received"
-        ))
+ggplot(
+        mossong_cont_sums,
+        aes(x = age, y = total_contacts, color = type, fill = type, group = type)
     ) +
+    geom_path(linewidth = 1) +
+    geom_point(
+        position = "identity",
+        alpha = 0.8,
+        shape = 21,
+        size = 4
+    ) +
+    scale_color_manual(
+        values = c("slategray4", "navy"),
+        labels = c("Contactees", "Contactors"),
+        aesthetics = c("color", "fill")
+    ) +
+    guides(color = "none") +
     labs(
         x = "Age",
-        y = "Total contacts"
+        y = "Total contacts",
+        fill = "Type of contact"
     ) +
-    theme(legend.position = "none")
+    theme(legend.position = "bottom")
 ```
 
 While this matrix tells us how many contacts are made per year by an individual of each age, it doesn't tell us anything about the probability that a contact results in communication of infection.

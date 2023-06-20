@@ -2604,14 +2604,29 @@ Note
 <span><span class="va">mossong_mat_sym</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">mossong_mat</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">mossong_mat</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-64_6737677ac724a55487aca32948c5e330">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb75"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/filled.contour.html">filled.contour</a></span><span class="op">(</span><span class="va">ages</span>, <span class="va">ages</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">mossong_mat</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here we’ll use the <code>filled.contour</code> function to visualize the contact matrix, to show you an alternative way of visualizing contact matrices. Notices that we are using the raw matrix object, not a long dataframe, as previously.</p>
+<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-64_0bfc8a363d76b9378bc4aa9905c207ed">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb75"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/filled.contour.html">filled.contour</a></span><span class="op">(</span></span>
+<span>    <span class="va">ages</span>, <span class="va">ages</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">mossong_mat</span><span class="op">)</span>,</span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span></span>
+<span>        main <span class="op">=</span> <span class="st">"Log10 of raw contact rate"</span>,</span>
+<span>        xlab <span class="op">=</span> <span class="st">"Age of contactor"</span>,</span>
+<span>        ylab <span class="op">=</span> <span class="st">"Age of contactee"</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-body">
 <p><img src="r-session-02_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
-<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-65_0d69ff8feb383e158e829c38d099cacb">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb76"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/filled.contour.html">filled.contour</a></span><span class="op">(</span><span class="va">ages</span>, <span class="va">ages</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">mossong_mat_sym</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-65_ad9c3a3541afc472c13bfaf2fbd8429c">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb76"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/filled.contour.html">filled.contour</a></span><span class="op">(</span></span>
+<span>    <span class="va">ages</span>, <span class="va">ages</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">mossong_mat_sym</span><span class="op">)</span>,</span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span></span>
+<span>        main <span class="op">=</span> <span class="st">"Log10 of symmetrical contact rate"</span>,</span>
+<span>        xlab <span class="op">=</span> <span class="st">"Age of contactor"</span>,</span>
+<span>        ylab <span class="op">=</span> <span class="st">"Age of contactee"</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-body">
 <p><img src="r-session-02_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
@@ -2625,23 +2640,30 @@ Note
 <span>    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="va">age</span>, names_to <span class="op">=</span> <span class="st">"type"</span>, values_to <span class="op">=</span> <span class="st">"total_contacts"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-67_f956ea6afe2029d6b2b03c95bb86020c">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb78"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mossong_cont_sums</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">total_contacts</span>, fill <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"identity"</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"slategray4"</span>, <span class="st">"navy"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span></span>
-<span>        <span class="op">~</span><span class="va">type</span>,</span>
-<span>        scales <span class="op">=</span> <span class="st">"free_y"</span>,</span>
-<span>        labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html">as_labeller</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
-<span>            contactors <span class="op">=</span> <span class="st">"Total contacts made"</span>,</span>
-<span>            contactees <span class="op">=</span> <span class="st">"Total contacts received"</span></span>
-<span>        <span class="op">)</span><span class="op">)</span></span>
+<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-67_03ebe5f36b8911630877945cb7955f5f">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb78"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span></span>
+<span>        <span class="va">mossong_cont_sums</span>,</span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">total_contacts</span>, color <span class="op">=</span> <span class="va">type</span>, fill <span class="op">=</span> <span class="va">type</span>, group <span class="op">=</span> <span class="va">type</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_path</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
+<span>        position <span class="op">=</span> <span class="st">"identity"</span>,</span>
+<span>        alpha <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>        shape <span class="op">=</span> <span class="fl">21</span>,</span>
+<span>        size <span class="op">=</span> <span class="fl">4</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span></span>
+<span>        values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"slategray4"</span>, <span class="st">"navy"</span><span class="op">)</span>,</span>
+<span>        labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Contactees"</span>, <span class="st">"Contactors"</span><span class="op">)</span>,</span>
+<span>        aesthetics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"color"</span>, <span class="st">"fill"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>        x <span class="op">=</span> <span class="st">"Age"</span>,</span>
-<span>        y <span class="op">=</span> <span class="st">"Total contacts"</span></span>
+<span>        y <span class="op">=</span> <span class="st">"Total contacts"</span>,</span>
+<span>        fill <span class="op">=</span> <span class="st">"Type of contact"</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-body">
 <p><img src="r-session-02_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
@@ -4715,261 +4737,285 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb95-1535"><a href="#cb95-1535" aria-hidden="true" tabindex="-1"></a>mossong_mat_sym <span class="ot">&lt;-</span> (mossong_mat <span class="sc">+</span> <span class="fu">t</span>(mossong_mat)) <span class="sc">/</span> <span class="dv">2</span></span>
 <span id="cb95-1536"><a href="#cb95-1536" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb95-1537"><a href="#cb95-1537" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1540"><a href="#cb95-1540" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1541"><a href="#cb95-1541" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
-<span id="cb95-1542"><a href="#cb95-1542" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
-<span id="cb95-1543"><a href="#cb95-1543" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(ages, ages, <span class="fu">log10</span>(mossong_mat))</span>
-<span id="cb95-1544"><a href="#cb95-1544" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1545"><a href="#cb95-1545" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1548"><a href="#cb95-1548" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1549"><a href="#cb95-1549" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
-<span id="cb95-1550"><a href="#cb95-1550" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
-<span id="cb95-1551"><a href="#cb95-1551" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(ages, ages, <span class="fu">log10</span>(mossong_mat_sym))</span>
-<span id="cb95-1552"><a href="#cb95-1552" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1553"><a href="#cb95-1553" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1556"><a href="#cb95-1556" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1557"><a href="#cb95-1557" aria-hidden="true" tabindex="-1"></a>mossong_cont_sums <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb95-1558"><a href="#cb95-1558" aria-hidden="true" tabindex="-1"></a>        <span class="at">age =</span> <span class="fu">factor</span>(mossong_ages, <span class="at">levels =</span> mossong_ages),</span>
-<span id="cb95-1559"><a href="#cb95-1559" aria-hidden="true" tabindex="-1"></a>        <span class="at">contactees =</span> <span class="fu">rowSums</span>(mossong_mat),</span>
-<span id="cb95-1560"><a href="#cb95-1560" aria-hidden="true" tabindex="-1"></a>        <span class="at">contactors =</span> <span class="fu">colSums</span>(mossong_mat)</span>
-<span id="cb95-1561"><a href="#cb95-1561" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb95-1562"><a href="#cb95-1562" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="sc">-</span>age, <span class="at">names_to =</span> <span class="st">"type"</span>, <span class="at">values_to =</span> <span class="st">"total_contacts"</span>) </span>
-<span id="cb95-1563"><a href="#cb95-1563" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1564"><a href="#cb95-1564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1567"><a href="#cb95-1567" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1568"><a href="#cb95-1568" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
-<span id="cb95-1569"><a href="#cb95-1569" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
-<span id="cb95-1570"><a href="#cb95-1570" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mossong_cont_sums, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> total_contacts, <span class="at">fill =</span> type)) <span class="sc">+</span></span>
-<span id="cb95-1571"><a href="#cb95-1571" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"identity"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb95-1572"><a href="#cb95-1572" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"slategray4"</span>, <span class="st">"navy"</span>)) <span class="sc">+</span></span>
-<span id="cb95-1573"><a href="#cb95-1573" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(</span>
-<span id="cb95-1574"><a href="#cb95-1574" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span>type,</span>
-<span id="cb95-1575"><a href="#cb95-1575" aria-hidden="true" tabindex="-1"></a>        <span class="at">scales =</span> <span class="st">"free_y"</span>,</span>
-<span id="cb95-1576"><a href="#cb95-1576" aria-hidden="true" tabindex="-1"></a>        <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(</span>
-<span id="cb95-1577"><a href="#cb95-1577" aria-hidden="true" tabindex="-1"></a>            <span class="at">contactors =</span> <span class="st">"Total contacts made"</span>,</span>
-<span id="cb95-1578"><a href="#cb95-1578" aria-hidden="true" tabindex="-1"></a>            <span class="at">contactees =</span> <span class="st">"Total contacts received"</span></span>
-<span id="cb95-1579"><a href="#cb95-1579" aria-hidden="true" tabindex="-1"></a>        ))</span>
-<span id="cb95-1580"><a href="#cb95-1580" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb95-1581"><a href="#cb95-1581" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb95-1582"><a href="#cb95-1582" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Age"</span>,</span>
-<span id="cb95-1583"><a href="#cb95-1583" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Total contacts"</span></span>
-<span id="cb95-1584"><a href="#cb95-1584" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb95-1585"><a href="#cb95-1585" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb95-1586"><a href="#cb95-1586" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1587"><a href="#cb95-1587" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1588"><a href="#cb95-1588" aria-hidden="true" tabindex="-1"></a>While this matrix tells us how many contacts are made per year by an individual of each age, it doesn't tell us anything about the probability that a contact results in communication of infection.</span>
-<span id="cb95-1589"><a href="#cb95-1589" aria-hidden="true" tabindex="-1"></a>Let's assume that each contact has a constant probability $q$ of resulting in a transmission event.</span>
-<span id="cb95-1590"><a href="#cb95-1590" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1593"><a href="#cb95-1593" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1594"><a href="#cb95-1594" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fl">3e-5</span></span>
-<span id="cb95-1595"><a href="#cb95-1595" aria-hidden="true" tabindex="-1"></a>mossong_beta_mat <span class="ot">&lt;-</span> q <span class="sc">*</span> mossong_mat_sym</span>
-<span id="cb95-1596"><a href="#cb95-1596" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1597"><a href="#cb95-1597" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1600"><a href="#cb95-1600" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1601"><a href="#cb95-1601" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
-<span id="cb95-1602"><a href="#cb95-1602" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
-<span id="cb95-1603"><a href="#cb95-1603" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(</span>
-<span id="cb95-1604"><a href="#cb95-1604" aria-hidden="true" tabindex="-1"></a>    ages, ages, <span class="fu">log10</span>(mossong_beta_mat),</span>
-<span id="cb95-1605"><a href="#cb95-1605" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">title</span>(</span>
-<span id="cb95-1606"><a href="#cb95-1606" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"WAIFW matrix based on POLYMOD data"</span>,</span>
-<span id="cb95-1607"><a href="#cb95-1607" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Age"</span>,</span>
-<span id="cb95-1608"><a href="#cb95-1608" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Age"</span></span>
-<span id="cb95-1609"><a href="#cb95-1609" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb95-1610"><a href="#cb95-1610" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb95-1611"><a href="#cb95-1611" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1612"><a href="#cb95-1612" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1613"><a href="#cb95-1613" aria-hidden="true" tabindex="-1"></a>Now let's simulate the introduction of such a pathogen into a population characterized by this contact structure.</span>
+<span id="cb95-1538"><a href="#cb95-1538" aria-hidden="true" tabindex="-1"></a>Here we'll use the <span class="in">`filled.contour`</span> function to visualize the contact matrix, to show you an alternative way of visualizing contact matrices.</span>
+<span id="cb95-1539"><a href="#cb95-1539" aria-hidden="true" tabindex="-1"></a>Notices that we are using the raw matrix object, not a long dataframe, as previously.</span>
+<span id="cb95-1540"><a href="#cb95-1540" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1543"><a href="#cb95-1543" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1544"><a href="#cb95-1544" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
+<span id="cb95-1545"><a href="#cb95-1545" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
+<span id="cb95-1546"><a href="#cb95-1546" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(</span>
+<span id="cb95-1547"><a href="#cb95-1547" aria-hidden="true" tabindex="-1"></a>    ages, ages, <span class="fu">log10</span>(mossong_mat),</span>
+<span id="cb95-1548"><a href="#cb95-1548" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">title</span>(</span>
+<span id="cb95-1549"><a href="#cb95-1549" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Log10 of raw contact rate"</span>,</span>
+<span id="cb95-1550"><a href="#cb95-1550" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Age of contactor"</span>,</span>
+<span id="cb95-1551"><a href="#cb95-1551" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Age of contactee"</span></span>
+<span id="cb95-1552"><a href="#cb95-1552" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb95-1553"><a href="#cb95-1553" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1554"><a href="#cb95-1554" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1555"><a href="#cb95-1555" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1558"><a href="#cb95-1558" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1559"><a href="#cb95-1559" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
+<span id="cb95-1560"><a href="#cb95-1560" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
+<span id="cb95-1561"><a href="#cb95-1561" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(</span>
+<span id="cb95-1562"><a href="#cb95-1562" aria-hidden="true" tabindex="-1"></a>    ages, ages, <span class="fu">log10</span>(mossong_mat_sym),</span>
+<span id="cb95-1563"><a href="#cb95-1563" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">title</span>(</span>
+<span id="cb95-1564"><a href="#cb95-1564" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Log10 of symmetrical contact rate"</span>,</span>
+<span id="cb95-1565"><a href="#cb95-1565" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Age of contactor"</span>,</span>
+<span id="cb95-1566"><a href="#cb95-1566" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Age of contactee"</span></span>
+<span id="cb95-1567"><a href="#cb95-1567" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb95-1568"><a href="#cb95-1568" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1569"><a href="#cb95-1569" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1570"><a href="#cb95-1570" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1573"><a href="#cb95-1573" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1574"><a href="#cb95-1574" aria-hidden="true" tabindex="-1"></a>mossong_cont_sums <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb95-1575"><a href="#cb95-1575" aria-hidden="true" tabindex="-1"></a>        <span class="at">age =</span> <span class="fu">factor</span>(mossong_ages, <span class="at">levels =</span> mossong_ages),</span>
+<span id="cb95-1576"><a href="#cb95-1576" aria-hidden="true" tabindex="-1"></a>        <span class="at">contactees =</span> <span class="fu">rowSums</span>(mossong_mat),</span>
+<span id="cb95-1577"><a href="#cb95-1577" aria-hidden="true" tabindex="-1"></a>        <span class="at">contactors =</span> <span class="fu">colSums</span>(mossong_mat)</span>
+<span id="cb95-1578"><a href="#cb95-1578" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb95-1579"><a href="#cb95-1579" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="sc">-</span>age, <span class="at">names_to =</span> <span class="st">"type"</span>, <span class="at">values_to =</span> <span class="st">"total_contacts"</span>) </span>
+<span id="cb95-1580"><a href="#cb95-1580" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1581"><a href="#cb95-1581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1584"><a href="#cb95-1584" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1585"><a href="#cb95-1585" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
+<span id="cb95-1586"><a href="#cb95-1586" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
+<span id="cb95-1587"><a href="#cb95-1587" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb95-1588"><a href="#cb95-1588" aria-hidden="true" tabindex="-1"></a>        mossong_cont_sums,</span>
+<span id="cb95-1589"><a href="#cb95-1589" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> total_contacts, <span class="at">color =</span> type, <span class="at">fill =</span> type, <span class="at">group =</span> type)</span>
+<span id="cb95-1590"><a href="#cb95-1590" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb95-1591"><a href="#cb95-1591" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_path</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb95-1592"><a href="#cb95-1592" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb95-1593"><a href="#cb95-1593" aria-hidden="true" tabindex="-1"></a>        <span class="at">position =</span> <span class="st">"identity"</span>,</span>
+<span id="cb95-1594"><a href="#cb95-1594" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="fl">0.8</span>,</span>
+<span id="cb95-1595"><a href="#cb95-1595" aria-hidden="true" tabindex="-1"></a>        <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb95-1596"><a href="#cb95-1596" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">4</span></span>
+<span id="cb95-1597"><a href="#cb95-1597" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb95-1598"><a href="#cb95-1598" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(</span>
+<span id="cb95-1599"><a href="#cb95-1599" aria-hidden="true" tabindex="-1"></a>        <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"slategray4"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb95-1600"><a href="#cb95-1600" aria-hidden="true" tabindex="-1"></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Contactees"</span>, <span class="st">"Contactors"</span>),</span>
+<span id="cb95-1601"><a href="#cb95-1601" aria-hidden="true" tabindex="-1"></a>        <span class="at">aesthetics =</span> <span class="fu">c</span>(<span class="st">"color"</span>, <span class="st">"fill"</span>)</span>
+<span id="cb95-1602"><a href="#cb95-1602" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb95-1603"><a href="#cb95-1603" aria-hidden="true" tabindex="-1"></a>    <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb95-1604"><a href="#cb95-1604" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb95-1605"><a href="#cb95-1605" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Age"</span>,</span>
+<span id="cb95-1606"><a href="#cb95-1606" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Total contacts"</span>,</span>
+<span id="cb95-1607"><a href="#cb95-1607" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">"Type of contact"</span></span>
+<span id="cb95-1608"><a href="#cb95-1608" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb95-1609"><a href="#cb95-1609" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb95-1610"><a href="#cb95-1610" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1611"><a href="#cb95-1611" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1612"><a href="#cb95-1612" aria-hidden="true" tabindex="-1"></a>While this matrix tells us how many contacts are made per year by an individual of each age, it doesn't tell us anything about the probability that a contact results in communication of infection.</span>
+<span id="cb95-1613"><a href="#cb95-1613" aria-hidden="true" tabindex="-1"></a>Let's assume that each contact has a constant probability $q$ of resulting in a transmission event.</span>
 <span id="cb95-1614"><a href="#cb95-1614" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb95-1617"><a href="#cb95-1617" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1618"><a href="#cb95-1618" aria-hidden="true" tabindex="-1"></a>mossong_sol <span class="ot">&lt;-</span> deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
-<span id="cb95-1619"><a href="#cb95-1619" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> demog_yinit_ages,</span>
-<span id="cb95-1620"><a href="#cb95-1620" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">200</span>, <span class="at">by =</span> <span class="fl">0.5</span>),</span>
-<span id="cb95-1621"><a href="#cb95-1621" aria-hidden="true" tabindex="-1"></a>    <span class="at">func =</span> multistage_model,</span>
-<span id="cb95-1622"><a href="#cb95-1622" aria-hidden="true" tabindex="-1"></a>    <span class="at">parms =</span> multistage_params</span>
-<span id="cb95-1623"><a href="#cb95-1623" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb95-1624"><a href="#cb95-1624" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1625"><a href="#cb95-1625" aria-hidden="true" tabindex="-1"></a>mossong_infecteds <span class="ot">&lt;-</span> mossong_sol[, <span class="dv">1</span> <span class="sc">+</span> iindex]</span>
-<span id="cb95-1626"><a href="#cb95-1626" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1627"><a href="#cb95-1627" aria-hidden="true" tabindex="-1"></a>mossong_infecteds_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb95-1628"><a href="#cb95-1628" aria-hidden="true" tabindex="-1"></a>        <span class="at">time =</span> mossong_sol[, <span class="dv">1</span>],</span>
-<span id="cb95-1629"><a href="#cb95-1629" aria-hidden="true" tabindex="-1"></a>        <span class="at">Juveniles =</span> <span class="fu">apply</span>(mossong_infecteds[, juvies], <span class="dv">1</span>, sum),</span>
-<span id="cb95-1630"><a href="#cb95-1630" aria-hidden="true" tabindex="-1"></a>        <span class="at">Adults =</span> <span class="fu">apply</span>(mossong_infecteds[, adults], <span class="dv">1</span>, sum)</span>
-<span id="cb95-1631"><a href="#cb95-1631" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb95-1632"><a href="#cb95-1632" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
-<span id="cb95-1633"><a href="#cb95-1633" aria-hidden="true" tabindex="-1"></a>        <span class="at">cols =</span> <span class="fu">c</span>(Juveniles, Adults),</span>
-<span id="cb95-1634"><a href="#cb95-1634" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_to =</span> <span class="st">"age_group"</span>,</span>
-<span id="cb95-1635"><a href="#cb95-1635" aria-hidden="true" tabindex="-1"></a>        <span class="at">values_to =</span> <span class="st">"infections"</span></span>
-<span id="cb95-1636"><a href="#cb95-1636" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb95-1637"><a href="#cb95-1637" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb95-1638"><a href="#cb95-1638" aria-hidden="true" tabindex="-1"></a>        <span class="at">age_group =</span> <span class="fu">factor</span>(age_group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Juveniles"</span>, <span class="st">"Adults"</span>))</span>
-<span id="cb95-1639"><a href="#cb95-1639" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb95-1640"><a href="#cb95-1640" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1641"><a href="#cb95-1641" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1644"><a href="#cb95-1644" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1645"><a href="#cb95-1645" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
-<span id="cb95-1646"><a href="#cb95-1646" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
-<span id="cb95-1647"><a href="#cb95-1647" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mossong_infecteds_df, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> infections, <span class="at">color =</span> age_group)) <span class="sc">+</span></span>
-<span id="cb95-1648"><a href="#cb95-1648" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb95-1649"><a href="#cb95-1649" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(</span>
-<span id="cb95-1650"><a href="#cb95-1650" aria-hidden="true" tabindex="-1"></a>        <span class="at">values =</span> age_group_colors</span>
-<span id="cb95-1651"><a href="#cb95-1651" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb95-1652"><a href="#cb95-1652" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb95-1653"><a href="#cb95-1653" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Time"</span>,</span>
-<span id="cb95-1654"><a href="#cb95-1654" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Number of infections"</span>,</span>
-<span id="cb95-1655"><a href="#cb95-1655" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"Age group"</span></span>
-<span id="cb95-1656"><a href="#cb95-1656" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb95-1657"><a href="#cb95-1657" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1658"><a href="#cb95-1658" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1659"><a href="#cb95-1659" aria-hidden="true" tabindex="-1"></a>As before, we can also look at the equilibrium seroprevalence</span>
-<span id="cb95-1660"><a href="#cb95-1660" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1663"><a href="#cb95-1663" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1664"><a href="#cb95-1664" aria-hidden="true" tabindex="-1"></a>mossong_equil <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">tail</span>(mossong_sol, <span class="dv">1</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb95-1618"><a href="#cb95-1618" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fl">3e-5</span></span>
+<span id="cb95-1619"><a href="#cb95-1619" aria-hidden="true" tabindex="-1"></a>mossong_beta_mat <span class="ot">&lt;-</span> q <span class="sc">*</span> mossong_mat_sym</span>
+<span id="cb95-1620"><a href="#cb95-1620" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1621"><a href="#cb95-1621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1624"><a href="#cb95-1624" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1625"><a href="#cb95-1625" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
+<span id="cb95-1626"><a href="#cb95-1626" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
+<span id="cb95-1627"><a href="#cb95-1627" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(</span>
+<span id="cb95-1628"><a href="#cb95-1628" aria-hidden="true" tabindex="-1"></a>    ages, ages, <span class="fu">log10</span>(mossong_beta_mat),</span>
+<span id="cb95-1629"><a href="#cb95-1629" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">title</span>(</span>
+<span id="cb95-1630"><a href="#cb95-1630" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"WAIFW matrix based on POLYMOD data"</span>,</span>
+<span id="cb95-1631"><a href="#cb95-1631" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Age"</span>,</span>
+<span id="cb95-1632"><a href="#cb95-1632" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Age"</span></span>
+<span id="cb95-1633"><a href="#cb95-1633" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb95-1634"><a href="#cb95-1634" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1635"><a href="#cb95-1635" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1636"><a href="#cb95-1636" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1637"><a href="#cb95-1637" aria-hidden="true" tabindex="-1"></a>Now let's simulate the introduction of such a pathogen into a population characterized by this contact structure.</span>
+<span id="cb95-1638"><a href="#cb95-1638" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1641"><a href="#cb95-1641" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1642"><a href="#cb95-1642" aria-hidden="true" tabindex="-1"></a>mossong_sol <span class="ot">&lt;-</span> deSolve<span class="sc">::</span><span class="fu">ode</span>(</span>
+<span id="cb95-1643"><a href="#cb95-1643" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> demog_yinit_ages,</span>
+<span id="cb95-1644"><a href="#cb95-1644" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">200</span>, <span class="at">by =</span> <span class="fl">0.5</span>),</span>
+<span id="cb95-1645"><a href="#cb95-1645" aria-hidden="true" tabindex="-1"></a>    <span class="at">func =</span> multistage_model,</span>
+<span id="cb95-1646"><a href="#cb95-1646" aria-hidden="true" tabindex="-1"></a>    <span class="at">parms =</span> multistage_params</span>
+<span id="cb95-1647"><a href="#cb95-1647" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1648"><a href="#cb95-1648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1649"><a href="#cb95-1649" aria-hidden="true" tabindex="-1"></a>mossong_infecteds <span class="ot">&lt;-</span> mossong_sol[, <span class="dv">1</span> <span class="sc">+</span> iindex]</span>
+<span id="cb95-1650"><a href="#cb95-1650" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1651"><a href="#cb95-1651" aria-hidden="true" tabindex="-1"></a>mossong_infecteds_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb95-1652"><a href="#cb95-1652" aria-hidden="true" tabindex="-1"></a>        <span class="at">time =</span> mossong_sol[, <span class="dv">1</span>],</span>
+<span id="cb95-1653"><a href="#cb95-1653" aria-hidden="true" tabindex="-1"></a>        <span class="at">Juveniles =</span> <span class="fu">apply</span>(mossong_infecteds[, juvies], <span class="dv">1</span>, sum),</span>
+<span id="cb95-1654"><a href="#cb95-1654" aria-hidden="true" tabindex="-1"></a>        <span class="at">Adults =</span> <span class="fu">apply</span>(mossong_infecteds[, adults], <span class="dv">1</span>, sum)</span>
+<span id="cb95-1655"><a href="#cb95-1655" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb95-1656"><a href="#cb95-1656" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb95-1657"><a href="#cb95-1657" aria-hidden="true" tabindex="-1"></a>        <span class="at">cols =</span> <span class="fu">c</span>(Juveniles, Adults),</span>
+<span id="cb95-1658"><a href="#cb95-1658" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_to =</span> <span class="st">"age_group"</span>,</span>
+<span id="cb95-1659"><a href="#cb95-1659" aria-hidden="true" tabindex="-1"></a>        <span class="at">values_to =</span> <span class="st">"infections"</span></span>
+<span id="cb95-1660"><a href="#cb95-1660" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb95-1661"><a href="#cb95-1661" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb95-1662"><a href="#cb95-1662" aria-hidden="true" tabindex="-1"></a>        <span class="at">age_group =</span> <span class="fu">factor</span>(age_group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Juveniles"</span>, <span class="st">"Adults"</span>))</span>
+<span id="cb95-1663"><a href="#cb95-1663" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb95-1664"><a href="#cb95-1664" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb95-1665"><a href="#cb95-1665" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1666"><a href="#cb95-1666" aria-hidden="true" tabindex="-1"></a>mossong_equil_n <span class="ot">&lt;-</span> mossong_equil[sindex] <span class="sc">+</span></span>
-<span id="cb95-1667"><a href="#cb95-1667" aria-hidden="true" tabindex="-1"></a>    mossong_equil[iindex] <span class="sc">+</span></span>
-<span id="cb95-1668"><a href="#cb95-1668" aria-hidden="true" tabindex="-1"></a>    mossong_equil[rindex]</span>
-<span id="cb95-1669"><a href="#cb95-1669" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1670"><a href="#cb95-1670" aria-hidden="true" tabindex="-1"></a>mossong_equil_seroprev <span class="ot">&lt;-</span> mossong_equil[rindex] <span class="sc">/</span> mossong_equil_n</span>
-<span id="cb95-1671"><a href="#cb95-1671" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1672"><a href="#cb95-1672" aria-hidden="true" tabindex="-1"></a>mossong_equil_seroprev_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb95-1673"><a href="#cb95-1673" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We can reuse the ages vectors from before as they are the same</span></span>
-<span id="cb95-1674"><a href="#cb95-1674" aria-hidden="true" tabindex="-1"></a>    <span class="co"># as the POLYMOD data</span></span>
-<span id="cb95-1675"><a href="#cb95-1675" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> ages,</span>
-<span id="cb95-1676"><a href="#cb95-1676" aria-hidden="true" tabindex="-1"></a>    <span class="at">seroprev =</span> mossong_equil_seroprev,</span>
-<span id="cb95-1677"><a href="#cb95-1677" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> da_ages</span>
-<span id="cb95-1678"><a href="#cb95-1678" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb95-1679"><a href="#cb95-1679" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1680"><a href="#cb95-1680" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1683"><a href="#cb95-1683" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1684"><a href="#cb95-1684" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
-<span id="cb95-1685"><a href="#cb95-1685" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
-<span id="cb95-1686"><a href="#cb95-1686" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mossong_equil_seroprev_df, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> seroprev, <span class="at">fill =</span> age)) <span class="sc">+</span></span>
-<span id="cb95-1687"><a href="#cb95-1687" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>(<span class="at">width =</span> mossong_equil_seroprev_df<span class="sc">$</span>width, <span class="at">just =</span> <span class="fl">1.0</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb95-1688"><a href="#cb95-1688" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb95-1689"><a href="#cb95-1689" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Age"</span>,</span>
-<span id="cb95-1690"><a href="#cb95-1690" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Seroprevalence"</span></span>
-<span id="cb95-1691"><a href="#cb95-1691" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb95-1692"><a href="#cb95-1692" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">80</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
-<span id="cb95-1693"><a href="#cb95-1693" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">low =</span> age_group_colors[<span class="dv">1</span>], <span class="at">high =</span> age_group_colors[<span class="dv">2</span>])</span>
-<span id="cb95-1694"><a href="#cb95-1694" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1668"><a href="#cb95-1668" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1669"><a href="#cb95-1669" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
+<span id="cb95-1670"><a href="#cb95-1670" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
+<span id="cb95-1671"><a href="#cb95-1671" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mossong_infecteds_df, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> infections, <span class="at">color =</span> age_group)) <span class="sc">+</span></span>
+<span id="cb95-1672"><a href="#cb95-1672" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb95-1673"><a href="#cb95-1673" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(</span>
+<span id="cb95-1674"><a href="#cb95-1674" aria-hidden="true" tabindex="-1"></a>        <span class="at">values =</span> age_group_colors</span>
+<span id="cb95-1675"><a href="#cb95-1675" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb95-1676"><a href="#cb95-1676" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb95-1677"><a href="#cb95-1677" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Time"</span>,</span>
+<span id="cb95-1678"><a href="#cb95-1678" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Number of infections"</span>,</span>
+<span id="cb95-1679"><a href="#cb95-1679" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"Age group"</span></span>
+<span id="cb95-1680"><a href="#cb95-1680" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb95-1681"><a href="#cb95-1681" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1682"><a href="#cb95-1682" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1683"><a href="#cb95-1683" aria-hidden="true" tabindex="-1"></a>As before, we can also look at the equilibrium seroprevalence</span>
+<span id="cb95-1684"><a href="#cb95-1684" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1687"><a href="#cb95-1687" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1688"><a href="#cb95-1688" aria-hidden="true" tabindex="-1"></a>mossong_equil <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">tail</span>(mossong_sol, <span class="dv">1</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb95-1689"><a href="#cb95-1689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1690"><a href="#cb95-1690" aria-hidden="true" tabindex="-1"></a>mossong_equil_n <span class="ot">&lt;-</span> mossong_equil[sindex] <span class="sc">+</span></span>
+<span id="cb95-1691"><a href="#cb95-1691" aria-hidden="true" tabindex="-1"></a>    mossong_equil[iindex] <span class="sc">+</span></span>
+<span id="cb95-1692"><a href="#cb95-1692" aria-hidden="true" tabindex="-1"></a>    mossong_equil[rindex]</span>
+<span id="cb95-1693"><a href="#cb95-1693" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1694"><a href="#cb95-1694" aria-hidden="true" tabindex="-1"></a>mossong_equil_seroprev <span class="ot">&lt;-</span> mossong_equil[rindex] <span class="sc">/</span> mossong_equil_n</span>
 <span id="cb95-1695"><a href="#cb95-1695" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1696"><a href="#cb95-1696" aria-hidden="true" tabindex="-1"></a>and compute the $R_0$ for this infection.</span>
-<span id="cb95-1697"><a href="#cb95-1697" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1700"><a href="#cb95-1700" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1701"><a href="#cb95-1701" aria-hidden="true" tabindex="-1"></a>n_p <span class="ot">&lt;-</span> <span class="fu">solve</span>(</span>
-<span id="cb95-1702"><a href="#cb95-1702" aria-hidden="true" tabindex="-1"></a>    multistage_params[[<span class="st">"aging_mat"</span>]],</span>
-<span id="cb95-1703"><a href="#cb95-1703" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">c</span>(multistage_params[[<span class="st">"births"</span>]], <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">29</span>))</span>
-<span id="cb95-1704"><a href="#cb95-1704" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb95-1705"><a href="#cb95-1705" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1706"><a href="#cb95-1706" aria-hidden="true" tabindex="-1"></a>F_p <span class="ot">&lt;-</span> <span class="fu">diag</span>(n_p) <span class="sc">%*%</span> multistage_params[[<span class="st">"beta_mat"</span>]] <span class="sc">+</span></span>
-<span id="cb95-1707"><a href="#cb95-1707" aria-hidden="true" tabindex="-1"></a>    multistage_params[[<span class="st">"aging_mat"</span>]] <span class="sc">-</span></span>
-<span id="cb95-1708"><a href="#cb95-1708" aria-hidden="true" tabindex="-1"></a>    <span class="fu">diag</span>(<span class="fu">diag</span>(multistage_params[[<span class="st">"aging_mat"</span>]]))</span>
-<span id="cb95-1709"><a href="#cb95-1709" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1710"><a href="#cb95-1710" aria-hidden="true" tabindex="-1"></a>V_p <span class="ot">&lt;-</span> <span class="fu">diag</span>(</span>
-<span id="cb95-1711"><a href="#cb95-1711" aria-hidden="true" tabindex="-1"></a>    multistage_params[[<span class="st">"recovery"</span>]] <span class="sc">-</span></span>
-<span id="cb95-1712"><a href="#cb95-1712" aria-hidden="true" tabindex="-1"></a>        <span class="fu">diag</span>(multistage_params[[<span class="st">"aging_mat"</span>]])</span>
-<span id="cb95-1713"><a href="#cb95-1713" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb95-1714"><a href="#cb95-1714" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1715"><a href="#cb95-1715" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(</span>
-<span id="cb95-1716"><a href="#cb95-1716" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Re</span>(</span>
-<span id="cb95-1717"><a href="#cb95-1717" aria-hidden="true" tabindex="-1"></a>        <span class="fu">eigen</span>(<span class="fu">solve</span>(V_p, F_p),<span class="at">only.values=</span>T)<span class="sc">$</span>values</span>
-<span id="cb95-1718"><a href="#cb95-1718" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb95-1719"><a href="#cb95-1719" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb95-1720"><a href="#cb95-1720" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1696"><a href="#cb95-1696" aria-hidden="true" tabindex="-1"></a>mossong_equil_seroprev_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb95-1697"><a href="#cb95-1697" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We can reuse the ages vectors from before as they are the same</span></span>
+<span id="cb95-1698"><a href="#cb95-1698" aria-hidden="true" tabindex="-1"></a>    <span class="co"># as the POLYMOD data</span></span>
+<span id="cb95-1699"><a href="#cb95-1699" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> ages,</span>
+<span id="cb95-1700"><a href="#cb95-1700" aria-hidden="true" tabindex="-1"></a>    <span class="at">seroprev =</span> mossong_equil_seroprev,</span>
+<span id="cb95-1701"><a href="#cb95-1701" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> da_ages</span>
+<span id="cb95-1702"><a href="#cb95-1702" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1703"><a href="#cb95-1703" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1704"><a href="#cb95-1704" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1707"><a href="#cb95-1707" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1708"><a href="#cb95-1708" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: body</span></span>
+<span id="cb95-1709"><a href="#cb95-1709" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: 100%</span></span>
+<span id="cb95-1710"><a href="#cb95-1710" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mossong_equil_seroprev_df, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> seroprev, <span class="at">fill =</span> age)) <span class="sc">+</span></span>
+<span id="cb95-1711"><a href="#cb95-1711" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>(<span class="at">width =</span> mossong_equil_seroprev_df<span class="sc">$</span>width, <span class="at">just =</span> <span class="fl">1.0</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb95-1712"><a href="#cb95-1712" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb95-1713"><a href="#cb95-1713" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Age"</span>,</span>
+<span id="cb95-1714"><a href="#cb95-1714" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Seroprevalence"</span></span>
+<span id="cb95-1715"><a href="#cb95-1715" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb95-1716"><a href="#cb95-1716" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">80</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb95-1717"><a href="#cb95-1717" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">low =</span> age_group_colors[<span class="dv">1</span>], <span class="at">high =</span> age_group_colors[<span class="dv">2</span>])</span>
+<span id="cb95-1718"><a href="#cb95-1718" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1719"><a href="#cb95-1719" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1720"><a href="#cb95-1720" aria-hidden="true" tabindex="-1"></a>and compute the $R_0$ for this infection.</span>
 <span id="cb95-1721"><a href="#cb95-1721" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1722"><a href="#cb95-1722" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
-<span id="cb95-1723"><a href="#cb95-1723" aria-hidden="true" tabindex="-1"></a>Need to check what's going on here as just recycling previous code and doesn't depend on Mossong Matrix.</span>
-<span id="cb95-1724"><a href="#cb95-1724" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb95-1725"><a href="#cb95-1725" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1726"><a href="#cb95-1726" aria-hidden="true" tabindex="-1"></a>How does this R0 value compare to the R0 value obtained from Exercise 4?</span>
-<span id="cb95-1727"><a href="#cb95-1727" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1728"><a href="#cb95-1728" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bonus: Calculating R0 Using a Next Generation Matrix</span></span>
+<span id="cb95-1724"><a href="#cb95-1724" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1725"><a href="#cb95-1725" aria-hidden="true" tabindex="-1"></a>n_p <span class="ot">&lt;-</span> <span class="fu">solve</span>(</span>
+<span id="cb95-1726"><a href="#cb95-1726" aria-hidden="true" tabindex="-1"></a>    multistage_params[[<span class="st">"aging_mat"</span>]],</span>
+<span id="cb95-1727"><a href="#cb95-1727" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">c</span>(multistage_params[[<span class="st">"births"</span>]], <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">29</span>))</span>
+<span id="cb95-1728"><a href="#cb95-1728" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb95-1729"><a href="#cb95-1729" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1730"><a href="#cb95-1730" aria-hidden="true" tabindex="-1"></a>The next generation matrix is a matrix that specifies how many new age-specific infections are generated by a typical infected individual of each age class (in a fully susceptible population).</span>
-<span id="cb95-1731"><a href="#cb95-1731" aria-hidden="true" tabindex="-1"></a>For example, let's consider an infected adult and ask how many new juvenile infections it generates: this is the product of the number of susceptible juveniles (from the stable age distribution), the per capita transmission rate from adults to juveniles and the average duration of infection, i.e. $S_J^* \times \beta_{JA} \times 1/ (\gamma+\mu)$.</span>
-<span id="cb95-1732"><a href="#cb95-1732" aria-hidden="true" tabindex="-1"></a>This forms one element of our next generation matrix.</span>
-<span id="cb95-1733"><a href="#cb95-1733" aria-hidden="true" tabindex="-1"></a>The other elements look very similar, except there are extra terms when we consider an infected juvenile because there is a (very small) chance they may age during the infectious period and therefore cause new infections as an adult:</span>
-<span id="cb95-1734"><a href="#cb95-1734" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1735"><a href="#cb95-1735" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb95-1736"><a href="#cb95-1736" aria-hidden="true" tabindex="-1"></a>\mathrm{NGM} = \begin{pmatrix}</span>
-<span id="cb95-1737"><a href="#cb95-1737" aria-hidden="true" tabindex="-1"></a>        \frac{S_J^* \beta_{JJ}}{(\gamma + \alpha)} +</span>
-<span id="cb95-1738"><a href="#cb95-1738" aria-hidden="true" tabindex="-1"></a>        \frac{\alpha}{(\gamma+\mu)} \frac{S_J^* \beta_{JA}}{(\gamma + \mu)} &amp;</span>
-<span id="cb95-1739"><a href="#cb95-1739" aria-hidden="true" tabindex="-1"></a>        \frac{S_J^* \beta_{JA}}{(\gamma + \mu)} <span class="sc">\\</span></span>
-<span id="cb95-1740"><a href="#cb95-1740" aria-hidden="true" tabindex="-1"></a>        \frac{S_A^* \beta_{AJ}}{(\gamma + \alpha)} + </span>
-<span id="cb95-1741"><a href="#cb95-1741" aria-hidden="true" tabindex="-1"></a>            \frac{\alpha}{(\gamma + \mu)} \frac{S_A^*\beta_{AA}}{(\gamma+\mu)} &amp;</span>
-<span id="cb95-1742"><a href="#cb95-1742" aria-hidden="true" tabindex="-1"></a>            \frac{S_A^* \beta_{AA}}{(\gamma + \mu)} </span>
-<span id="cb95-1743"><a href="#cb95-1743" aria-hidden="true" tabindex="-1"></a>    \end{pmatrix}</span>
-<span id="cb95-1744"><a href="#cb95-1744" aria-hidden="true" tabindex="-1"></a>$$ {#eq-ngm}</span>
+<span id="cb95-1730"><a href="#cb95-1730" aria-hidden="true" tabindex="-1"></a>F_p <span class="ot">&lt;-</span> <span class="fu">diag</span>(n_p) <span class="sc">%*%</span> multistage_params[[<span class="st">"beta_mat"</span>]] <span class="sc">+</span></span>
+<span id="cb95-1731"><a href="#cb95-1731" aria-hidden="true" tabindex="-1"></a>    multistage_params[[<span class="st">"aging_mat"</span>]] <span class="sc">-</span></span>
+<span id="cb95-1732"><a href="#cb95-1732" aria-hidden="true" tabindex="-1"></a>    <span class="fu">diag</span>(<span class="fu">diag</span>(multistage_params[[<span class="st">"aging_mat"</span>]]))</span>
+<span id="cb95-1733"><a href="#cb95-1733" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1734"><a href="#cb95-1734" aria-hidden="true" tabindex="-1"></a>V_p <span class="ot">&lt;-</span> <span class="fu">diag</span>(</span>
+<span id="cb95-1735"><a href="#cb95-1735" aria-hidden="true" tabindex="-1"></a>    multistage_params[[<span class="st">"recovery"</span>]] <span class="sc">-</span></span>
+<span id="cb95-1736"><a href="#cb95-1736" aria-hidden="true" tabindex="-1"></a>        <span class="fu">diag</span>(multistage_params[[<span class="st">"aging_mat"</span>]])</span>
+<span id="cb95-1737"><a href="#cb95-1737" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb95-1738"><a href="#cb95-1738" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1739"><a href="#cb95-1739" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(</span>
+<span id="cb95-1740"><a href="#cb95-1740" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Re</span>(</span>
+<span id="cb95-1741"><a href="#cb95-1741" aria-hidden="true" tabindex="-1"></a>        <span class="fu">eigen</span>(<span class="fu">solve</span>(V_p, F_p),<span class="at">only.values=</span>T)<span class="sc">$</span>values</span>
+<span id="cb95-1742"><a href="#cb95-1742" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb95-1743"><a href="#cb95-1743" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1744"><a href="#cb95-1744" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb95-1745"><a href="#cb95-1745" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1746"><a href="#cb95-1746" aria-hidden="true" tabindex="-1"></a>$R_0$ can then be computed as the dominant eigenvalue (i.e., the one with the largest real part) of this matrix. Let's take an example from a model with 2 age classes, from above. First, let's define the components of the next generation matrix:</span>
-<span id="cb95-1747"><a href="#cb95-1747" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1750"><a href="#cb95-1750" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1751"><a href="#cb95-1751" aria-hidden="true" tabindex="-1"></a>ngm_params <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb95-1752"><a href="#cb95-1752" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta_within =</span> <span class="fl">0.011</span>,</span>
-<span id="cb95-1753"><a href="#cb95-1753" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta_between =</span> <span class="fl">0.005</span>,</span>
-<span id="cb95-1754"><a href="#cb95-1754" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_band_j =</span> <span class="dv">20</span>,</span>
-<span id="cb95-1755"><a href="#cb95-1755" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_band_a =</span> <span class="dv">60</span>,</span>
-<span id="cb95-1756"><a href="#cb95-1756" aria-hidden="true" tabindex="-1"></a>    <span class="at">recovery =</span> <span class="dv">10</span></span>
-<span id="cb95-1757"><a href="#cb95-1757" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1746"><a href="#cb95-1746" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb95-1747"><a href="#cb95-1747" aria-hidden="true" tabindex="-1"></a>Need to check what's going on here as just recycling previous code and doesn't depend on Mossong Matrix.</span>
+<span id="cb95-1748"><a href="#cb95-1748" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-1749"><a href="#cb95-1749" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1750"><a href="#cb95-1750" aria-hidden="true" tabindex="-1"></a>How does this R0 value compare to the R0 value obtained from Exercise 4?</span>
+<span id="cb95-1751"><a href="#cb95-1751" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1752"><a href="#cb95-1752" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bonus: Calculating R0 Using a Next Generation Matrix</span></span>
+<span id="cb95-1753"><a href="#cb95-1753" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1754"><a href="#cb95-1754" aria-hidden="true" tabindex="-1"></a>The next generation matrix is a matrix that specifies how many new age-specific infections are generated by a typical infected individual of each age class (in a fully susceptible population).</span>
+<span id="cb95-1755"><a href="#cb95-1755" aria-hidden="true" tabindex="-1"></a>For example, let's consider an infected adult and ask how many new juvenile infections it generates: this is the product of the number of susceptible juveniles (from the stable age distribution), the per capita transmission rate from adults to juveniles and the average duration of infection, i.e. $S_J^* \times \beta_{JA} \times 1/ (\gamma+\mu)$.</span>
+<span id="cb95-1756"><a href="#cb95-1756" aria-hidden="true" tabindex="-1"></a>This forms one element of our next generation matrix.</span>
+<span id="cb95-1757"><a href="#cb95-1757" aria-hidden="true" tabindex="-1"></a>The other elements look very similar, except there are extra terms when we consider an infected juvenile because there is a (very small) chance they may age during the infectious period and therefore cause new infections as an adult:</span>
 <span id="cb95-1758"><a href="#cb95-1758" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1759"><a href="#cb95-1759" aria-hidden="true" tabindex="-1"></a>alpha_ngm <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> ngm_params[<span class="st">"age_band_j"</span>]</span>
-<span id="cb95-1760"><a href="#cb95-1760" aria-hidden="true" tabindex="-1"></a>mu_ngm <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> ngm_params[<span class="st">"age_band_a"</span>]</span>
-<span id="cb95-1761"><a href="#cb95-1761" aria-hidden="true" tabindex="-1"></a>n_ngm <span class="ot">&lt;-</span> demog_params[<span class="st">"births"</span>] <span class="sc">/</span> <span class="fu">c</span>(alpha_ngm, mu_ngm)</span>
-<span id="cb95-1762"><a href="#cb95-1762" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1763"><a href="#cb95-1763" aria-hidden="true" tabindex="-1"></a>beta_ngm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
-<span id="cb95-1764"><a href="#cb95-1764" aria-hidden="true" tabindex="-1"></a>    ngm_params[<span class="st">"beta_within"</span>],</span>
-<span id="cb95-1765"><a href="#cb95-1765" aria-hidden="true" tabindex="-1"></a>    ngm_params[<span class="st">"beta_between"</span>],</span>
-<span id="cb95-1766"><a href="#cb95-1766" aria-hidden="true" tabindex="-1"></a>    ngm_params[<span class="st">"beta_between"</span>],</span>
-<span id="cb95-1767"><a href="#cb95-1767" aria-hidden="true" tabindex="-1"></a>    ngm_params[<span class="st">"beta_within"</span>]</span>
-<span id="cb95-1768"><a href="#cb95-1768" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb95-1769"><a href="#cb95-1769" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrow =</span> <span class="dv">2</span>,</span>
-<span id="cb95-1770"><a href="#cb95-1770" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">2</span></span>
-<span id="cb95-1771"><a href="#cb95-1771" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb95-1772"><a href="#cb95-1772" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1773"><a href="#cb95-1773" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1774"><a href="#cb95-1774" aria-hidden="true" tabindex="-1"></a>The Next Generation Matrix can be calculated in **R** as:</span>
-<span id="cb95-1775"><a href="#cb95-1775" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1778"><a href="#cb95-1778" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1779"><a href="#cb95-1779" aria-hidden="true" tabindex="-1"></a>ngm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb95-1780"><a href="#cb95-1780" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(</span>
-<span id="cb95-1781"><a href="#cb95-1781" aria-hidden="true" tabindex="-1"></a>        n_ngm[<span class="dv">1</span>] <span class="sc">*</span> (beta_ngm[<span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> alpha_ngm)) <span class="sc">+</span></span>
-<span id="cb95-1782"><a href="#cb95-1782" aria-hidden="true" tabindex="-1"></a>            alpha_ngm <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm) <span class="sc">*</span></span>
-<span id="cb95-1783"><a href="#cb95-1783" aria-hidden="true" tabindex="-1"></a>            n_ngm[<span class="dv">1</span>] <span class="sc">*</span> beta_ngm[<span class="dv">1</span>, <span class="dv">2</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm),</span>
-<span id="cb95-1784"><a href="#cb95-1784" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb95-1785"><a href="#cb95-1785" aria-hidden="true" tabindex="-1"></a>        n_ngm[<span class="dv">2</span>] <span class="sc">*</span> beta_ngm[<span class="dv">2</span>, <span class="dv">1</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> alpha_ngm) <span class="sc">+</span></span>
-<span id="cb95-1786"><a href="#cb95-1786" aria-hidden="true" tabindex="-1"></a>            alpha_ngm <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm) <span class="sc">*</span></span>
-<span id="cb95-1787"><a href="#cb95-1787" aria-hidden="true" tabindex="-1"></a>            n_ngm[<span class="dv">2</span>] <span class="sc">*</span> (beta_ngm[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm)),</span>
-<span id="cb95-1788"><a href="#cb95-1788" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1789"><a href="#cb95-1789" aria-hidden="true" tabindex="-1"></a>        n_ngm[<span class="dv">1</span>] <span class="sc">*</span> beta_ngm[<span class="dv">1</span>, <span class="dv">2</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm),</span>
-<span id="cb95-1790"><a href="#cb95-1790" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1791"><a href="#cb95-1791" aria-hidden="true" tabindex="-1"></a>        n_ngm[<span class="dv">2</span>] <span class="sc">*</span> beta_ngm[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm)</span>
+<span id="cb95-1759"><a href="#cb95-1759" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb95-1760"><a href="#cb95-1760" aria-hidden="true" tabindex="-1"></a>\mathrm{NGM} = \begin{pmatrix}</span>
+<span id="cb95-1761"><a href="#cb95-1761" aria-hidden="true" tabindex="-1"></a>        \frac{S_J^* \beta_{JJ}}{(\gamma + \alpha)} +</span>
+<span id="cb95-1762"><a href="#cb95-1762" aria-hidden="true" tabindex="-1"></a>        \frac{\alpha}{(\gamma+\mu)} \frac{S_J^* \beta_{JA}}{(\gamma + \mu)} &amp;</span>
+<span id="cb95-1763"><a href="#cb95-1763" aria-hidden="true" tabindex="-1"></a>        \frac{S_J^* \beta_{JA}}{(\gamma + \mu)} <span class="sc">\\</span></span>
+<span id="cb95-1764"><a href="#cb95-1764" aria-hidden="true" tabindex="-1"></a>        \frac{S_A^* \beta_{AJ}}{(\gamma + \alpha)} + </span>
+<span id="cb95-1765"><a href="#cb95-1765" aria-hidden="true" tabindex="-1"></a>            \frac{\alpha}{(\gamma + \mu)} \frac{S_A^*\beta_{AA}}{(\gamma+\mu)} &amp;</span>
+<span id="cb95-1766"><a href="#cb95-1766" aria-hidden="true" tabindex="-1"></a>            \frac{S_A^* \beta_{AA}}{(\gamma + \mu)} </span>
+<span id="cb95-1767"><a href="#cb95-1767" aria-hidden="true" tabindex="-1"></a>    \end{pmatrix}</span>
+<span id="cb95-1768"><a href="#cb95-1768" aria-hidden="true" tabindex="-1"></a>$$ {#eq-ngm}</span>
+<span id="cb95-1769"><a href="#cb95-1769" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1770"><a href="#cb95-1770" aria-hidden="true" tabindex="-1"></a>$R_0$ can then be computed as the dominant eigenvalue (i.e., the one with the largest real part) of this matrix. Let's take an example from a model with 2 age classes, from above. First, let's define the components of the next generation matrix:</span>
+<span id="cb95-1771"><a href="#cb95-1771" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1774"><a href="#cb95-1774" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1775"><a href="#cb95-1775" aria-hidden="true" tabindex="-1"></a>ngm_params <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb95-1776"><a href="#cb95-1776" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta_within =</span> <span class="fl">0.011</span>,</span>
+<span id="cb95-1777"><a href="#cb95-1777" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta_between =</span> <span class="fl">0.005</span>,</span>
+<span id="cb95-1778"><a href="#cb95-1778" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_band_j =</span> <span class="dv">20</span>,</span>
+<span id="cb95-1779"><a href="#cb95-1779" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_band_a =</span> <span class="dv">60</span>,</span>
+<span id="cb95-1780"><a href="#cb95-1780" aria-hidden="true" tabindex="-1"></a>    <span class="at">recovery =</span> <span class="dv">10</span></span>
+<span id="cb95-1781"><a href="#cb95-1781" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1782"><a href="#cb95-1782" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1783"><a href="#cb95-1783" aria-hidden="true" tabindex="-1"></a>alpha_ngm <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> ngm_params[<span class="st">"age_band_j"</span>]</span>
+<span id="cb95-1784"><a href="#cb95-1784" aria-hidden="true" tabindex="-1"></a>mu_ngm <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> ngm_params[<span class="st">"age_band_a"</span>]</span>
+<span id="cb95-1785"><a href="#cb95-1785" aria-hidden="true" tabindex="-1"></a>n_ngm <span class="ot">&lt;-</span> demog_params[<span class="st">"births"</span>] <span class="sc">/</span> <span class="fu">c</span>(alpha_ngm, mu_ngm)</span>
+<span id="cb95-1786"><a href="#cb95-1786" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1787"><a href="#cb95-1787" aria-hidden="true" tabindex="-1"></a>beta_ngm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb95-1788"><a href="#cb95-1788" aria-hidden="true" tabindex="-1"></a>    ngm_params[<span class="st">"beta_within"</span>],</span>
+<span id="cb95-1789"><a href="#cb95-1789" aria-hidden="true" tabindex="-1"></a>    ngm_params[<span class="st">"beta_between"</span>],</span>
+<span id="cb95-1790"><a href="#cb95-1790" aria-hidden="true" tabindex="-1"></a>    ngm_params[<span class="st">"beta_between"</span>],</span>
+<span id="cb95-1791"><a href="#cb95-1791" aria-hidden="true" tabindex="-1"></a>    ngm_params[<span class="st">"beta_within"</span>]</span>
 <span id="cb95-1792"><a href="#cb95-1792" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb95-1793"><a href="#cb95-1793" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrow =</span> <span class="dv">2</span>,</span>
 <span id="cb95-1794"><a href="#cb95-1794" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">2</span></span>
 <span id="cb95-1795"><a href="#cb95-1795" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb95-1796"><a href="#cb95-1796" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb95-1797"><a href="#cb95-1797" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1798"><a href="#cb95-1798" aria-hidden="true" tabindex="-1"></a>We can then calculate the eigenvalues and eigenvectors of this matrix:</span>
+<span id="cb95-1798"><a href="#cb95-1798" aria-hidden="true" tabindex="-1"></a>The Next Generation Matrix can be calculated in **R** as:</span>
 <span id="cb95-1799"><a href="#cb95-1799" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb95-1802"><a href="#cb95-1802" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1803"><a href="#cb95-1803" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(ngm)</span>
-<span id="cb95-1804"><a href="#cb95-1804" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1805"><a href="#cb95-1805" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1806"><a href="#cb95-1806" aria-hidden="true" tabindex="-1"></a>We can also choose to just output the eigenvalues:</span>
-<span id="cb95-1807"><a href="#cb95-1807" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1810"><a href="#cb95-1810" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1811"><a href="#cb95-1811" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(ngm, <span class="at">only.values =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb95-1812"><a href="#cb95-1812" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb95-1813"><a href="#cb95-1813" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1814"><a href="#cb95-1814" aria-hidden="true" tabindex="-1"></a>Finally, let's print $R_0$:</span>
-<span id="cb95-1815"><a href="#cb95-1815" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-1818"><a href="#cb95-1818" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb95-1819"><a href="#cb95-1819" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(</span>
-<span id="cb95-1820"><a href="#cb95-1820" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Re</span>(</span>
-<span id="cb95-1821"><a href="#cb95-1821" aria-hidden="true" tabindex="-1"></a>        <span class="fu">eigen</span>(ngm, <span class="at">only.values =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>values</span>
-<span id="cb95-1822"><a href="#cb95-1822" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb95-1823"><a href="#cb95-1823" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb95-1824"><a href="#cb95-1824" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1803"><a href="#cb95-1803" aria-hidden="true" tabindex="-1"></a>ngm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb95-1804"><a href="#cb95-1804" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(</span>
+<span id="cb95-1805"><a href="#cb95-1805" aria-hidden="true" tabindex="-1"></a>        n_ngm[<span class="dv">1</span>] <span class="sc">*</span> (beta_ngm[<span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> alpha_ngm)) <span class="sc">+</span></span>
+<span id="cb95-1806"><a href="#cb95-1806" aria-hidden="true" tabindex="-1"></a>            alpha_ngm <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm) <span class="sc">*</span></span>
+<span id="cb95-1807"><a href="#cb95-1807" aria-hidden="true" tabindex="-1"></a>            n_ngm[<span class="dv">1</span>] <span class="sc">*</span> beta_ngm[<span class="dv">1</span>, <span class="dv">2</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm),</span>
+<span id="cb95-1808"><a href="#cb95-1808" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb95-1809"><a href="#cb95-1809" aria-hidden="true" tabindex="-1"></a>        n_ngm[<span class="dv">2</span>] <span class="sc">*</span> beta_ngm[<span class="dv">2</span>, <span class="dv">1</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> alpha_ngm) <span class="sc">+</span></span>
+<span id="cb95-1810"><a href="#cb95-1810" aria-hidden="true" tabindex="-1"></a>            alpha_ngm <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm) <span class="sc">*</span></span>
+<span id="cb95-1811"><a href="#cb95-1811" aria-hidden="true" tabindex="-1"></a>            n_ngm[<span class="dv">2</span>] <span class="sc">*</span> (beta_ngm[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm)),</span>
+<span id="cb95-1812"><a href="#cb95-1812" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1813"><a href="#cb95-1813" aria-hidden="true" tabindex="-1"></a>        n_ngm[<span class="dv">1</span>] <span class="sc">*</span> beta_ngm[<span class="dv">1</span>, <span class="dv">2</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm),</span>
+<span id="cb95-1814"><a href="#cb95-1814" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1815"><a href="#cb95-1815" aria-hidden="true" tabindex="-1"></a>        n_ngm[<span class="dv">2</span>] <span class="sc">*</span> beta_ngm[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">/</span> (ngm_params[<span class="st">"recovery"</span>] <span class="sc">+</span> mu_ngm)</span>
+<span id="cb95-1816"><a href="#cb95-1816" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb95-1817"><a href="#cb95-1817" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb95-1818"><a href="#cb95-1818" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">2</span></span>
+<span id="cb95-1819"><a href="#cb95-1819" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1820"><a href="#cb95-1820" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1821"><a href="#cb95-1821" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1822"><a href="#cb95-1822" aria-hidden="true" tabindex="-1"></a>We can then calculate the eigenvalues and eigenvectors of this matrix:</span>
+<span id="cb95-1823"><a href="#cb95-1823" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1826"><a href="#cb95-1826" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1827"><a href="#cb95-1827" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(ngm)</span>
+<span id="cb95-1828"><a href="#cb95-1828" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1829"><a href="#cb95-1829" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1830"><a href="#cb95-1830" aria-hidden="true" tabindex="-1"></a>We can also choose to just output the eigenvalues:</span>
+<span id="cb95-1831"><a href="#cb95-1831" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1834"><a href="#cb95-1834" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1835"><a href="#cb95-1835" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(ngm, <span class="at">only.values =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb95-1836"><a href="#cb95-1836" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-1837"><a href="#cb95-1837" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1838"><a href="#cb95-1838" aria-hidden="true" tabindex="-1"></a>Finally, let's print $R_0$:</span>
+<span id="cb95-1839"><a href="#cb95-1839" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-1842"><a href="#cb95-1842" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-1843"><a href="#cb95-1843" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(</span>
+<span id="cb95-1844"><a href="#cb95-1844" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Re</span>(</span>
+<span id="cb95-1845"><a href="#cb95-1845" aria-hidden="true" tabindex="-1"></a>        <span class="fu">eigen</span>(ngm, <span class="at">only.values =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>values</span>
+<span id="cb95-1846"><a href="#cb95-1846" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb95-1847"><a href="#cb95-1847" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-1848"><a href="#cb95-1848" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
