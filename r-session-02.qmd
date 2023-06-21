@@ -1173,7 +1173,7 @@ md`${tex`\text{Mean age of infection} = ${Re_mean_age_str}`}`
 ```{ojs}
 //| echo: false
 Re = R0 * (1 - vacc)
-Re_str = Re.toLocaleString(undefined, {minimumFractionDigits: 2})
+Re_str = Re.toPrecision(4).toLocaleString()
 ```
 
 ```{ojs}
@@ -1193,7 +1193,7 @@ function calc_mean_age(Re, lifeexp) {
 //| echo: false
 R0_mean_age = calc_mean_age(R0, lifeexp)
 Re_mean_age = calc_mean_age(Re, lifeexp)
-Re_mean_age_str = Re_mean_age.toLocaleString(undefined, {minimumFractionDigits: 2})
+Re_mean_age_str = Re_mean_age.toPrecision(4).toLocaleString()
 ```
 
 
@@ -1246,41 +1246,66 @@ mean_age_arrs = calc_mean_age_arr(vacc, lifeexp, 1.0, 10.0, 0.01)
 
 ```{ojs}
 //| echo: false
-arrow_start = R0_mean_age <= 100 ? R0_mean_age : 100
-arrow_end = Re_mean_age <= 100 ? Re_mean_age : 100
+mean_age_dots = [({
+    arrow_start: R0_mean_age <= 100 ? R0_mean_age : 100,
+    arrow_end: Re_mean_age <= 100 ? Re_mean_age : 100,
+    R0: R0.toPrecision(3),
+    Re: Re.toPrecision(3),
+    R0_mean_age,
+    Re_mean_age
+})]
 ```
 
 
 ```{ojs}
 //| echo: false
 //| panel: fill
-Plot.plot({
-    color: {
-        legend: true,
-        domain: ["Unvaccinated", "Vaccinated"],
-        range: ["#1f77b4", "#ff7f0e"]
-    },
-    style: {fontSize: "20px"},
-    marginLeft: 65,
-    marginTop: 40,
-    marginBottom: 55,
-    grid: true,
-    width: 800,
-    height: 670,
-    x: {label: "R0", domain: [0, 10]},
-    y: {label: "Mean Age of Infection", domain: [0, 100]},
-    marks: [
-        Plot.line(mean_age_arrs.R0, {x: "R0", y: "mean_age", stroke: "#1f77b4", strokeWidth: 6}),
-        Plot.line(mean_age_arrs.Re, {x: "R0", y: "mean_age", stroke: "#ff7f0e", strokeWidth: 6}),
-        R0_mean_age <= 100 ?
-            Plot.dot(mean_age_arrs.R0, {x: R0, y: R0_mean_age, r: 12, stroke: "#1f77b4", fill: "#1f77b4"}) :
+{
+    let R0Color = "#1f77b4"
+    let ReColor = "#ff7f0e"
+
+    let plot = Plot.plot({
+        color: {
+            legend: true,
+            domain: ["Unvaccinated", "Vaccinated"],
+            range: ["#1f77b4", "#ff7f0e"]
+        },
+        style: {fontSize: "20px"},
+        marginLeft: 65,
+        marginTop: 40,
+        marginBottom: 55,
+        grid: true,
+        width: 800,
+        height: 670,
+        x: {label: "R0", domain: [0, 10]},
+        y: {label: "Mean Age of Infection", domain: [0, 100]},
+        marks: [
+            Plot.line(mean_age_arrs.R0, {x: "R0", y: "mean_age", stroke: R0Color, strokeWidth: 6}),
+            Plot.line(mean_age_arrs.Re, {x: "R0", y: "mean_age", stroke: ReColor, strokeWidth: 6}),
+            R0_mean_age <= 100 ?
+                [
+                Plot.dot(mean_age_dots, {x: "R0", y: "R0_mean_age", r: 12, stroke: R0Color, fill: R0Color, fillOpacity: 0.6}),
+                Plot.text(
+                    mean_age_dots,
+                    {x: "R0", y: "R0_mean_age", text: (d) => `R0 = ${d.R0}`, dx: -60, dy: 30, fontWeight:     "bold", fill: R0Color}
+                )
+                ] :
             null,
-        Re_mean_age <= 100 ?
-            Plot.dot(mean_age_arrs.Re, {x: R0, y: Re_mean_age, r: 12, stroke: "#ff7f0e", fill: "#ff7f0e"}) :
+            Re_mean_age <= 100 ?
+                [
+                    Plot.dot(mean_age_dots, {x: "R0", y: "Re_mean_age", r: 12, stroke: ReColor, fill:     ReColor,  fillOpacity: 0.6}),
+                    Plot.text(
+                        mean_age_dots,
+                        {x: "R0", y: "Re_mean_age", text: (d) => `Re = ${d.Re}`, dx: 55, dy: -25,   fontWeight:     "bold", fill: ReColor}
+                    )
+                ] :
             null,
-        Plot.arrow(mean_age_arrs.Re, {x1: R0, x2: R0, y1: arrow_start, y2: arrow_end, strokeWidth: 4, headLength: 5, inset: 15})
-    ]
-})
+            Plot.arrow(mean_age_dots, {x1: "R0", x2: "R0", y1: "arrow_start", y2: "arrow_end", strokeWidth: 4, headLength: 5, inset: 15}),
+        ]
+    });
+
+  return plot;
+}
 ```
 
 ### R Code
