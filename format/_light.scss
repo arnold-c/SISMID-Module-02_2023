@@ -5,6 +5,8 @@ $navbar-color: #f5e0dc !default;
 $navbar-padding-y: 1.5rem !default;
 $dark-blue: #222235 !default;
 
+// Exercise
+$ex-color: #1f1745 !default;
 
 /*-- scss:rules --*/
 
@@ -14,4 +16,10 @@ $dark-blue: #222235 !default;
 
 a.sidebar-item-text.sidebar-link.text-start, .sidebar-title{
     font-weight: bold;
+}
+
+// Exercise Headings
+.exercise {
+  color: $ex-color;
+  background: #e8d3a8;
 }
