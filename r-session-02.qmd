@@ -7,6 +7,21 @@ execute:
     warning: false
 metadata-files: 
   - metadata/matthewferrari.yml
+format:
+  html:
+    html-math-method: mathjax
+    include-in-header:
+      text: |
+        <script>
+          window.MathJax = {
+            loader: {
+              load: ['[tex]/physics']
+            },
+            tex: {
+              packages: {'[+]': ['physics']}
+            }
+          };
+        </script>
 ---
 
 # R Session 02
@@ -108,12 +123,12 @@ par(op)
 Which can be written in equations as,
 $$
 \begin{aligned}
-    \frac{dS_a}{dt} &= -\lambda_a\,S_a \phantom{-\gamma\,I_b}\\
-    \frac{dS_b}{dt} &= -\lambda_b\,S_b \phantom{-\gamma\,I_b}\\
-    \frac{dI_a}{dt} &= \phantom{-}\lambda_a\,S_a -\gamma\,I_a\\
-    \frac{dI_b}{dt} &= \phantom{-}\lambda_b\,S_b-\gamma\,I_b\\
-    \frac{dR_a}{dt} &= \phantom{-\lambda_a\,S_b}+\gamma\,I_a\\
-    \frac{dR_b}{dt} &= \phantom{-\lambda_a\,S_b}+\gamma\,I_b\\
+    \frac{\dd{S_a}}{\dd{t}} &= -\lambda_a\,S_a \phantom{-\gamma\,I_b}\\
+    \frac{\dd{S_b}}{\dd{t}} &= -\lambda_b\,S_b \phantom{-\gamma\,I_b}\\
+    \frac{\dd{I_a}}{\dd{t}} &= \phantom{-}\lambda_a\,S_a -\gamma\,I_a\\
+    \frac{\dd{I_b}}{\dd{t}} &= \phantom{-}\lambda_b\,S_b-\gamma\,I_b\\
+    \frac{\dd{R_a}}{\dd{t}} &= \phantom{-\lambda_a\,S_b}+\gamma\,I_a\\
+    \frac{\dd{R_b}}{\dd{t}} &= \phantom{-\lambda_a\,S_b}+\gamma\,I_b\\
   \end{aligned}
 $$
 
@@ -394,12 +409,12 @@ We'll also add in births into the juvenile susceptible class and deaths from the
 
 $$
   \begin{aligned}
-    \frac{dS_J}{dt} &= B -\lambda_J\,S_J \phantom{- \gamma\,I_A} -\alpha\,S_J \phantom{-\mu\,S_A}\\
-    \frac{dS_A}{dt} &= \phantom{B} - \lambda_A\,S_A \phantom{- \gamma\,I_A} +\alpha\,S_J -\mu\,S_A\\
-    \frac{dI_J}{dt} &= \phantom{B} +\lambda_J\,S_J - \gamma\,I_J -\alpha\,I_J \phantom{-\mu\,S_A}\\
-    \frac{dI_A}{dt} &= \phantom{B} +\lambda_A\,S_A - \gamma\,I_A + \alpha\,I_J - \mu\,I_A\\
-    \frac{dR_J}{dt} &= \phantom{B - \lambda_J\,S_A} + \gamma\,I_J - \alpha\,R_J \phantom{- \mu\,S_A}\\
-    \frac{dR_A}{dt} &= \phantom{B - \lambda_J\,S_A} + \gamma\,I_A + \alpha\,R_J -\mu\,R_A\\
+    \frac{\dd{S_J}}{\dd{t}} &= B -\lambda_J\,S_J \phantom{- \gamma\,I_A} -\alpha\,S_J \phantom{-\mu\,S_A}\\
+    \frac{\dd{S_A}}{\dd{t}} &= \phantom{B} - \lambda_A\,S_A \phantom{- \gamma\,I_A} +\alpha\,S_J -\mu\,S_A\\
+    \frac{\dd{I_J}}{\dd{t}} &= \phantom{B} +\lambda_J\,S_J - \gamma\,I_J -\alpha\,I_J \phantom{-\mu\,S_A}\\
+    \frac{\dd{I_A}}{\dd{t}} &= \phantom{B} +\lambda_A\,S_A - \gamma\,I_A + \alpha\,I_J - \mu\,I_A\\
+    \frac{\dd{R_J}}{\dd{t}} &= \phantom{B - \lambda_J\,S_A} + \gamma\,I_J - \alpha\,R_J \phantom{- \mu\,S_A}\\
+    \frac{\dd{R_A}}{\dd{t}} &= \phantom{B - \lambda_J\,S_A} + \gamma\,I_A + \alpha\,R_J -\mu\,R_A\\
   \end{aligned}
 $$
 
@@ -499,8 +514,8 @@ demog_df <- demog_sol %>%
 ```
 
 <div class="exercise">
+
 ### Exercise 1: Use this code to plot the number of susceptible, infected, and recovered individuals over time.
-</div>
 
 ```{r}
 #| column: body
@@ -598,6 +613,8 @@ ggplot(demog_equil_seroprev, aes(x = group, y = prop, fill = group)) +
 To compute $R_0$, we need to know the stable age distribution (the relative proportion in the juvenile and adult age classes) of the population, which we can find by solving for the disease-free equilibrium: $S_J^*=B/\alpha$ and $S_A^*=B/\mu$.
 
 With the stable age distribution, we can calculate $R_0$ by constructing the next generation matrix. Details on this method are described in the last section of this worksheet (@eq-ngm) and are not required for completing the exercises in the worksheet. The code below outlines how the next generation matrix is constructed using the $\alpha$ (aging from juvenile to adult), $\mu$ (death), $n$ (total births), $\gamma$ (recovery), $da$ (width of age groups in years), and $\beta$ (transmission) parameters. 
+
+</div>
 
 ```{r}
 # Calculate the rate of aging out of each age group
@@ -783,9 +800,7 @@ aging_mat %>%
     )
 ```
 
-<div class="exercise">
 ### Exercise 2: What can you say about its structure? How are the different age groups in contact with each other?
-</div>
 
 Now we can put the pieces together to write a simulator for the age-structured SIR dynamics.
 
@@ -888,7 +903,9 @@ Let's mimic a situation where we have cross-sectional seroprevalence data (e.g. 
 In using such data, we'd typically assume that the system was at equilibrium.
 
 <div class="exercise">
+
 ### Exercise 3: What does the equilibrium age-specific seroprevalence look like in this example?
+
 </div>
 
 Use the code below to display the age-specific seroprevalence (i.e., the seroprevalence for each age group at equilibrium)
@@ -1029,19 +1046,99 @@ The steps below are copied from [@bjornstadAdvancedNextGenerationMatrix2018]
 5. Construct a n × 1 matrix, $\mathbf{V} = \mathbf{V^−} − \mathbf{V^+}$
 6. Generate two n × n Jacobian matrices $f$ and $v$ that are the partial derivatives of $\mathbf{F}$ and $\mathbf{V}$ with respect to the $n$ infectious state variables
 7. Evaluate the matrices at the disease free equilibrium (dfe), and finally
-8. $R_0$ is the greatest eigenvalue of $\mathbf{fv}^{−1}|_{dfe}$.
+8. $R_0$ is the spectral trace (greatest non-negative real eigenvalue) of $\mathbf{fv}^{−1}|_{\text{dfe}}$.
+
+Working through these steps looks like this:
+
+1. Our only infected compartments are the $I_i$ states, for each age group ($i \in [1, 30]$)
+To start, let's write out our differential equation:
+
+\begin{equation}
+    \frac{\dd{I_i}}{\dd{t}} = \lambda_i S_i - \gamma I_i + \alpha_{i-1} I_{i-1} - \alpha_i I_i
+\end{equation}
+
+
+
+2. We'll now calculate $\mathbf{F}$ and $\mathbf{f}$
+
+
+\begin{align*}
+    \mathbf{F} &= \begin{pmatrix}
+        \lambda_1 S_1 + \cancelto{0}{\alpha_0 I_0} \\
+        \vdots \\
+        \lambda_{30} S_{30} + \alpha_{29} I_{29}
+    \end{pmatrix} \\ \\
+    \mathbf{F} &= \begin{pmatrix}
+        \left(\beta_{1, 1} I_1 + \cdots + \beta_{1, 30} I_{30} \right)S_1 \\
+        \vdots \\
+        \left(\beta_{30, 1} I_1 + \cdots + \beta_{30, 30} I_{30} \right) S_{30} + \alpha_{29} I_{29}
+    \end{pmatrix} \\
+    \mathbf{f} &= \begin{pmatrix}
+        \frac{\partial F_1}{\partial I_1} & \cdots & \frac{\partial F_1}{\partial I_{30}} \\
+        \vdots & \ddots & \vdots \\
+        \frac{\partial F_{30}}{\partial I_1} & \cdots & \frac{\partial F_{30}}{\partial I_{30}}
+    \end{pmatrix} & \frac{\partial F_1}{\partial I_1} &= \frac{\partial}{\partial I_1} \left( \beta_{1, 1} I_1 + \cancelto{0}{\beta_{1, 2} I_2 + \cdots + \beta_{1, 30} I_{30}}\right) S_1 \\
+    & & \frac{\partial F_1}{\partial I_1} &= \beta_{1, 1} S_1 \\
+    \mathbf{f} &= \begin{pmatrix}
+        \beta_{1, 1} S_1 & \cdots & \beta_{1, 30} S_1 \\
+        \vdots & \ddots & \vdots \\
+        \beta_{30, 1} S_{30} & \cdots & \beta_{30, 30} S_{30}
+    \end{pmatrix}
+\end{align*}
+
+3. Now let's calculate $\mathbf{V^-}$, $\mathbf{V^+}$, $\mathbf{V}$, and $\mathbf{v}$
+
+\begin{align*}
+    \mathbf{V^-} &= \begin{pmatrix}
+        \gamma I_1 + \alpha_1 I_1 \\
+        \gamma I_2 + \alpha_2 I_2 \\
+        \vdots \\
+        \gamma I_{30} + \alpha_{30} I_{30}
+    \end{pmatrix} & \mathbf{V^+} &= \begin{pmatrix}
+        \cancelto{0}{\alpha_0 I_0} \\
+        \alpha_1 I_1 \\
+        \vdots \\
+        \alpha_{29} I_{29}
+    \end{pmatrix} \\ \\
+    \mathbf{V} &= \mathbf{V^-} - \mathbf{V^+} = \begin{pmatrix}
+        \gamma I_1 + \alpha_1 I_1 \\
+        \gamma I_2 + \alpha_2 I_2 - \alpha_1 I_1\\
+        \vdots \\
+        \gamma I_{30} + \alpha_{30} I_{30} - \alpha_{29} I_{29}
+    \end{pmatrix} \\ \\
+    \mathbf{v} &= \begin{pmatrix}
+        \pdv{V_1}{I_1} & \cdots & \pdv{V_1}{I_{30}} \\
+        \vdots & \ddots & \vdots \\
+        \pdv{V_{30}}{I_1} & \cdots & \pdv{V_{30}}{I_{30}}
+    \end{pmatrix} & \pdv{V_1}{I_1} &= \pdv{I_1} I_1 \left( \gamma + \alpha_1  \right)\\
+    & & \pdv{V_1}{I_1} &= \gamma + \alpha_1 \\ \\
+    & & \pdv{V_2}{I_1} &= \pdv{I_1} \left( \cancelto{0}{I_2 \left( \gamma + \alpha_2  \right)} - \alpha_1 I_1 \right)\\
+    & & \pdv{V_2}{I_1} &= - \alpha_1 \\ \\
+    & & \pdv{V_1}{I_2} &= \pdv{I_2} \cancelto{0}{I_1 \left( \gamma + \alpha_1  \right)} \\
+    & & \pdv{V_1}{I_2} &= 0 \\ \\
+    \mathbf{v} &= \begin{pmatrix}
+        \gamma + \alpha_1 & 0 &  \cdots  & 0\\
+        - \alpha_1 & \gamma + \alpha_2 & \cdots & 0 \\
+        \vdots & \ddots & \ddots & \vdots \\
+        0 & \cdots & - \alpha_{29} & \gamma + \alpha_{30}
+    \end{pmatrix} 
+\end{align*}
+
+4. To evaluate $\mathbf{f}$ and $\mathbf{v}$ at the disease-free equilibrium, we can use the results from our previous calculations.
+$\mathbf{v}$ doesn't have any state terms in the equation, so it is already evaluated at $\text{dfe}$.
+$\mathbf{f}|_{\text{dfe}}$ involves subsituting $S_i$ for the equilibrium population distribution that balances the births and aging processes.
+
 
 ```{r}
 # evaluate new inf jac pde at dfe
 f_mat <- multistage_params[["beta_mat"]] * multistage_stable_n
 
-# set diag of non-inf transition jac pde
-v_mat <- diag(
-    multistage_params[["recovery"]] + diag(multistage_params[["aging_mat"]])
-)
+# set off-diag of non-inf transition jac pde to neg aging of prev age group
+# (use aging matrix as already calculated in correct places)
+v_mat <- multistage_params[["aging_mat"]]
 
-# set off-diag of non-inf transition jac pde to negative aging of prev age group
-v_mat[row(v_mat) - col(v_mat) == 1] <- -1 / head(da_ages, -1)
+# Update the diagonal of non-inf transition jac to add recovery rate
+diag(v_mat) <- multistage_params[["recovery"]] + diag(v_mat)
 
 # spectral trace
 max(Re(eigen(solve(v_mat, f_mat), only.values = TRUE)$values))
@@ -1066,7 +1163,9 @@ update_age_params <- list(
 ```
 
 <div class="exercise">
+
 #### Edit the `ggplot` code from [Section 7.3](#fig-beta-mat) to plot the new beta matrix.
+
 </div>
 
 ```{r}
@@ -1247,6 +1346,8 @@ $${#eq-mean-age}
 
 where $L$ is the life expectancy $\left(L = \frac{1}{\mu}\right)$ and $R_E$ is the effective reproductive number ($R_E = R_0 * (1 - p)$ where $p$ is the fraction of individuals vaccinated).
 
+<div class="exercise">
+
 ### Interactive Plot
 
 ```{ojs}
@@ -1410,9 +1511,8 @@ mean_age_dots = [({
 ```
 
 ### Interactive Plot Exercises
-  
-<div class="exercise">
 #### Play with the Vaccination coverage and observe what happens to the mean age of infection.
+  
 </div>
 
 ### R Code

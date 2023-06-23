@@ -7,6 +7,7 @@ $dark-blue: #222235 !default;
 
 // Exercise
 $ex-color: #1f1745 !default;
+$ex-background-color: #e2e1ce !default;
 
 /*-- scss:rules --*/
 
@@ -20,6 +21,6 @@ a.sidebar-item-text.sidebar-link.text-start, .sidebar-title{
 
 // Exercise Headings
 .exercise {
-  color: $ex-color;
-  background: #e8d3a8;
+  // background: $ex-background-color;
+  // margin: 17px 0px 0px 17px;
 }
