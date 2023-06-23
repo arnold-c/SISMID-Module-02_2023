@@ -1032,25 +1032,19 @@ The steps below are copied from [@bjornstadAdvancedNextGenerationMatrix2018]
 8. $R_0$ is the greatest eigenvalue of $\mathbf{fv}^{−1}|_{dfe}$.
 
 ```{r}
-f_mat <- diag(multistage_stable_n) %*% multistage_params[["beta_mat"]]
+# evaluate new inf jac pde at dfe
+f_mat <- multistage_params[["beta_mat"]] * multistage_stable_n
 
-# Losses occur due to recovery and aging
-v_minus <- rep(multistage_params[["recovery"]], 30) +
-    diag(multistage_params[["aging_mat"]])
-
-# Non-infection gains occur due to aging
-v_plus <- -diag(multistage_params[["aging_mat"]])
-
-# Convert to matrix as required for solve() function
-v_mat <- diag(v_minus - v_plus)
-
-max(
-    Re(
-        # Equivalent to fv^{-1} in the above recipe as solve effectively inverts
-        # V
-        eigen(solve(v_mat, f_mat), only.values = TRUE)$values
-    )
+# set diag of non-inf transition jac pde
+v_mat <- diag(
+    multistage_params[["recovery"]] + diag(multistage_params[["aging_mat"]])
 )
+
+# set off-diag of non-inf transition jac pde to negative aging of prev age group
+v_mat[row(v_mat) - col(v_mat) == 1] <- -1 / head(da_ages, -1)
+
+# spectral trace
+max(Re(eigen(solve(v_mat, f_mat), only.values = TRUE)$values))
 ```
 
 <div class="exercise">
