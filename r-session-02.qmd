@@ -610,13 +610,13 @@ ggplot(demog_equil_seroprev, aes(x = group, y = prop, fill = group)) +
     theme(legend.position = "none")
 ```
 
-To compute $R_0$, we need to know the stable age distribution (the relative proportion in the juvenile and adult age classes) of the population, which we can find by solving for the disease-free equilibrium: $S_J^*=B/\alpha$ and $S_A^*=B/\mu$.
-
-With the stable age distribution, we can calculate $R_0$ by constructing the next generation matrix. Details on this method are described in the last section of this worksheet (@eq-ngm) and are not required for completing the exercises in the worksheet. The code below outlines how the next generation matrix is constructed using the $\alpha$ (aging from juvenile to adult), $\mu$ (death), $n$ (total births), $\gamma$ (recovery), $da$ (width of age groups in years), and $\beta$ (transmission) parameters. 
+One thing we are often interested in is the $R_0$ of a system.
+The details are beyond the scope of this workshop and are not required to complete the exercises in this worksheet, but we have outlined them in @sec-simple-ngm, particularly in @eq-simple-ngm, at the end of this page.
 
 </div>
 
 ```{r}
+#| echo: false
 # Calculate the rate of aging out of each age group
 alpha <- 1 / demog_params["age_band_j"]
 mu <- 1 / demog_params["age_band_a"]
@@ -636,7 +636,7 @@ beta_demog <- matrix(c(
 )
 
 # Calculate the next generation matrix
-ngm <- matrix(
+ba_ngm <- matrix(
     c(
         n[1] * (beta_demog[1, 1] / (demog_params["recovery"] + alpha)) +
             alpha / (demog_params["recovery"] + mu) *
@@ -655,8 +655,10 @@ ngm <- matrix(
 )
 
 # Calculate R0 by taking the **spectral trace** i.e., the largest non-negative Eigenvalue of the NGM
-max(Re(eigen(ngm, only.values = TRUE)$values))
+ba_ngm <- round(max(Re(eigen(ba_ngm, only.values = TRUE)$values)), digits = 2)
 ```
+
+In our system, $R_0 =$ `r ba_ngm`.
 
 ## Getting more realistic: adding more age classes
 
@@ -669,7 +671,7 @@ Specifically, we'll have 20 1-yr age classes to take us up to adulthood and brea
 
 Now, when we had just two age classes, we could write out each of the equations easily enough, but now that we're going to have 30, we'll need to be more systematic.
 In particular, we'll need to think of $\beta$ as a matrix of transmission rates.
-Let's see how to define such a matrix in **R**.
+Let's see how to define such a matrix in `R`.
 So that we don't change too many things all at once, let's keep the same contact structure as in the juvenile-adult model.
 
 ```{r}
@@ -944,204 +946,66 @@ ggplot(multistage_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
 ```
 
 Let's also compute $R_0$.
-To do so, we'll need the stable age distribution.
-We can get that by simulating an infection-free population, which we get by setting the initial I to all 0s:
+And because we've added a lot of age structure, with transitions between the age groups, we can't just copy and paste the previous Next Generation Matrix code (from @sec-simple-ngm).
+As before, the details of this computation are out of the workshop's scope, but they are outlined in @sec-age-structure-ngm.
+We have created a function to calculate R0 for an age-structured SIR and have added some comments, but read @sec-age-structure-ngm for the full details and reasoning.
 
 ```{r}
-# Set up initial conditions without any infections
-multistage_sonly_yinit <- c(
-    S = c(rep(250, 30)),
-    I = c(rep(0, 30)),
-    R = c(rep(0, 30))
-)
-
-# Solve disease free sim to get dfe
-multistage_sonly_sol <- deSolve::ode(
-    y = multistage_sonly_yinit,
-    times = seq(0, 300, by = 1),
-    func = multistage_model,
-    parms = multistage_params
-)
-
-# Calculate population size at each time point and save to dataframe
-multistage_sonly_pop <- tibble(
-    time = multistage_sonly_sol[, 1],
-    pop = apply(multistage_sonly_sol[, -1], 1 , sum)
-)
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(multistage_sonly_pop, aes(x = time, y = pop)) +
-    geom_area(fill = SIRcolors[4], alpha = 0.6) +
-    labs(
-        x = "Time",
-        y = "Population size"
-    )
-```
-
-Alternatively, we can get the stable age distribution by finding the population structure that balances the birth, aging, and death processes.
-At equilibrium, we have the matrix equation
-
-$$
-\begin{pmatrix}
-    -\alpha_1 & 0 & 0 & \cdots & 0\\
-    \alpha_1 & -\alpha_2 & 0 & \cdots & 0\\
-    0 & \alpha_2 & -\alpha_3 & \cdots & 0\\
-    \vdots &  & \ddots & \ddots & \vdots \\
-    0 & \cdots & & \alpha_{29} & -\alpha_{30}\\
-\end{pmatrix} .
-\begin{pmatrix}
-    n_1 \\ n_2 \\ n_3 \\ \vdots \\ n_{30}
-\end{pmatrix} +
-\begin{pmatrix}
-    B \\ 0 \\ 0 \\ \vdots \\ 0
-\end{pmatrix} =
-\begin{pmatrix}
-    0 \\ 0 \\ 0 \\ \vdots \\ 0
-\end{pmatrix}
-$$
-
-To solve this equation in **R**, we can do
-
-```{r}
-# solve(a, b) solves the equation a %*% x = b for x, so rearrange equation above so b is on the RHS of the equation
+# Calculate the stable disease-free age distribution. Could also simulate without any infections.
 multistage_stable_n <- solve(
     aging_mat,
     c(-1 * multistage_params[["births"]], rep(0, 29))
 )
+```
 
-multistage_stable_n
+<a id="ngm-function"></a>
+
+```{r}
+#' Calculate R0
+#'
+#' Calculate the R0 of an SIR model using the next generation matrix approach described in @heffernanPerspectivesBasicReproductive2005
+#'
+#' @param beta_mat A matrix of beta parameter values
+#' @param stable_n_mat A matrix of the stable age distributions
+#' @param aging_mat A matrix of the aging rates between age compartments
+#' @param recovery_rate The recover rate parameter value (of type double)
+#'
+#' @return The R0 value as type double
+#' @examples
+#' calculate_R0(
+#'    beta_mat = multistage_params[["beta_mat"]],
+#'    stable_n_mat = multistage_stable_n,
+#'    aging_mat = multistage_params[["aging_mat"]],
+#'    recovery_rate = multistage_params[["recovery"]]
+#')
+calculate_R0 <- function(beta_mat, stable_n_mat, aging_mat, recovery_rate) {
+    # evaluate new inf jac pde at dfe
+    f_mat <- beta_mat * stable_n_mat
+
+    # set off-diag of non-inf transition jac pde to neg aging of prev age group
+    # (use aging matrix as already calculated in correct places)
+    v_mat <- -aging_mat
+    # Update the diagonal of non-inf transition jac to add recovery rate
+    diag(v_mat) <- diag(v_mat) + recovery_rate
+
+    ## Alternative method of calculating using age bands directly
+    # v_mat <- diag(recovery_rate + 1 / da_ages)
+    # v_mat[row(v_mat) - col(v_mat) == 1] <- - 1 / head(da_ages, -1)
+    
+    # spectral trace
+    R0 <- max(Re(eigen(solve(v_mat, f_mat), only.values = TRUE)$values))   
+    
+    return(R0)
+}
 ```
 
 ```{r}
-# Check the final pop value of the S-only sim is equal to the sum of the stable age distribution calculated above
-round(tail(multistage_sonly_pop$pop, 1)) == sum(multistage_stable_n)
-```
-
-The following lines then compute $R_0$ using the next generation matrix method. More details are available in the "Bonus" section at the end of the document.
-This calculation comes from a recipe described in detail previously [@diekmann2000mathematical; @heesterbeekBriefHistoryR02002; @bjornstadAdvancedNextGenerationMatrix2018; @heffernanPerspectivesBasicReproductive2005; @hurfordNextgenerationToolsEvolutionary2009] (we would recommend starting with [@bjornstadAdvancedNextGenerationMatrix2018; and @heffernanPerspectivesBasicReproductive2005]).
-
-```{r}
-F_mat <- diag(multistage_stable_n) %*% multistage_params[["beta_mat"]] +
-    multistage_params[["aging_mat"]] -
-    diag(diag(multistage_params[["aging_mat"]]))
-
-V_mat <- diag(multistage_params[["recovery"]] - diag(multistage_params[["aging_mat"]]))
-
-max(
-    Re(
-        eigen(solve(V_mat, F_mat), only.values = TRUE)$values
-    )
+calculate_R0(
+    beta_mat = multistage_params[["beta_mat"]],
+    stable_n_mat = multistage_stable_n,
+    aging_mat = multistage_params[["aging_mat"]],
+    recovery_rate = multistage_params[["recovery"]]
 )
-```
-
-The steps below are copied from [@bjornstadAdvancedNextGenerationMatrix2018]
-
-1. Identify all n infected compartments
-2. Construct a n × 1 matrix, $\mathbf{F}$, that contains expressions for all completely new infections entering each infected compartment
-3. Construct a n × 1 matrix, $\mathbf{V^−}$, that contains expressions for all losses out of each infected compartment
-4. Construct a n × 1 matrix, $\mathbf{V^+}$, that contains expressions for all gains into each infected compartment that does not represent new infections but transfers among infectious classes
-5. Construct a n × 1 matrix, $\mathbf{V} = \mathbf{V^−} − \mathbf{V^+}$
-6. Generate two n × n Jacobian matrices $f$ and $v$ that are the partial derivatives of $\mathbf{F}$ and $\mathbf{V}$ with respect to the $n$ infectious state variables
-7. Evaluate the matrices at the disease free equilibrium (dfe), and finally
-8. $R_0$ is the spectral trace (greatest non-negative real eigenvalue) of $\mathbf{fv}^{−1}|_{\text{dfe}}$.
-
-Working through these steps looks like this:
-
-1. Our only infected compartments are the $I_i$ states, for each age group ($i \in [1, 30]$)
-To start, let's write out our differential equation:
-
-\begin{equation}
-    \frac{\dd{I_i}}{\dd{t}} = \lambda_i S_i - \gamma I_i + \alpha_{i-1} I_{i-1} - \alpha_i I_i
-\end{equation}
-
-
-
-2. We'll now calculate $\mathbf{F}$ and $\mathbf{f}$
-
-
-\begin{align*}
-    \mathbf{F} &= \begin{pmatrix}
-        \lambda_1 S_1 + \cancelto{0}{\alpha_0 I_0} \\
-        \vdots \\
-        \lambda_{30} S_{30} + \alpha_{29} I_{29}
-    \end{pmatrix} \\ \\
-    \mathbf{F} &= \begin{pmatrix}
-        \left(\beta_{1, 1} I_1 + \cdots + \beta_{1, 30} I_{30} \right)S_1 \\
-        \vdots \\
-        \left(\beta_{30, 1} I_1 + \cdots + \beta_{30, 30} I_{30} \right) S_{30} + \alpha_{29} I_{29}
-    \end{pmatrix} \\
-    \mathbf{f} &= \begin{pmatrix}
-        \frac{\partial F_1}{\partial I_1} & \cdots & \frac{\partial F_1}{\partial I_{30}} \\
-        \vdots & \ddots & \vdots \\
-        \frac{\partial F_{30}}{\partial I_1} & \cdots & \frac{\partial F_{30}}{\partial I_{30}}
-    \end{pmatrix} & \frac{\partial F_1}{\partial I_1} &= \frac{\partial}{\partial I_1} \left( \beta_{1, 1} I_1 + \cancelto{0}{\beta_{1, 2} I_2 + \cdots + \beta_{1, 30} I_{30}}\right) S_1 \\
-    & & \frac{\partial F_1}{\partial I_1} &= \beta_{1, 1} S_1 \\
-    \mathbf{f} &= \begin{pmatrix}
-        \beta_{1, 1} S_1 & \cdots & \beta_{1, 30} S_1 \\
-        \vdots & \ddots & \vdots \\
-        \beta_{30, 1} S_{30} & \cdots & \beta_{30, 30} S_{30}
-    \end{pmatrix}
-\end{align*}
-
-3. Now let's calculate $\mathbf{V^-}$, $\mathbf{V^+}$, $\mathbf{V}$, and $\mathbf{v}$
-
-\begin{align*}
-    \mathbf{V^-} &= \begin{pmatrix}
-        \gamma I_1 + \alpha_1 I_1 \\
-        \gamma I_2 + \alpha_2 I_2 \\
-        \vdots \\
-        \gamma I_{30} + \alpha_{30} I_{30}
-    \end{pmatrix} & \mathbf{V^+} &= \begin{pmatrix}
-        \cancelto{0}{\alpha_0 I_0} \\
-        \alpha_1 I_1 \\
-        \vdots \\
-        \alpha_{29} I_{29}
-    \end{pmatrix} \\ \\
-    \mathbf{V} &= \mathbf{V^-} - \mathbf{V^+} = \begin{pmatrix}
-        \gamma I_1 + \alpha_1 I_1 \\
-        \gamma I_2 + \alpha_2 I_2 - \alpha_1 I_1\\
-        \vdots \\
-        \gamma I_{30} + \alpha_{30} I_{30} - \alpha_{29} I_{29}
-    \end{pmatrix} \\ \\
-    \mathbf{v} &= \begin{pmatrix}
-        \pdv{V_1}{I_1} & \cdots & \pdv{V_1}{I_{30}} \\
-        \vdots & \ddots & \vdots \\
-        \pdv{V_{30}}{I_1} & \cdots & \pdv{V_{30}}{I_{30}}
-    \end{pmatrix} & \pdv{V_1}{I_1} &= \pdv{I_1} I_1 \left( \gamma + \alpha_1  \right)\\
-    & & \pdv{V_1}{I_1} &= \gamma + \alpha_1 \\ \\
-    & & \pdv{V_2}{I_1} &= \pdv{I_1} \left( \cancelto{0}{I_2 \left( \gamma + \alpha_2  \right)} - \alpha_1 I_1 \right)\\
-    & & \pdv{V_2}{I_1} &= - \alpha_1 \\ \\
-    & & \pdv{V_1}{I_2} &= \pdv{I_2} \cancelto{0}{I_1 \left( \gamma + \alpha_1  \right)} \\
-    & & \pdv{V_1}{I_2} &= 0 \\ \\
-    \mathbf{v} &= \begin{pmatrix}
-        \gamma + \alpha_1 & 0 &  \cdots  & 0\\
-        - \alpha_1 & \gamma + \alpha_2 & \cdots & 0 \\
-        \vdots & \ddots & \ddots & \vdots \\
-        0 & \cdots & - \alpha_{29} & \gamma + \alpha_{30}
-    \end{pmatrix} 
-\end{align*}
-
-4. To evaluate $\mathbf{f}$ and $\mathbf{v}$ at the disease-free equilibrium, we can use the results from our previous calculations.
-$\mathbf{v}$ doesn't have any state terms in the equation, so it is already evaluated at $\text{dfe}$.
-$\mathbf{f}|_{\text{dfe}}$ involves subsituting $S_i$ for the equilibrium population distribution that balances the births and aging processes.
-
-
-```{r}
-# evaluate new inf jac pde at dfe
-f_mat <- multistage_params[["beta_mat"]] * multistage_stable_n
-
-# set off-diag of non-inf transition jac pde to neg aging of prev age group
-# (use aging matrix as already calculated in correct places)
-v_mat <- multistage_params[["aging_mat"]]
-
-# Update the diagonal of non-inf transition jac to add recovery rate
-diag(v_mat) <- multistage_params[["recovery"]] + diag(v_mat)
-
-# spectral trace
-max(Re(eigen(solve(v_mat, f_mat), only.values = TRUE)$values))
 ```
 
 <div class="exercise">
@@ -1891,6 +1755,12 @@ Need to check what's going on here as just recycling previous code and doesn't d
 How does this R0 value compare to the R0 value obtained from Exercise 4?
 
 ## Bonus: Calculating R0 Using a Next Generation Matrix
+### Simple model structure {#sec-simple-ngm}
+
+To compute $R_0$, we need to know the stable age distribution (the relative proportion in the juvenile and adult age classes) of the population, which we can find by solving for the disease-free equilibrium: $S_J^*=B/\alpha$ and $S_A^*=B/\mu$.
+With the stable age distribution, we can calculate $R_0$ by constructing the next generation matrix.
+The code below outlines how the next generation matrix is constructed using the $\alpha$ (aging from juvenile to adult), $\mu$ (death), $n$ (total births), $\gamma$ (recovery), $da$ (width of age groups in years), and $\beta$ (transmission) parameters. 
+
 
 The next generation matrix is a matrix that specifies how many new age-specific infections are generated by a typical infected individual of each age class (in a fully susceptible population).
 For example, let's consider an infected adult and ask how many new juvenile infections it generates: this is the product of the number of susceptible juveniles (from the stable age distribution), the per capita transmission rate from adults to juveniles and the average duration of infection, i.e. $S_J^* \times \beta_{JA} \times 1/ (\gamma+\mu)$.
@@ -1906,7 +1776,7 @@ $$
             \frac{\alpha}{(\gamma + \mu)} \frac{S_A^*\beta_{AA}}{(\gamma+\mu)} &
             \frac{S_A^* \beta_{AA}}{(\gamma + \mu)} 
     \end{pmatrix}
-$$ {#eq-ngm}
+$$ {#eq-simple-ngm}
 
 $R_0$ can then be computed as the dominant eigenvalue (i.e., the one with the largest real part) of this matrix. Let's take an example from a model with 2 age classes, from above. First, let's define the components of the next generation matrix:
 
@@ -1934,7 +1804,7 @@ beta_ngm <- matrix(c(
 )
 ```
 
-The Next Generation Matrix can be calculated in **R** as:
+The Next Generation Matrix can be calculated in `R` as:
 
 ```{r}
 ngm <- matrix(
@@ -1977,3 +1847,207 @@ max(
     )
 )
 ```
+
+### Age-structured NGM {#sec-age-structure-ngm}
+
+Many times it would be impractical to write out the NGM: there are often too many compartments in an age-structured model.
+In this instance, we want to use a slightly different approach, but the underlying principles are the same: each element of the NGM balances the number of new infections expected to be produced with the rates of individuals coming in and out of that compartment.
+
+#### Stable Age Distribution
+
+The first thing we need, as before, is the stable age distribution i.e., the disease-free equilibrium.
+There are two ways we can do this:
+
+1. Simulate the model without any infections for a sufficiently long time (simple, but less accurate)
+2. Do the math.
+
+##### Disease-Free Simulation
+
+```{r}
+# Set up initial conditions without any infections
+multistage_sonly_yinit <- c(
+    S = c(rep(250, 30)),
+    I = c(rep(0, 30)),
+    R = c(rep(0, 30))
+)
+
+# Solve disease free sim to get dfe
+multistage_sonly_sol <- deSolve::ode(
+    y = multistage_sonly_yinit,
+    times = seq(0, 300, by = 1),
+    func = multistage_model,
+    parms = multistage_params
+)
+
+# Calculate population size at each time point and save to dataframe
+multistage_sonly_pop <- tibble(
+    time = multistage_sonly_sol[, 1],
+    pop = apply(multistage_sonly_sol[, -1], 1 , sum)
+)
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(multistage_sonly_pop, aes(x = time, y = pop)) +
+    geom_area(fill = SIRcolors[4], alpha = 0.6) +
+    labs(
+        x = "Time",
+        y = "Population size"
+    )
+```
+
+#### Doing the Math
+
+Alternatively, we can get the stable age distribution by finding the population structure that balances the birth, aging, and death processes.
+At equilibrium, we have the matrix equation
+
+$$
+\begin{pmatrix}
+    -\alpha_1 & 0 & 0 & \cdots & 0\\
+    \alpha_1 & -\alpha_2 & 0 & \cdots & 0\\
+    0 & \alpha_2 & -\alpha_3 & \cdots & 0\\
+    \vdots &  & \ddots & \ddots & \vdots \\
+    0 & \cdots & & \alpha_{29} & -\alpha_{30}\\
+\end{pmatrix} .
+\begin{pmatrix}
+    n_1 \\ n_2 \\ n_3 \\ \vdots \\ n_{30}
+\end{pmatrix} +
+\begin{pmatrix}
+    B \\ 0 \\ 0 \\ \vdots \\ 0
+\end{pmatrix} =
+\begin{pmatrix}
+    0 \\ 0 \\ 0 \\ \vdots \\ 0
+\end{pmatrix}
+$$
+
+To solve this equation in `R`, we can do
+
+```{r}
+# solve(a, b) solves the equation a %*% x = b for x, so rearrange equation above so b is on the RHS of the equation
+multistage_stable_n <- solve(
+    aging_mat,
+    c(-1 * multistage_params[["births"]], rep(0, 29))
+)
+
+multistage_stable_n
+```
+
+```{r}
+# Check the final pop value of the S-only sim is equal to the sum of the stable age distribution calculated above
+round(tail(multistage_sonly_pop$pop, 1)) == sum(multistage_stable_n)
+```
+
+The following lines then compute $R_0$ using the next generation matrix method.
+This calculation comes from a recipe described in detail previously [@diekmann2000mathematical; @heesterbeekBriefHistoryR02002; @bjornstadAdvancedNextGenerationMatrix2018; @heffernanPerspectivesBasicReproductive2005; @hurfordNextgenerationToolsEvolutionary2009] (we would recommend starting with [@bjornstadAdvancedNextGenerationMatrix2018; and @heffernanPerspectivesBasicReproductive2005]).
+
+::: {.callout-warning}
+This is Aaron's original code and gives slightly different results than the calculations below.
+:::
+
+```{r}
+F_mat <- diag(multistage_stable_n) %*% multistage_params[["beta_mat"]] +
+    multistage_params[["aging_mat"]] -
+    diag(diag(multistage_params[["aging_mat"]]))
+
+V_mat <- diag(multistage_params[["recovery"]] - diag(multistage_params[["aging_mat"]]))
+
+max(
+    Re(
+        eigen(solve(V_mat, F_mat), only.values = TRUE)$values
+    )
+)
+```
+
+The steps below are copied from [@bjornstadAdvancedNextGenerationMatrix2018]
+
+1. Identify all n infected compartments
+2. Construct a n × 1 matrix, $\mathbf{F}$, that contains expressions for all completely new infections entering each infected compartment
+3. Construct a n × 1 matrix, $\mathbf{V^−}$, that contains expressions for all losses out of each infected compartment
+4. Construct a n × 1 matrix, $\mathbf{V^+}$, that contains expressions for all gains into each infected compartment that does not represent new infections but transfers among infectious classes
+5. Construct a n × 1 matrix, $\mathbf{V} = \mathbf{V^−} − \mathbf{V^+}$
+6. Generate two n × n Jacobian matrices $f$ and $v$ that are the partial derivatives of $\mathbf{F}$ and $\mathbf{V}$ with respect to the $n$ infectious state variables
+7. Evaluate the matrices at the disease free equilibrium (dfe), and finally
+8. $R_0$ is the spectral trace (greatest non-negative real eigenvalue) of $\mathbf{fv}^{−1}|_{\text{dfe}}$.
+
+Working through these steps looks like this:
+
+1. Our only infected compartments are the $I_i$ states, for each age group ($i \in [1, 30]$)
+To start, let's write out our differential equation:
+
+\begin{equation}
+    \frac{\dd{I_i}}{\dd{t}} = \lambda_i S_i - \gamma I_i + \alpha_{i-1} I_{i-1} - \alpha_i I_i
+\end{equation}
+
+
+
+2. We'll now calculate $\mathbf{F}$ and $\mathbf{f}$
+
+
+\begin{align*}
+    \mathbf{F} &= \begin{pmatrix}
+        \lambda_1 S_1 + \cancelto{0}{\alpha_0 I_0} \\
+        \vdots \\
+        \lambda_{30} S_{30} + \alpha_{29} I_{29}
+    \end{pmatrix} \\ \\
+    \mathbf{F} &= \begin{pmatrix}
+        \left(\beta_{1, 1} I_1 + \cdots + \beta_{1, 30} I_{30} \right)S_1 \\
+        \vdots \\
+        \left(\beta_{30, 1} I_1 + \cdots + \beta_{30, 30} I_{30} \right) S_{30} + \alpha_{29} I_{29}
+    \end{pmatrix} \\
+    \mathbf{f} &= \begin{pmatrix}
+        \frac{\partial F_1}{\partial I_1} & \cdots & \frac{\partial F_1}{\partial I_{30}} \\
+        \vdots & \ddots & \vdots \\
+        \frac{\partial F_{30}}{\partial I_1} & \cdots & \frac{\partial F_{30}}{\partial I_{30}}
+    \end{pmatrix} & \frac{\partial F_1}{\partial I_1} &= \frac{\partial}{\partial I_1} \left( \beta_{1, 1} I_1 + \cancelto{0}{\beta_{1, 2} I_2 + \cdots + \beta_{1, 30} I_{30}}\right) S_1 \\
+    & & \frac{\partial F_1}{\partial I_1} &= \beta_{1, 1} S_1 \\
+    \mathbf{f} &= \begin{pmatrix}
+        \beta_{1, 1} S_1 & \cdots & \beta_{1, 30} S_1 \\
+        \vdots & \ddots & \vdots \\
+        \beta_{30, 1} S_{30} & \cdots & \beta_{30, 30} S_{30}
+    \end{pmatrix}
+\end{align*}
+
+3. Now let's calculate $\mathbf{V^-}$, $\mathbf{V^+}$, $\mathbf{V}$, and $\mathbf{v}$
+
+\begin{align*}
+    \mathbf{V^-} &= \begin{pmatrix}
+        \gamma I_1 + \alpha_1 I_1 \\
+        \gamma I_2 + \alpha_2 I_2 \\
+        \vdots \\
+        \gamma I_{30} + \alpha_{30} I_{30}
+    \end{pmatrix} & \mathbf{V^+} &= \begin{pmatrix}
+        \cancelto{0}{\alpha_0 I_0} \\
+        \alpha_1 I_1 \\
+        \vdots \\
+        \alpha_{29} I_{29}
+    \end{pmatrix} \\ \\
+    \mathbf{V} &= \mathbf{V^-} - \mathbf{V^+} = \begin{pmatrix}
+        \gamma I_1 + \alpha_1 I_1 \\
+        \gamma I_2 + \alpha_2 I_2 - \alpha_1 I_1\\
+        \vdots \\
+        \gamma I_{30} + \alpha_{30} I_{30} - \alpha_{29} I_{29}
+    \end{pmatrix} \\ \\
+    \mathbf{v} &= \begin{pmatrix}
+        \pdv{V_1}{I_1} & \cdots & \pdv{V_1}{I_{30}} \\
+        \vdots & \ddots & \vdots \\
+        \pdv{V_{30}}{I_1} & \cdots & \pdv{V_{30}}{I_{30}}
+    \end{pmatrix} & \pdv{V_1}{I_1} &= \pdv{I_1} I_1 \left( \gamma + \alpha_1  \right)\\
+    & & \pdv{V_1}{I_1} &= \gamma + \alpha_1 \\ \\
+    & & \pdv{V_2}{I_1} &= \pdv{I_1} \left( \cancelto{0}{I_2 \left( \gamma + \alpha_2  \right)} - \alpha_1 I_1 \right)\\
+    & & \pdv{V_2}{I_1} &= - \alpha_1 \\ \\
+    & & \pdv{V_1}{I_2} &= \pdv{I_2} \cancelto{0}{I_1 \left( \gamma + \alpha_1  \right)} \\
+    & & \pdv{V_1}{I_2} &= 0 \\ \\
+    \mathbf{v} &= \begin{pmatrix}
+        \gamma + \alpha_1 & 0 &  \cdots  & 0\\
+        - \alpha_1 & \gamma + \alpha_2 & \cdots & 0 \\
+        \vdots & \ddots & \ddots & \vdots \\
+        0 & \cdots & - \alpha_{29} & \gamma + \alpha_{30}
+    \end{pmatrix} 
+\end{align*}
+
+4. To evaluate $\mathbf{f}$ and $\mathbf{v}$ at the disease-free equilibrium, we can use the results from our previous calculations.
+$\mathbf{v}$ doesn't have any state terms in the equation, so it is already evaluated at $\text{dfe}$.
+$\mathbf{f}|_{\text{dfe}}$ involves subsituting $S_i$ for the equilibrium population distribution that balances the births and aging processes.
+
+This translates to the function we [defined earlier](#ngm-function)
