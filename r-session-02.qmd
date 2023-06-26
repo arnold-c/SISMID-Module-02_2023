@@ -1185,6 +1185,27 @@ where $L$ is the life expectancy $\left(L = \frac{1}{\mu}\right)$ and $R_E$ is t
 ### Interactive Plot
 
 ```{ojs}
+init_R0 = 2.0
+init_vacc = 0.0
+init_lifeexp = 75
+```
+
+```{ojs}
+function set(input, value) {
+  input.value = value;
+  input.dispatchEvent(new Event("input", {bubbles: true}));
+}
+```
+
+```{ojs}
+//| panel: sidebar
+viewof reset = Inputs.button([
+  ["Reset all sliders", () => {
+    set(viewof R0, init_R0)
+    set(viewof vacc, init_vacc)
+    set(viewof lifeexp, init_lifeexp)
+  }]
+])
 //| panel: sidebar
 //| echo: false
 viewof R0 = Inputs.range(
