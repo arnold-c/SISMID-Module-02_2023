@@ -729,6 +729,22 @@ ages_beta_mat %>%
     )
 ```
 
+::: {.callout-note collapse="false"}
+You could also use the `filled.contour()` base-R function to plot the beta matrix without needing to do any dataframe modifications, but it doesn't look as nice ...
+
+```{r}
+#| code-fold: true
+filled.contour(
+    ages, ages, ages_beta_mat,
+    plot.title = title(
+        main = "Updated Mixing Matrix",
+        xlab = "Age J",
+        ylab = "Age A"
+    )
+)
+```
+:::
+
 We'll assume that, at the time of introduction, all children are susceptible, as are adults over 45, but that individuals aged 20--45 have seen the pathogen before and are immune.
 The vector `yinit` expresses these initial conditions.
 
@@ -1010,67 +1026,36 @@ calculate_R0(
 
 <div class="exercise">
 ### Exercise 4: 
-#### Change the juvenile and adult contact rates (ages_params[1] and ages_params[2]) to reflect different transmission within groups. Make the juvenile contact rate 0.02 to reflect higher contact among kids (e.g. in schools).
+#### Change the juvenile-juvenile contact rate tobe 0.025.
 </div>
 
-```{r}
-update_age_beta_mat <- matrix(data = 0.007, nrow = 30, ncol = 30)
-update_age_beta_mat[1:20, 1:20] <- 0.02
-update_age_beta_mat[6:16, 6:16] <- 0.03
 
-update_age_params <- list(
-    beta_mat = update_age_beta_mat,
-    recovery = ages_params["recovery"],
-    births = ages_params["births"],
-    aging_mat = aging_mat
-)
-```
-
-<div class="exercise">
-
-#### Edit the `ggplot` code from [Section 7.3](#fig-beta-mat) to plot the new beta matrix.
-
-</div>
 
 ```{r}
-#| column: body
-#| out-width: 100%
-update_age_beta_mat %>%
-    # Turn into a data.frame so we can use ggplot()
-    as.data.frame.table() %>%
-    mutate(
-        Age_J = rep(ages, 30),
-        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
-    ) %>%
-    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
-    geom_contour_filled(bins = 8) +
-    scale_fill_brewer(
-        palette = "Reds",
-        drop = FALSE
-    )
-```
+#| echo: false
+update_age_beta_mat <- ages_beta_mat
+update_age_beta_mat[1:20, 1:20] <- 0.025
 
-::: {.callout-note collapse="false"}
-You could also use the `filled.contour()` base-R function to plot the beta matrix without needing to do any dataframe modifications, but it doesn't look as nice ...
+update_age_params <- multistage_params
+update_age_params[["beta_mat"]] <- update_age_beta_mat
+```
 
 ```{r}
-#| code-fold: true
-filled.contour(
-    ages, ages, update_age_beta_mat,
-    plot.title = title(
-        main = "Updated Mixing Matrix",
-        xlab = "Age J",
-        ylab = "Age A"
-    )
-)
+#| eval: false
+update_age_beta_mat <- ages_beta_mat
+update_age_beta_mat[1:20, 1:20] <- ?
+
+update_age_params <- multistage_params
+update_age_params[["beta_mat"]] <- update_age_beta_mat
 ```
-:::
 
 <div class="exercise">
 #### Simulate and plot the age-structured SIR dynamics under your assumptions and record how the age-specific seroprevalence has changed.
 </div>
 
+
 ```{r}
+#| echo: false
 update_age_sol <- deSolve::ode(
     y = demog_yinit_ages,
     times = seq(0, 400, by = 0.1),
@@ -1080,40 +1065,7 @@ update_age_sol <- deSolve::ode(
 
 # Get the time series for each infectious age group
 update_age_infecteds <- update_age_sol[, 1 + iindex]
-```
 
-```{r}
-update_age_infecteds_df <- tibble(
-        time = update_age_sol[, 1],
-        Juveniles = apply(update_age_infecteds[, juvies], 1, sum),
-        Adults = apply(update_age_infecteds[, adults], 1, sum)
-    ) %>%
-    pivot_longer(
-        cols = c(Juveniles, Adults),
-        names_to = "age_group",
-        values_to = "infections"
-    ) %>%
-    mutate(
-        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
-    )
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(update_age_infecteds_df, aes(x = time, y = infections, color = age_group)) +
-    geom_line(linewidth = 1.5) +
-    scale_color_manual(
-        values = age_group_colors
-    ) +
-    labs(
-        x = "Time",
-        y = "Number of infections",
-        color = "Age group"
-    )
-```
-
-```{r}
 update_age_equil <- drop(tail(update_age_sol, 1))[-1]
 
 update_age_equil_n <- update_age_equil[sindex] +
@@ -1129,22 +1081,79 @@ update_age_equil_seroprev_df <- tibble(
 )
 ```
 
+::: {.callout-important}
+You will need to read and edit the following code carefully so that it runs with your updated parameters!
+:::
+
 ```{r}
-#| column: body
-#| out-width: 100%
-ggplot(update_age_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
-    geom_col(width = update_age_equil_seroprev_df$width, just = 1.0, color = "black") +
-    labs(
-        x = "Age",
-        y = "Seroprevalence"
-    ) +
-    scale_x_continuous(breaks = seq(0, 80, 10)) +
-    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
+#| eval: false
+update_age_sol <- deSolve::ode(
+    y = demog_yinit_ages,
+    times = seq(0, 400, by = 0.1),
+    func = multistage_model,
+    parms = ?
+)
+
+# Get the time series for each infectious age group
+update_age_infecteds <- update_age_sol[, 1 + iindex]
+
+# Get the last values in the time series
+update_age_equil <- drop(tail(update_age_sol, 1))[-1]
+
+# Calculate the number of individuals in each age group at the final timepoint
+update_age_equil_n <- update_age_equil[ ? ] +
+    update_age_equil[ ? ] +
+    update_age_equil[ ? ]
+
+# Calculate final seroprevalence
+# Hint: You need PREVIOUSLY infected individuals
+update_age_equil_seroprev <- update_age_equil[ ? ] / update_age_equil_n
+
+update_age_equil_seroprev_df <- tibble(
+    age = ages,
+    seroprev = update_age_equil_seroprev,
+    width = da_ages
+)
 ```
 
 <div class="exercise">
 #### Compute $R_0$ for your assumptions.
 </div>
+
+
+As described previously, the calculation for $R_0$ is difficult due to all the age categories and transitions.
+Use the `calculate_R0()` function we [defined earlier](#ngm-function) to calculate $R_0$ for our updated system.
+
+```{r}
+#| eval: false
+calculate_R0(
+    beta_mat = ?,
+    stable_n_mat = ?,
+    aging_mat = ?,
+    recovery_rate = ?
+)
+```
+
+```{r}
+#| echo: false
+update_age_R0 <- round(
+    calculate_R0(
+        beta_mat = update_age_params[["beta_mat"]],
+        stable_n_mat = multistage_stable_n,
+        aging_mat = update_age_params[["aging_mat"]],
+        recovery_rate = update_age_params[["recovery"]]
+    ),
+    digits = 2
+)
+```
+
+If you've done everything correctly, you should get $R_0 =$ `r update_age_R0`.
+This is higher than previously.
+Does this match your intuition, given our changes to the beta matrix?
+
+:::{.callout-warning}
+The following is Aaron's original code which provides slightly different results.
+:::
 
 ```{r}
 F_mat <- diag(update_age_equil_n) %*% update_age_beta_mat +
@@ -1155,45 +1164,6 @@ V_mat <- diag(update_age_params[["recovery"]] - diag(update_age_params[["aging_m
 
 # R0 approximately 6.53
 max(Re(eigen(solve(V_mat, F_mat), only.values = TRUE)$values))
-
-# Find the equilibrium values for each infected age group (last time point)
-update_age_infecteds_equil <- update_age_infecteds[dim(update_age_infecteds)[1], ]
-
-# Estimate R0 using the equilibrium values and how long people stay in each age group
-sum(ages * update_age_infecteds_equil / sum(update_age_infecteds_equil))
-
-# sum(update_age_infecteds_equil[15:23])
-```
-
-```{r}
-# Create dataframe of updated age solution for plotting
-update_age_df <- as_tibble(update_age_sol) %>%
-    mutate(across(everything(), as.numeric)) %>%
-    pivot_longer(
-        cols = -time,
-        names_to = c("state", "age_index"),
-        names_pattern = "(.)(.*)",
-        values_to = "number"
-    ) %>%
-    mutate(
-        age = ages[as.integer(age_index)],
-        state = factor(state, labels = c("S", "I", "R")),
-    )
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-# Plot number of individuals in each age group and state over time
-ggplot(update_age_df, aes(x = time, y = number, color = age, group = age)) +
-    geom_line(linewidth = 1) +
-    facet_wrap(~state, ncol = 1, scale = "free_y") +
-    labs(
-        x = "Time",
-        y = "Number of individuals",
-        color = "Age"
-    ) +
-    scale_color_continuous(low = age_group_colors[1], high = age_group_colors[2])
 ```
 
 ## R0 and the mean age of infection
@@ -1202,7 +1172,7 @@ To develop some intuition about the relationship between $R_0$ and the mean age 
 We will assume that the population is completely susceptible and that the force of infection is constant.
 We'll also assume that there is heterogenous mixing i.e. no age structure.
 
-As we've seen in Matt's [lecture on age structure](L05_age-structure.qmd), we can calculate the mean age of infection using the equation below:
+As we've seen in [Matt's lecture on age structure](L05_age-structure.qmd), we can calculate the mean age of infection using the equation below:
 
 $$
 A \approx \frac{L}{R_E - 1}
