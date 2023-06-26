@@ -1346,24 +1346,24 @@ mean_age_dots = [({
         x: {label: "R0", domain: [0, 10]},
         y: {label: "Mean Age of Infection", domain: [0, 100]},
         marks: [
-            Plot.line(mean_age_arrs.R0, {x: "R0", y: "mean_age", stroke: R0Color, strokeWidth: 6}),
             Plot.line(mean_age_arrs.Re, {x: "R0", y: "mean_age", stroke: ReColor, strokeWidth: 6}),
-            R0_mean_age <= 100 ?
-                [
-                Plot.dot(mean_age_dots, {x: "R0", y: "R0_mean_age", r: 12, stroke: R0Color, fill: R0Color, fillOpacity: 0.6}),
-                Plot.text(
-                    mean_age_dots,
-                    {x: "R0", y: "R0_mean_age", text: (d) => `R0 = ${d.R0}`, dx: -60, dy: 30, fontWeight:     "bold", fill: R0Color}
-                )
-                ] :
-            null,
+            Plot.line(mean_age_arrs.R0, {x: "R0", y: "mean_age", stroke: R0Color, strokeWidth: 6}),
             Re_mean_age <= 100 ?
                 [
                     Plot.dot(mean_age_dots, {x: "R0", y: "Re_mean_age", r: 12, stroke: ReColor, fill:     ReColor,  fillOpacity: 0.6}),
                     Plot.text(
                         mean_age_dots,
-                        {x: "R0", y: "Re_mean_age", text: (d) => `Re = ${d.Re}`, dx: 55, dy: -25,   fontWeight:     "bold", fill: ReColor}
+                        {x: "R0", y: "Re_mean_age", text: (d) => `Re = ${d.Re}`, dx: 55, dy: -25, fontWeight: "bold", fill: ReColor}
                     )
+                ] :
+            null,
+            R0_mean_age <= 100 ?
+                [
+                Plot.dot(mean_age_dots, {x: "R0", y: "R0_mean_age", r: 12, stroke: R0Color, fill: R0Color, fillOpacity: 0.6}),
+                Plot.text(
+                    mean_age_dots,
+                    {x: "R0", y: "R0_mean_age", text: (d) => `R0 = ${d.R0}`, dx: -60, dy: 30, fontWeight: "bold", fill: R0Color}
+                )
                 ] :
             null,
             Plot.arrow(mean_age_dots, {x1: "R0", x2: "R0", y1: "arrow_start", y2: "arrow_end", strokeWidth: 4, headLength: 5, inset: 15}),
