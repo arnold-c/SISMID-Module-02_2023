@@ -1341,7 +1341,7 @@ mean_age_dots = [({
             Plot.line(mean_age_arrs.R0, {x: "R0", y: "mean_age", stroke: R0Color, strokeWidth: 6}),
             Re_mean_age <= 100 ?
                 [
-                    Plot.dot(mean_age_dots, {x: "R0", y: "Re_mean_age", r: 12, stroke: ReColor, fill:     ReColor,  fillOpacity: 0.6}),
+                    vacc > 0.00 ? Plot.dot(mean_age_dots, {x: "R0", y: "Re_mean_age", r: 12, stroke: ReColor, fill:     ReColor,  fillOpacity: 0.6}) : null,
                     Plot.text(
                         mean_age_dots,
                         {x: "R0", y: "Re_mean_age", text: (d) => `Re = ${d.Re}`, dx: 55, dy: -25, fontWeight: "bold", fill: ReColor}
