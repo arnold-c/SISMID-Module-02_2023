@@ -1180,6 +1180,10 @@ $${#eq-mean-age}
 
 where $L$ is the life expectancy $\left(L = \frac{1}{\mu}\right)$ and $R_E$ is the effective reproductive number ($R_E = R_0 * (1 - p)$ where $p$ is the fraction of individuals vaccinated).
 
+::: {.callout-note collapse="false"}
+See @sec-mean-age-r-code for code you can run in `R` to investigate the relationship between $R_0$, vaccination coverage, life expectancy, and the mean age of infection.
+:::
+
 <div class="exercise">
 
 ### Interactive Plot
@@ -1366,285 +1370,19 @@ mean_age_dots = [({
 ```
 
 ### Interactive Plot Exercises
-#### Play with the Vaccination coverage and observe what happens to the mean age of infection.
-  
-</div>
+#### When you increase $R_0$ from 2.0 to 4.0, what happens to the mean age of infection?
+##### Is there a linear change? If not, why not?
 
-### R Code
+#### With $R_0$ to 4.0, approximately what level of vaccination coverage is required for a mean age of infection of 40 years?
 
-Now let's look at how we can investigate this using R.
-Unlike the interactive plot that simply uses @eq-mean-age to calculate the mean age of infection, let's use a more realistic age-structured model.
+#### Leaving $R_0$ and vaccination coverage the same, decrease the life expectancy to 50 years. What happens to the mean age of infection?
+##### If it changed, why do you think it did?
 
-Let's return to the earlier models with an age-class mixing matrix.
-But this time, we'll calculate $R_0$, the mean age of infection, and the number of cases between 15-35 years as we increase the rate of contact.
-
-Recall from the rubella and congenital rubella syndrome (CRS) example that the risk of severe disease outcomes depends on the risk of infection in reproductive age women.
-Recall also that increasing vaccination reduces $R_E$ -- so here we'll evaluate at several values of $R_0$ as a proxy for the impact of vaccination.
-We'll then calculate how the mean age of infection changes, and specifically how the absolute number of cases among individuals between the ages of 15-35 (as a proxy for reproductive age women) changes. 
-To do so, we'll make a loop and evaluate the code for each of 10 increasing levels of mixing (which will change $R_0$).
-
-::: {.callout-note title="Note about `map()`" collapse="false"}
-As you may have noticed previously, we often use the `map_*()` series of functions.
-We'll use that again here (`map_dfr()`).
-The full reasons are too complicated to get into here, but broadly speaking, the `map_*()` functions provide us guarantees over the output of our loops.
-If it runs, we know that something didn't get silently skipped, and that out output vector/list/dataframe is the same length as the inputs.
-The same can not be said for `for()` loops, and the base `apply` functions are more awkward to work with as they don't have a consistent syntax across the family of functions.
-
-To learn more, read [this section]() of our `R` primer.
+::: {.callout-note title="Hint"}
+Think about the definitions of $R_E$ and life expectancy in @eq-mean-age
 :::
 
-```{r}
-# Create vector of scalings to reduce R0
-scale_contact <- seq(0.2, 1, length = 10)
-
-# Create a new transmission matrix
-beta_low <- 0.007
-beta_medium <- 0.02
-beta_high <- 0.03
-
-beta_mat <- matrix(beta_low, nrow = 30, ncol = 30)
-beta_mat[1:20, 1:20] <- beta_medium
-beta_mat[6:16, 6:16] <- beta_high
-```
-
-```{r}
-# Create a dataframe where each row relates to a different R0 value
-R0_mean_age_contacts_df <- map_dfr(
-    # Apply the function to each item in the vector of R0 scaling factors
-    .x = scale_contact,
-    .f = function(.x) {
-        # Scale contacts
-        scaled_beta_mat <- beta_mat * .x
-
-        # Set up parameters
-        scaled_params <- list(
-            beta_mat = scaled_beta_mat,
-            recovery = multistage_params[["recovery"]],
-            aging_mat = multistage_params[["aging_mat"]],
-            births = multistage_params[["births"]]
-        )
-
-        # Solve the model
-        sol <- deSolve::ode(
-            y = demog_yinit_ages,
-            times = seq(0, 400, by = 0.1),
-            func = multistage_model,
-            parms = scaled_params
-        )
-
-        # Get stable age distribution
-        stable_n <- solve(
-            scaled_params[["aging_mat"]],
-            -c(scaled_params[["births"]], rep(0, 29))
-        )
-        
-        # Calculate R0 with NGM
-        F_mat <- diag(stable_n) %*% scaled_params[["beta_mat"]] +
-            scaled_params[["aging_mat"]] -
-            diag(diag(scaled_params[["aging_mat"]]))
-
-        V_mat <- diag(scaled_params[["recovery"]] -
-            diag(scaled_params[["aging_mat"]]))
-
-        R0 <- max(
-            Re(
-                eigen(solve(V_mat, F_mat), only.values = TRUE)$values
-            )
-        )
-
-        # Get final number of infected individuals for each I class
-        infecteds <- sol[dim(sol)[1], 1 + iindex]
-
-        # Calculate mean age of infection
-        mean_age <- sum(ages * infecteds / sum(infecteds))
-
-        # Calculate sum of cases between 15-35 years
-        sum_cases <- sum(infecteds[15:23])
-
-        # Return a dataframe with the values
-        return(tibble(R0, mean_age, sum_cases))
-    }
-)
-```
-
-Now we can make a table of the results and plot mean age and the sum of cases between 15-35 years of age as a function of $R_0$.
-
-```{r}
-#| column: body
-#| out-width: 100%
-# Create a table from the dataframe
-gt(R0_mean_age_contacts_df) %>%
-    fmt_number(
-        columns = everything(),
-        decimals = 2
-    ) %>%
-    # Relabel the column headers
-    cols_label(
-        R0 = md("**R0**"),
-        mean_age = md("**Mean age of<br>infection**"),
-        sum_cases = md("**Total cases between<br>15-35 years**")
-    ) %>%
-    # Apply style to the table with gray alternating rows
-    opt_stylize(style = 1, color = 'gray') %>%
-    # Increate space between columns
-    opt_horizontal_padding(scale = 3) %>%
-    cols_align("center")
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-R0_mean_age_contacts_df %>%
-    # Convert to long data frame for facet plotting
-    pivot_longer(-R0, names_to = "metric", values_to = "value") %>%
-    ggplot(aes(x = R0, y = value)) +
-    geom_line(color = "slategray4") +
-    geom_point(shape = 21, size = 5, fill = "slategray4", alpha = 0.8) +
-    facet_wrap(
-        ~metric,
-        scales = "free_y",
-        labeller = as_labeller(c(
-            mean_age = "Mean Age of Infection",
-            sum_cases = "Total cases between 15-35 years"
-        ))
-    ) +
-    labs(
-        x = "R0",
-        y = "Value"
-    )
-```
-
-<div class="exercise">
-### Exercise 5: Try the same as you fix $R_0$ but change the birth rate (as if new infants were vaccinated), instead of changing the contact rate.
 </div>
-
-For example, if the birth rate was 100 before, try using a sequence of birth rates ranging from 100 (i.e. no new infants are vaccinated) to 75 (i.e., 25% of new infants are vaccinated). You can use the technique we used above, where we ran the simulation in a loop multiple times, for varying levels of contact, modifying it to run on varying levels of births (e.g., between 75 and 100). 
-
-```{r}
-births_seq <- seq(75, 100, length = 10)
-```
-
-```{r}
-R0_mean_age_births_df <- map_dfr(
-    .x = births_seq,
-    .f = function(.x) {
-
-        # Set up parameters
-        births_params <- list(
-            beta_mat = beta_mat,
-            recovery = multistage_params[["recovery"]],
-            aging_mat = multistage_params[["aging_mat"]],
-            births = .x
-        )
-
-        # Solve the model
-        sol <- deSolve::ode(
-            y = demog_yinit_ages,
-            times = seq(0, 400, by = 0.1),
-            func = multistage_model,
-            parms = births_params
-        )
-
-        # Get stable age distribution
-        stable_n <- solve(
-            births_params[["aging_mat"]],
-            -c(births_params[["births"]], rep(0, 29))
-        )
-        
-        # Calculate R0 with NGM
-        F_mat <- diag(stable_n) %*% births_params[["beta_mat"]] +
-            births_params[["aging_mat"]] -
-            diag(diag(births_params[["aging_mat"]]))
-
-        V_mat <- diag(births_params[["recovery"]] -
-            diag(births_params[["aging_mat"]]))
-
-        R0 <- max(
-            Re(
-                eigen(solve(V_mat, F_mat), only.values = TRUE)$values
-            )
-        )
-
-        # Get final number of infected individuals for each I class
-        infecteds <- sol[dim(sol)[1], 1 + iindex]
-
-        # Calculate mean age of infection
-        mean_age <- sum(ages * infecteds / sum(infecteds))
-
-        # Calculate sum of cases between 15-35 years
-        sum_cases <- sum(infecteds[15:23])
-
-        # Return a dataframe with the values
-        return(tibble(births = .x, R0, mean_age, sum_cases))
-    }
-)
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-gt(R0_mean_age_births_df) %>%
-    fmt_number(
-        columns = everything(),
-        decimals = 2
-    ) %>%
-    cols_label(
-        births = md("**Birth rate**"),
-        R0 = md("**R0**"),
-        mean_age = md("**Mean age of<br>infection**"),
-        sum_cases = md("**Total cases between<br>15-35 years**")
-    ) %>%
-    opt_stylize(style = 1, color = 'gray') %>%
-    opt_horizontal_padding(scale = 3) %>%
-    cols_align("center")
-```
-
-```{r}
-R0_mean_age_births_df_long <- R0_mean_age_births_df %>%
-    pivot_longer(c(mean_age, sum_cases), names_to = "metric", values_to = "value") 
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-R0_mean_age_births_df_long %>%
-    ggplot(aes(x = R0, y = value)) +
-    geom_line(color = "slategray4") +
-    geom_point(shape = 21, size = 5, fill = "slategray4", alpha = 0.8) +
-    facet_wrap(
-        ~metric,
-        scales = "free_y",
-        labeller = as_labeller(c(
-            mean_age = "Mean Age of Infection",
-            sum_cases = "Total cases between 15-35 years"
-        ))
-    ) +
-    labs(
-        x = "R0",
-        y = "Value"
-    )
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-R0_mean_age_births_df_long %>%
-    ggplot(aes(x = births, y = value)) +
-    geom_line(color = "slategray4") +
-    geom_point(shape = 21, size = 5, fill = "slategray4", alpha = 0.8) +
-    facet_wrap(
-        ~metric,
-        scales = "free_y",
-        labeller = as_labeller(c(
-            mean_age = "Mean Age of Infection",
-            sum_cases = "Total cases between 15-35 years"
-        ))
-    ) +
-    labs(
-        x = "Births",
-        y = "Value"
-    )
-```
 
 ## What do real contact networks look like?
 
@@ -1870,8 +1608,9 @@ Need to check what's going on here as just recycling previous code and doesn't d
 
 How does this R0 value compare to the R0 value obtained from Exercise 4?
 
-## Bonus: Calculating R0 Using a Next Generation Matrix
-### Simple model structure {#sec-simple-ngm}
+## Bonus Materials
+### Calculating $R_0$ with the Next Generation Matrix
+#### Simple model structure {#sec-simple-ngm}
 
 To compute $R_0$, we need to know the stable age distribution (the relative proportion in the juvenile and adult age classes) of the population, which we can find by solving for the disease-free equilibrium: $S_J^*=B/\alpha$ and $S_A^*=B/\mu$.
 With the stable age distribution, we can calculate $R_0$ by constructing the next generation matrix.
@@ -1964,12 +1703,12 @@ max(
 )
 ```
 
-### Age-structured NGM {#sec-age-structure-ngm}
+#### Age-structured NGM {#sec-age-structure-ngm}
 
 Many times it would be impractical to write out the NGM: there are often too many compartments in an age-structured model.
 In this instance, we want to use a slightly different approach, but the underlying principles are the same: each element of the NGM balances the number of new infections expected to be produced with the rates of individuals coming in and out of that compartment.
 
-#### Stable Age Distribution
+##### Stable Age Distribution
 
 The first thing we need, as before, is the stable age distribution i.e., the disease-free equilibrium.
 There are two ways we can do this:
@@ -1977,7 +1716,7 @@ There are two ways we can do this:
 1. Simulate the model without any infections for a sufficiently long time (simple, but less accurate)
 2. Do the math.
 
-##### Disease-Free Simulation
+###### Disease-Free Simulation
 
 ```{r}
 # Set up initial conditions without any infections
@@ -2013,7 +1752,7 @@ ggplot(multistage_sonly_pop, aes(x = time, y = pop)) +
     )
 ```
 
-#### Doing the Math
+###### Doing the Math
 
 Alternatively, we can get the stable age distribution by finding the population structure that balances the birth, aging, and death processes.
 At equilibrium, we have the matrix equation
@@ -2167,3 +1906,144 @@ $\mathbf{v}$ doesn't have any state terms in the equation, so it is already eval
 $\mathbf{f}|_{\text{dfe}}$ involves subsituting $S_i$ for the equilibrium population distribution that balances the births and aging processes.
 
 This translates to the function we [defined earlier](#ngm-function)
+
+
+### Mean age of infection `R` code {#sec-mean-age-r-code}
+
+Now let's look at how we can investigate our the relationships between the mean age of infection and $R_0$ and the vaccination coverage using `R`.
+Unlike the interactive plot that simply uses @eq-mean-age to calculate the mean age of infection, we will use a more realistic age-structured model.
+
+Let's return to the earlier models with an age-class mixing matrix.
+But this time, we'll calculate $R_0$, the mean age of infection, and the number of cases that occur in individuals between 15-35 years as we increase the contact rate.
+
+Recall from the rubella and congenital rubella syndrome (CRS) example that the risk of severe disease outcomes depends on the risk of infection in reproductive age women (here we'll use individuals between 15 and 35 years as a proxy; in reality we would want to account for the differential rate of reproduction at different ages, including those above 35 years).
+Recall also that increasing vaccination reduces $R_E$ -- for simplicity here, so we don't have to add vaccination into the code, we'll simply change $R_0$ because we already know that will give us outcomes that are dynamically equivalent to increasing the proportion of children born who are vaccinated.
+We'll then calculate how the mean age of infection changes, and specifically how the absolute number of cases among individuals between the ages of 15-35 (as a proxy for reproductive age women) changes. 
+To do so, we'll make a loop and evaluate the code for each of 10 decreaing levels of mixing (which will reduce $R_0$ and we can interpret as analogous to the reduction in $R_E$ that would result from increasing vaccination).
+
+::: {.callout-note title="Note about `map()`" collapse="false"}
+As you may have noticed previously, we often use the `map_*()` series of functions.
+We'll use that again here (`map_dfr()`).
+The full reasons are too complicated to get into here, but broadly speaking, the `map_*()` functions provide us guarantees over the output of our loops.
+If it runs, we know that something didn't get silently skipped, and that out output vector/list/dataframe is the same length as the inputs.
+The same can not be said for `for()` loops, and the base `apply` functions are more awkward to work with as they don't have a consistent syntax across the family of functions.
+
+To learn more, read [this section]() of our `R` primer.
+:::
+
+```{r}
+# Create vector of scalings to reduce R0
+scale_contact <- seq(1, .2, length = 10)
+
+# Create a new transmission matrix
+beta_low <- 0.007
+beta_medium <- 0.02
+beta_high <- 0.03
+
+beta_mat <- matrix(beta_low, nrow = 30, ncol = 30)
+beta_mat[1:20, 1:20] <- beta_medium
+beta_mat[6:16, 6:16] <- beta_high
+
+scaled_params <- multistage_params
+```
+
+```{r}
+# Create a dataframe where each row relates to a different R0 value
+R0_mean_age_contacts_df <- map_dfr(
+    # Apply the function to each item in the vector of R0 scaling factors
+    .x = scale_contact,
+    .f = function(.x) {
+        # Scale contacts
+        scaled_beta_mat <- beta_mat * .x
+
+        # Set up parameters
+        scaled_params[["beta_mat"]] <- scaled_beta_mat
+
+        # Solve the model
+        sol <- deSolve::ode(
+            y = demog_yinit_ages,
+            times = seq(0, 400, by = 0.1),
+            func = multistage_model,
+            parms = scaled_params
+        )
+
+        # Get stable age distribution
+        stable_n <- solve(
+            scaled_params[["aging_mat"]],
+            -c(scaled_params[["births"]], rep(0, 29))
+        )
+
+        R0 <- calculate_R0(
+            beta_mat = scaled_params[["beta_mat"]],
+            stable_n_mat = stable_n,
+            aging_mat = scaled_params[["aging_mat"]],
+            recovery = scaled_params[["recovery"]]
+        )
+
+        # Get final number of infected individuals for each I class
+        infecteds <- sol[dim(sol)[1], 1 + iindex]
+
+        # Calculate mean age of infection
+        mean_age <- sum(ages * infecteds / sum(infecteds))
+
+        # Calculate sum of cases between 15-35 years 
+        # recall, from the figures above, that that this is the equilibrium prevalence
+        # of infection in these age classes, or the average numbef of individuals that are infected 
+        # at any given time in these age classes. Note that we're not differentiating between 
+        # individuals who can and cannot get pregnant here. So we're making an implicit assumption that
+        # there no difference in the risk of rubella infection in these groups so that if prevalence goes
+        # up in one group, it goes up in the other.
+        sum_cases <- sum(infecteds[15:23])
+
+        # Return a dataframe with the values
+        return(tibble(R0, mean_age, sum_cases))
+    }
+)
+```
+
+Now we can make a table of the results and plot mean age and the sum of cases between 15-35 years of age as a function of $R_0$.
+
+```{r}
+#| column: body
+#| out-width: 100%
+# Create a table from the dataframe
+gt(R0_mean_age_contacts_df) %>%
+    fmt_number(
+        columns = everything(),
+        decimals = 2
+    ) %>%
+    # Relabel the column headers
+    cols_label(
+        R0 = md("**R0**"),
+        mean_age = md("**Mean age of<br>infection**"),
+        sum_cases = md("**Total cases between<br>15-35 years**")
+    ) %>%
+    # Apply style to the table with gray alternating rows
+    opt_stylize(style = 1, color = 'gray') %>%
+    # Increate space between columns
+    opt_horizontal_padding(scale = 3) %>%
+    cols_align("center")
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+R0_mean_age_contacts_df %>%
+    # Convert to long data frame for facet plotting
+    pivot_longer(-R0, names_to = "metric", values_to = "value") %>%
+    ggplot(aes(x = R0, y = value)) +
+    geom_line(color = "slategray4") +
+    geom_point(shape = 21, size = 5, fill = "slategray4", alpha = 0.8) +
+    facet_wrap(
+        ~metric,
+        scales = "free_y",
+        labeller = as_labeller(c(
+            mean_age = "Mean Age of Infection",
+            sum_cases = "Total cases between 15-35 years"
+        ))
+    ) +
+    labs(
+        x = "R0",
+        y = "Value"
+    )
+```
