@@ -1135,10 +1135,13 @@ f_mat <- multistage_params[["beta_mat"]] * multistage_stable_n
 
 # set off-diag of non-inf transition jac pde to neg aging of prev age group
 # (use aging matrix as already calculated in correct places)
-v_mat <- multistage_params[["aging_mat"]]
-
+v_mat <- -multistage_params[["aging_mat"]]
 # Update the diagonal of non-inf transition jac to add recovery rate
-diag(v_mat) <- multistage_params[["recovery"]] + diag(v_mat)
+diag(v_mat) <- diag(v_mat) + multistage_params[["recovery"]]
+
+## Alternative method of calculating using age bands directly
+# v_mat <- diag(multistage_params[["recovery"]] + 1 / da_ages)
+# v_mat[row(v_mat) - col(v_mat) == 1] <- - 1 / head(da_ages, -1)
 
 # spectral trace
 max(Re(eigen(solve(v_mat, f_mat), only.values = TRUE)$values))
