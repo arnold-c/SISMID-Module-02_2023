@@ -524,7 +524,13 @@ demog_df <- demog_sol %>%
 #| out-width: 100%
 ggplot(demog_df, aes(x = time, y = value, color = state)) +
     geom_line(linewidth = 1.5) +
-    facet_wrap(~group, nrow = 2, scales = "free_y") +
+    facet_wrap(
+        ~group, nrow = 2, scales = "free_y",
+        labeller = as_labeller(c(
+            `Group A` = "Adults",
+            `Group J` = "Juveniles"
+        ))
+    ) +
     scale_color_manual(
         values = SIRcolors,
         labels = c("Susceptible", "Infected", "Recovered", "Total")
@@ -717,18 +723,19 @@ ages_beta_mat %>%
     # Turn into a data.frame so we can use ggplot()
     as.data.frame.table() %>%
     mutate(
-        Age_J = rep(ages, 30),
+        age_contactor = rep(ages, 30),
         # Repeat each age in ages vector 30 times, and place in a list, then unlist 
         # to be stacked into a single dataframe column
-        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
+        age_contactee = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
     ) %>%
-    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
+    ggplot(aes(x = age_contactor, y = age_contactee, z = Freq)) +
     geom_contour_filled(bins = 8) +
     scale_fill_brewer(
         palette = "Reds",
         # Don't drop unused bins as useful for ensuring extremities properly binned
         drop = FALSE
-    )
+    ) +
+    labs(x = "Age of Contactor", y = "Age of Contactee")
 ```
 
 ::: {.callout-note collapse="false"}
@@ -739,9 +746,8 @@ You could also use the `filled.contour()` base-R function to plot the beta matri
 filled.contour(
     ages, ages, ages_beta_mat,
     plot.title = title(
-        main = "Updated Mixing Matrix",
-        xlab = "Age J",
-        ylab = "Age A"
+        xlab = "Age of Contactor",
+        ylab = "Age of Contactee"
     )
 )
 ```
@@ -775,6 +781,18 @@ adults <- 21:30
 ```
 
 Now, to capture the aging process, it's convenient to define another matrix to hold the rates of movement between age classes.
+Generally, this matrix would look like this:
+
+$$
+\begin{pmatrix}
+    -\alpha_1 & 0 & 0 & \cdots & 0\\
+    \alpha_1 & -\alpha_2 & 0 & \cdots & 0\\
+    0 & \alpha_2 & -\alpha_3 & \cdots & 0\\
+    \vdots &  & \ddots & \ddots & \vdots \\
+    0 & \cdots & & \alpha_{29} & -\alpha_{30}\\
+\end{pmatrix}
+$${#eq-aging-mat}
+
 
 ```{r}
 # Create a diagonal matrix that holds the rates of aging out of each age class
@@ -789,17 +807,13 @@ aging_mat[row(aging_mat) - col(aging_mat) == 1] <- 1 / head(da_ages, -1)
 Have a look at the aging matrix, for example by doing:
 
 ```{r}
-# move fast through the 1-year age classes - negatives are moves out, positives are moves in
+# Move fast through the 1-year age classes - negatives are moves out, positives are moves in
+# Cannot move between non-adjacent age classes
 aging_mat[1:5, 1:5]
 ```
 
 ```{r}
-# don't age between these classes -- e.g. can't age from 1 to 6
-aging_mat[1:10, 1:10]
-```
-
-```{r}
-# move slowly between the wider age classes
+# Move slowly between the wider age classes
 aging_mat[25:30, 25:30]
 ```
 
@@ -809,15 +823,16 @@ aging_mat[25:30, 25:30]
 aging_mat %>%
     as.data.frame.table() %>%
     mutate(
-        Age_J = rep(ages, 30),
-        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30)))
+        age_recipient = rep(ages, 30),
+        age_source = unlist(purrr::map(.x = ages, ~rep(.x, 30)))
     ) %>%
-    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
+    ggplot(aes(x = age_source, y = age_recipient, z = Freq)) +
     geom_contour_filled() +
     scale_fill_brewer(
         palette = "RdBu",
         drop = FALSE
-    )
+    ) +
+    labs(x = "Source Age Group", y = "Recipient Age Group")
 ```
 
 ### Exercise 2: What can you say about its structure? How are the different age groups in contact with each other?
@@ -1781,7 +1796,7 @@ ggplot(multistage_sonly_pop, aes(x = time, y = pop)) +
 ###### Doing the Math
 
 Alternatively, we can get the stable age distribution by finding the population structure that balances the birth, aging, and death processes.
-At equilibrium, we have the matrix equation
+We have already seen the aging matrix in @eq-aging-mat, and at equilibrium, we have the matrix equation
 
 $$
 \begin{pmatrix}
