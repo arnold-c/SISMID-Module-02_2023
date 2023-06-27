@@ -1866,9 +1866,9 @@ R0_mean_age_contacts_df %>%
     )
 ```
 
-## What Do Real Contact Networks Look Like?
+### What do real contact networks look like?
 
-The POLYMOD study **Mossong, 2008** was a journal-based look into the contact network in contemporary European society.
+The POLYMOD study [@mossongSocialContactsMixing2008a] was a journal-based look into the contact network in contemporary European society.
 Let's have a look what these data tell us about the contact structure.
 
 ```{r}
@@ -1895,6 +1895,7 @@ mossong_mat <- mossong_cont_net %>%
 
 rownames(mossong_mat) <- mossong_ages
 
+# Create a symmetrical contact matrix
 mossong_mat_sym <- (mossong_mat + t(mossong_mat)) / 2
 ```
 
@@ -1907,9 +1908,9 @@ Notices that we are using the raw matrix object, not a long dataframe, as previo
 filled.contour(
     ages, ages, log10(mossong_mat),
     plot.title = title(
-        main = "Log10 of raw contact rate",
-        xlab = "Age of contactor",
-        ylab = "Age of contactee"
+        main = "Log10 of Raw Contact Rate",
+        xlab = "Age of Contactor",
+        ylab = "Age of Contactee"
     )
 )
 ```
@@ -1920,9 +1921,9 @@ filled.contour(
 filled.contour(
     ages, ages, log10(mossong_mat_sym),
     plot.title = title(
-        main = "Log10 of symmetrical contact rate",
-        xlab = "Age of contactor",
-        ylab = "Age of contactee"
+        main = "Log10 of Symmetrical Contact Rate",
+        xlab = "Age of Contactor",
+        ylab = "Age of Contactee"
     )
 )
 ```
@@ -1988,15 +1989,22 @@ filled.contour(
 Now let's simulate the introduction of such a pathogen into a population characterized by this contact structure.
 
 ```{r}
+# Update the parameters with the POLYMOD-based beta matrix
+mossong_params <- multistage_params
+mossong_params[["beta_mat"]] <- mossong_beta_mat
+
+# Solve the model with the updated parameters
 mossong_sol <- deSolve::ode(
     y = demog_yinit_ages,
     times = seq(0, 200, by = 0.5),
     func = multistage_model,
-    parms = multistage_params
+    parms = mossong_params
 )
 
+# Extract the timeseries of infectious individuals
 mossong_infecteds <- mossong_sol[, 1 + iindex]
 
+# Convert infectious individual timeseries to dataframe for plotting
 mossong_infecteds_df <- tibble(
         time = mossong_sol[, 1],
         Juveniles = apply(mossong_infecteds[, juvies], 1, sum),
@@ -2030,14 +2038,18 @@ ggplot(mossong_infecteds_df, aes(x = time, y = infections, color = age_group)) +
 As before, we can also look at the equilibrium seroprevalence
 
 ```{r}
+# Get last time point
 mossong_equil <- drop(tail(mossong_sol, 1))[-1]
 
+# Calculate number of individuals in each age group at end of simulation
 mossong_equil_n <- mossong_equil[sindex] +
     mossong_equil[iindex] +
     mossong_equil[rindex]
 
+# Calculate equilibrium seroprevalence
 mossong_equil_seroprev <- mossong_equil[rindex] / mossong_equil_n
 
+# Convert to dataframe for plotting
 mossong_equil_seroprev_df <- tibble(
     # We can reuse the ages vectors from before as they are the same
     # as the POLYMOD data
@@ -2063,29 +2075,20 @@ ggplot(mossong_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
 and compute the $R_0$ for this infection.
 
 ```{r}
-n_p <- solve(
-    multistage_params[["aging_mat"]],
-    -c(multistage_params[["births"]], rep(0, 29))
+mossong_stable_n <- solve(
+    mossong_params[["aging_mat"]],
+    -c(mossong_params[["births"]], rep(0, 29))
 )
 
-F_p <- diag(n_p) %*% multistage_params[["beta_mat"]] +
-    multistage_params[["aging_mat"]] -
-    diag(diag(multistage_params[["aging_mat"]]))
-
-V_p <- diag(
-    multistage_params[["recovery"]] -
-        diag(multistage_params[["aging_mat"]])
-    )
-
-max(
-    Re(
-        eigen(solve(V_p, F_p),only.values=T)$values
-    )
+calculate_R0(
+    beta_mat = mossong_params[["beta_mat"]],
+    stable_n_mat = mossong_stable_n,
+    aging_mat = mossong_params[["aging_mat"]],
+    recovery = mossong_params[["recovery"]]
 )
 ```
 
-::: {.callout-important}
-Need to check what's going on here as just recycling previous code and doesn't depend on Mossong Matrix.
+::: {.callout-note title="QUESTION"}
+How does this R0 value compare to the R0 value obtained from @sec-ex-3?
 :::
 
-How does this R0 value compare to the R0 value obtained from Exercise 4?
