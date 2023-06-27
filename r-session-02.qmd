@@ -1207,7 +1207,7 @@ V_mat <- diag(update_age_params[["recovery"]] - diag(update_age_params[["aging_m
 max(Re(eigen(solve(V_mat, F_mat), only.values = TRUE)$values))
 ```
 
-## R0 and the mean age of infection
+## R0 and the Mean Age of Infection
 
 To develop some intuition about the relationship between $R_0$ and the mean age of infection, let's play with an interactive plot.
 We will assume that the population is completely susceptible and that the force of infection is constant.
@@ -1227,7 +1227,7 @@ See @sec-mean-age-r-code for code you can run in `R` to investigate the relation
 
 <div class="exercise">
 
-### Interactive Plot
+### Interactive plot
 
 ```{ojs}
 init_R0 = 2.0
@@ -1410,7 +1410,7 @@ mean_age_dots = [({
 }
 ```
 
-### Interactive Plot Exercises
+### Interactive plot exercises
 #### When you increase $R_0$ from 2.0 to 4.0, what happens to the mean age of infection?
 ##### Is there a linear change? If not, why not?
 
@@ -1425,229 +1425,6 @@ Think about the definitions of $R_E$ and life expectancy in @eq-mean-age
 
 </div>
 
-## What do real contact networks look like?
-
-The POLYMOD study **Mossong, 2008** was a journal-based look into the contact network in contemporary European society.
-Let's have a look what these data tell us about the contact structure.
-
-```{r}
-mossong_cont_net <- read.csv(
-    url("http://www.math.mcmaster.ca/~bolker/eeid/data/mossong.csv"),
-    as.is = TRUE
-)
-
-mossong_ages <- unique(mossong_cont_net$contactor)
-mossong_cont_net$contactor <- ordered(mossong_cont_net$contactor, levels = mossong_ages)
-mossong_cont_net$contactee <- ordered(mossong_cont_net$contactee, levels = mossong_ages)
-```
-
-Since contacts are symmetric, we'll need to estimate the symmetric contact matrix.
-
-```{r}
-mossong_mat <- mossong_cont_net %>%
-    pivot_wider(
-        names_from = contactor,
-        values_from = contact.rate
-    ) %>%
-    select(-contactee) %>%
-    as.matrix()
-
-rownames(mossong_mat) <- mossong_ages
-
-mossong_mat_sym <- (mossong_mat + t(mossong_mat)) / 2
-```
-
-Here we'll use the `filled.contour` function to visualize the contact matrix, to show you an alternative way of visualizing contact matrices.
-Notices that we are using the raw matrix object, not a long dataframe, as previously.
-
-```{r}
-#| column: body
-#| out-width: 100%
-filled.contour(
-    ages, ages, log10(mossong_mat),
-    plot.title = title(
-        main = "Log10 of raw contact rate",
-        xlab = "Age of contactor",
-        ylab = "Age of contactee"
-    )
-)
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-filled.contour(
-    ages, ages, log10(mossong_mat_sym),
-    plot.title = title(
-        main = "Log10 of symmetrical contact rate",
-        xlab = "Age of contactor",
-        ylab = "Age of contactee"
-    )
-)
-```
-
-```{r}
-mossong_cont_sums <- tibble(
-        age = factor(mossong_ages, levels = mossong_ages),
-        contactees = rowSums(mossong_mat),
-        contactors = colSums(mossong_mat)
-    ) %>%
-    pivot_longer(-age, names_to = "type", values_to = "total_contacts") 
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(
-        mossong_cont_sums,
-        aes(x = age, y = total_contacts, color = type, fill = type, group = type)
-    ) +
-    geom_path(linewidth = 1) +
-    geom_point(
-        position = "identity",
-        alpha = 0.8,
-        shape = 21,
-        size = 4
-    ) +
-    scale_color_manual(
-        values = c("slategray4", "navy"),
-        labels = c("Contactees", "Contactors"),
-        aesthetics = c("color", "fill")
-    ) +
-    guides(color = "none") +
-    labs(
-        x = "Age",
-        y = "Total contacts",
-        fill = "Type of contact"
-    ) +
-    theme(legend.position = "bottom")
-```
-
-While this matrix tells us how many contacts are made per year by an individual of each age, it doesn't tell us anything about the probability that a contact results in communication of infection.
-Let's assume that each contact has a constant probability $q$ of resulting in a transmission event.
-
-```{r}
-q <- 3e-5
-mossong_beta_mat <- q * mossong_mat_sym
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-filled.contour(
-    ages, ages, log10(mossong_beta_mat),
-    plot.title = title(
-        main = "WAIFW matrix based on POLYMOD data",
-        xlab = "Age",
-        ylab = "Age"
-    )
-)
-```
-
-Now let's simulate the introduction of such a pathogen into a population characterized by this contact structure.
-
-```{r}
-mossong_sol <- deSolve::ode(
-    y = demog_yinit_ages,
-    times = seq(0, 200, by = 0.5),
-    func = multistage_model,
-    parms = multistage_params
-)
-
-mossong_infecteds <- mossong_sol[, 1 + iindex]
-
-mossong_infecteds_df <- tibble(
-        time = mossong_sol[, 1],
-        Juveniles = apply(mossong_infecteds[, juvies], 1, sum),
-        Adults = apply(mossong_infecteds[, adults], 1, sum)
-    ) %>%
-    pivot_longer(
-        cols = c(Juveniles, Adults),
-        names_to = "age_group",
-        values_to = "infections"
-    ) %>%
-    mutate(
-        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
-    )
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(mossong_infecteds_df, aes(x = time, y = infections, color = age_group)) +
-    geom_line(linewidth = 1.5) +
-    scale_color_manual(
-        values = age_group_colors
-    ) +
-    labs(
-        x = "Time",
-        y = "Number of infections",
-        color = "Age group"
-    )
-```
-
-As before, we can also look at the equilibrium seroprevalence
-
-```{r}
-mossong_equil <- drop(tail(mossong_sol, 1))[-1]
-
-mossong_equil_n <- mossong_equil[sindex] +
-    mossong_equil[iindex] +
-    mossong_equil[rindex]
-
-mossong_equil_seroprev <- mossong_equil[rindex] / mossong_equil_n
-
-mossong_equil_seroprev_df <- tibble(
-    # We can reuse the ages vectors from before as they are the same
-    # as the POLYMOD data
-    age = ages,
-    seroprev = mossong_equil_seroprev,
-    width = da_ages
-)
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(mossong_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
-    geom_col(width = mossong_equil_seroprev_df$width, just = 1.0, color = "black") +
-    labs(
-        x = "Age",
-        y = "Seroprevalence"
-    ) +
-    scale_x_continuous(breaks = seq(0, 80, 10)) +
-    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
-```
-
-and compute the $R_0$ for this infection.
-
-```{r}
-n_p <- solve(
-    multistage_params[["aging_mat"]],
-    -c(multistage_params[["births"]], rep(0, 29))
-)
-
-F_p <- diag(n_p) %*% multistage_params[["beta_mat"]] +
-    multistage_params[["aging_mat"]] -
-    diag(diag(multistage_params[["aging_mat"]]))
-
-V_p <- diag(
-    multistage_params[["recovery"]] -
-        diag(multistage_params[["aging_mat"]])
-    )
-
-max(
-    Re(
-        eigen(solve(V_p, F_p),only.values=T)$values
-    )
-)
-```
-
-::: {.callout-important}
-Need to check what's going on here as just recycling previous code and doesn't depend on Mossong Matrix.
-:::
-
-How does this R0 value compare to the R0 value obtained from Exercise 4?
 
 ## Bonus Materials
 ### Calculating $R_0$ with the Next Generation Matrix
@@ -2088,3 +1865,227 @@ R0_mean_age_contacts_df %>%
         y = "Value"
     )
 ```
+
+## What Do Real Contact Networks Look Like?
+
+The POLYMOD study **Mossong, 2008** was a journal-based look into the contact network in contemporary European society.
+Let's have a look what these data tell us about the contact structure.
+
+```{r}
+mossong_cont_net <- read.csv(
+    url("http://www.math.mcmaster.ca/~bolker/eeid/data/mossong.csv"),
+    as.is = TRUE
+)
+
+mossong_ages <- unique(mossong_cont_net$contactor)
+mossong_cont_net$contactor <- ordered(mossong_cont_net$contactor, levels = mossong_ages)
+mossong_cont_net$contactee <- ordered(mossong_cont_net$contactee, levels = mossong_ages)
+```
+
+Since contacts are symmetric, we'll need to estimate the symmetric contact matrix.
+
+```{r}
+mossong_mat <- mossong_cont_net %>%
+    pivot_wider(
+        names_from = contactor,
+        values_from = contact.rate
+    ) %>%
+    select(-contactee) %>%
+    as.matrix()
+
+rownames(mossong_mat) <- mossong_ages
+
+mossong_mat_sym <- (mossong_mat + t(mossong_mat)) / 2
+```
+
+Here we'll use the `filled.contour` function to visualize the contact matrix, to show you an alternative way of visualizing contact matrices.
+Notices that we are using the raw matrix object, not a long dataframe, as previously.
+
+```{r}
+#| column: body
+#| out-width: 100%
+filled.contour(
+    ages, ages, log10(mossong_mat),
+    plot.title = title(
+        main = "Log10 of raw contact rate",
+        xlab = "Age of contactor",
+        ylab = "Age of contactee"
+    )
+)
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+filled.contour(
+    ages, ages, log10(mossong_mat_sym),
+    plot.title = title(
+        main = "Log10 of symmetrical contact rate",
+        xlab = "Age of contactor",
+        ylab = "Age of contactee"
+    )
+)
+```
+
+```{r}
+mossong_cont_sums <- tibble(
+        age = factor(mossong_ages, levels = mossong_ages),
+        contactees = rowSums(mossong_mat),
+        contactors = colSums(mossong_mat)
+    ) %>%
+    pivot_longer(-age, names_to = "type", values_to = "total_contacts") 
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(
+        mossong_cont_sums,
+        aes(x = age, y = total_contacts, color = type, fill = type, group = type)
+    ) +
+    geom_path(linewidth = 1) +
+    geom_point(
+        position = "identity",
+        alpha = 0.8,
+        shape = 21,
+        size = 4
+    ) +
+    scale_color_manual(
+        values = c("slategray4", "navy"),
+        labels = c("Contactees", "Contactors"),
+        aesthetics = c("color", "fill")
+    ) +
+    guides(color = "none") +
+    labs(
+        x = "Age",
+        y = "Total contacts",
+        fill = "Type of contact"
+    ) +
+    theme(legend.position = "bottom")
+```
+
+While this matrix tells us how many contacts are made per year by an individual of each age, it doesn't tell us anything about the probability that a contact results in communication of infection.
+Let's assume that each contact has a constant probability $q$ of resulting in a transmission event.
+
+```{r}
+q <- 3e-5
+mossong_beta_mat <- q * mossong_mat_sym
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+filled.contour(
+    ages, ages, log10(mossong_beta_mat),
+    plot.title = title(
+        main = "WAIFW matrix based on POLYMOD data",
+        xlab = "Age",
+        ylab = "Age"
+    )
+)
+```
+
+Now let's simulate the introduction of such a pathogen into a population characterized by this contact structure.
+
+```{r}
+mossong_sol <- deSolve::ode(
+    y = demog_yinit_ages,
+    times = seq(0, 200, by = 0.5),
+    func = multistage_model,
+    parms = multistage_params
+)
+
+mossong_infecteds <- mossong_sol[, 1 + iindex]
+
+mossong_infecteds_df <- tibble(
+        time = mossong_sol[, 1],
+        Juveniles = apply(mossong_infecteds[, juvies], 1, sum),
+        Adults = apply(mossong_infecteds[, adults], 1, sum)
+    ) %>%
+    pivot_longer(
+        cols = c(Juveniles, Adults),
+        names_to = "age_group",
+        values_to = "infections"
+    ) %>%
+    mutate(
+        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
+    )
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(mossong_infecteds_df, aes(x = time, y = infections, color = age_group)) +
+    geom_line(linewidth = 1.5) +
+    scale_color_manual(
+        values = age_group_colors
+    ) +
+    labs(
+        x = "Time",
+        y = "Number of infections",
+        color = "Age group"
+    )
+```
+
+As before, we can also look at the equilibrium seroprevalence
+
+```{r}
+mossong_equil <- drop(tail(mossong_sol, 1))[-1]
+
+mossong_equil_n <- mossong_equil[sindex] +
+    mossong_equil[iindex] +
+    mossong_equil[rindex]
+
+mossong_equil_seroprev <- mossong_equil[rindex] / mossong_equil_n
+
+mossong_equil_seroprev_df <- tibble(
+    # We can reuse the ages vectors from before as they are the same
+    # as the POLYMOD data
+    age = ages,
+    seroprev = mossong_equil_seroprev,
+    width = da_ages
+)
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(mossong_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
+    geom_col(width = mossong_equil_seroprev_df$width, just = 1.0, color = "black") +
+    labs(
+        x = "Age",
+        y = "Seroprevalence"
+    ) +
+    scale_x_continuous(breaks = seq(0, 80, 10)) +
+    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
+```
+
+and compute the $R_0$ for this infection.
+
+```{r}
+n_p <- solve(
+    multistage_params[["aging_mat"]],
+    -c(multistage_params[["births"]], rep(0, 29))
+)
+
+F_p <- diag(n_p) %*% multistage_params[["beta_mat"]] +
+    multistage_params[["aging_mat"]] -
+    diag(diag(multistage_params[["aging_mat"]]))
+
+V_p <- diag(
+    multistage_params[["recovery"]] -
+        diag(multistage_params[["aging_mat"]])
+    )
+
+max(
+    Re(
+        eigen(solve(V_p, F_p),only.values=T)$values
+    )
+)
+```
+
+::: {.callout-important}
+Need to check what's going on here as just recycling previous code and doesn't depend on Mossong Matrix.
+:::
+
+How does this R0 value compare to the R0 value obtained from Exercise 4?
