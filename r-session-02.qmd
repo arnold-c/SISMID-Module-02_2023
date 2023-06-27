@@ -2,7 +2,7 @@
 subtitle: "Heterogeneity and Age Structure in SIR Models"
 abstract-title: ""
 abstract: |
-    *Materials adapted from Helen Wearing and Aaron King*
+    *Materials adapted from Helen Wearing and Aaron King [@kingAgeStructuredModels2011]*
 execute:
     warning: false
 metadata-files: 
