@@ -22,6 +22,8 @@ format:
             }
           };
         </script>
+filters:
+  - line-highlight
 ---
 
 # R Session 02
@@ -522,7 +524,13 @@ demog_df <- demog_sol %>%
 #| out-width: 100%
 ggplot(demog_df, aes(x = time, y = value, color = state)) +
     geom_line(linewidth = 1.5) +
-    facet_wrap(~group, nrow = 2, scales = "free_y") +
+    facet_wrap(
+        ~group, nrow = 2, scales = "free_y",
+        labeller = as_labeller(c(
+            `Group A` = "Adults",
+            `Group J` = "Juveniles"
+        ))
+    ) +
     scale_color_manual(
         values = SIRcolors,
         labels = c("Susceptible", "Infected", "Recovered", "Total")
@@ -715,19 +723,35 @@ ages_beta_mat %>%
     # Turn into a data.frame so we can use ggplot()
     as.data.frame.table() %>%
     mutate(
-        Age_J = rep(ages, 30),
+        age_contactor = rep(ages, 30),
         # Repeat each age in ages vector 30 times, and place in a list, then unlist 
         # to be stacked into a single dataframe column
-        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
+        age_contactee = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
     ) %>%
-    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
+    ggplot(aes(x = age_contactor, y = age_contactee, z = Freq)) +
     geom_contour_filled(bins = 8) +
     scale_fill_brewer(
         palette = "Reds",
         # Don't drop unused bins as useful for ensuring extremities properly binned
         drop = FALSE
-    )
+    ) +
+    labs(x = "Age of Contactor", y = "Age of Contactee")
 ```
+
+::: {.callout-note collapse="false"}
+You could also use the `filled.contour()` base-R function to plot the beta matrix without needing to do any dataframe modifications, but it doesn't look as nice ...
+
+```{r}
+#| code-fold: true
+filled.contour(
+    ages, ages, ages_beta_mat,
+    plot.title = title(
+        xlab = "Age of Contactor",
+        ylab = "Age of Contactee"
+    )
+)
+```
+:::
 
 We'll assume that, at the time of introduction, all children are susceptible, as are adults over 45, but that individuals aged 20--45 have seen the pathogen before and are immune.
 The vector `yinit` expresses these initial conditions.
@@ -757,6 +781,18 @@ adults <- 21:30
 ```
 
 Now, to capture the aging process, it's convenient to define another matrix to hold the rates of movement between age classes.
+Generally, this matrix would look like this:
+
+$$
+\begin{pmatrix}
+    -\alpha_1 & 0 & 0 & \cdots & 0\\
+    \alpha_1 & -\alpha_2 & 0 & \cdots & 0\\
+    0 & \alpha_2 & -\alpha_3 & \cdots & 0\\
+    \vdots &  & \ddots & \ddots & \vdots \\
+    0 & \cdots & & \alpha_{29} & -\alpha_{30}\\
+\end{pmatrix}
+$${#eq-aging-mat}
+
 
 ```{r}
 # Create a diagonal matrix that holds the rates of aging out of each age class
@@ -771,17 +807,13 @@ aging_mat[row(aging_mat) - col(aging_mat) == 1] <- 1 / head(da_ages, -1)
 Have a look at the aging matrix, for example by doing:
 
 ```{r}
-# move fast through the 1-year age classes - negatives are moves out, positives are moves in
+# Move fast through the 1-year age classes - negatives are moves out, positives are moves in
+# Cannot move between non-adjacent age classes
 aging_mat[1:5, 1:5]
 ```
 
 ```{r}
-# don't age between these classes -- e.g. can't age from 1 to 6
-aging_mat[1:10, 1:10]
-```
-
-```{r}
-# move slowly between the wider age classes
+# Move slowly between the wider age classes
 aging_mat[25:30, 25:30]
 ```
 
@@ -791,15 +823,16 @@ aging_mat[25:30, 25:30]
 aging_mat %>%
     as.data.frame.table() %>%
     mutate(
-        Age_J = rep(ages, 30),
-        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30)))
+        age_recipient = rep(ages, 30),
+        age_source = unlist(purrr::map(.x = ages, ~rep(.x, 30)))
     ) %>%
-    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
+    ggplot(aes(x = age_source, y = age_recipient, z = Freq)) +
     geom_contour_filled() +
     scale_fill_brewer(
         palette = "RdBu",
         drop = FALSE
-    )
+    ) +
+    labs(x = "Source Age Group", y = "Recipient Age Group")
 ```
 
 ### Exercise 2: What can you say about its structure? How are the different age groups in contact with each other?
@@ -906,7 +939,7 @@ In using such data, we'd typically assume that the system was at equilibrium.
 
 <div class="exercise">
 
-### Exercise 3: What does the equilibrium age-specific seroprevalence look like in this example?
+### Exercise 3: What does the equilibrium age-specific seroprevalence look like in this example? {#sec-ex-3}
 
 </div>
 
@@ -944,6 +977,10 @@ ggplot(multistage_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
     scale_x_continuous(breaks = seq(0, 80, 10)) +
     scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
 ```
+
+::: {.callout-note title="QUESTION"}
+At what age does the seroprevalence reach 75%?
+:::
 
 Let's also compute $R_0$.
 And because we've added a lot of age structure, with transitions between the age groups, we can't just copy and paste the previous Next Generation Matrix code (from @sec-simple-ngm).
@@ -1009,68 +1046,43 @@ calculate_R0(
 ```
 
 <div class="exercise">
-### Exercise 4: 
-#### Change the juvenile and adult contact rates (ages_params[1] and ages_params[2]) to reflect different transmission within groups. Make the juvenile contact rate 0.02 to reflect higher contact among kids (e.g. in schools).
-</div>
+### Exercise 4: Updating the contact matrix
 
-```{r}
-update_age_beta_mat <- matrix(data = 0.007, nrow = 30, ncol = 30)
-update_age_beta_mat[1:20, 1:20] <- 0.02
-update_age_beta_mat[6:16, 6:16] <- 0.03
-
-update_age_params <- list(
-    beta_mat = update_age_beta_mat,
-    recovery = ages_params["recovery"],
-    births = ages_params["births"],
-    aging_mat = aging_mat
-)
-```
-
-<div class="exercise">
-
-#### Edit the `ggplot` code from [Section 7.3](#fig-beta-mat) to plot the new beta matrix.
-
-</div>
-
-```{r}
-#| column: body
-#| out-width: 100%
-update_age_beta_mat %>%
-    # Turn into a data.frame so we can use ggplot()
-    as.data.frame.table() %>%
-    mutate(
-        Age_J = rep(ages, 30),
-        Age_A = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
-    ) %>%
-    ggplot(aes(x = Age_J, y = Age_A, z = Freq)) +
-    geom_contour_filled(bins = 8) +
-    scale_fill_brewer(
-        palette = "Reds",
-        drop = FALSE
-    )
-```
-
-::: {.callout-note collapse="false"}
-You could also use the `filled.contour()` base-R function to plot the beta matrix without needing to do any dataframe modifications, but it doesn't look as nice ...
-
-```{r}
-#| code-fold: true
-filled.contour(
-    ages, ages, update_age_beta_mat,
-    plot.title = title(
-        main = "Updated Mixing Matrix",
-        xlab = "Age J",
-        ylab = "Age A"
-    )
-)
-```
+::: {.callout-important}
+You will need to read and edit the following code carefully so that it runs with your updated parameters.
+We have highlighted the relevant lines in the code chunks, so hopefully you won't miss them, though make sure you do copy all the code!
 :::
+
+#### Change the juvenile-juvenile contact rate to be 0.025.
+</div>
+
+
+```{r}
+#| echo: false
+update_age_beta_mat <- ages_beta_mat
+update_age_beta_mat[1:20, 1:20] <- 0.025
+
+update_age_params <- multistage_params
+update_age_params[["beta_mat"]] <- update_age_beta_mat
+```
+
+```{r}
+#| eval: false
+#| source-line-numbers: "2"
+update_age_beta_mat <- ages_beta_mat
+update_age_beta_mat[1:20, 1:20] <- ?
+
+update_age_params <- multistage_params
+update_age_params[["beta_mat"]] <- update_age_beta_mat
+```
 
 <div class="exercise">
 #### Simulate and plot the age-structured SIR dynamics under your assumptions and record how the age-specific seroprevalence has changed.
 </div>
 
+
 ```{r}
+#| echo: false
 update_age_sol <- deSolve::ode(
     y = demog_yinit_ages,
     times = seq(0, 400, by = 0.1),
@@ -1080,40 +1092,7 @@ update_age_sol <- deSolve::ode(
 
 # Get the time series for each infectious age group
 update_age_infecteds <- update_age_sol[, 1 + iindex]
-```
 
-```{r}
-update_age_infecteds_df <- tibble(
-        time = update_age_sol[, 1],
-        Juveniles = apply(update_age_infecteds[, juvies], 1, sum),
-        Adults = apply(update_age_infecteds[, adults], 1, sum)
-    ) %>%
-    pivot_longer(
-        cols = c(Juveniles, Adults),
-        names_to = "age_group",
-        values_to = "infections"
-    ) %>%
-    mutate(
-        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
-    )
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(update_age_infecteds_df, aes(x = time, y = infections, color = age_group)) +
-    geom_line(linewidth = 1.5) +
-    scale_color_manual(
-        values = age_group_colors
-    ) +
-    labs(
-        x = "Time",
-        y = "Number of infections",
-        color = "Age group"
-    )
-```
-
-```{r}
 update_age_equil <- drop(tail(update_age_sol, 1))[-1]
 
 update_age_equil_n <- update_age_equil[sindex] +
@@ -1129,10 +1108,40 @@ update_age_equil_seroprev_df <- tibble(
 )
 ```
 
+
 ```{r}
-#| column: body
-#| out-width: 100%
+#| eval: false
+#| source-line-numbers: "5,15-17,21"
+update_age_sol <- deSolve::ode(
+    y = demog_yinit_ages,
+    times = seq(0, 400, by = 0.1),
+    func = multistage_model,
+    parms = ?
+)
+
+# Get the time series for each infectious age group
+update_age_infecteds <- update_age_sol[, 1 + iindex]
+
+# Get the last values in the time series
+update_age_equil <- drop(tail(update_age_sol, 1))[-1]
+
+# Calculate the number of individuals in each age group at the final timepoint
+update_age_equil_n <- update_age_equil[ ? ] +
+    update_age_equil[ ? ] +
+    update_age_equil[ ? ]
+
+# Calculate final seroprevalence
+# Hint: You need PREVIOUSLY infected individuals
+update_age_equil_seroprev <- update_age_equil[ ? ] / update_age_equil_n
+
+update_age_equil_seroprev_df <- tibble(
+    age = ages,
+    seroprev = update_age_equil_seroprev,
+    width = da_ages
+)
+
 ggplot(update_age_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
+    # Set column width to width of age bands, and justify to start at lower bound
     geom_col(width = update_age_equil_seroprev_df$width, just = 1.0, color = "black") +
     labs(
         x = "Age",
@@ -1142,9 +1151,50 @@ ggplot(update_age_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
     scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
 ```
 
+::: {.callout-note title="QUESTION"}
+At what age does the seroprevalence reach 75%?
+How does this compare to the answer in @sec-ex-3?
+:::
+
 <div class="exercise">
 #### Compute $R_0$ for your assumptions.
 </div>
+
+
+As described previously, the calculation for $R_0$ is difficult due to all the age categories and transitions.
+Use the `calculate_R0()` function we [defined earlier](#ngm-function) to calculate $R_0$ for our updated system.
+
+```{r}
+#| eval: false
+#| source-line-numbers: "2-5"
+calculate_R0(
+    beta_mat = ?,
+    stable_n_mat = ?,
+    aging_mat = ?,
+    recovery_rate = ?
+)
+```
+
+```{r}
+#| echo: false
+update_age_R0 <- round(
+    calculate_R0(
+        beta_mat = update_age_params[["beta_mat"]],
+        stable_n_mat = multistage_stable_n,
+        aging_mat = update_age_params[["aging_mat"]],
+        recovery_rate = update_age_params[["recovery"]]
+    ),
+    digits = 2
+)
+```
+
+If you've done everything correctly, you should get $R_0 =$ `r update_age_R0`.
+This is higher than previously.
+Does this match your intuition, given our changes to the beta matrix?
+
+:::{.callout-warning}
+The following is Aaron's original code which provides slightly different results.
+:::
 
 ```{r}
 F_mat <- diag(update_age_equil_n) %*% update_age_beta_mat +
@@ -1155,54 +1205,15 @@ V_mat <- diag(update_age_params[["recovery"]] - diag(update_age_params[["aging_m
 
 # R0 approximately 6.53
 max(Re(eigen(solve(V_mat, F_mat), only.values = TRUE)$values))
-
-# Find the equilibrium values for each infected age group (last time point)
-update_age_infecteds_equil <- update_age_infecteds[dim(update_age_infecteds)[1], ]
-
-# Estimate R0 using the equilibrium values and how long people stay in each age group
-sum(ages * update_age_infecteds_equil / sum(update_age_infecteds_equil))
-
-# sum(update_age_infecteds_equil[15:23])
 ```
 
-```{r}
-# Create dataframe of updated age solution for plotting
-update_age_df <- as_tibble(update_age_sol) %>%
-    mutate(across(everything(), as.numeric)) %>%
-    pivot_longer(
-        cols = -time,
-        names_to = c("state", "age_index"),
-        names_pattern = "(.)(.*)",
-        values_to = "number"
-    ) %>%
-    mutate(
-        age = ages[as.integer(age_index)],
-        state = factor(state, labels = c("S", "I", "R")),
-    )
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-# Plot number of individuals in each age group and state over time
-ggplot(update_age_df, aes(x = time, y = number, color = age, group = age)) +
-    geom_line(linewidth = 1) +
-    facet_wrap(~state, ncol = 1, scale = "free_y") +
-    labs(
-        x = "Time",
-        y = "Number of individuals",
-        color = "Age"
-    ) +
-    scale_color_continuous(low = age_group_colors[1], high = age_group_colors[2])
-```
-
-## R0 and the mean age of infection
+## R0 and the Mean Age of Infection
 
 To develop some intuition about the relationship between $R_0$ and the mean age of infection, let's play with an interactive plot.
 We will assume that the population is completely susceptible and that the force of infection is constant.
 We'll also assume that there is heterogenous mixing i.e. no age structure.
 
-As we've seen in Matt's [lecture on age structure](L05_age-structure.qmd), we can calculate the mean age of infection using the equation below:
+As we've seen in [Matt's lecture on age structure](L05_age-structure.qmd), we can calculate the mean age of infection using the equation below:
 
 $$
 A \approx \frac{L}{R_E - 1}
@@ -1210,11 +1221,36 @@ $${#eq-mean-age}
 
 where $L$ is the life expectancy $\left(L = \frac{1}{\mu}\right)$ and $R_E$ is the effective reproductive number ($R_E = R_0 * (1 - p)$ where $p$ is the fraction of individuals vaccinated).
 
+::: {.callout-note collapse="false"}
+See @sec-mean-age-r-code for code you can run in `R` to investigate the relationship between $R_0$, vaccination coverage, life expectancy, and the mean age of infection.
+:::
+
 <div class="exercise">
 
-### Interactive Plot
+### Interactive plot
 
 ```{ojs}
+init_R0 = 2.0
+init_vacc = 0.0
+init_lifeexp = 75
+```
+
+```{ojs}
+function set(input, value) {
+  input.value = value;
+  input.dispatchEvent(new Event("input", {bubbles: true}));
+}
+```
+
+```{ojs}
+//| panel: sidebar
+viewof reset = Inputs.button([
+  ["Reset all sliders", () => {
+    set(viewof R0, init_R0)
+    set(viewof vacc, init_vacc)
+    set(viewof lifeexp, init_lifeexp)
+  }]
+])
 //| panel: sidebar
 //| echo: false
 viewof R0 = Inputs.range(
@@ -1346,24 +1382,24 @@ mean_age_dots = [({
         x: {label: "R0", domain: [0, 10]},
         y: {label: "Mean Age of Infection", domain: [0, 100]},
         marks: [
-            Plot.line(mean_age_arrs.R0, {x: "R0", y: "mean_age", stroke: R0Color, strokeWidth: 6}),
             Plot.line(mean_age_arrs.Re, {x: "R0", y: "mean_age", stroke: ReColor, strokeWidth: 6}),
+            Plot.line(mean_age_arrs.R0, {x: "R0", y: "mean_age", stroke: R0Color, strokeWidth: 6}),
+            Re_mean_age <= 100 ?
+                [
+                    vacc > 0.00 ? Plot.dot(mean_age_dots, {x: "R0", y: "Re_mean_age", r: 12, stroke: ReColor, fill:     ReColor,  fillOpacity: 0.6}) : null,
+                    Plot.text(
+                        mean_age_dots,
+                        {x: "R0", y: "Re_mean_age", text: (d) => `Re = ${d.Re}`, dx: 55, dy: -25, fontWeight: "bold", fill: ReColor}
+                    )
+                ] :
+            null,
             R0_mean_age <= 100 ?
                 [
                 Plot.dot(mean_age_dots, {x: "R0", y: "R0_mean_age", r: 12, stroke: R0Color, fill: R0Color, fillOpacity: 0.6}),
                 Plot.text(
                     mean_age_dots,
-                    {x: "R0", y: "R0_mean_age", text: (d) => `R0 = ${d.R0}`, dx: -60, dy: 30, fontWeight:     "bold", fill: R0Color}
+                    {x: "R0", y: "R0_mean_age", text: (d) => `R0 = ${d.R0}`, dx: -60, dy: 30, fontWeight: "bold", fill: R0Color}
                 )
-                ] :
-            null,
-            Re_mean_age <= 100 ?
-                [
-                    Plot.dot(mean_age_dots, {x: "R0", y: "Re_mean_age", r: 12, stroke: ReColor, fill:     ReColor,  fillOpacity: 0.6}),
-                    Plot.text(
-                        mean_age_dots,
-                        {x: "R0", y: "Re_mean_age", text: (d) => `Re = ${d.Re}`, dx: 55, dy: -25,   fontWeight:     "bold", fill: ReColor}
-                    )
                 ] :
             null,
             Plot.arrow(mean_age_dots, {x1: "R0", x2: "R0", y1: "arrow_start", y2: "arrow_end", strokeWidth: 4, headLength: 5, inset: 15}),
@@ -1374,388 +1410,25 @@ mean_age_dots = [({
 }
 ```
 
-### Interactive Plot Exercises
-#### Play with the Vaccination coverage and observe what happens to the mean age of infection.
-  
+### Interactive plot exercises
+#### When you increase $R_0$ from 2.0 to 4.0, what happens to the mean age of infection?
+##### Is there a linear change? If not, why not?
+
+#### With $R_0$ to 4.0, approximately what level of vaccination coverage is required for a mean age of infection of 40 years?
+
+#### Leaving $R_0$ and vaccination coverage the same, decrease the life expectancy to 50 years. What happens to the mean age of infection?
+##### If it changed, why do you think it did?
+
+::: {.callout-note title="Hint"}
+Think about the definitions of $R_E$ and life expectancy in @eq-mean-age
+:::
+
 </div>
 
-### R Code
 
-Now let's look at how we can investigate this using R.
-Unlike the interactive plot that simply uses @eq-mean-age to calculate the mean age of infection, we will use a more realistic age-structured model.
-
-Let's return to the earlier models with an age-class mixing matrix.
-But this time, we'll calculate $R_0$, the mean age of infection, and the number of cases that occur in individuals between 15-35 years as we increase the contact rate.
-
-Recall from the rubella and congenital rubella syndrome (CRS) example that the risk of severe disease outcomes depends on the risk of infection in reproductive age women (here we'll use individuals between 15 and 35 years as a proxy; in reality we would want to account for the differential rate of reproduction at different ages, including those above 35 years).
-Recall also that increasing vaccination reduces $R_E$ -- for simplicity here, so we don't have to add vaccination into the code, we'll simply change $R_0$ because we already know that will give us outcomes that are dynamically equivalent to increasing the proportion of children born who are vaccinated.
-We'll then calculate how the mean age of infection changes, and specifically how the absolute number of cases among individuals between the ages of 15-35 (as a proxy for reproductive age women) changes. 
-To do so, we'll make a loop and evaluate the code for each of 10 decreaing levels of mixing (which will reduce $R_0$ and we can interpret as analogous to the reduction in $R_E$ that would result from increasing vaccination).
-
-::: {.callout-note title="Note about `map()`" collapse="false"}
-As you may have noticed previously, we often use the `map_*()` series of functions.
-We'll use that again here (`map_dfr()`).
-The full reasons are too complicated to get into here, but broadly speaking, the `map_*()` functions provide us guarantees over the output of our loops.
-If it runs, we know that something didn't get silently skipped, and that out output vector/list/dataframe is the same length as the inputs.
-The same can not be said for `for()` loops, and the base `apply` functions are more awkward to work with as they don't have a consistent syntax across the family of functions.
-
-To learn more, read [this section]() of our `R` primer.
-:::
-
-```{r}
-# Create vector of scalings to reduce R0
-scale_contact <- seq(1, .2, length = 10)
-
-# Create a new transmission matrix
-beta_low <- 0.007
-beta_medium <- 0.02
-beta_high <- 0.03
-
-beta_mat <- matrix(beta_low, nrow = 30, ncol = 30)
-beta_mat[1:20, 1:20] <- beta_medium
-beta_mat[6:16, 6:16] <- beta_high
-```
-
-```{r}
-# Create a dataframe where each row relates to a different R0 value
-R0_mean_age_contacts_df <- map_dfr(
-    # Apply the function to each item in the vector of R0 scaling factors
-    .x = scale_contact,
-    .f = function(.x) {
-        # Scale contacts
-        scaled_beta_mat <- beta_mat * .x
-
-        # Set up parameters
-        scaled_params <- list(
-            beta_mat = scaled_beta_mat,
-            recovery = multistage_params[["recovery"]],
-            aging_mat = multistage_params[["aging_mat"]],
-            births = multistage_params[["births"]]
-        )
-
-        # Solve the model
-        sol <- deSolve::ode(
-            y = demog_yinit_ages,
-            times = seq(0, 400, by = 0.1),
-            func = multistage_model,
-            parms = scaled_params
-        )
-
-        # Get stable age distribution
-        stable_n <- solve(
-            scaled_params[["aging_mat"]],
-            -c(scaled_params[["births"]], rep(0, 29))
-        )
-        
-        # Calculate R0 with NGM
-        F_mat <- diag(stable_n) %*% scaled_params[["beta_mat"]] +
-            scaled_params[["aging_mat"]] -
-            diag(diag(scaled_params[["aging_mat"]]))
-
-        V_mat <- diag(scaled_params[["recovery"]] -
-            diag(scaled_params[["aging_mat"]]))
-
-        R0 <- max(
-            Re(
-                eigen(solve(V_mat, F_mat), only.values = TRUE)$values
-            )
-        )
-
-        # Get final number of infected individuals for each I class
-        infecteds <- sol[dim(sol)[1], 1 + iindex]
-
-        # Calculate mean age of infection
-        mean_age <- sum(ages * infecteds / sum(infecteds))
-
-        # Calculate sum of cases between 15-35 years 
-        # recall, from the figures above, that that this is the equilibrium prevalence
-        # of infection in these age classes, or the average numbef of individuals that are infected 
-        # at any given time in these age classes. Note that we're not differentiating between 
-        # individuals who can and cannot get pregnant here. So we're making an implicit assumption that
-        # there no difference in the risk of rubella infection in these groups so that if prevalence goes
-        # up in one group, it goes up in the other.
-        sum_cases <- sum(infecteds[15:23])
-
-        # Return a dataframe with the values
-        return(tibble(R0, mean_age, sum_cases))
-    }
-)
-```
-
-Now we can make a table of the results and plot mean age and the sum of cases between 15-35 years of age as a function of $R_0$.
-
-```{r}
-#| column: body
-#| out-width: 100%
-# Create a table from the dataframe
-gt(R0_mean_age_contacts_df) %>%
-    fmt_number(
-        columns = everything(),
-        decimals = 2
-    ) %>%
-    # Relabel the column headers
-    cols_label(
-        R0 = md("**R0**"),
-        mean_age = md("**Mean age of<br>infection**"),
-        sum_cases = md("**Total cases between<br>15-35 years**")
-    ) %>%
-    # Apply style to the table with gray alternating rows
-    opt_stylize(style = 1, color = 'gray') %>%
-    # Increate space between columns
-    opt_horizontal_padding(scale = 3) %>%
-    cols_align("center")
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-R0_mean_age_contacts_df %>%
-    # Convert to long data frame for facet plotting
-    pivot_longer(-R0, names_to = "metric", values_to = "value") %>%
-    ggplot(aes(x = R0, y = value)) +
-    geom_line(color = "slategray4") +
-    geom_point(shape = 21, size = 5, fill = "slategray4", alpha = 0.8) +
-    facet_wrap(
-        ~metric,
-        scales = "free_y",
-        labeller = as_labeller(c(
-            mean_age = "Mean Age of Infection",
-            sum_cases = "Total cases between 15-35 years"
-        ))
-    ) +
-    labs(
-        x = "R0",
-        y = "Value"
-    )
-```
-
-
-## What do real contact networks look like?
-
-The POLYMOD study **Mossong, 2008** was a journal-based look into the contact network in contemporary European society.
-Let's have a look what these data tell us about the contact structure.
-
-```{r}
-mossong_cont_net <- read.csv(
-    url("http://www.math.mcmaster.ca/~bolker/eeid/data/mossong.csv"),
-    as.is = TRUE
-)
-
-mossong_ages <- unique(mossong_cont_net$contactor)
-mossong_cont_net$contactor <- ordered(mossong_cont_net$contactor, levels = mossong_ages)
-mossong_cont_net$contactee <- ordered(mossong_cont_net$contactee, levels = mossong_ages)
-```
-
-Since contacts are symmetric, we'll need to estimate the symmetric contact matrix.
-
-```{r}
-mossong_mat <- mossong_cont_net %>%
-    pivot_wider(
-        names_from = contactor,
-        values_from = contact.rate
-    ) %>%
-    select(-contactee) %>%
-    as.matrix()
-
-rownames(mossong_mat) <- mossong_ages
-
-mossong_mat_sym <- (mossong_mat + t(mossong_mat)) / 2
-```
-
-Here we'll use the `filled.contour` function to visualize the contact matrix, to show you an alternative way of visualizing contact matrices.
-Notices that we are using the raw matrix object, not a long dataframe, as previously.
-
-```{r}
-#| column: body
-#| out-width: 100%
-filled.contour(
-    ages, ages, log10(mossong_mat),
-    plot.title = title(
-        main = "Log10 of raw contact rate",
-        xlab = "Age of contactor",
-        ylab = "Age of contactee"
-    )
-)
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-filled.contour(
-    ages, ages, log10(mossong_mat_sym),
-    plot.title = title(
-        main = "Log10 of symmetrical contact rate",
-        xlab = "Age of contactor",
-        ylab = "Age of contactee"
-    )
-)
-```
-
-```{r}
-mossong_cont_sums <- tibble(
-        age = factor(mossong_ages, levels = mossong_ages),
-        contactees = rowSums(mossong_mat),
-        contactors = colSums(mossong_mat)
-    ) %>%
-    pivot_longer(-age, names_to = "type", values_to = "total_contacts") 
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(
-        mossong_cont_sums,
-        aes(x = age, y = total_contacts, color = type, fill = type, group = type)
-    ) +
-    geom_path(linewidth = 1) +
-    geom_point(
-        position = "identity",
-        alpha = 0.8,
-        shape = 21,
-        size = 4
-    ) +
-    scale_color_manual(
-        values = c("slategray4", "navy"),
-        labels = c("Contactees", "Contactors"),
-        aesthetics = c("color", "fill")
-    ) +
-    guides(color = "none") +
-    labs(
-        x = "Age",
-        y = "Total contacts",
-        fill = "Type of contact"
-    ) +
-    theme(legend.position = "bottom")
-```
-
-While this matrix tells us how many contacts are made per year by an individual of each age, it doesn't tell us anything about the probability that a contact results in communication of infection.
-Let's assume that each contact has a constant probability $q$ of resulting in a transmission event.
-
-```{r}
-q <- 3e-5
-mossong_beta_mat <- q * mossong_mat_sym
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-filled.contour(
-    ages, ages, log10(mossong_beta_mat),
-    plot.title = title(
-        main = "WAIFW matrix based on POLYMOD data",
-        xlab = "Age",
-        ylab = "Age"
-    )
-)
-```
-
-Now let's simulate the introduction of such a pathogen into a population characterized by this contact structure.
-
-```{r}
-mossong_sol <- deSolve::ode(
-    y = demog_yinit_ages,
-    times = seq(0, 200, by = 0.5),
-    func = multistage_model,
-    parms = multistage_params
-)
-
-mossong_infecteds <- mossong_sol[, 1 + iindex]
-
-mossong_infecteds_df <- tibble(
-        time = mossong_sol[, 1],
-        Juveniles = apply(mossong_infecteds[, juvies], 1, sum),
-        Adults = apply(mossong_infecteds[, adults], 1, sum)
-    ) %>%
-    pivot_longer(
-        cols = c(Juveniles, Adults),
-        names_to = "age_group",
-        values_to = "infections"
-    ) %>%
-    mutate(
-        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
-    )
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(mossong_infecteds_df, aes(x = time, y = infections, color = age_group)) +
-    geom_line(linewidth = 1.5) +
-    scale_color_manual(
-        values = age_group_colors
-    ) +
-    labs(
-        x = "Time",
-        y = "Number of infections",
-        color = "Age group"
-    )
-```
-
-As before, we can also look at the equilibrium seroprevalence
-
-```{r}
-mossong_equil <- drop(tail(mossong_sol, 1))[-1]
-
-mossong_equil_n <- mossong_equil[sindex] +
-    mossong_equil[iindex] +
-    mossong_equil[rindex]
-
-mossong_equil_seroprev <- mossong_equil[rindex] / mossong_equil_n
-
-mossong_equil_seroprev_df <- tibble(
-    # We can reuse the ages vectors from before as they are the same
-    # as the POLYMOD data
-    age = ages,
-    seroprev = mossong_equil_seroprev,
-    width = da_ages
-)
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-ggplot(mossong_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
-    geom_col(width = mossong_equil_seroprev_df$width, just = 1.0, color = "black") +
-    labs(
-        x = "Age",
-        y = "Seroprevalence"
-    ) +
-    scale_x_continuous(breaks = seq(0, 80, 10)) +
-    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
-```
-
-and compute the $R_0$ for this infection.
-
-```{r}
-n_p <- solve(
-    multistage_params[["aging_mat"]],
-    -c(multistage_params[["births"]], rep(0, 29))
-)
-
-F_p <- diag(n_p) %*% multistage_params[["beta_mat"]] +
-    multistage_params[["aging_mat"]] -
-    diag(diag(multistage_params[["aging_mat"]]))
-
-V_p <- diag(
-    multistage_params[["recovery"]] -
-        diag(multistage_params[["aging_mat"]])
-    )
-
-max(
-    Re(
-        eigen(solve(V_p, F_p),only.values=T)$values
-    )
-)
-```
-
-::: {.callout-important}
-Need to check what's going on here as just recycling previous code and doesn't depend on Mossong Matrix.
-:::
-
-How does this R0 value compare to the R0 value obtained from Exercise 4?
-
-## Bonus: Calculating R0 Using a Next Generation Matrix
-### Simple model structure {#sec-simple-ngm}
+## Bonus Materials
+### Calculating $R_0$ with the Next Generation Matrix
+#### Simple model structure {#sec-simple-ngm}
 
 To compute $R_0$, we need to know the stable age distribution (the relative proportion in the juvenile and adult age classes) of the population, which we can find by solving for the disease-free equilibrium: $S_J^*=B/\alpha$ and $S_A^*=B/\mu$.
 With the stable age distribution, we can calculate $R_0$ by constructing the next generation matrix.
@@ -1848,12 +1521,12 @@ max(
 )
 ```
 
-### Age-structured NGM {#sec-age-structure-ngm}
+#### Age-structured NGM {#sec-age-structure-ngm}
 
 Many times it would be impractical to write out the NGM: there are often too many compartments in an age-structured model.
 In this instance, we want to use a slightly different approach, but the underlying principles are the same: each element of the NGM balances the number of new infections expected to be produced with the rates of individuals coming in and out of that compartment.
 
-#### Stable Age Distribution
+##### Stable Age Distribution
 
 The first thing we need, as before, is the stable age distribution i.e., the disease-free equilibrium.
 There are two ways we can do this:
@@ -1861,7 +1534,7 @@ There are two ways we can do this:
 1. Simulate the model without any infections for a sufficiently long time (simple, but less accurate)
 2. Do the math.
 
-##### Disease-Free Simulation
+###### Disease-Free Simulation
 
 ```{r}
 # Set up initial conditions without any infections
@@ -1897,10 +1570,10 @@ ggplot(multistage_sonly_pop, aes(x = time, y = pop)) +
     )
 ```
 
-#### Doing the Math
+###### Doing the Math
 
 Alternatively, we can get the stable age distribution by finding the population structure that balances the birth, aging, and death processes.
-At equilibrium, we have the matrix equation
+We have already seen the aging matrix in @eq-aging-mat, and at equilibrium, we have the matrix equation
 
 $$
 \begin{pmatrix}
@@ -2051,3 +1724,371 @@ $\mathbf{v}$ doesn't have any state terms in the equation, so it is already eval
 $\mathbf{f}|_{\text{dfe}}$ involves subsituting $S_i$ for the equilibrium population distribution that balances the births and aging processes.
 
 This translates to the function we [defined earlier](#ngm-function)
+
+
+### Mean age of infection `R` code {#sec-mean-age-r-code}
+
+Now let's look at how we can investigate our the relationships between the mean age of infection and $R_0$ and the vaccination coverage using `R`.
+Unlike the interactive plot that simply uses @eq-mean-age to calculate the mean age of infection, we will use a more realistic age-structured model.
+
+Let's return to the earlier models with an age-class mixing matrix.
+But this time, we'll calculate $R_0$, the mean age of infection, and the number of cases that occur in individuals between 15-35 years as we increase the contact rate.
+
+Recall from the rubella and congenital rubella syndrome (CRS) example that the risk of severe disease outcomes depends on the risk of infection in reproductive age women (here we'll use individuals between 15 and 35 years as a proxy; in reality we would want to account for the differential rate of reproduction at different ages, including those above 35 years).
+Recall also that increasing vaccination reduces $R_E$ -- for simplicity here, so we don't have to add vaccination into the code, we'll simply change $R_0$ because we already know that will give us outcomes that are dynamically equivalent to increasing the proportion of children born who are vaccinated.
+We'll then calculate how the mean age of infection changes, and specifically how the absolute number of cases among individuals between the ages of 15-35 (as a proxy for reproductive age women) changes. 
+To do so, we'll make a loop and evaluate the code for each of 10 decreaing levels of mixing (which will reduce $R_0$ and we can interpret as analogous to the reduction in $R_E$ that would result from increasing vaccination).
+
+::: {.callout-note title="Note about `map()`" collapse="false"}
+As you may have noticed previously, we often use the `map_*()` series of functions.
+We'll use that again here (`map_dfr()`).
+The full reasons are too complicated to get into here, but broadly speaking, the `map_*()` functions provide us guarantees over the output of our loops.
+If it runs, we know that something didn't get silently skipped, and that out output vector/list/dataframe is the same length as the inputs.
+The same can not be said for `for()` loops, and the base `apply` functions are more awkward to work with as they don't have a consistent syntax across the family of functions.
+
+To learn more, read [this section]() of our `R` primer.
+:::
+
+```{r}
+# Create vector of scalings to reduce R0
+scale_contact <- seq(1, .2, length = 10)
+
+# Create a new transmission matrix
+beta_low <- 0.007
+beta_medium <- 0.02
+beta_high <- 0.03
+
+beta_mat <- matrix(beta_low, nrow = 30, ncol = 30)
+beta_mat[1:20, 1:20] <- beta_medium
+beta_mat[6:16, 6:16] <- beta_high
+
+scaled_params <- multistage_params
+```
+
+```{r}
+# Create a dataframe where each row relates to a different R0 value
+R0_mean_age_contacts_df <- map_dfr(
+    # Apply the function to each item in the vector of R0 scaling factors
+    .x = scale_contact,
+    .f = function(.x) {
+        # Scale contacts
+        scaled_beta_mat <- beta_mat * .x
+
+        # Set up parameters
+        scaled_params[["beta_mat"]] <- scaled_beta_mat
+
+        # Solve the model
+        sol <- deSolve::ode(
+            y = demog_yinit_ages,
+            times = seq(0, 400, by = 0.1),
+            func = multistage_model,
+            parms = scaled_params
+        )
+
+        # Get stable age distribution
+        stable_n <- solve(
+            scaled_params[["aging_mat"]],
+            -c(scaled_params[["births"]], rep(0, 29))
+        )
+
+        R0 <- calculate_R0(
+            beta_mat = scaled_params[["beta_mat"]],
+            stable_n_mat = stable_n,
+            aging_mat = scaled_params[["aging_mat"]],
+            recovery = scaled_params[["recovery"]]
+        )
+
+        # Get final number of infected individuals for each I class
+        infecteds <- sol[dim(sol)[1], 1 + iindex]
+
+        # Calculate mean age of infection
+        mean_age <- sum(ages * infecteds / sum(infecteds))
+
+        # Calculate sum of cases between 15-35 years 
+        # recall, from the figures above, that that this is the equilibrium prevalence
+        # of infection in these age classes, or the average numbef of individuals that are infected 
+        # at any given time in these age classes. Note that we're not differentiating between 
+        # individuals who can and cannot get pregnant here. So we're making an implicit assumption that
+        # there no difference in the risk of rubella infection in these groups so that if prevalence goes
+        # up in one group, it goes up in the other.
+        sum_cases <- sum(infecteds[15:23])
+
+        # Return a dataframe with the values
+        return(tibble(R0, mean_age, sum_cases))
+    }
+)
+```
+
+Now we can make a table of the results and plot mean age and the sum of cases between 15-35 years of age as a function of $R_0$.
+
+```{r}
+#| column: body
+#| out-width: 100%
+# Create a table from the dataframe
+gt(R0_mean_age_contacts_df) %>%
+    fmt_number(
+        columns = everything(),
+        decimals = 2
+    ) %>%
+    # Relabel the column headers
+    cols_label(
+        R0 = md("**R0**"),
+        mean_age = md("**Mean age of<br>infection**"),
+        sum_cases = md("**Total cases between<br>15-35 years**")
+    ) %>%
+    # Apply style to the table with gray alternating rows
+    opt_stylize(style = 1, color = 'gray') %>%
+    # Increate space between columns
+    opt_horizontal_padding(scale = 3) %>%
+    cols_align("center")
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+R0_mean_age_contacts_df %>%
+    # Convert to long data frame for facet plotting
+    pivot_longer(-R0, names_to = "metric", values_to = "value") %>%
+    ggplot(aes(x = R0, y = value)) +
+    geom_line(color = "slategray4") +
+    geom_point(shape = 21, size = 5, fill = "slategray4", alpha = 0.8) +
+    facet_wrap(
+        ~metric,
+        scales = "free_y",
+        labeller = as_labeller(c(
+            mean_age = "Mean Age of Infection",
+            sum_cases = "Total cases between 15-35 years"
+        ))
+    ) +
+    labs(
+        x = "R0",
+        y = "Value"
+    )
+```
+
+### What do real contact networks look like?
+
+The POLYMOD study [@mossongSocialContactsMixing2008a] was a journal-based look into the contact network in contemporary European society.
+Let's have a look what these data tell us about the contact structure.
+
+```{r}
+mossong_cont_net <- read.csv(
+    url("http://www.math.mcmaster.ca/~bolker/eeid/data/mossong.csv"),
+    as.is = TRUE
+)
+
+mossong_ages <- unique(mossong_cont_net$contactor)
+mossong_cont_net$contactor <- ordered(mossong_cont_net$contactor, levels = mossong_ages)
+mossong_cont_net$contactee <- ordered(mossong_cont_net$contactee, levels = mossong_ages)
+```
+
+Since contacts are symmetric, we'll need to estimate the symmetric contact matrix.
+
+```{r}
+mossong_mat <- mossong_cont_net %>%
+    pivot_wider(
+        names_from = contactor,
+        values_from = contact.rate
+    ) %>%
+    select(-contactee) %>%
+    as.matrix()
+
+rownames(mossong_mat) <- mossong_ages
+
+# Create a symmetrical contact matrix
+mossong_mat_sym <- (mossong_mat + t(mossong_mat)) / 2
+```
+
+Here we'll use the `filled.contour` function to visualize the contact matrix, to show you an alternative way of visualizing contact matrices.
+Notices that we are using the raw matrix object, not a long dataframe, as previously.
+
+```{r}
+#| column: body
+#| out-width: 100%
+filled.contour(
+    ages, ages, log10(mossong_mat),
+    plot.title = title(
+        main = "Log10 of Raw Contact Rate",
+        xlab = "Age of Contactor",
+        ylab = "Age of Contactee"
+    )
+)
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+filled.contour(
+    ages, ages, log10(mossong_mat_sym),
+    plot.title = title(
+        main = "Log10 of Symmetrical Contact Rate",
+        xlab = "Age of Contactor",
+        ylab = "Age of Contactee"
+    )
+)
+```
+
+```{r}
+mossong_cont_sums <- tibble(
+        age = factor(mossong_ages, levels = mossong_ages),
+        contactees = rowSums(mossong_mat),
+        contactors = colSums(mossong_mat)
+    ) %>%
+    pivot_longer(-age, names_to = "type", values_to = "total_contacts") 
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(
+        mossong_cont_sums,
+        aes(x = age, y = total_contacts, color = type, fill = type, group = type)
+    ) +
+    geom_path(linewidth = 1) +
+    geom_point(
+        position = "identity",
+        alpha = 0.8,
+        shape = 21,
+        size = 4
+    ) +
+    scale_color_manual(
+        values = c("slategray4", "navy"),
+        labels = c("Contactees", "Contactors"),
+        aesthetics = c("color", "fill")
+    ) +
+    guides(color = "none") +
+    labs(
+        x = "Age",
+        y = "Total contacts",
+        fill = "Type of contact"
+    ) +
+    theme(legend.position = "bottom")
+```
+
+While this matrix tells us how many contacts are made per year by an individual of each age, it doesn't tell us anything about the probability that a contact results in communication of infection.
+Let's assume that each contact has a constant probability $q$ of resulting in a transmission event.
+
+```{r}
+q <- 3e-5
+mossong_beta_mat <- q * mossong_mat_sym
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+filled.contour(
+    ages, ages, log10(mossong_beta_mat),
+    plot.title = title(
+        main = "WAIFW matrix based on POLYMOD data",
+        xlab = "Age",
+        ylab = "Age"
+    )
+)
+```
+
+Now let's simulate the introduction of such a pathogen into a population characterized by this contact structure.
+
+```{r}
+# Update the parameters with the POLYMOD-based beta matrix
+mossong_params <- multistage_params
+mossong_params[["beta_mat"]] <- mossong_beta_mat
+
+# Solve the model with the updated parameters
+mossong_sol <- deSolve::ode(
+    y = demog_yinit_ages,
+    times = seq(0, 200, by = 0.5),
+    func = multistage_model,
+    parms = mossong_params
+)
+
+# Extract the timeseries of infectious individuals
+mossong_infecteds <- mossong_sol[, 1 + iindex]
+
+# Convert infectious individual timeseries to dataframe for plotting
+mossong_infecteds_df <- tibble(
+        time = mossong_sol[, 1],
+        Juveniles = apply(mossong_infecteds[, juvies], 1, sum),
+        Adults = apply(mossong_infecteds[, adults], 1, sum)
+    ) %>%
+    pivot_longer(
+        cols = c(Juveniles, Adults),
+        names_to = "age_group",
+        values_to = "infections"
+    ) %>%
+    mutate(
+        age_group = factor(age_group, levels = c("Juveniles", "Adults"))
+    )
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(mossong_infecteds_df, aes(x = time, y = infections, color = age_group)) +
+    geom_line(linewidth = 1.5) +
+    scale_color_manual(
+        values = age_group_colors
+    ) +
+    labs(
+        x = "Time",
+        y = "Number of infections",
+        color = "Age group"
+    )
+```
+
+As before, we can also look at the equilibrium seroprevalence
+
+```{r}
+# Get last time point
+mossong_equil <- drop(tail(mossong_sol, 1))[-1]
+
+# Calculate number of individuals in each age group at end of simulation
+mossong_equil_n <- mossong_equil[sindex] +
+    mossong_equil[iindex] +
+    mossong_equil[rindex]
+
+# Calculate equilibrium seroprevalence
+mossong_equil_seroprev <- mossong_equil[rindex] / mossong_equil_n
+
+# Convert to dataframe for plotting
+mossong_equil_seroprev_df <- tibble(
+    # We can reuse the ages vectors from before as they are the same
+    # as the POLYMOD data
+    age = ages,
+    seroprev = mossong_equil_seroprev,
+    width = da_ages
+)
+```
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(mossong_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
+    geom_col(width = mossong_equil_seroprev_df$width, just = 1.0, color = "black") +
+    labs(
+        x = "Age",
+        y = "Seroprevalence"
+    ) +
+    scale_x_continuous(breaks = seq(0, 80, 10)) +
+    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
+```
+
+and compute the $R_0$ for this infection.
+
+```{r}
+mossong_stable_n <- solve(
+    mossong_params[["aging_mat"]],
+    -c(mossong_params[["births"]], rep(0, 29))
+)
+
+calculate_R0(
+    beta_mat = mossong_params[["beta_mat"]],
+    stable_n_mat = mossong_stable_n,
+    aging_mat = mossong_params[["aging_mat"]],
+    recovery = mossong_params[["recovery"]]
+)
+```
+
+::: {.callout-note title="QUESTION"}
+How does this R0 value compare to the R0 value obtained from @sec-ex-3?
+:::
+
