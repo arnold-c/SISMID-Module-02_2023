@@ -22,6 +22,8 @@ format:
             }
           };
         </script>
+filters:
+  - line-highlight
 ---
 
 # R Session 02
@@ -922,7 +924,7 @@ In using such data, we'd typically assume that the system was at equilibrium.
 
 <div class="exercise">
 
-### Exercise 3: What does the equilibrium age-specific seroprevalence look like in this example?
+### Exercise 3: What does the equilibrium age-specific seroprevalence look like in this example? {#sec-ex-3}
 
 </div>
 
@@ -960,6 +962,10 @@ ggplot(multistage_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
     scale_x_continuous(breaks = seq(0, 80, 10)) +
     scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
 ```
+
+::: {.callout-note title="QUESTION"}
+At what age does the seroprevalence reach 75%?
+:::
 
 Let's also compute $R_0$.
 And because we've added a lot of age structure, with transitions between the age groups, we can't just copy and paste the previous Next Generation Matrix code (from @sec-simple-ngm).
@@ -1025,10 +1031,15 @@ calculate_R0(
 ```
 
 <div class="exercise">
-### Exercise 4: 
-#### Change the juvenile-juvenile contact rate tobe 0.025.
-</div>
+### Exercise 4: Updating the contact matrix
 
+::: {.callout-important}
+You will need to read and edit the following code carefully so that it runs with your updated parameters.
+We have highlighted the relevant lines in the code chunks, so hopefully you won't miss them, though make sure you do copy all the code!
+:::
+
+#### Change the juvenile-juvenile contact rate to be 0.025.
+</div>
 
 
 ```{r}
@@ -1042,6 +1053,7 @@ update_age_params[["beta_mat"]] <- update_age_beta_mat
 
 ```{r}
 #| eval: false
+#| source-line-numbers: "2"
 update_age_beta_mat <- ages_beta_mat
 update_age_beta_mat[1:20, 1:20] <- ?
 
@@ -1081,12 +1093,10 @@ update_age_equil_seroprev_df <- tibble(
 )
 ```
 
-::: {.callout-important}
-You will need to read and edit the following code carefully so that it runs with your updated parameters!
-:::
 
 ```{r}
 #| eval: false
+#| source-line-numbers: "5,15-17,21"
 update_age_sol <- deSolve::ode(
     y = demog_yinit_ages,
     times = seq(0, 400, by = 0.1),
@@ -1114,7 +1124,22 @@ update_age_equil_seroprev_df <- tibble(
     seroprev = update_age_equil_seroprev,
     width = da_ages
 )
+
+ggplot(update_age_equil_seroprev_df, aes(x = age, y = seroprev, fill = age)) +
+    # Set column width to width of age bands, and justify to start at lower bound
+    geom_col(width = update_age_equil_seroprev_df$width, just = 1.0, color = "black") +
+    labs(
+        x = "Age",
+        y = "Seroprevalence"
+    ) +
+    scale_x_continuous(breaks = seq(0, 80, 10)) +
+    scale_fill_continuous(low = age_group_colors[1], high = age_group_colors[2])
 ```
+
+::: {.callout-note title="QUESTION"}
+At what age does the seroprevalence reach 75%?
+How does this compare to the answer in @sec-ex-3?
+:::
 
 <div class="exercise">
 #### Compute $R_0$ for your assumptions.
@@ -1126,6 +1151,7 @@ Use the `calculate_R0()` function we [defined earlier](#ngm-function) to calcula
 
 ```{r}
 #| eval: false
+#| source-line-numbers: "2-5"
 calculate_R0(
     beta_mat = ?,
     stable_n_mat = ?,
