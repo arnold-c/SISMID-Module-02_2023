@@ -18,6 +18,11 @@ $navbar-padding-y: 1.5rem !default;
 // Sidebar
 // $sidebar-bg: $code-bg !default;
 
+
+// Exercise
+$ex-background-color: #1a4e60 !default;
+$ex-font-color: #fffdfd !default;
+
 /*-- scss:rules --*/
 
 // Bold sidebar part text
@@ -30,8 +35,19 @@ a.sidebar-item-text.sidebar-link.text-start, .sidebar-title>a{
     color: $body-color;
 }
 
-
 // GitHub logo colors in sidebar and TOC navbar
 .bi::before, [class^="bi-"]::before, [class*=" bi-"]::before, #quarto-margin-sidebar .toc-actions .bi:before{
     color: $body-color;
 }
+
+// Exercise Headings
+.exercise {
+  color: $ex-font-color;
+  background-color: $ex-background-color;
+  padding-left: 20px;
+  padding-bottom: 15px;
+  padding-top: 10px;
+  margin-left: -20px;
+  margin-bottom: 15px;
+}
+

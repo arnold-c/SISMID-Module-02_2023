@@ -6,8 +6,7 @@ $navbar-padding-y: 1.5rem !default;
 $dark-blue: #222235 !default;
 
 // Exercise
-$ex-color: #1f1745 !default;
-$ex-background-color: #e2e1ce !default;
+$ex-background-color: #fccfcf9e !default;
 
 /*-- scss:rules --*/
 
@@ -21,6 +20,11 @@ a.sidebar-item-text.sidebar-link.text-start, .sidebar-title{
 
 // Exercise Headings
 .exercise {
-  // background: $ex-background-color;
-  // margin: 17px 0px 0px 17px;
+  // color: $ex-font-color;
+  background-color: $ex-background-color;
+  padding-left: 20px;
+  padding-bottom: 15px;
+  padding-top: 10px;
+  margin-left: -20px;
+  margin-bottom: 15px;
 }
