@@ -517,7 +517,9 @@ demog_df <- demog_sol %>%
 
 <div class="exercise">
 
-### Exercise 1: Use this code to plot the number of susceptible, infected, and recovered individuals over time.
+### Exercise 1: Use this code to plot the number of susceptible, infected, and recovered individuals over time
+
+</div>
 
 ```{r}
 #| column: body
@@ -620,8 +622,6 @@ ggplot(demog_equil_seroprev, aes(x = group, y = prop, fill = group)) +
 
 One thing we are often interested in is the $R_0$ of a system.
 The details are beyond the scope of this workshop and are not required to complete the exercises in this worksheet, but we have outlined them in @sec-simple-ngm, particularly in @eq-simple-ngm, at the end of this page.
-
-</div>
 
 ```{r}
 #| echo: false
@@ -835,7 +835,11 @@ aging_mat %>%
     labs(x = "Source Age Group", y = "Recipient Age Group")
 ```
 
+<div class="exercise">
+
 ### Exercise 2: What can you say about its structure? How are the different age groups in contact with each other?
+
+</div>
 
 Now we can put the pieces together to write a simulator for the age-structured SIR dynamics.
 
@@ -1046,7 +1050,10 @@ calculate_R0(
 ```
 
 <div class="exercise">
+
 ### Exercise 4: Updating the contact matrix
+
+</div>
 
 ::: {.callout-important}
 You will need to read and edit the following code carefully so that it runs with your updated parameters.
@@ -1054,7 +1061,6 @@ We have highlighted the relevant lines in the code chunks, so hopefully you won'
 :::
 
 #### Change the juvenile-juvenile contact rate to be 0.025.
-</div>
 
 
 ```{r}
@@ -1076,10 +1082,7 @@ update_age_params <- multistage_params
 update_age_params[["beta_mat"]] <- update_age_beta_mat
 ```
 
-<div class="exercise">
 #### Simulate and plot the age-structured SIR dynamics under your assumptions and record how the age-specific seroprevalence has changed.
-</div>
-
 
 ```{r}
 #| echo: false
@@ -1156,10 +1159,7 @@ At what age does the seroprevalence reach 75%?
 How does this compare to the answer in @sec-ex-3?
 :::
 
-<div class="exercise">
 #### Compute $R_0$ for your assumptions.
-</div>
-
 
 As described previously, the calculation for $R_0$ is difficult due to all the age categories and transitions.
 Use the `calculate_R0()` function we [defined earlier](#ngm-function) to calculate $R_0$ for our updated system.
@@ -1227,15 +1227,28 @@ See @sec-mean-age-r-code for code you can run in `R` to investigate the relation
 
 <div class="exercise">
 
+### Exercise 5: mean age of infection interactions
+
+#### When you increase $R_0$ from 2.0 to 4.0, what happens to the mean age of infection?
+##### Is there a linear change? If not, why not?
+#### With $R_0$ to 4.0, approximately what level of vaccination coverage is required for a mean age of infection of 40 years?
+#### Leaving $R_0$ and vaccination coverage the same, decrease the life expectancy to 50 years. What happens to the mean age of infection?
+##### If it changed, why do you think it did?
+
+</div>
+
+
 ### Interactive plot
 
 ```{ojs}
+//| echo: false
 init_R0 = 2.0
 init_vacc = 0.0
 init_lifeexp = 75
 ```
 
 ```{ojs}
+//| echo: false
 function set(input, value) {
   input.value = value;
   input.dispatchEvent(new Event("input", {bubbles: true}));
@@ -1304,7 +1317,6 @@ Re_mean_age_str = Re_mean_age.toPrecision(4).toLocaleString()
 import { aq, op } from '@uwdata/arquero'
 ```
 
-
 ```{ojs}
 //| echo: false
 function calc_mean_age_arr(vacc, lifeexp, R0_min, R0_max, dR0) {
@@ -1339,12 +1351,10 @@ function calc_mean_age_arr(vacc, lifeexp, R0_min, R0_max, dR0) {
 }
 ```
 
-
 ```{ojs}
 //| echo: false
 mean_age_arrs = calc_mean_age_arr(vacc, lifeexp, 1.0, 10.0, 0.01)
 ```
-
 
 ```{ojs}
 //| echo: false
@@ -1357,7 +1367,6 @@ mean_age_dots = [({
     Re_mean_age
 })]
 ```
-
 
 ```{ojs}
 //| echo: false
@@ -1409,22 +1418,6 @@ mean_age_dots = [({
   return plot;
 }
 ```
-
-### Interactive plot exercises
-#### When you increase $R_0$ from 2.0 to 4.0, what happens to the mean age of infection?
-##### Is there a linear change? If not, why not?
-
-#### With $R_0$ to 4.0, approximately what level of vaccination coverage is required for a mean age of infection of 40 years?
-
-#### Leaving $R_0$ and vaccination coverage the same, decrease the life expectancy to 50 years. What happens to the mean age of infection?
-##### If it changed, why do you think it did?
-
-::: {.callout-note title="Hint"}
-Think about the definitions of $R_E$ and life expectancy in @eq-mean-age
-:::
-
-</div>
-
 
 ## Bonus Materials
 ### Calculating $R_0$ with the Next Generation Matrix
@@ -1724,7 +1717,6 @@ $\mathbf{v}$ doesn't have any state terms in the equation, so it is already eval
 $\mathbf{f}|_{\text{dfe}}$ involves subsituting $S_i$ for the equilibrium population distribution that balances the births and aging processes.
 
 This translates to the function we [defined earlier](#ngm-function)
-
 
 ### Mean age of infection `R` code {#sec-mean-age-r-code}
 
