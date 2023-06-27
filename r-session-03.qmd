@@ -6,7 +6,8 @@ abstract: |
 execute:
     warning: false
 metadata-files: 
-  - metadata/matthewferrari.yml
+    - metadata/matthewferrari.yml
+    - metadata/mathjax-packages.yml
 ---
 
 # R Session 03
