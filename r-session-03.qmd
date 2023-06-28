@@ -190,17 +190,20 @@ names(niamey_site_labels) <- names(niamey_site_colors)
 ```
 
 ```{r}
+#| column: body
+#| out-width: 100%
 ggplot(niamey_df, aes(x = biweek, y = cases, color = site, fill = site, group = site)) +
     geom_line() +
     geom_point(shape = 21, size = 5, alpha = 0.8) +
     scale_color_manual(values = niamey_site_colors, aesthetics = c("color", "fill"), labels = niamey_site_labels) + 
     guides(color = "none") +
-    labs(x = "Biweek", y = "Number of Cases", fill = "Site Number")
+    labs(x = "Biweek", y = "Number of Cases", fill = "Site Number") +
+    theme(legend.position = "bottom")
 ```
 
 ## Dynamical Model
 
-First, we write a specialized function for simulating the $SIR$ model in a case where the removal rate is ``hard-wired'' and with no demography.
+First, we write a specialized function for simulating the SIR model in a case where the removal rate is *"hard-wired"* and with no demography.
 
 ```{r}
 closed_sir_model <- function (t, x, p, ...) {  #SIR model equations
@@ -213,67 +216,36 @@ closed_sir_model <- function (t, x, p, ...) {  #SIR model equations
 
     # Calculate the ODEs
     dSdt <- - beta * S * I
-    dIdt <- beta * S * I
+    dIdt <- beta * S * I - (365 / 13) * I
 
     # Return the ODEs
     return(list(c(dSdt, dIdt)))
 }
 ```
 
-```{r}
-# initial conditions
-yinit <- c(S = 1000, I = 1)
-
-# Run the ODE solver from the deSolve package
-sol <- deSolve::ode(
-    y = yinit,
-    times = 1:16 * 14 / 365,
-    func = closed_sir_model,
-    parms = c(-3.2),
-)
-
-as_tibble(sol)
-```
-
 ## Objective function
 
-```{r}
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Now we set up a function that will calculate the sum of the squared differences between the observations and the model at any parameterization (more commonly known as "sum of squared errors").
+Now we set up a function that will calculate the sum of the squared differences between the observations and the model at any parameterization (more commonly known as *"sum of squared errors"*).
 In general, this is called the **objective function** because it is the quantity that optimization seeks to minimize.
 
 ```{r}
-sse_sir <- function(p, data, site){  #function to calculate squared errors
-    filtered_data <- filter(data, site == site)   #working dataset, based on site
-    t <- filtered_data$biweek * 14 / 365            #time in biweeks
-    cases <- filtered_data$cases             #number of cases
+# Function to calculate squared errors
+sse_sir <- function(p, data){
+    # Convert biweekly time series into annual time scale
+    t <- data$biweek * 14 / 365
 
-    beta <- exp(p[["beta"]])            #parameter beta
+    # Extract the number of actual cases
+    cases <- data$cases
 
-    S_init <- exp(p[["S_init"]])           #initial susceptibles
-    I_init <- exp(p[["I_init"]])           #initial infected        
+    # Note the parameters are updated throughout the optimization process by the optim() function
+    # Unpack the transmission parameter and exponentiate to fit on ln scale
+    beta <- exp(p[["beta"]])
+
+    # Unpack the initial states and exponentiate to fit on ln scale
+    S_init <- exp(p[["S_init"]])
+    I_init <- exp(p[["I_init"]])
     
+    # Fit SIR model to the parameters
     sol <- as_tibble(deSolve::ode(
             y = c(S = S_init, I = I_init),
             times = t,
@@ -281,37 +253,15 @@ sse_sir <- function(p, data, site){  #function to calculate squared errors
             parms = beta,
             hmax = 1/120
         )) %>%
+        # Convert to numeric for easier manipulation
         mutate(across(everything(), as.numeric))
     
-    sum((sol$I - cases)^2)       #sum of squared errors that is returned to the optim function
+    # Calculate sum of squared errors that is returned to the optim() function
+    sum((sol$I - cases)^2)
 }
 ```
 
-```{r}
-nested_sse_sir <- function(p, data){  #function to calculate squared errors
-    t <- data$biweek * 14 / 365            #time in biweeks
-    cases <- data$cases             #number of cases
-
-    beta <- exp(p[["beta"]])            #parameter beta
-
-    S_init <- exp(p[["S_init"]])           #initial susceptibles
-    I_init <- exp(p[["I_init"]])           #initial infected        
-    
-    sol <- as_tibble(deSolve::ode(
-            y = c(S = S_init, I = I_init),
-            times = t,
-            func = closed_sir_model,
-            parms = beta,
-            hmax = 1/120
-        )) %>%
-        mutate(across(everything(), as.numeric))
-    
-    sum((sol$I - cases)^2)       #sum of squared errors that is returned to the optim function
-}
-```
-
-
-Notice that the code for `sse_sir` makes use of the following modeling trick.
+Notice that the code for `sse_sir()` makes use of the following modeling trick.
 We know that $\beta$, $S_0$, and $I_0$ must be positive, but our search to optimize these parameters will be over the entire number line.
 We could constrain the search using a more sophisticated algorithm, but this might introduce other problems (i.e., stability at the boundaries). Instead, we parameterize our objective function (`sse_sir`) in terms of some alternative variables $\ln(\beta)$, $\ln(S_0)$, and $\ln(I_0)$.
 While these numbers range from $-\infty$ to $\infty$ (the range of our search) they map to our model parameters on a range from $0$ to $\infty$ (the range that is biologically meaningful).
@@ -320,37 +270,60 @@ While these numbers range from $-\infty$ to $\infty$ (the range of our search) t
 
 Our final step is to use the function `optim` to find the values of $\beta$, $S_0$, and $I_0$ that minimize the sum of squared errors as calculated using our function.
 
-```{r}
-sse_optim_params <- c(beta = -3.2, S_init = 7.3, I_init = -2.6)  #initial guess
-
-fit1 <- optim(sse_optim_params, sse_sir, data = niamey_df, site = "Site_1") #fit
-exp(fit1$par)  #back-transform parameters
-
-fit2 <- optim(sse_optim_params, sse_sir, data = niamey_df, site = "Site_2") #fit
-exp(fit2$par)  #back-transform parameters
-
-fit3 <- optim(sse_optim_params, sse_sir, data = niamey_df, site = "Site_3") #fit
-exp(fit3$par)
-```
-
 Finally, we plot these fits against the data.
 
 ```{r}
+# Initial guess
+sse_optim_params <- c(beta = -3.2, S_init = 7.3, I_init = -2.6)
+
+# Create a dataframe of optimized parameters
 niamey_optims <- niamey_df %>%
+    # Create a nested dataframe i.e. one row for each site, and the data column now is a
+    # list column that contains a separate dataframe of times and cases for each site
     nest(data = -site) %>%
     mutate(
-        fit = map(data, ~optim(sse_optim_params, nested_sse_sir, data = .x)),
+        # Map the optim() function call to each of the separate dataframes stored
+        #in the nested data column we just created
+        fit = map(data, ~optim(sse_optim_params, sse_sir, data = .x)),
+        # Map the exp() function to each of the model fits just created, and output
+        # to a dataframe instead of a list (like in map()), for easier use in 
+        # the plottinge predictions later
         map_dfr(fit, ~exp(.x$par))
     )
 ```
 
 ```{r}
+niamey_optims %>%
+    select(-c(data, fit)) %>%
+    mutate(site = str_replace_all(site, "_", " ")) %>%
+    gt() %>%
+    fmt_number(columns = -site, decimals = 3) %>%
+    fmt_scientific(columns = beta) %>%
+    # Relabel the column headers
+    cols_label(
+        site = md("**Site**"), 
+        beta = md("**Beta**"),
+        S_init = md("**Initial S**"),
+        I_init = md("**Initial I**")
+    ) %>%
+    # Apply style to the table with gray alternating rows
+    opt_stylize(style = 1, color = 'gray') %>%
+    # Increate space between columns
+    opt_horizontal_padding(scale = 3) %>%
+    cols_align("center")
+```
+
+```{r}
 niamey_predictions <- niamey_optims %>%
     mutate(
+        # For each of the different site's nested dataframes, fit the SIR model
+        # with the optimal parameters to get best fit predictions
         predictions = pmap(
             .l = list(S_init = S_init, I_init = I_init, beta = beta, time_data = data),
             .f = function(S_init, I_init, beta, time_data)  {
                 site_times <- time_data$biweek * 14/365
+
+                # Return a dataframe of model solutions
                 as_tibble(ode(
                     y = c(S = S_init, I = I_init),
                     times = site_times,
@@ -358,6 +331,7 @@ niamey_predictions <- niamey_optims %>%
                     parms = beta,
                     hmax = 1/120
                 )) %>%
+                # Make sure all values are numeric for plotting purposes
                 mutate(across(everything(), as.numeric))
             }
             )
@@ -368,76 +342,6 @@ niamey_predictions <- niamey_optims %>%
 ```{r}
 #| column: body
 #| out-width: 100%
-ggplot(niamey_predictions, aes(x = biweek, color = site, group = site)) +
-    geom_line(aes(y = cases)) +
-    geom_point(aes(y = I)) +
-    facet_wrap(~site, ncol = 1)
-```
-
-```{r}
-#| column: body
-#| out-width: 100%
-par(mfrow=c(3,1))   #set up plotting area for multiple panels
-plot(
-  cases ~ biweek,
-  data = filter(niamey_df, site == "Site_1"),
-  type = 'b',
-  col = 'blue',
-  pch = 21
-) #plot site 1
-
-t <- filter(niamey_df, site == "Site_1")$biweek * 14 / 365
-
-mod_pred <-as.data.frame(
-  deSolve::ode(
-    c(S = exp(fit1$par[["S_init"]]), I = exp(fit1$par[["I_init"]])),
-    times = t,
-    closed_sir_model,
-    exp(fit1$par[1]),
-    hmax=1/120
-  )
-)
-                              #obtain model predictions
-lines(mod_pred$I ~ filter(niamey_df, site == "Site_1")$biweek, col="black") #and plot as a line
-
-plot(
-  cases ~ biweek,
-  data = filter(niamey_df, site == "Site_2"),
-  type = 'b',
-  col = "red"
-) #site 2
-
-t <- filter(niamey_df, site == "Site_2")$biweek * 14 / 365
-
-mod_pred <- as.data.frame(
-  deSolve::ode(
-    c(S = exp(fit2$par[["S_init"]]), I = exp(fit2$par[["I_init"]])),
-    times = t,
-    closed_sir_model,
-    exp(fit2$par[1]),
-    hmax = 1/120
-  )
-)
-
-lines(mod_pred$I ~ filter(niamey_df, site == "Site_2")$biweek)
-
-plot(
-  cases ~ biweek,
-  data = filter(niamey_df, site == "Site_3"),
-  type = 'b',
-  col = "green"
-) #site 3
-
-t <- filter(niamey_df, site == "Site_3")$biweek * 14 / 365
-
-mod_pred <-as.data.frame(
-  deSolve::ode(
-    c(S = exp(fit3$par[["S_init"]]), I = exp(fit3$par[["I_init"]])),
-    times = t,
-    closed_sir_model,
-    exp(fit3$par[1]),
-    hmax = 1/120
-  )
 )
 
 lines(mod_pred$I ~ filter(niamey_df, site == "Site_3")$biweek)
