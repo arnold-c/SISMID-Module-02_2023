@@ -517,20 +517,20 @@ niamey_preds_labels <- tibble(
     site = c("Site_3", "Site_2"),
     x_label = c(7, 6.5),
     x_arrow_just = c(-0.5, -0.5),
-    x_arrow_end = c(8.5, 7.75),
+    x_arrow_end = c(8.8, 7.75),
     y_label = c(120, 600),
     y_arrow_just = c(-15, -70),
-    y_arrow_end = c(40, 290),
+    y_arrow_end = c(29, 290),
     commentary = c("**Observed", "**Predicted"),
     color = c("grey20", niamey_site_colors["Site_2"])
 )
 
 ggplot(niamey_predictions, aes(x = biweek, group = site)) +
-    # Plot the true cases in black
-    geom_line(aes(y = cases), color = "black") +
-    # Plot the best-fit model predictions
-    geom_line(aes(y = I, color = site)) +
-    geom_point(aes(y = I, color = site), size = 4, alpha = 0.8) +
+    # Plot the actual data in color
+    geom_line(aes(y = cases, color = site)) +
+    geom_point(aes(y = cases, color = site), size = 4, alpha = 0.8) +
+    # Plot the best-fit model predictions in black
+    geom_line(aes(y = I), color = "black") +
     scale_color_manual(values = niamey_site_colors, aesthetics = c("color", "fill")) +
     # Place each site on it's own subplot and change labels
     facet_wrap(
