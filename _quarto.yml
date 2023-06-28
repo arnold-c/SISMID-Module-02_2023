@@ -84,6 +84,8 @@ format:
     code-overflow: wrap
     code-link: true
     code-tools: true
+    code-line-numbers: true
 
+# Extension Lua filters
 filters:
   - line-highlight

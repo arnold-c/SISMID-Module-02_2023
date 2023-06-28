@@ -1,8 +1,4 @@
 ---
-format:
-  html:
-    page-layout: full
-    code-line-numbers: true
 execute:
     echo: false
 ---
