@@ -347,11 +347,11 @@ niamey_predictions <- niamey_optims %>%
 niamey_preds_labels <- tibble(
     site = c("Site_3", "Site_2"),
     x_label = c(7, 6.5),
-    x_arrow_just = c(0.75, -0.5),
-    x_arrow_end = c(10, 7),
-    y_label = c(50, 600),
-    y_arrow_just = c(7, -40),
-    y_arrow_end = c(90, 150),
+    x_arrow_just = c(-0.5, -0.5),
+    x_arrow_end = c(8.5, 7.75),
+    y_label = c(120, 600),
+    y_arrow_just = c(-15, -70),
+    y_arrow_end = c(40, 290),
     commentary = c("**Observed", "**Predicted"),
     color = c("grey20", niamey_site_colors["Site_2"])
 )
@@ -378,9 +378,9 @@ ggplot(niamey_predictions, aes(x = biweek, group = site)) +
     geom_curve(
         data = niamey_preds_labels,
         aes(x = x_label + x_arrow_just, xend = x_arrow_end, y = y_label + y_arrow_just, yend = y_arrow_end),
-        size = 1,
-        arrow = arrow(length = unit(0.3, "cm")),
-        curvature = list(-0.15),
+        linewidth = 0.75,
+        arrow = arrow(length = unit(0.2, "cm")),
+        curvature = list(0.25),
         color = "grey20"
     )
 ```
