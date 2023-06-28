@@ -84,3 +84,6 @@ format:
     code-overflow: wrap
     code-link: true
     code-tools: true
+
+filters:
+  - line-highlight
