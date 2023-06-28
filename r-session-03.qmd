@@ -18,6 +18,8 @@ metadata-files:
 library(here)
 library(deSolve)
 library(tidyverse)
+library(ggtext)
+library(gt)
 ```
 
 ```{r}
@@ -342,9 +344,45 @@ niamey_predictions <- niamey_optims %>%
 ```{r}
 #| column: body
 #| out-width: 100%
+niamey_preds_labels <- tibble(
+    site = c("Site_3", "Site_2"),
+    x_label = c(7, 6.5),
+    x_arrow_just = c(0.75, -0.5),
+    x_arrow_end = c(10, 7),
+    y_label = c(50, 600),
+    y_arrow_just = c(7, -40),
+    y_arrow_end = c(90, 150),
+    commentary = c("**Observed", "**Predicted"),
+    color = c("grey20", niamey_site_colors["Site_2"])
 )
 
-lines(mod_pred$I ~ filter(niamey_df, site == "Site_3")$biweek)
+ggplot(niamey_predictions, aes(x = biweek, group = site)) +
+    # Plot the true cases in black
+    geom_line(aes(y = cases), color = "black") +
+    # Plot the best-fit model predictions
+    geom_line(aes(y = I, color = site)) +
+    geom_point(aes(y = I, color = site), size = 4, alpha = 0.8) +
+    scale_color_manual(values = niamey_site_colors, aesthetics = c("color", "fill")) +
+    # Place each site on it's own subplot and change labels
+    facet_wrap(~site, ncol = 1, scales = "free_y", labeller = as_labeller(niamey_site_labels)) +
+    labs(x = "Biweek", y = "Number of Case") +
+    theme(legend.position = "none") +
+    ggtext::geom_textbox(
+        data = niamey_preds_labels,
+        aes(
+            label = paste0("<span style = \"color:", color, "\">", commentary," Cases**", "</span>"),
+            x = x_label, y = y_label
+        ),
+        size = 4, fill = NA, box.colour = NA
+    ) +
+    geom_curve(
+        data = niamey_preds_labels,
+        aes(x = x_label + x_arrow_just, xend = x_arrow_end, y = y_label + y_arrow_just, yend = y_arrow_end),
+        size = 1,
+        arrow = arrow(length = unit(0.3, "cm")),
+        curvature = list(-0.15),
+        color = "grey20"
+    )
 ```
 
 <div class="exercise">
