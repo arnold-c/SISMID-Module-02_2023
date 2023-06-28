@@ -229,13 +229,19 @@ closed_sir_model <- function (t, x, p, ...) {  #SIR model equations
 
 ```{r}
 #| echo: false
-ojs_niamey <- rename(niamey_df, "Biweek" = biweek, "Number of Individuals" = cases)
+ojs_niamey <- rename(niamey_df, "Biweek" = biweek, "Number of Individuals" = cases) %>%
+    mutate(site = str_replace_all(site, "_", " "))
 ```
 
 ```{r}
 #| echo: false
 #| cache: false
 ojs_define(niamey_data = ojs_niamey)
+```
+
+```{ojs}
+filtered_niamey_data = aq.table(niamey_data)
+    .filter(aq.escape(d => d.site == site_select))
 ```
 
 ```{ojs}
@@ -279,7 +285,7 @@ viewof beta_input = Inputs.range(
 )
 
 viewof site_select = Inputs.select(
-    ["Site_1", "Site_2", "Site_3"],
+    ["Site 1", "Site 2", "Site 3"],
     {label: "Select a site:"}
 )
 
@@ -362,7 +368,7 @@ siteColors = ["#1b9e77", "#d95f02", "#7570b3"]
 Plot.plot({
     color: {
         legend: true,
-        domain: ["Site_1", "Site_2", "Site_3"],
+        domain: ["Site 1", "Site 2", "Site 3"],
         range: siteColors,
     },
     style: {fontSize: "20px"},
@@ -375,7 +381,7 @@ Plot.plot({
     marks: [
         Plot.lineY(
             sir_sol,
-            {x: "Biweek", y: "Number of Individuals"}
+            {x: "Biweek", y: "Number of Individuals", stroke: "#4d4d4dff", strokeWidth: 6, strokeOpacity: 0.8}
         ),
         Plot.dot(
             filtered_niamey_data,
@@ -387,11 +393,6 @@ Plot.plot({
         )
     ]
 })
-```
-
-```{ojs}
-filtered_niamey_data = aq.table(niamey_data)
-    .filter(aq.escape(d => d.site == site_select))
 ```
 
 ## Objective Function
