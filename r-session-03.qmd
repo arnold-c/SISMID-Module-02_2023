@@ -122,9 +122,7 @@ linear_model <- lm(log(flu[1:4]) ~ day[1:4], data = flu)
 summary(linear_model)
 
 # Extract slope parameter
-slope <- coef(linear_model)[2]
-
-slope
+coef(linear_model)[2]
 ```
 
 Rearranging the linear equation above and denoting the slope coefficient by $\hat \beta_1$ we have the estimator $\hat R_0 = \hat \beta_1 / \gamma + 1$ giving $\hat R_0 = 1.094913 / 0.4 + 1 \approx 3.7$.
@@ -149,7 +147,7 @@ How does this affect our estimate of $R_0$? Twelve hours?
 </div>
 
 Biweekly data for outbreaks of measles in three communities in Niamey, Niger are provided in the dataframe `niamey`.
-Use this method to obtain estimates of $R_0$ for measles from the first community assuming that the infectious period is approximately two weeks or $14/365 \approx 0.0384$ years.
+Use this method to obtain estimates of $R_0$ for measles from the first community assuming that the infectious period is approximately two weeks or $\frac{14}{365} \approx 0.0384$ years.
 
 <div class="exercise">
 
@@ -178,15 +176,25 @@ To demonstrate least squares fitting, we consider an outbreak of measles in Niam
 niamey[5, 3] <- 0 
 
 niamey_df <- niamey %>%
+    # Rename columns to remove automatic "V1" etc columns names
     rename_with(., ~paste0("Site_", str_remove(.x, "V"))) %>%
+    # Add a column for the biweekly time period
     mutate(biweek = 1:16) %>%
-    pivot_longer(cols = contains("Site"), names_to = "site", values_to = "cases")
+    # Convert to long format for plotting
+    pivot_longer(
+        cols = contains("Site"),
+        names_to = "site",
+        values_to = "cases"
+    )
 ```
 
 ```{r}
+# Create a vector of colors for each site in the Niamey dataset
 niamey_site_colors <- RColorBrewer::brewer.pal(3, "Dark2")
+# Assign names to the colors
 names(niamey_site_colors) <- unique(niamey_df$site)
 
+# Create a vector of labels for each site for nicer plotting legends
 niamey_site_labels <- str_replace_all(names(niamey_site_colors), "_", " ")
 names(niamey_site_labels) <- names(niamey_site_colors)
 ```
@@ -194,10 +202,17 @@ names(niamey_site_labels) <- names(niamey_site_colors)
 ```{r}
 #| column: body
 #| out-width: 100%
-ggplot(niamey_df, aes(x = biweek, y = cases, color = site, fill = site, group = site)) +
+ggplot(
+        niamey_df,
+        aes(x = biweek, y = cases, color = site, fill = site, group = site)
+    ) +
     geom_line() +
     geom_point(shape = 21, size = 5, alpha = 0.8) +
-    scale_color_manual(values = niamey_site_colors, aesthetics = c("color", "fill"), labels = niamey_site_labels) + 
+    scale_color_manual(
+        values = niamey_site_colors,
+        aesthetics = c("color", "fill"),
+        labels = niamey_site_labels
+    ) + 
     guides(color = "none") +
     labs(x = "Biweek", y = "Number of Cases", fill = "Site Number") +
     theme(legend.position = "bottom")
@@ -208,17 +223,40 @@ ggplot(niamey_df, aes(x = biweek, y = cases, color = site, fill = site, group = 
 First, we write a specialized function for simulating the SIR model in a case where the removal rate is *"hard-wired"* and with no demography.
 
 ```{r}
-closed_sir_model <- function (t, x, p, ...) {  #SIR model equations
+#' Basic SIR model
+#'
+#' A basic SIR model with no demographic structure to be used in deSolve
+#'
+#' @param time deSolve passes the time parameter to the function.
+#' @param state A vector of states.
+#' @param params The beta parameter
+#' @param ... Other arguments passed by deSolve.
+#'
+#' @return A deSolve matrix of states at each time step.
+#' @examples
+#' sir_params <- 0.0005
+#' sir_init_states <- c(S = 5000, I = 1, R = 0)
+#' sim_times <- seq(0, 16 / 365, by = 0.1 / 365)
+#' 
+#' sir_sol <- deSolve::ode(
+#'    y = sir_init_states,
+#'    times = sim_times,
+#'    func = closed_sir_model,
+#'    parms = sir_params
+#' ))
+closed_sir_model <- function (time, state , params, ...) {  #SIR model equations
     # Unpack states
-    S <- x["S"]
-    I <- x["I"]
+    S <- state["S"]
+    I <- state["I"]
     
     # Unpack parameters
-    beta <- p
+    beta <- params
+    dur_inf <- 14 / 365
+    gamma <- 1 / dur_inf
 
     # Calculate the ODEs
     dSdt <- - beta * S * I
-    dIdt <- beta * S * I - (365 / 13) * I
+    dIdt <- beta * S * I - (gamma * I)
 
     # Return the ODEs
     return(list(c(dSdt, dIdt)))
@@ -229,7 +267,8 @@ closed_sir_model <- function (t, x, p, ...) {  #SIR model equations
 
 ```{r}
 #| echo: false
-ojs_niamey <- rename(niamey_df, "Biweek" = biweek, "Number of Individuals" = cases) %>%
+ojs_niamey <- niamey_df %>%
+    rename("Biweek" = biweek, "Number of Individuals" = cases) %>%
     mutate(site = str_replace_all(site, "_", " "))
 ```
 
@@ -310,8 +349,9 @@ md`${tex`R_0 = ${R0_str}`}`
 
 ```{ojs}
 //| echo: false
-gamma = 1 / 13
-R0 = beta / gamma
+dur_inf = 14
+gamma = 1 / dur_inf
+R0 = beta * (S0 + I0)/ gamma
 
 R0_str = R0.toPrecision(2).toLocaleString()
 ```
@@ -438,35 +478,46 @@ Now we set up a function that will calculate the sum of the squared differences 
 In general, this is called the **objective function** because it is the quantity that optimization seeks to minimize.
 
 ```{r}
-# Function to calculate squared errors
-sse_sir <- function(p, data){
+#' Calculate the Sum of Squared Errors
+#'
+#' A function to take in biweekly incidence data, and SIR parameters, and
+#' calculate the SSE
+#'
+#' @param params A vector of parameter values
+#' @param data A dataframe containing biweekly incidence data in the case column
+#'
+#' @return The SSE of type double
+#' @examples
+sse_sir <- function(params, data){
     # Convert biweekly time series into annual time scale
+    # Daily time scale has requires beta values to be too small - doesn't 
+    # optimize well
     t <- data$biweek * 14 / 365
-
+    
     # Extract the number of actual cases
     cases <- data$cases
 
-    # Note the parameters are updated throughout the optimization process by the optim() function
+    # Note the parameters are updated throughout the optimization process by
+    # the optim() function
     # Unpack the transmission parameter and exponentiate to fit on ln scale
-    beta <- exp(p[["beta"]])
+    beta <- exp(params[["beta"]])
 
-    # Unpack the initial states and exponentiate to fit on ln scale
-    S_init <- exp(p[["S_init"]])
-    I_init <- exp(p[["I_init"]])
+    # Unpack the initial states and exponentiate to fit on normal scale
+    S_init <- exp(params[["S_init"]])
+    I_init <- exp(params[["I_init"]])
     
     # Fit SIR model to the parameters
-    sol <- as_tibble(deSolve::ode(
+    sol <- deSolve::ode(
             y = c(S = S_init, I = I_init),
             times = t,
             func = closed_sir_model,
             parms = beta,
             hmax = 1/120
-        )) %>%
-        # Convert to numeric for easier manipulation
-        mutate(across(everything(), as.numeric))
-    
+        ) 
+
+
     # Calculate sum of squared errors that is returned to the optim() function
-    sum((sol$I - cases)^2)
+    sum((sol[, 3] - cases)^2)
 }
 ```
 
@@ -483,20 +534,21 @@ Finally, we plot these fits against the data.
 
 ```{r}
 # Initial guess
-sse_optim_params <- c(beta = -3.2, S_init = 7.3, I_init = -2.6)
+sse_optim_params <- c(beta = log(0.05), S_init = log(5000), I_init = log(1))
 
 # Create a dataframe of optimized parameters
 niamey_optims <- niamey_df %>%
-    # Create a nested dataframe i.e. one row for each site, and the data column now is a
-    # list column that contains a separate dataframe of times and cases for each site
+    # Create a nested dataframe i.e. one row for each site, and the data column
+    # now is a list column that contains a separate dataframe of times and
+    # cases for each site
     nest(data = -site) %>%
     mutate(
-        # Map the optim() function call to each of the separate dataframes stored
-        #in the nested data column we just created
+        # Map the optim() function call to each of the separate dataframes
+        # stored in the nested data column we just created
         fit = map(data, ~optim(sse_optim_params, sse_sir, data = .x)),
-        # Map the exp() function to each of the model fits just created, and output
-        # to a dataframe instead of a list (like in map()), for easier use in 
-        # the plottinge predictions later
+        # Map the exp() function to each of the model fits just created, and
+        # output to a dataframe instead of a list (like in map()), for easier
+        # use in the plottinge predictions later
         map_dfr(fit, ~exp(.x$par))
     )
 ```
@@ -528,9 +580,14 @@ niamey_predictions <- niamey_optims %>%
         # For each of the different site's nested dataframes, fit the SIR model
         # with the optimal parameters to get best fit predictions
         predictions = pmap(
-            .l = list(S_init = S_init, I_init = I_init, beta = beta, time_data = data),
+            .l = list(
+                S_init = S_init,
+                I_init = I_init,
+                beta = beta,
+                time_data = data
+            ),
             .f = function(S_init, I_init, beta, time_data)  {
-                site_times <- time_data$biweek * 14/365
+                site_times <- time_data$biweek * 14 / 365
 
                 # Return a dataframe of model solutions
                 as_tibble(ode(
@@ -551,6 +608,7 @@ niamey_predictions <- niamey_optims %>%
 ```{r}
 #| column: body
 #| out-width: 100%
+# Create a dataframe to store the positions of the text labels
 niamey_preds_labels <- tibble(
     site = c("Site_3", "Site_2"),
     x_label = c(7, 6.5),
@@ -569,7 +627,9 @@ ggplot(niamey_predictions, aes(x = biweek, group = site)) +
     geom_point(aes(y = cases, color = site), size = 4, alpha = 0.8) +
     # Plot the best-fit model predictions in black
     geom_line(aes(y = I), color = "black") +
-    scale_color_manual(values = niamey_site_colors, aesthetics = c("color", "fill")) +
+    scale_color_manual(
+        values = niamey_site_colors, aesthetics = c("color", "fill")
+    ) +
     # Place each site on it's own subplot and change labels
     facet_wrap(
         ~site, ncol = 1, scales = "free_y",
@@ -580,14 +640,24 @@ ggplot(niamey_predictions, aes(x = biweek, group = site)) +
     ggtext::geom_textbox(
         data = niamey_preds_labels,
         aes(
-            label = paste0("<span style = \"color:", color, "\">", commentary," Cases**", "</span>"),
+            label = paste0(
+                "<span style = \"color:",
+                color,
+                "\">",
+                commentary,
+                " Cases**",
+                "</span>"
+            ),
             x = x_label, y = y_label
         ),
         size = 4, fill = NA, box.colour = NA
     ) +
     geom_curve(
         data = niamey_preds_labels,
-        aes(x = x_label + x_arrow_just, xend = x_arrow_end, y = y_label + y_arrow_just, yend = y_arrow_end),
+        aes(
+            x = x_label + x_arrow_just, xend = x_arrow_end,
+            y = y_label + y_arrow_just, yend = y_arrow_end
+        ),
         linewidth = 0.75,
         arrow = arrow(length = unit(0.2, "cm")),
         curvature = list(0.25),
@@ -602,7 +672,7 @@ ggplot(niamey_predictions, aes(x = biweek, group = site)) +
 </div>
 
 To make things easier, we have assumed the infectious period is known to be 14 days.
-In terms of years, $\gamma =  (365 / 14)^{-1} \approx 0.0384$.
+In terms of years, $\text{D} = \frac{14}{365} \approx 0.0384$, and the recovery rate is the inverse i.e., $\gamma = \frac{14}{365}$.
 Now, modify the code above to estimate $\gamma$ and $\beta$ simultaneously.
 
 <div class="exercise">
