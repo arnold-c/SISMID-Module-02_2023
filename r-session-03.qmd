@@ -259,6 +259,20 @@ function set(input, value) {
 }
 ```
 
+
+```{ojs}
+//| echo: false
+function sse(obs, preds) {
+
+    if(obs.length == preds.length) {
+        var squared_errs = obs.map((e, i) => (e - preds[i])**2 )
+        return squared_errs.reduce((a, b) => a + b, 0)
+    } else {
+        return("lengths are not the same")
+    }
+}
+```
+
 ```{ojs}
 //| panel: sidebar
 //| echo: false
@@ -289,14 +303,14 @@ viewof site_select = Inputs.select(
     {label: "Select a site:"}
 )
 
-beta = beta_input * 10 ** (-3)
+beta = (beta_input / 365) * 10 ** (-3)
 
 md`${tex`R_0 = ${R0_str}`}`
 ```
 
 ```{ojs}
 //| echo: false
-gamma = 365 / 13
+gamma = 1 / 13
 R0 = beta / gamma
 
 R0_str = R0.toPrecision(2).toLocaleString()
@@ -304,8 +318,8 @@ R0_str = R0.toPrecision(2).toLocaleString()
 
 ```{ojs}
 //| echo: false
-dt = 0.01 / 365
-tmax = 16 * 14 / 365
+dt = 0.01
+tmax = 16 * 14
 ```
 
 ```{ojs}
@@ -339,14 +353,12 @@ function simulate(f, t0, y0, dt, tmax) {
         i += 1
     }
 
-    var biweek = tsim.map(d => d * 365 / 14)
+    var biweek = tsim.map(d => d / 14)
     
     return aq.table({
-        t_annual: tsim,
+        tday: tsim,
         Biweek: biweek,
-        <!-- S: ysim.map(d => d[0]), -->
         "Number of Individuals": ysim.map(d => d[1]),
-        <!-- R: ysim.map(d => d[2]) -->
     })
 }
 ```
@@ -354,12 +366,33 @@ function simulate(f, t0, y0, dt, tmax) {
 ```{ojs}
 //| echo: false
 sir_sol = simulate(sir, 0, [S0, I0, 0.0], dt, tmax)
-<!-- sir_sol_long = sir_sol.fold(aq.not(['t_annual', 'Biweek']), {as: ['State', 'Number of Individuals']}) -->
 ```
 
 ```{ojs}
 //| echo: false
 siteColors = ["#1b9e77", "#d95f02", "#7570b3"]
+```
+
+```{ojs}
+//| echo: false
+// Create an array of time indices, dropping first as from returns index 0, which
+// doesn't exist in the real data
+times = Array.from({length: 17}, (_, i) => i * 14).slice(1)
+tindex = times.map((e, i) => e * (1 / dt))
+
+preds = tindex.map((i) => sir_sol.array("Number of Individuals")[i])
+
+sim_sse = [({
+    sse: sse(
+            filtered_niamey_data.array("Number of Individuals"),
+            preds
+        ).toPrecision(4),
+    Biweek: 2,
+    "Number of Individuals": Math.max(
+        ...sir_sol.array("Number of Individuals"),
+        ...filtered_niamey_data.array("Number of Individuals")
+    ) * 0.9
+})]
 ```
 
 ```{ojs}
@@ -390,6 +423,10 @@ Plot.plot({
         Plot.lineY(
             filtered_niamey_data,
             {x: "Biweek", y: "Number of Individuals", stroke: "site"}
+        ),
+        Plot.text(
+            sim_sse,
+            {x: "Biweek", y: "Number of Individuals", text: (d) => `SSE = ${d.sse}`, dx: 0, dy: 0, fontWeight: "bold"}
         )
     ]
 })
