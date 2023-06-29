@@ -1213,16 +1213,15 @@ See @sec-mean-age-r-code for code you can run in `R` to investigate the relation
 
 ### Exercise 5: mean age of infection interactions
 
+</div>
+
 #### When you increase $R_0$ from 2.0 to 4.0, what happens to the mean age of infection?
 ##### Is there a linear change? If not, why not?
 #### With $R_0$ to 4.0, approximately what level of vaccination coverage is required for a mean age of infection of 40 years?
 #### Leaving $R_0$ and vaccination coverage the same, decrease the life expectancy to 50 years. What happens to the mean age of infection?
 ##### If it changed, why do you think it did?
 
-</div>
-
-
-### Interactive plot
+<br>
 
 ```{ojs}
 //| echo: false
@@ -1240,6 +1239,7 @@ function set(input, value) {
 ```
 
 ```{ojs}
+//| echo: false
 //| panel: sidebar
 viewof reset = Inputs.button([
   ["Reset all sliders", () => {
@@ -1248,8 +1248,6 @@ viewof reset = Inputs.button([
     set(viewof lifeexp, init_lifeexp)
   }]
 ])
-//| panel: sidebar
-//| echo: false
 viewof R0 = Inputs.range(
     [1.0, 10.0],
     {value: 2.0, step: 0.01, label: md`${tex`R_0`}`}
