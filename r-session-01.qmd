@@ -296,7 +296,7 @@ The purpose of the questions in this exercise is to guide you through the code a
 
 ::: {.callout-note title="Instruction" appearance="simple"}
 Copy the code below into a new R script.
-This script should live in your SISMID directory, as described [previously]().
+This script should live in your SISMID directory, as described [previously](project-management.qmd).
 Run it to check you get the same figure output as above.
 :::
 

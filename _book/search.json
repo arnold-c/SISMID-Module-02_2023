@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SISMID Module 2 Materials (2023)",
     "section": "",
-    "text": "Welcome"
+    "text": "Welcome\nHello!\nWelcome to this website that accompanies the 2023 Summer Institute in Modeling for Infectious Diseases (SISMID) Module 2: Mathematical Models of Infectious Diseases. This website contains both the lecture notes, so you can refer back to them at a later date, and the exercises that we will be completing throughout the module."
   },
   {
     "objectID": "r-session-01.html#sec-interactive-plots",
@@ -152,5 +152,33 @@
     "title": "References",
     "section": "",
     "text": "Bjørnstad, Ottar N. 2018. “Advanced: The Next-Generation\nMatrix.” In Epidemics: Models and\nData Using R, 51. Use R!\nCham: Springer International Publishing. https://doi.org/10.1007/978-3-319-97487-3.\n\n\nDiekmann, O., and J. A. P. Heesterbeek. 2000. Mathematical\nEpidemiology of Infectious Diseases: Model Building,\nAnalysis and Interpretation. Wiley Series in Mathematical &\nComputational Biology. Wiley. https://books.google.ca/books?id=5VjSaAf35pMC.\n\n\nGrais, R. F., M. J. Ferrari, C. Dubray, O. N. Bjørnstad, B. T. Grenfell,\nA. Djibo, F. Fermon, and P. J. Guerin. 2006. “Estimating\nTransmission Intensity for a Measles Epidemic in Niamey,\nNiger: Lessons for Intervention.” Transactions\nof The Royal Society of Tropical Medicine and Hygiene 100 (9):\n867–73. https://doi.org/10.1016/j.trstmh.2005.10.014.\n\n\nHeesterbeek, J. A. P. 2002. “A Brief History of\nR0 and a Recipe for Its\nCalculation.” Acta Biotheoretica 50 (3):\n189–204. https://doi.org/10.1023/A:1016599411804.\n\n\nHeffernan, J. M, R. J Smith, and L. M Wahl. 2005. “Perspectives on\nthe Basic Reproductive Ratio.” J R Soc Interface 2 (4):\n281–93. https://doi.org/10.1098/rsif.2005.0042.\n\n\nHurford, Amy, Daniel Cownden, and Troy Day. 2009. “Next-Generation\nTools for Evolutionary Invasion Analyses.” Journal of The\nRoyal Society Interface 7 (45): 561–71. https://doi.org/10.1098/rsif.2009.0448.\n\n\nKeeling, Matthew James, and Pejman Rohani. 2008. “Introduction to\nSimple Epidemic Models.” In Modeling Infectious Diseases in\nHumans and Animals, 21–22. Princeton: Princeton\nUniversity Press.\n\n\nKing, Aaron A, and Helen J Wearing. 2011. “Age Structured\nModels.” In. https://ms.mcmaster.ca/~bolker/eeid/2011_eco/waifw.pdf.\n\n\nMossong, Joël, Niel Hens, Mark Jit, Philippe Beutels, Kari Auranen,\nRafael Mikolajczyk, Marco Massari, et al. 2008. “Social\nContacts and Mixing Patterns Relevant to the\nSpread of Infectious Diseases.”\nPLOS Medicine 5 (3): e74. https://doi.org/10.1371/journal.pmed.0050074."
+  },
+  {
+    "objectID": "install-r.html#r-packages",
+    "href": "install-r.html#r-packages",
+    "title": "Install R",
+    "section": "R Packages",
+    "text": "R Packages"
+  },
+  {
+    "objectID": "index.html#workshop-pre-requisites",
+    "href": "index.html#workshop-pre-requisites",
+    "title": "SISMID Module 2 Materials (2023)",
+    "section": "Workshop Pre-Requisites",
+    "text": "Workshop Pre-Requisites\nAs there is a reasonable amount of material to cover, and a relatively short amount of time to cover it in, there are some pre-requisite tasks to get set up ahead of the workshop.\nFirstly, this workshop requires some prior understanding of the R programming languages, as well as a working installation of R. If you do not have any experience, please refer to the Installing R and The Basics of R pages of the Pre-Requisites section. Everyone should refer to the R Packages section in the Installing R page to ensure you have the neccessary packages installed for the exercises.\nIt is also highly recommended that you read the Setting Up A Project page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.\nPlease set aside about an hour to go through these materials and get set up. I’m hoping that you should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it’s worth including some buffer time in case you run into issues. If you are completely new to R, this could take an hour or so, but is certainly worth the time investment: it will be hard to follow some of the exercises if you do not understand what the code is doing."
+  },
+  {
+    "objectID": "index.html#keywords-code-and-other-formatting",
+    "href": "index.html#keywords-code-and-other-formatting",
+    "title": "SISMID Module 2 Materials (2023)",
+    "section": "Keywords, Code, and Other Formatting",
+    "text": "Keywords, Code, and Other Formatting\nThroughout the book, you’ll see some keywords, code, and other points that I’ll try to delineate with the following formatting:\n\n\n\n\n\n\nNote\n\n\n\nThis will be a note, and will be used to highlight important points, or to provide additional information.\n\n\n\n\n\n\n\n\nSET\n\n\n\nThis will be an instruction to set certain parameters or values in the R code.\n\n\n\n\n\n\n\n\nInstruction\n\n\n\nThis will be a general instruction.\n\n\n\n\n\n\n\n\nTip\n\n\n\nThis will be used to highlight a useful tip.\n\n\n\n\n\n\n\n\nWarning\n\n\n\nThis will provide a warning that you may get an unexpected result if you’re not careful.\n\n\nIt is worth noting that some of these callouts may be collapsible. You can tell a callout is collapsible if there is a little &gt; or V in the top right corner of the callout i.e.,\n\n\n\n\n\n\nNote\n\n\n\n\n\nThis is an example of a collapsible callout that defaults to being collapsed.\n\n\n\n\ncode will be used to highlight code.\n{package::function()} will be used to denote a specific package and function, e.g., {dplyr::mutate()} denotes the mutate() function from the {dplyr} package. I will use this for all languages for consistency, even though some (like Python or Julia) don’t use the :: notation to export functions.\nkeywords will be used to highlight keywords and phrases, e.g., Git or GitHub.\n\nactions will also be highlighted in this way, e.g., commits or pushed being the result of the code git commit or git push\n\nfiles will be used to highlight file names, e.g., README.md or LICENSE.\nitalics will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command."
+  },
+  {
+    "objectID": "index.html#about-the-authors",
+    "href": "index.html#about-the-authors",
+    "title": "SISMID Module 2 Materials (2023)",
+    "section": "About the Authors",
+    "text": "About the Authors\n\n\n\nDr. Micaela Martinez\n\n\nDr. Matinez is the Director of Environmental Health at WE ACT for Environmental Justice.\nDr. Martinez earned her Ph.D. in Ecology & Evolution in 2015 at the University of Michigan, and did her postdoctoral training at Princeton University. Before joining WE ACT, she served as an Assistant Professor at Columbia University Mailman School of Public Health, followed by Emory University, in the Dept. of Biology. Since 2017, Dr. Martinez has been supported by the prestigious NIH Director’s Early Independence Award. Over the past decade, her research has focused on infectious disease ecology, climate change, maternal and infant health, social justice, and environmental impacts on health (including biological rhythms).\n\n\n\nDr. Matt Ferrari\n\n\nDr. Ferrari is the Director of the Center for Infectious Disease Dynamics at The Pennsylvania State University.\nMatt Ferrari’s lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.\n\n\n\n\n\n\n\n\n\nCallum Arnold\n\n\nCallum is a 3rd Year PhD student in Dr. Ferrari’s lab."
   }
 ]

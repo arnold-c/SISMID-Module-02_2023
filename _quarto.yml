@@ -14,7 +14,9 @@ book:
     - index.qmd
     - part: "Pre-Requisites"
       chapters:
-      - install-r.qmd
+        - install-r.qmd
+        - basics-of-r.qmd
+        - project-management.qmd
     - part: "Day 1"
       chapters: 
         - L01_intro-to-modeling.qmd

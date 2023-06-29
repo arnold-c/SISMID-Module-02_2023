@@ -23,6 +23,10 @@ $navbar-padding-y: 1.5rem !default;
 $ex-background-color: #1a4e60 !default;
 $ex-font-color: #fffdfd !default;
 
+// Author box
+$box-background-color: $code-bg !default;
+$box-border-color: $link-color !default;
+
 /*-- scss:rules --*/
 
 // Bold sidebar part text
@@ -49,5 +53,20 @@ a.sidebar-item-text.sidebar-link.text-start, .sidebar-title>a{
   padding-top: 10px;
   margin-left: -20px;
   margin-bottom: 15px;
+}
+
+.box {
+    width: var(--width);
+    background: $box-background-color;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid $box-border-color;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 

@@ -8,6 +8,10 @@ $dark-blue: #222235 !default;
 // Exercise
 $ex-background-color: #fccfcf9e !default;
 
+// Author box
+$box-background-color: ghostwhite !default;
+$box-border-color: lightgray !default;
+
 /*-- scss:rules --*/
 
 .sidebar-logo {
@@ -31,4 +35,23 @@ a.sidebar-item-text.sidebar-link.text-start, .sidebar-title{
   padding-top: 10px;
   margin-left: -20px;
   margin-bottom: 15px;
+}
+
+.box {
+    width: var(--width);
+    background: $box-background-color;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid $box-border-color;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.container {
+    display: flex;
 }
