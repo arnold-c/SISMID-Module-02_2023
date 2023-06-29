@@ -244,7 +244,7 @@ First, we write a specialized function for simulating the SIR model in a case wh
 #'    func = closed_sir_model,
 #'    parms = sir_params
 #' ))
-closed_sir_model <- function (time, state , params, ...) {  #SIR model equations
+closed_sir_model <- function (time, state , params, ...) {
     # Unpack states
     S <- state["S"]
     I <- state["I"]

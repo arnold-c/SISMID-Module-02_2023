@@ -550,7 +550,7 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 </section><section id="dynamical-model" class="level2" data-number="9.6"><h2 data-number="9.6" class="anchored" data-anchor-id="dynamical-model">
 <span class="header-section-number">9.6</span> Dynamical Model</h2>
 <p>First, we write a specialized function for simulating the SIR model in a case where the removal rate is <em>“hard-wired”</em> and with no demography.</p>
-<div class="cell" data-hash="r-session-03_cache/html/unnamed-chunk-9_3e6aad9c33d846cb57eaf663311025a1">
+<div class="cell" data-hash="r-session-03_cache/html/unnamed-chunk-9_41d2b231650e6e59ef7f35995cfc2caa">
 <details open=""><summary>Code</summary><div class="sourceCode cell-code" id="cb12" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">#' Basic SIR model</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="co">#'</span></span>
 <span id="cb12-3"><a href="#cb12-3"></a><span class="co">#' A basic SIR model with no demographic structure to be used in deSolve</span></span>
@@ -572,7 +572,7 @@ F-statistic: 861.2 on 1 and 2 DF,  p-value: 0.001159</code></pre>
 <span id="cb12-19"><a href="#cb12-19"></a><span class="co">#'    func = closed_sir_model,</span></span>
 <span id="cb12-20"><a href="#cb12-20"></a><span class="co">#'    parms = sir_params</span></span>
 <span id="cb12-21"><a href="#cb12-21"></a><span class="co">#' ))</span></span>
-<span id="cb12-22"><a href="#cb12-22"></a>closed_sir_model <span class="ot">&lt;-</span> <span class="cf">function</span> (time, state , params, ...) {  <span class="co">#SIR model equations</span></span>
+<span id="cb12-22"><a href="#cb12-22"></a>closed_sir_model <span class="ot">&lt;-</span> <span class="cf">function</span> (time, state , params, ...) {</span>
 <span id="cb12-23"><a href="#cb12-23"></a>    <span class="co"># Unpack states</span></span>
 <span id="cb12-24"><a href="#cb12-24"></a>    S <span class="ot">&lt;-</span> state[<span class="st">"S"</span>]</span>
 <span id="cb12-25"><a href="#cb12-25"></a>    I <span class="ot">&lt;-</span> state[<span class="st">"I"</span>]</span>
@@ -2297,7 +2297,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb32-262"><a href="#cb32-262"></a><span class="co">#'    func = closed_sir_model,</span></span>
 <span id="cb32-263"><a href="#cb32-263"></a><span class="co">#'    parms = sir_params</span></span>
 <span id="cb32-264"><a href="#cb32-264"></a><span class="co">#' ))</span></span>
-<span id="cb32-265"><a href="#cb32-265"></a>closed_sir_model <span class="ot">&lt;-</span> <span class="cf">function</span> (time, state , params, ...) {  <span class="co">#SIR model equations</span></span>
+<span id="cb32-265"><a href="#cb32-265"></a>closed_sir_model <span class="ot">&lt;-</span> <span class="cf">function</span> (time, state , params, ...) {</span>
 <span id="cb32-266"><a href="#cb32-266"></a>    <span class="co"># Unpack states</span></span>
 <span id="cb32-267"><a href="#cb32-267"></a>    S <span class="ot">&lt;-</span> state[<span class="st">"S"</span>]</span>
 <span id="cb32-268"><a href="#cb32-268"></a>    I <span class="ot">&lt;-</span> state[<span class="st">"I"</span>]</span>
