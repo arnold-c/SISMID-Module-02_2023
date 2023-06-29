@@ -36,10 +36,12 @@ book:
   repo-url: https://github.com/arnold-c/SISMID-02_2023
   repo-actions: [edit]
   sidebar:
+    logo: ./images/sismid2023-logo-green.png
     search: true
     border: true
     pinned: true
   reader-mode: true
+  favicon: ./images/sismid2023-logo-green.png
 
 # Default for table of contents
 toc: true
