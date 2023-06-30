@@ -18,7 +18,7 @@ Everyone should refer to the [R Packages](install-r.qmd#r-packages) section in t
 It is also highly recommended that you read the [Setting Up A Project](project-management.qmd) page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.
 
 Please set aside about an hour to go through these materials and get set up.
-I'm hoping that you should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it's worth including some buffer time in case you run into issues.
+You should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it's worth including some buffer time in case you run into issues.
 If you are completely new to R, this could take an hour or so, but is certainly worth the time investment: it will be hard to follow some of the exercises if you do not understand what the code is doing.
 
 ## Keywords, Code, and Other Formatting
@@ -30,7 +30,7 @@ This will be a note, and will be used to highlight important points, or to provi
 :::
 
 ::: {.callout-note title="SET"}
-This will be an instruction to set certain parameters or values in the R code.
+This will be an instruction to set certain parameters or values in the R code, or for the interactive plots.
 :::
 
 ::: {.callout-note title="Instruction" appearance="minimal"}
@@ -46,7 +46,7 @@ This will provide a warning that you may get an unexpected result if you're not 
 :::
 
 It is worth noting that some of these callouts may be collapsible.
-You can tell a callout is collapsible if there is a little `>` or `V` in the top right corner of the callout i.e.,
+You can tell a callout is collapsible if there is a little `>` or `⋁` in the top right corner of the callout i.e.,
 
 ::: {.callout-note collapse="true"}
 This is an example of a collapsible callout that defaults to being collapsed.
@@ -54,13 +54,13 @@ This is an example of a collapsible callout that defaults to being collapsed.
 
 - `code` will be used to highlight code.
 - `{package::function()}` will be used to denote a specific package and function, e.g., `{dplyr::mutate()}` denotes the `mutate()` function from the `{dplyr}` package.
-I will use this for all languages for consistency, even though some (like Python or Julia) don't use the `::` notation to export functions.
-- **keywords** will be used to highlight keywords and phrases, e.g., **Git** or **GitHub**.
-    - **actions** will also be highlighted in this way, e.g., **commits** or **pushed** being the result of the code `git commit` or `git push` 
-- ***files*** will be used to highlight file names, e.g., ***README.md*** or ***LICENSE***.
-- *italics* will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command.
+    - Often the `function()` will be listed without the package, as there are `library()` calls at the top of each page indicating the packages used in that page, and the majority of functions will not cause conflicts, i.e., there are not packages with functions of the same name.
+- **Bold** will be used to highlight keywords and phrases, e.g., **Git** or **GitHub**.
+    - **Bold** will also be highlighted in this way, e.g., **commits** or **pushed** being the result of the code `git commit` or `git push` 
+- ***Bold-italics*** will be used to highlight file names, e.g., ***README.md*** or ***LICENSE***.
+- *Italics* will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command.
 
-## About the Authors
+## About the Instructors
 
 <div class="container">
 <div class="box" style="--width: 50%">
@@ -83,7 +83,7 @@ Over the past decade, her research has focused on infectious disease ecology, cl
 
 Dr. Ferrari is the Director of the Center for Infectious Disease Dynamics at The Pennsylvania State University.
 
-Matt Ferrari's lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.
+Dr Ferrari's lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.
 </div>
 </div>
 
@@ -93,11 +93,13 @@ Matt Ferrari's lab does research on both the application of quantitative modelin
 <div style="width: 25%">
 </div>
 <div class="box" style="--width: 50%">
-<h3 style="margin-top:0px; text-align: center">[Callum Arnold](www.callumarnold.com)</h3>
+<h3 style="margin-top:0px; text-align: center">[Callum Arnold](https://callumarnold.com)</h3>
 
 <img src="./images/CallumArnold.jpg" style="width: 100%"/>
 
-Callum is a 3rd Year PhD student in Dr. Ferrari's lab.
+Callum is a 3rd Year PhD student in Dr. Ferrari's lab at the Pennsylvania State University.
+
+Callum's work examines how the methods used to define groups and differences among individuals affect the understanding and detection of outbreaks.
 </div>
 <div style="width: 25%">
 </div>

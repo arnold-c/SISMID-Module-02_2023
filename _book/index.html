@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#workshop-pre-requisites" id="toc-workshop-pre-requisites" class="nav-link" data-scroll-target="#workshop-pre-requisites">Workshop Pre-Requisites</a></li>
   <li><a href="#keywords-code-and-other-formatting" id="toc-keywords-code-and-other-formatting" class="nav-link" data-scroll-target="#keywords-code-and-other-formatting">Keywords, Code, and Other Formatting</a></li>
-  <li><a href="#about-the-authors" id="toc-about-the-authors" class="nav-link" data-scroll-target="#about-the-authors">About the Authors</a></li>
+  <li><a href="#about-the-instructors" id="toc-about-the-instructors" class="nav-link" data-scroll-target="#about-the-instructors">About the Instructors</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/index.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
@@ -357,7 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>As there is a reasonable amount of material to cover, and a relatively short amount of time to cover it in, there are some pre-requisite tasks to get set up ahead of the workshop.</p>
 <p>Firstly, this workshop requires some prior understanding of the R programming languages, as well as a working installation of R. If you do not have any experience, please refer to the <a href="./install-r.html">Installing R</a> and <a href="./basics-of-r.html">The Basics of R</a> pages of the Pre-Requisites section. Everyone should refer to the <a href="./install-r.html#r-packages">R Packages</a> section in the <a href="./install-r.html">Installing R</a> page to ensure you have the neccessary packages installed for the exercises.</p>
 <p>It is also highly recommended that you read the <a href="./project-management.html">Setting Up A Project</a> page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.</p>
-<p>Please set aside about an hour to go through these materials and get set up. I’m hoping that you should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it’s worth including some buffer time in case you run into issues. If you are completely new to R, this could take an hour or so, but is certainly worth the time investment: it will be hard to follow some of the exercises if you do not understand what the code is doing.</p>
+<p>Please set aside about an hour to go through these materials and get set up. You should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it’s worth including some buffer time in case you run into issues. If you are completely new to R, this could take an hour or so, but is certainly worth the time investment: it will be hard to follow some of the exercises if you do not understand what the code is doing.</p>
 </section>
 <section id="keywords-code-and-other-formatting" class="level2">
 <h2 class="anchored" data-anchor-id="keywords-code-and-other-formatting">Keywords, Code, and Other Formatting</h2>
@@ -385,7 +385,7 @@ SET
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This will be an instruction to set certain parameters or values in the R code.</p>
+<p>This will be an instruction to set certain parameters or values in the R code, or for the interactive plots.</p>
 </div>
 </div>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="Instruction">
@@ -427,7 +427,7 @@ Warning
 <p>This will provide a warning that you may get an unexpected result if you’re not careful.</p>
 </div>
 </div>
-<p>It is worth noting that some of these callouts may be collapsible. You can tell a callout is collapsible if there is a little <code>&gt;</code> or <code>V</code> in the top right corner of the callout i.e.,</p>
+<p>It is worth noting that some of these callouts may be collapsible. You can tell a callout is collapsible if there is a little <code>&gt;</code> or <code>⋁</code> in the top right corner of the callout i.e.,</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -446,17 +446,20 @@ Note
 </div>
 <ul>
 <li><code>code</code> will be used to highlight code.</li>
-<li><code>{package::function()}</code> will be used to denote a specific package and function, e.g., <code>{dplyr::mutate()}</code> denotes the <code>mutate()</code> function from the <code>{dplyr}</code> package. I will use this for all languages for consistency, even though some (like Python or Julia) don’t use the <code>::</code> notation to export functions.</li>
-<li><strong>keywords</strong> will be used to highlight keywords and phrases, e.g., <strong>Git</strong> or <strong>GitHub</strong>.
+<li><code>{package::function()}</code> will be used to denote a specific package and function, e.g., <code>{dplyr::mutate()}</code> denotes the <code>mutate()</code> function from the <code>{dplyr}</code> package.
 <ul>
-<li><strong>actions</strong> will also be highlighted in this way, e.g., <strong>commits</strong> or <strong>pushed</strong> being the result of the code <code>git commit</code> or <code>git push</code></li>
+<li>Often the <code>function()</code> will be listed without the package, as there are <code>library()</code> calls at the top of each page indicating the packages used in that page, and the majority of functions will not cause conflicts, i.e., there are not packages with functions of the same name.</li>
 </ul></li>
-<li><strong><em>files</em></strong> will be used to highlight file names, e.g., <strong><em>README.md</em></strong> or <strong><em>LICENSE</em></strong>.</li>
-<li><em>italics</em> will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command.</li>
+<li><strong>Bold</strong> will be used to highlight keywords and phrases, e.g., <strong>Git</strong> or <strong>GitHub</strong>.
+<ul>
+<li><strong>Bold</strong> will also be highlighted in this way, e.g., <strong>commits</strong> or <strong>pushed</strong> being the result of the code <code>git commit</code> or <code>git push</code></li>
+</ul></li>
+<li><strong><em>Bold-italics</em></strong> will be used to highlight file names, e.g., <strong><em>README.md</em></strong> or <strong><em>LICENSE</em></strong>.</li>
+<li><em>Italics</em> will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command.</li>
 </ul>
 </section>
-<section id="about-the-authors" class="level2">
-<h2 class="anchored" data-anchor-id="about-the-authors">About the Authors</h2>
+<section id="about-the-instructors" class="level2">
+<h2 class="anchored" data-anchor-id="about-the-instructors">About the Instructors</h2>
 <div class="container">
 <div class="box" style="--width: 50%">
 <h3 style="margin-top:0px; text-align: center" class="anchored">
@@ -472,7 +475,7 @@ Note
 </h3>
 <p><img src="./images/MattFerrari.jpg" style="width: 100%"></p>
 <p>Dr.&nbsp;Ferrari is the Director of the Center for Infectious Disease Dynamics at The Pennsylvania State University.</p>
-<p>Matt Ferrari’s lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.</p>
+<p>Dr Ferrari’s lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.</p>
 </div>
 </div>
 <p><br></p>
@@ -482,10 +485,11 @@ Note
 </div>
 <div class="box" style="--width: 50%">
 <h3 style="margin-top:0px; text-align: center" class="anchored">
-<a href="www.callumarnold.com">Callum Arnold</a>
+<a href="https://callumarnold.com">Callum Arnold</a>
 </h3>
 <p><img src="./images/CallumArnold.jpg" style="width: 100%"></p>
-<p>Callum is a 3rd Year PhD student in Dr.&nbsp;Ferrari’s lab.</p>
+<p>Callum is a 3rd Year PhD student in Dr.&nbsp;Ferrari’s lab at the Pennsylvania State University.</p>
+<p>Callum’s work examines how the methods used to define groups and differences among individuals affect the understanding and detection of outbreaks.</p>
 </div>
 <div style="width: 25%">
 
@@ -927,7 +931,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-18"><a href="#cb1-18"></a>It is also highly recommended that you read the <span class="co">[</span><span class="ot">Setting Up A Project</span><span class="co">](project-management.qmd)</span> page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.</span>
 <span id="cb1-19"><a href="#cb1-19"></a></span>
 <span id="cb1-20"><a href="#cb1-20"></a>Please set aside about an hour to go through these materials and get set up.</span>
-<span id="cb1-21"><a href="#cb1-21"></a>I'm hoping that you should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it's worth including some buffer time in case you run into issues.</span>
+<span id="cb1-21"><a href="#cb1-21"></a>You should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it's worth including some buffer time in case you run into issues.</span>
 <span id="cb1-22"><a href="#cb1-22"></a>If you are completely new to R, this could take an hour or so, but is certainly worth the time investment: it will be hard to follow some of the exercises if you do not understand what the code is doing.</span>
 <span id="cb1-23"><a href="#cb1-23"></a></span>
 <span id="cb1-24"><a href="#cb1-24"></a><span class="fu">## Keywords, Code, and Other Formatting</span></span>
@@ -939,7 +943,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-30"><a href="#cb1-30"></a>:::</span>
 <span id="cb1-31"><a href="#cb1-31"></a></span>
 <span id="cb1-32"><a href="#cb1-32"></a>::: {.callout-note title="SET"}</span>
-<span id="cb1-33"><a href="#cb1-33"></a>This will be an instruction to set certain parameters or values in the R code.</span>
+<span id="cb1-33"><a href="#cb1-33"></a>This will be an instruction to set certain parameters or values in the R code, or for the interactive plots.</span>
 <span id="cb1-34"><a href="#cb1-34"></a>:::</span>
 <span id="cb1-35"><a href="#cb1-35"></a></span>
 <span id="cb1-36"><a href="#cb1-36"></a>::: {.callout-note title="Instruction" appearance="minimal"}</span>
@@ -955,7 +959,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-46"><a href="#cb1-46"></a>:::</span>
 <span id="cb1-47"><a href="#cb1-47"></a></span>
 <span id="cb1-48"><a href="#cb1-48"></a>It is worth noting that some of these callouts may be collapsible.</span>
-<span id="cb1-49"><a href="#cb1-49"></a>You can tell a callout is collapsible if there is a little <span class="in">`&gt;`</span> or <span class="in">`V`</span> in the top right corner of the callout i.e.,</span>
+<span id="cb1-49"><a href="#cb1-49"></a>You can tell a callout is collapsible if there is a little <span class="in">`&gt;`</span> or <span class="in">`⋁`</span> in the top right corner of the callout i.e.,</span>
 <span id="cb1-50"><a href="#cb1-50"></a></span>
 <span id="cb1-51"><a href="#cb1-51"></a>::: {.callout-note collapse="true"}</span>
 <span id="cb1-52"><a href="#cb1-52"></a>This is an example of a collapsible callout that defaults to being collapsed.</span>
@@ -963,13 +967,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-54"><a href="#cb1-54"></a></span>
 <span id="cb1-55"><a href="#cb1-55"></a><span class="ss">- </span><span class="in">`code`</span> will be used to highlight code.</span>
 <span id="cb1-56"><a href="#cb1-56"></a><span class="ss">- </span><span class="in">`{package::function()}`</span> will be used to denote a specific package and function, e.g., <span class="in">`{dplyr::mutate()}`</span> denotes the <span class="in">`mutate()`</span> function from the <span class="in">`{dplyr}`</span> package.</span>
-<span id="cb1-57"><a href="#cb1-57"></a>I will use this for all languages for consistency, even though some (like Python or Julia) don't use the <span class="in">`::`</span> notation to export functions.</span>
-<span id="cb1-58"><a href="#cb1-58"></a><span class="ss">- </span>**keywords** will be used to highlight keywords and phrases, e.g., **Git** or **GitHub**.</span>
-<span id="cb1-59"><a href="#cb1-59"></a><span class="ss">    - </span>**actions** will also be highlighted in this way, e.g., **commits** or **pushed** being the result of the code <span class="in">`git commit`</span> or <span class="in">`git push`</span> </span>
-<span id="cb1-60"><a href="#cb1-60"></a><span class="ss">- </span>***files*** will be used to highlight file names, e.g., ***README.md*** or ***LICENSE***.</span>
-<span id="cb1-61"><a href="#cb1-61"></a><span class="ss">- </span>*italics* will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command.</span>
+<span id="cb1-57"><a href="#cb1-57"></a><span class="ss">    - </span>Often the <span class="in">`function()`</span> will be listed without the package, as there are <span class="in">`library()`</span> calls at the top of each page indicating the packages used in that page, and the majority of functions will not cause conflicts, i.e., there are not packages with functions of the same name.</span>
+<span id="cb1-58"><a href="#cb1-58"></a><span class="ss">- </span>**Bold** will be used to highlight keywords and phrases, e.g., **Git** or **GitHub**.</span>
+<span id="cb1-59"><a href="#cb1-59"></a><span class="ss">    - </span>**Bold** will also be highlighted in this way, e.g., **commits** or **pushed** being the result of the code <span class="in">`git commit`</span> or <span class="in">`git push`</span> </span>
+<span id="cb1-60"><a href="#cb1-60"></a><span class="ss">- </span>***Bold-italics*** will be used to highlight file names, e.g., ***README.md*** or ***LICENSE***.</span>
+<span id="cb1-61"><a href="#cb1-61"></a><span class="ss">- </span>*Italics* will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command.</span>
 <span id="cb1-62"><a href="#cb1-62"></a></span>
-<span id="cb1-63"><a href="#cb1-63"></a><span class="fu">## About the Authors</span></span>
+<span id="cb1-63"><a href="#cb1-63"></a><span class="fu">## About the Instructors</span></span>
 <span id="cb1-64"><a href="#cb1-64"></a></span>
 <span id="cb1-65"><a href="#cb1-65"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"container"</span><span class="kw">&gt;</span></span>
 <span id="cb1-66"><a href="#cb1-66"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"box"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"--width: 50%"</span><span class="kw">&gt;</span></span>
@@ -992,7 +996,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-83"><a href="#cb1-83"></a></span>
 <span id="cb1-84"><a href="#cb1-84"></a>Dr. Ferrari is the Director of the Center for Infectious Disease Dynamics at The Pennsylvania State University.</span>
 <span id="cb1-85"><a href="#cb1-85"></a></span>
-<span id="cb1-86"><a href="#cb1-86"></a>Matt Ferrari's lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.</span>
+<span id="cb1-86"><a href="#cb1-86"></a>Dr Ferrari's lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.</span>
 <span id="cb1-87"><a href="#cb1-87"></a><span class="kw">&lt;/div&gt;</span></span>
 <span id="cb1-88"><a href="#cb1-88"></a><span class="kw">&lt;/div&gt;</span></span>
 <span id="cb1-89"><a href="#cb1-89"></a></span>
@@ -1002,15 +1006,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-93"><a href="#cb1-93"></a><span class="kw">&lt;div</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 25%"</span><span class="kw">&gt;</span></span>
 <span id="cb1-94"><a href="#cb1-94"></a><span class="kw">&lt;/div&gt;</span></span>
 <span id="cb1-95"><a href="#cb1-95"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"box"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"--width: 50%"</span><span class="kw">&gt;</span></span>
-<span id="cb1-96"><a href="#cb1-96"></a><span class="kw">&lt;h3</span> <span class="er">style</span><span class="ot">=</span><span class="st">"margin-top:0px; text-align: center"</span><span class="kw">&gt;</span><span class="co">[</span><span class="ot">Callum Arnold</span><span class="co">](www.callumarnold.com)</span><span class="kw">&lt;/h3&gt;</span></span>
+<span id="cb1-96"><a href="#cb1-96"></a><span class="kw">&lt;h3</span> <span class="er">style</span><span class="ot">=</span><span class="st">"margin-top:0px; text-align: center"</span><span class="kw">&gt;</span><span class="co">[</span><span class="ot">Callum Arnold</span><span class="co">](https://callumarnold.com)</span><span class="kw">&lt;/h3&gt;</span></span>
 <span id="cb1-97"><a href="#cb1-97"></a></span>
 <span id="cb1-98"><a href="#cb1-98"></a><span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"./images/CallumArnold.jpg"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 100%"</span><span class="kw">/&gt;</span></span>
 <span id="cb1-99"><a href="#cb1-99"></a></span>
-<span id="cb1-100"><a href="#cb1-100"></a>Callum is a 3rd Year PhD student in Dr. Ferrari's lab.</span>
-<span id="cb1-101"><a href="#cb1-101"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb1-102"><a href="#cb1-102"></a><span class="kw">&lt;div</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 25%"</span><span class="kw">&gt;</span></span>
+<span id="cb1-100"><a href="#cb1-100"></a>Callum is a 3rd Year PhD student in Dr. Ferrari's lab at the Pennsylvania State University.</span>
+<span id="cb1-101"><a href="#cb1-101"></a></span>
+<span id="cb1-102"><a href="#cb1-102"></a>Callum's work examines how the methods used to define groups and differences among individuals affect the understanding and detection of outbreaks.</span>
 <span id="cb1-103"><a href="#cb1-103"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb1-104"><a href="#cb1-104"></a><span class="kw">&lt;/div&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-104"><a href="#cb1-104"></a><span class="kw">&lt;div</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 25%"</span><span class="kw">&gt;</span></span>
+<span id="cb1-105"><a href="#cb1-105"></a><span class="kw">&lt;/div&gt;</span></span>
+<span id="cb1-106"><a href="#cb1-106"></a><span class="kw">&lt;/div&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
