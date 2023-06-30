@@ -1,0 +1,28 @@
+# Exercise Requirements {.unnumbered}
+
+## R Packages
+
+If you use `{renv}` to manage package dependencies in your projects, you can visit the [GitHub repository](https://github.com/arnold-c/SISMID-Module-02_2023) for this project and download the ***renv.lock***, ***.Rprofile***, and ***renv/activate.R*** files, before running the command `renv::restore()`.
+Alternatively, if you already use GitHub, you could clone the project and just run `renv::restore()`.
+
+If you would prefer to just install the packages manually to avoid the complications associated with using `{renv}`, you can install the packages printed below.
+
+```{r}
+#| eval: false
+install.packages(c(
+    "tidyverse",
+    "deSolve",
+    "diagram",
+    "gt",
+    "ggtext",
+    "here",
+    "rio"
+))
+```
+
+## Data Files
+
+To complete the exercises, some data files are required.
+The exercises should load the datafiles via urls, but if you would prefer to download them to your own machine, your are welcome to do so.
+To download the files, go to the [GitHub repository](https://github.com/arnold-c/SISMID-Module-02_2023) and download the files in the `data/` folder of your repository.
+You should then uncomment the lines of code that run `...  <- rio::import(here::here("data", ...))`, and comment out the lines that include the URLs.
