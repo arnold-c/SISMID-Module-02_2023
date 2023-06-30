@@ -16,6 +16,7 @@ metadata-files:
 
 ```{r}
 library(here)
+library(rio)
 library(deSolve)
 library(tidyverse)
 library(ggtext)
@@ -28,7 +29,10 @@ theme_set(theme_minimal())
 
 ```{r}
 # Loads the datasets: flu, measles, niamey, plauge
-load(here::here("data", "R-estimation-data.Rdata"))
+# flu <- rio::import("https://raw.githubusercontent.com/arnold-c/SISMID-Module-02_2023/main/data/flu.csv")
+# niamey <- rio::import("https://raw.githubusercontent.com/arnold-c/SISMID-Module-02_2023/main/data/niamey.csv")
+flu <- rio::import(here::here("data", "flu.csv"))
+niamey <- rio::import(here::here("data", "niamey.csv"))
 ```
 
 ## Estimating $R_0$ Problem Background

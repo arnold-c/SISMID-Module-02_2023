@@ -11,9 +11,12 @@ This website contains both the lecture notes, so you can refer back to them at a
 
 As there is a reasonable amount of material to cover, and a relatively short amount of time to cover it in, there are some pre-requisite tasks to get set up ahead of the workshop.
 
+::: {.callout-important}
+Everyone should refer to the [Exercise Requirements](exercise-requirements.qmd) page, particularly the [R Packages](exercise-requirements.qmd#r-packages) and [Data Files](exercise-requirements.qmd#data-files) sections to ensure you have the neccessary packages and data files installed for the exercises.
+:::
+
 Firstly, this workshop requires some prior understanding of the R programming languages, as well as a working installation of R.
 If you do not have any experience, please refer to the [Installing R](install-r.qmd) and [The Basics of R](basics-of-r.qmd) pages of the Pre-Requisites section.
-Everyone should refer to the [R Packages](install-r.qmd#r-packages) section in the [Installing R](install-r.qmd) page to ensure you have the neccessary packages installed for the exercises.
 
 It is also highly recommended that you read the [Setting Up A Project](project-management.qmd) page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.
 

@@ -18,6 +18,7 @@ library(diagram)
 library(deSolve)
 library(tidyverse)
 library(gt)
+library(rio)
 ```
 
 ```{r}
@@ -1846,10 +1847,8 @@ The POLYMOD study [@mossongSocialContactsMixing2008a] was a journal-based look i
 Let's have a look what these data tell us about the contact structure.
 
 ```{r}
-mossong_cont_net <- read.csv(
-    url("http://www.math.mcmaster.ca/~bolker/eeid/data/mossong.csv"),
-    as.is = TRUE
-)
+mossong_cont_net <- rio::import("https://raw.githubusercontent.com/arnold-c/SISMID-Module-02_2023/main/data/mossong-matrix.csv")
+# mossong_cont_net <- rio::import(here::here("data", "mossong-matrix.csv"))
 
 mossong_ages <- unique(mossong_cont_net$contactor)
 mossong_cont_net$contactor <- ordered(mossong_cont_net$contactor, levels = mossong_ages)
