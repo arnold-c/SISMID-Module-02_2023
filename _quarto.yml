@@ -14,6 +14,7 @@ book:
     - index.qmd
     - part: "Pre-Requisites"
       chapters:
+        - exercise-requirements.qmd
         - install-r.qmd
         - basics-of-r.qmd
         - project-management.qmd
