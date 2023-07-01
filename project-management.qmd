@@ -107,3 +107,9 @@ It has more of a focus on R and the use of R-specific tools and packages to help
 
 - Callum wrote a short blog post about reproducible work that can be found [here](https://callumarnold.com/posts/2019-08-15-an-introduction-to-reproducible-research/repro-research#structuring-a-project).
 The section about Jupyter notebooks are unlikely to be relevant to R users, but the rest is still useful.
+
+## `{renv}`
+
+`{renv}` is a package that helps manage your project's dependencies by creating a self-contained environment for your project.
+What this means is that each project will have a list of the required packages and their versions, and when you share your project with others, they can install the packages you used in your project with a single command (`renv::restore()`).
+To find out more about `{renv}`, visit the website [here](https://rstudio.github.io/renv/).

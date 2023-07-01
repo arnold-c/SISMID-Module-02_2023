@@ -301,7 +301,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Page Items</h2>
+   
+  <ul>
+  <li><a href="#r" id="toc-r" class="nav-link active" data-scroll-target="#r">R</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/install-r.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -336,10 +342,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<section id="r" class="level2">
+<h2 class="anchored" data-anchor-id="r">R</h2>
+<p>To start using <code>R</code>, you first need to install it, as it does not come bundled with your computer. The easiest way to do this is to visit <a href="https://cran.r-project.org/">CRAN</a> and click on the link for your operating system (there are versions for Windows, Mac, and Linux).</p>
+<p><strong>CRAN</strong> (Comprehensive R Archive Network) is a network of servers around the world that store identical, up-to-date, versions of code and documentation for R. This is where we will download R from, but also all the packages that we will use in this course. When you first try to install a package, you will be prompted to select your <strong>CRAN mirror</strong>. You can select any mirror, but it is best to choose one that is close to your location, as this will make the download faster.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You could also use a small application called <a href="https://github.com/r-lib/rig"><code>{rig}</code></a> to install <code>R</code>. <code>{rig}</code> is a small cross-platform application (i.e.&nbsp;works on Windows, Mac, and Linux) that downloads and installs <code>R</code> for you. While this may seem pointless to install an application to install <code>R</code>, it is actually quite useful as it makes it far easier to download and install multiple versions or <code>R</code>. As <code>R</code> is updated, bugs are fixed and new exciting packages do not support older versions of <code>R</code>, you will eventually need to update your installation. This is normally a massive pain due to the way <code>R</code> and the associated packages are installed on your computer. <code>{rig}</code> makes this process much easier (although you still shouldn’t upgrade <code>R</code> versions mid-project unless you are OK losing a couple of hours getting set up again).</p>
+</div>
+</div>
 
 
 <!-- -->
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -754,11 +778,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb1" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu"># Install R {.unnumbered}</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">## R</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>To start using <span class="in">`R`</span>, you first need to install it, as it does not come bundled with your computer.</span>
+<span id="cb1-6"><a href="#cb1-6"></a>The easiest way to do this is to visit <span class="co">[</span><span class="ot">CRAN</span><span class="co">](https://cran.r-project.org/)</span> and click on the link for your operating system (there are versions for Windows, Mac, and Linux).</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a>**CRAN** (Comprehensive R Archive Network) is a network of servers around the world that store identical, up-to-date, versions of code and documentation for R.</span>
+<span id="cb1-9"><a href="#cb1-9"></a>This is where we will download R from, but also all the packages that we will use in this course.</span>
+<span id="cb1-10"><a href="#cb1-10"></a>When you first try to install a package, you will be prompted to select your **CRAN mirror**.</span>
+<span id="cb1-11"><a href="#cb1-11"></a>You can select any mirror, but it is best to choose one that is close to your location, as this will make the download faster.</span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a>::: {.callout-note}</span>
+<span id="cb1-14"><a href="#cb1-14"></a>You could also use a small application called <span class="co">[</span><span class="ot">`{rig}`</span><span class="co">](https://github.com/r-lib/rig)</span> to install <span class="in">`R`</span>.</span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="in">`{rig}`</span> is a small cross-platform application (i.e. works on Windows, Mac, and Linux) that downloads and installs <span class="in">`R`</span> for you.</span>
+<span id="cb1-16"><a href="#cb1-16"></a>While this may seem pointless to install an application to install <span class="in">`R`</span>, it is actually quite useful as it makes it far easier to download and install multiple versions or <span class="in">`R`</span>.</span>
+<span id="cb1-17"><a href="#cb1-17"></a>As <span class="in">`R`</span> is updated, bugs are fixed and new exciting packages do not support older versions of <span class="in">`R`</span>, you will eventually need to update your installation.</span>
+<span id="cb1-18"><a href="#cb1-18"></a>This is normally a massive pain due to the way <span class="in">`R`</span> and the associated packages are installed on your computer.</span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="in">`{rig}`</span> makes this process much easier (although you still shouldn't upgrade <span class="in">`R`</span> versions mid-project unless you are OK losing a couple of hours getting set up again).</span>
+<span id="cb1-20"><a href="#cb1-20"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/install-r.qmd" class="toc-action">Edit this page</a></p></div></div></div></div></footer><script src="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.js" defer="true"></script>
+<script src="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.js" defer="true"></script>
 </body></html>

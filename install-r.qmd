@@ -1,3 +1,20 @@
 # Install R {.unnumbered}
 
+## R
 
+To start using `R`, you first need to install it, as it does not come bundled with your computer.
+The easiest way to do this is to visit [CRAN](https://cran.r-project.org/) and click on the link for your operating system (there are versions for Windows, Mac, and Linux).
+
+**CRAN** (Comprehensive R Archive Network) is a network of servers around the world that store identical, up-to-date, versions of code and documentation for R.
+This is where we will download R from, but also all the packages that we will use in this course.
+When you first try to install a package, you will be prompted to select your **CRAN mirror**.
+You can select any mirror, but it is best to choose one that is close to your location, as this will make the download faster.
+
+::: {.callout-note}
+You could also use a small application called [`{rig}`](https://github.com/r-lib/rig) to install `R`.
+`{rig}` is a small cross-platform application (i.e. works on Windows, Mac, and Linux) that downloads and installs `R` for you.
+While this may seem pointless to install an application to install `R`, it is actually quite useful as it makes it far easier to download and install multiple versions or `R`.
+As `R` is updated, bugs are fixed and new exciting packages do not support older versions of `R`, you will eventually need to update your installation.
+This is normally a massive pain due to the way `R` and the associated packages are installed on your computer.
+`{rig}` makes this process much easier (although you still shouldn't upgrade `R` versions mid-project unless you are OK losing a couple of hours getting set up again).
+:::
