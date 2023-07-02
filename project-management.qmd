@@ -4,7 +4,7 @@ format:
         code-line-numbers: false
 ---
 
-# Setting Up A Project {.unnumbered}
+# Organizing A Project {.unnumbered}
 
 The purpose of this workshop is not to teach you how to manage everything about your modeling project.
 However, there are some tips that we think are useful and should reduce the amount of time you spend on finding and managing files, allowing you to focus more on the work at hand.
@@ -15,6 +15,7 @@ If you want to get more in-depth, there are some suggested readings at the end t
 There are many ways to structure a project, but we would recommend that each project has its own folder (directory), and all your project directories sit in a single place.
 For example, you could have a directory called ***Repos*** that holds all of your projects.
 That way, when you want to find a specific project, it's easy and in one place.
+As part of this, we recommend you read the section about [RStudio projects](just-enough-r.qmd#rstudio-projects).
 
 ::: {.callout-important}
 It is crucial that this folder does not live in a cloud-synced folder e.g., in OneDrive.
@@ -44,6 +45,8 @@ An important idea is that you should treat your data as read-only.
 You and your team have likely worked hard to collect the data and it’s easy to make a changes along the way that you either forget about, or need to reverse.
 As most projects span a long time between the data collection and analysis stages, it can be very difficult and time-consuming to try and reverse engineer exactly what changes have been made if the data files are directly edited.
 Therefore, to save yourself effort and help make your work reproducible, once the data is collected it should not be edited; all the work should happen in your code, allowing it to be easily checked.
+
+<a id="here-package"/>
 
 ::: {.callout-tip}
 When you are reading in data files in your cleaning and analysis scripts, it is good practice to use *relative paths*.

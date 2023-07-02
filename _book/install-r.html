@@ -8,7 +8,7 @@
 
 <meta name="author" content="Callum Arnold">
 
-<title>SISMID Module 2 Materials (2023) - Install R</title>
+<title>SISMID Module 2 Materials (2023) - Install and Setup R &amp; RStudio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./basics-of-r.html" rel="next">
+<link href="./just-enough-r.html" rel="next">
 <link href="./exercise-requirements.html" rel="prev">
 <link href="././images/sismid2023-logo-green.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -112,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./exercise-requirements.html">Pre-Requisites</a></li><li class="breadcrumb-item"><a href="./install-r.html">Install R</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./exercise-requirements.html">Pre-Requisites</a></li><li class="breadcrumb-item"><a href="./install-r.html">Install and Setup R &amp; RStudio</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -173,13 +173,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./install-r.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Install R</span></a>
+ <span class="menu-text">Install and Setup R &amp; RStudio</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./basics-of-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">The Basics of R</span></a>
+  <a href="./just-enough-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Just Enough R &amp; RStudio</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -306,6 +306,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#r" id="toc-r" class="nav-link active" data-scroll-target="#r">R</a></li>
+  <li><a href="#rstudio" id="toc-rstudio" class="nav-link" data-scroll-target="#rstudio">RStudio</a>
+  <ul class="collapse">
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/install-r.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
@@ -314,7 +319,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Install R</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Install and Setup R &amp; RStudio</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -359,10 +364,58 @@ Note
 <p>You could also use a small application called <a href="https://github.com/r-lib/rig"><code>{rig}</code></a> to install <code>R</code>. <code>{rig}</code> is a small cross-platform application (i.e.&nbsp;works on Windows, Mac, and Linux) that downloads and installs <code>R</code> for you. While this may seem pointless to install an application to install <code>R</code>, it is actually quite useful as it makes it far easier to download and install multiple versions or <code>R</code>. As <code>R</code> is updated, bugs are fixed and new exciting packages do not support older versions of <code>R</code>, you will eventually need to update your installation. This is normally a massive pain due to the way <code>R</code> and the associated packages are installed on your computer. <code>{rig}</code> makes this process much easier (although you still shouldn’t upgrade <code>R</code> versions mid-project unless you are OK losing a couple of hours getting set up again).</p>
 </div>
 </div>
+</section>
+<section id="rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="rstudio">RStudio</h2>
+<section id="installation" class="level3">
+<h3 class="anchored" data-anchor-id="installation">Installation</h3>
+<p><code>R</code> is the programming language, but we need a way of interacting with <code>R</code>. We can do it directly by typing <code>R</code> into the terminal/command prompt, but this will give us a very pared down experience that is missing many of the essential features that make our development experience much more productive (as well as more enjoyable). For that, we want to install a Graphical User Interface (GUI), or more specifically, an Interactive Development Environment. The most suitable one for most <code>R</code> users is RStudio. RStudio is an easy-to-use IDE that allows us to write scripts (so we can save our analysis and rerun it easily, without needing to re-type it all), use the R console to check things quickly, provides a plotting window to easily manipulate and visualize the data, as well as an environment viewer to quickly understand what packages we have loaded and objects we have created.</p>
+<p>To download RStudio, simply visit <a href="https://posit.co/download/rstudio-desktop/">this link</a>, which should provide you with a button to download the appropriate version for your operating system (there is also the full list of versions below the download button, in case it doesn’t recognize your OS correctly).</p>
+</section>
+<section id="setup" class="level3">
+<h3 class="anchored" data-anchor-id="setup">Setup</h3>
+<p>Once you’ve installed RStudio, you can get going straight away - that’s the beauty of it. However, spending a few minutes getting accustomed and adjusting the layout will make your development a little smoother.</p>
+<section id="theme" class="level4">
+<h4 class="anchored" data-anchor-id="theme">Theme</h4>
+<p>The first thing that’s worth doing is adding a theme - the default white background can be a little harsh when you spend a long time staring at code. Open up the global preferences (<code>ctrl/cmd + ,</code>), go to <em>“Appearance &gt; Editor theme”</em>, and select a theme that works for you. The <em>“Cobalt”</em> theme is usually a nice default that work for many. Here, Callum is using the <em>“Catppuccin”</em> theme, that can be downloaded from <a href="https://github.com/brunomontezano/catppuccin-rstudio/blob/main/Catppuccin.rstheme">here</a>, and installed by clicking on <em>“Add”</em> at the <em>“Appearance”</em> screen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-editor-theme.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">RStudio editor theme</figcaption>
+</figure>
+</div>
+</section>
+<section id="pane-layout" class="level4">
+<h4 class="anchored" data-anchor-id="pane-layout">Pane layout</h4>
+<p>The next RStudio thing that you may want to customize is the default layout. In the <em>“Pane Layout”</em> section of the global preferences, you can determine what you want to show in each quadrant of RStudio. The default layout will show you all the necessary parts, but most of the time you will be using the <em>“Source”</em> section, as this is where you write your scripts, and the <em>“Environment”</em> panel, which is where you can see what objects have been created, as well as exploring their properties e.g., columns names in a <strong>dataframe</strong>. For this reason, you may like to place the <em>“Environment”</em> panel under the <em>“Source”</em> panel, so they take up the majority of your screen, and the <em>“Files/Plots/Help”</em> and <em>“Console/Terminal”</em> panels are off to the side as you will interact with them less.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-pane-layout-settings.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">RStudio pane layout settings</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-pane-layout.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">RStudio pane layout</figcaption>
+</figure>
+</div>
+</section>
+<section id="rdata" class="level4">
+<h4 class="anchored" data-anchor-id="rdata">RData</h4>
+<p>The final thing to do, that’s actually quite important, is to turn off the <em>“Restore <strong><em>.RData</em></strong> into workspace at startup”</em>. The reason being, if you do not, objects from previous sessions will be loaded into your new working environment, putting things where they shouldn’t be, making it very difficult to catch bugs as your code may reference something that doesn’t exist by that point in your script as it is created later on, but you wouldn’t catch that mistake as it was loaded into your environment on startup.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-RData.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">RStudio <strong><em>.RData</em></strong> settings</figcaption>
+</figure>
+</div>
 
 
 <!-- -->
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -772,12 +825,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./basics-of-r.html" class="pagination-link">
-        <span class="nav-page-text">The Basics of R</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./just-enough-r.html" class="pagination-link">
+        <span class="nav-page-text">Just Enough R &amp; RStudio</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu"># Install R {.unnumbered}</span></span>
+<div class="sourceCode" id="cb1" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu"># Install and Setup R &amp; RStudio {.unnumbered}</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">## R</span></span>
 <span id="cb1-4"><a href="#cb1-4"></a></span>
@@ -796,7 +849,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-17"><a href="#cb1-17"></a>As <span class="in">`R`</span> is updated, bugs are fixed and new exciting packages do not support older versions of <span class="in">`R`</span>, you will eventually need to update your installation.</span>
 <span id="cb1-18"><a href="#cb1-18"></a>This is normally a massive pain due to the way <span class="in">`R`</span> and the associated packages are installed on your computer.</span>
 <span id="cb1-19"><a href="#cb1-19"></a><span class="in">`{rig}`</span> makes this process much easier (although you still shouldn't upgrade <span class="in">`R`</span> versions mid-project unless you are OK losing a couple of hours getting set up again).</span>
-<span id="cb1-20"><a href="#cb1-20"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-20"><a href="#cb1-20"></a>:::</span>
+<span id="cb1-21"><a href="#cb1-21"></a></span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="fu">## RStudio</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="fu">### Installation</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="in">`R`</span> is the programming language, but we need a way of interacting with <span class="in">`R`</span>.</span>
+<span id="cb1-26"><a href="#cb1-26"></a>We can do it directly by typing <span class="in">`R`</span> into the terminal/command prompt, but this will give us a very pared down experience that is missing many of the essential features that make our development experience much more productive (as well as more enjoyable).</span>
+<span id="cb1-27"><a href="#cb1-27"></a>For that, we want to install a Graphical User Interface (GUI), or more specifically, an Interactive Development Environment.</span>
+<span id="cb1-28"><a href="#cb1-28"></a>The most suitable one for most <span class="in">`R`</span> users is RStudio.</span>
+<span id="cb1-29"><a href="#cb1-29"></a>RStudio is an easy-to-use IDE that allows us to write scripts (so we can save our analysis and rerun it easily, without needing to re-type it all), use the R console to check things quickly, provides a plotting window to easily manipulate and visualize the data, as well as an environment viewer to quickly understand what packages we have loaded and objects we have created.</span>
+<span id="cb1-30"><a href="#cb1-30"></a></span>
+<span id="cb1-31"><a href="#cb1-31"></a>To download RStudio, simply visit <span class="co">[</span><span class="ot">this link</span><span class="co">](https://posit.co/download/rstudio-desktop/)</span>, which should provide you with a button to download the appropriate version for your operating system (there is also the full list of versions below the download button, in case it doesn't recognize your OS correctly).</span>
+<span id="cb1-32"><a href="#cb1-32"></a></span>
+<span id="cb1-33"><a href="#cb1-33"></a><span class="fu">### Setup</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a></span>
+<span id="cb1-35"><a href="#cb1-35"></a>Once you've installed RStudio, you can get going straight away - that's the beauty of it.</span>
+<span id="cb1-36"><a href="#cb1-36"></a>However, spending a few minutes getting accustomed and adjusting the layout will make your development a little smoother.</span>
+<span id="cb1-37"><a href="#cb1-37"></a></span>
+<span id="cb1-38"><a href="#cb1-38"></a><span class="fu">#### Theme</span></span>
+<span id="cb1-39"><a href="#cb1-39"></a></span>
+<span id="cb1-40"><a href="#cb1-40"></a>The first thing that's worth doing is adding a theme - the default white background can be a little harsh when you spend a long time staring at code.</span>
+<span id="cb1-41"><a href="#cb1-41"></a>Open up the global preferences (<span class="in">`ctrl/cmd + ,`</span>), go to *"Appearance &gt; Editor theme"*, and select a theme that works for you.</span>
+<span id="cb1-42"><a href="#cb1-42"></a>The *"Cobalt"* theme is usually a nice default that work for many.</span>
+<span id="cb1-43"><a href="#cb1-43"></a>Here, Callum is using the *"Catppuccin"* theme, that can be downloaded from [here](https://github.com/brunomontezano/catppuccin-rstudio/blob/main/Catppuccin.rstheme), and installed by clicking on *"Add"* at the *"Appearance"* screen.</span>
+<span id="cb1-44"><a href="#cb1-44"></a></span>
+<span id="cb1-45"><a href="#cb1-45"></a><span class="al">![RStudio editor theme](./images/RStudio-editor-theme.png)</span></span>
+<span id="cb1-46"><a href="#cb1-46"></a></span>
+<span id="cb1-47"><a href="#cb1-47"></a><span class="fu">#### Pane layout</span></span>
+<span id="cb1-48"><a href="#cb1-48"></a></span>
+<span id="cb1-49"><a href="#cb1-49"></a>The next RStudio thing that you may want to customize is the default layout.</span>
+<span id="cb1-50"><a href="#cb1-50"></a>In the *"Pane Layout"* section of the global preferences, you can determine what you want to show in each quadrant of RStudio.</span>
+<span id="cb1-51"><a href="#cb1-51"></a>The default layout will show you all the necessary parts, but most of the time you will be using the *"Source"* section, as this is where you write your scripts, and the *"Environment"* panel, which is where you can see what objects have been created, as well as exploring their properties e.g., columns names in a **dataframe**.</span>
+<span id="cb1-52"><a href="#cb1-52"></a>For this reason, you may like to place the *"Environment"* panel under the *"Source"* panel, so they take up the majority of your screen, and the *"Files/Plots/Help"* and *"Console/Terminal"* panels are off to the side as you will interact with them less.</span>
+<span id="cb1-53"><a href="#cb1-53"></a></span>
+<span id="cb1-54"><a href="#cb1-54"></a><span class="al">![RStudio pane layout settings](./images/RStudio-pane-layout-settings.png)</span>{width=70%}</span>
+<span id="cb1-55"><a href="#cb1-55"></a></span>
+<span id="cb1-56"><a href="#cb1-56"></a><span class="al">![RStudio pane layout](./images/RStudio-pane-layout.png)</span></span>
+<span id="cb1-57"><a href="#cb1-57"></a></span>
+<span id="cb1-58"><a href="#cb1-58"></a><span class="fu">#### RData</span></span>
+<span id="cb1-59"><a href="#cb1-59"></a></span>
+<span id="cb1-60"><a href="#cb1-60"></a>The final thing to do, that's actually quite important, is to turn off the *"Restore ***.RData*** into workspace at startup"*.</span>
+<span id="cb1-61"><a href="#cb1-61"></a>The reason being, if you do not, objects from previous sessions will be loaded into your new working environment, putting things where they shouldn't be, making it very difficult to catch bugs as your code may reference something that doesn't exist by that point in your script as it is created later on, but you wouldn't catch that mistake as it was loaded into your environment on startup.</span>
+<span id="cb1-62"><a href="#cb1-62"></a></span>
+<span id="cb1-63"><a href="#cb1-63"></a><span class="al">![RStudio ***.RData*** settings](./images/RStudio-RData.png)</span>{width=70%}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -14,9 +14,9 @@ Everyone should refer to the  [Exercise Requirements](exercise-requirements.qmd)
 :::
 
 Firstly, this workshop requires some prior understanding of the R programming languages, as well as a working installation of R.
-If you do not have any experience, please refer to the [Installing R](install-r.qmd) and [The Basics of R](basics-of-r.qmd) pages of the Pre-Requisites section.
+If you do not have any experience, please refer to the [Installing R](install-r.qmd) and [Just Enough R & RStudio](just-enough-r.qmd) pages of the Pre-Requisites section.
 
-It is also highly recommended that you read the [Setting Up A Project](project-management.qmd) page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.
+It is also highly recommended that you read the [Organizing A Project](project-management.qmd) page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.
 
 Please set aside about an hour to go through these materials and get set up.
 You should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it's worth including some buffer time in case you run into issues.

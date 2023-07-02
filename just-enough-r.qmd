@@ -1,0 +1,127 @@
+# Just Enough R & RStudio {.unnumbered}
+
+The purpose of this section is to get you up-to-speed with `R`.
+If you're completely unfamiliar with `R` and RStudio, this should provide you with enough to get started and understand what's going on in the code (and you can always refer back to this page if you understandably get a little lost), and if you have some experience, then it should provide a sufficient description of the packages and functions that we use in this workshop.
+
+## R
+### The basics
+
+#### Object & types
+
+- What is an object
+- Creating objects
+- What are types
+    - element types
+        - numeric/double
+        - ints (not often used in R)
+        - factors
+        - character
+        - string
+        - boolean
+    - object types
+        - vector
+        - list
+        - dataframe
+        - 
+
+#### Indexing vectors, lists, and dataframes
+
+- How are they different
+    - Main point is vectors vs lists
+
+#### Packages
+
+- Installation
+- Loading
+
+#### Functions
+
+- Anonymous functions
+
+#### Tidy data
+
+### Core code used
+
+- Why `{tidyverse}`
+    - Comprises multiple packages
+    - Cheatsheets
+        - `{ggplot2}`
+        - `{dplyr}`
+        - `{tidyr}`
+        - `{purrr}`
+- Functions to explain with examples
+    - `mutate()`
+    - `across()`
+        - `everything()`
+    - `pivot_longer()`
+    - `ggplot()`
+        - `facet_wrap()`
+    - `factor()`
+    - `%>%`
+    - `%*%`
+    - `tibble()`
+    - `group_by()`
+    - `nest()`
+    - `map_*()`
+    - `filter()`
+    - `paste0()`
+    - `rename_with()`
+        - Anonymous functions
+    - `str_replace_all()`
+
+
+## RStudio
+
+There are a number of features in RStudio that will make your life easier.
+This section aims to highlight a few of them.
+
+### RStudio projects
+
+RStudio gives you the ability to turn a directory (that you are hopefully using to contain all your project, as [mentioned in the next section](project-management.qmd#project-structure)), into an *RStudio project*.
+One of the benefits of using *RStudio projects* is that you can easily switch between different projects and RStudio will start a new `R` session, meaning that objects you created in your first project won't stick around, causing issues by existing in a place where they shouldn't.
+The other key benefit is that you can use the `{here}` package to create relative file paths, for easier code sharing and increased reproducibility.
+See [this section](project-management.qmd#here-package) for more details about the `{here}` package.
+
+To create a new RStudio projet, simply open up RStudio, and click on the *"Project: (None)"* button in the top right corner.
+
+![Creating a new RStudio project - 1](./images/RStudio-new-project-01.png)
+
+You will then be given the option to create the project in a *"New Directory"*, and *"Existing Directory"*, or from *"Version Control"*.
+If you've already created a project just for this workshop, then select *"Existing Directory"*, otherwise, create a new one.
+If you know about Git, then please feel free to use the last option, but options 1 & 2 are most relevant for new users.
+Either way, we'd recommend reading through our [project organization tips](project-management.qmd#project-structure) about what this directory should look like/include.
+If you select *"New Directory"*, you probably want to select *"New Project"* on the next option, unless you have something specific in mind (like a *"Quarto Book"*, which is used for this website!).
+
+![Creating a new RStudio project - 2](./images/RStudio-new-project-02.png){width=70%}
+
+Finally, choose the directory name and location, and you're in business (you should click the button in the bottom-left corner to *"Open in new session"* to make sure you're starting in a fresh environment).
+From here on out, when you open up a project, all the files you've created will be easily accessibly, both from the *"Files"* pane, as well as using [relative paths](project-management.qmd#here-package).
+
+::: {.callout-tip}
+To reiterate our comments from the [project organization tips](project-management.qmd#project-structure) page, it's useful to have all your project directories in a single location on your computer, and make sure you do not have any spaces in the file or folder names.
+:::
+
+### RStudio keyboard shortcuts
+
+There are many shortcuts available to RStudio users, but here are the key ones:
+
+| Shortcut  | Command |
+|--------|--------|
+| `cmd/ctrl + enter`  | Send the section of code to the console to be run   |
+| `cmd/ctrl + opt/alt + r`  | Run all code |
+| `cmd/ctrl + opt/alt + b`  | Run all code from beginning to selected line |
+| `cmd/ctrl + shift + enter`  | Run current chunk (when within a `Rmd` or `Quarto` notebook) |
+| `cmd/ctrl + shift + p`  | Open the command palette (a place where you can search for different commands) |
+| `cmd/ctrl + shift + a`  | Reformat selected code (useful to help keep things readable) |
+| `cmd/ctrl + shift + c`  | Comment the selected lines |
+| `cmd/ctrl + shift + m`  | Insert the pipe (`%>%`) operator|
+| `opt/alt + -`  | Insert the assignment operator (`<-`) |
+
+
+: RStudio keyboard shortcuts {.striped .hover tbl-colwidths="[25,75]"}
+
+The common shortcuts for saving and opening files/selecting all etc. also exist in RStudio with the standard keybindings.
+
+To see the full list of keyboard shortcuts, you can go to *"Tools > Keyboard Shortcuts Help"*.
+
+![RStudio keyboard shortcuts](./images/RStudio-keyboard-shortcuts.png)

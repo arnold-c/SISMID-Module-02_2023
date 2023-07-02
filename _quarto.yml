@@ -16,7 +16,7 @@ book:
       chapters:
         - exercise-requirements.qmd
         - install-r.qmd
-        - basics-of-r.qmd
+        - just-enough-r.qmd
         - project-management.qmd
     - part: "Day 1"
       chapters: 
@@ -36,7 +36,7 @@ book:
         - L07_models-and-data.qmd
         - L08_stochastic-models.qmd
     - references.qmd
-  repo-url: https://github.com/arnold-c/SISMID-02_2023
+  repo-url: https://github.com/arnold-c/SISMID-Module-02_2023
   repo-actions: [edit]
   sidebar:
     logo: ./images/sismid2023-logo-green.png
