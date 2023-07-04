@@ -163,6 +163,15 @@ mtcars$cyl <- ordered(mtcars$cyl)
 mtcars$cyl
 ```
 
+If we wanted to directly specify the ordering of the groups, we can do this using the `levels` argument i.e.
+
+```{r}
+mtcars$cyl <- ordered(mtcars$cyl, levels = c(8, 6, 4))
+mtcars$cyl
+```
+
+To create a **factor**, just replace the `ordered()` call with `factor()`
+
 
 ### Lists
 
@@ -443,7 +452,7 @@ This gets into the broader concept of local vs global scopes, but that is too fa
 Let's look at an example to see when we might want to use an anonymous function.
 
 Throughout this workshop, we will make use of the `map_*()` series of functions from the `{purrr}` package.
-We'll go into more detail about `purr::map()` [shortly](#map-functions), but for now, imagine we have a **vector** of numbers, and we want to add `5` to each value before and multiplying by `10`.
+We'll go into more detail about `purr::map()` [shortly](#sec-map-functions), but for now, imagine we have a **vector** of numbers, and we want to add `5` to each value before and multiplying by `10`.
 The `map_dbl()` function takes a **vector** and a function, and outputs a **double vector**.
 We could write a function to perform this multiplication, but if we're only going to do this operation once, it seems unnecessary.
 
@@ -486,35 +495,296 @@ Notice the `~` used: this specifies that we want to pass arguments into our name
 Without it, we will get an error about `.x` not being found.
 :::
 
+::: {.callout-note collapse=true}
+In this example, because we are doing standard arithmetic, `R` will **vectorize** our function so that it can automatically be applied to each element of the object, so this example was merely to illustrate the point.
+
+```{r}
+add_five_multiply_ten(my_dbl_vec)
+```
+:::
+
+
 ## Tidy data
+
+Before we look at the common packages and functions we use throughout this workshop, let's take a second to talk about how our data is structured.
+For much of what we do, it is convenient to work with **dataframes**, and many functions we will use are designed to work with *long* **dataframes**.
+What this means is that each *column* represents a variable, and each row is a unique observation.
+
+Let's first look at a **wide dataframe** to see how data may be represented.
+Here, we have one column representing a number for each of the states in the US, and then we have two columns representing some random incidence: one for July and one for August.
+
+```{r}
+wide_df <- data.frame(
+    state_id = 1:52,
+    july_inc = rbinom(52, 1000, 0.4),
+    aug_inc = rbinom(52, 1000, 0.6)
+)
+
+wide_df
+```
+
+Instead, we reshape this into a **long dataframe** so that there is a column for the state ID, a column for the month, and a column for the incidence (that is associated with *both* the state *and* the month).
+Using the `{tidyr}` package, we could reshape this **wide dataframe** to be a **long dataframe** (see [this section](#sec-pivot-functions) for more information about the `pivot_*()` functions)
+
+```{r}
+long_df <- tidyr::pivot_longer(
+    wide_df,
+    cols = c(july_inc, aug_inc),
+    names_to = "month",
+    values_to = "incidence",
+    # Extract only the month using regex
+    names_pattern = "(.*)_inc"
+)
+
+long_df
+```
+
+You will notice that our new dataframe contains three columns still, but is longer than previously; two time as long, in fact.
+
+::: {.callout-note collapse=true}
+Particularly keen-eyed reader may also notice that `long_df` is also has class **tibble**, not a **data.frame**.
+A **tibble** effectively is a **data.frame**, but is an object commonly used and output by `{tidyverse}` functions, as it has a few extra safety features over the base **data.frame**.
+:::
+
 
 ## Core code used
 
-<a id="map-functions"/>
+We're finally ready to talk about the functions that are used throughout this workshop.
+The first package to mention is the `{tidyverse}` package, which actually a collection of packages: the core packages can be found [here](https://www.tidyverse.org/packages/).
+The reason why are using the `{tidyverse}` packages throughout this workshop is that they are relatively easily to learn, compared to base `R` and `{data.table}` (not that they are mutually exclusive), and what most people are familiar with.
+They also are well designed and powerful, so you should be able to do most things you need using their packages.
 
-- Why `{tidyverse}`
-    - Comprises multiple packages
-    - Cheatsheets
-        - `{ggplot2}`
-        - `{dplyr}`
-        - `{tidyr}`
-        - `{purrr}`
-- Functions to explain with examples
-    - `mutate()`
-    - `across()`
-        - `everything()`
-    - `pivot_longer()`
-    - `ggplot()`
-        - `facet_wrap()`
-    - `factor()`
-    - `%>%`
-    - `%*%`
-    - `tibble()`
-    - `group_by()`
-    - `nest()`
-    - `map_*()`
-    - `filter()`
-    - `paste0()`
-    - `rename_with()`
-        - Anonymous functions
-    - `str_replace_all()`
+You can find a list of cheatsheets for all of these packages (and more) [here](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets&_page=1/).
+
+Let's load the `{tidyverse}` packages and then go through the key functions used.
+Unless stated explicitly, these packages will be available to you after loading the `{tidyverse}` with the following command.
+
+```{r}
+library(tidyverse)
+```
+
+### `tibble()`
+
+The **tibble** is a modern reincarnation of the **dataframes** that is slightly safer i.e., is more restricted in what you can do with it, and will throw errrors more frequently, but very rarely for anything other than a bug.
+We will use the terms interchangeably, as most people will just talk about **dataframes**, as for the most part, they can be treated identically.
+Use the same syntax as the `data.frame()` function to create the **tibble**.
+
+### `mutate()`
+
+If we have a **dataframe** and want to add or edit a column, we use the `mutate()` function.
+Usually the `mutate()` function is used to add a column that is related to the existing data, but it is not necessary.
+Below are examples of both.
+
+```{r}
+# add September incidence that is based on August incidence
+mutate(
+    wide_df,
+    sep_inc = round(aug_inc * 1.2 + rnorm(52, 0, 10), digits = 0)
+)
+
+# add random September incidence
+mutate(
+    wide_df,
+    sep_inc = rbinom(52, 1000, 0.7)
+)
+```
+
+If we wanted to update a column, we can do that by specifying the column on both sides of the equals sign.
+
+```{r}
+# Update the August incidence to add random noise
+mutate(
+    wide_df,
+    aug_inc = aug_inc + round(rnorm(52, 0, 10), digits = 0)
+)
+```
+
+One crucial thing to note is that `mutate()` applies our function/operation to each row simultaneously, so the new column's value only depends on the *row's* original values (or the vector in the case of the second example that didn't use the values from the data).
+
+### `paste0()`
+
+The `paste0()` function is useful for manipulating objects and coercing them into string, allowing us to do *string interpolation*.
+It comes installed with base `R`, so there's nothing to install, and because of the way `mutate()` works, apply functions to each row simultaneously, we can modify whole columns at once, depending on the row's original values.
+It works to *squish* all the values together, without any separators by default.
+If you wanted spaces between your words, for example, you can use the `paste(..., sep = " ")` function, which takes the `sep` argument.
+
+```{r}
+char_df <- mutate(
+    long_df,
+    # Notice that text is in commas, and object values being passed to paste0()
+    # are unquoted.
+    state_id = paste0("state_", state_id)
+)
+
+char_df
+```
+### `glue::glue()`
+
+`glue()` is a function that comes installed with `{tidyverse}`, but is not loaded automatically, so you have to reference it explicitly by either using `library(glue)` or the `::` notation shown below.
+It serves the same purpose as the base `paste0()`, but in a slightly different syntax.
+Instead of using a mix of quotations and unquoted object names, `glue()` requires everything to be in quotation marks, with any value being passed to the *string interpolation* being *enclosed* in `{ }`.
+It is worth learning `glue()` as it is used throughout the `{tidyverse}` packages, such as in the `pivot_wider()` function.
+
+```{r}
+char_df <- mutate(
+    long_df,
+    state_id = glue::glue("state_{state_id}")
+)
+
+char_df
+```
+
+### `str_replace_all()`
+
+If we want to replace characters throughout the whole of a string vector, we can do that with the `str_replace_all()` function.
+And because **dataframes** are made up of individual **vectors**, we can use this to modify vectors.
+
+```{r}
+mutate(
+    char_df,
+    # pass in the vector (a column, here), the pattern to remove, and the replacement
+    clean_state_id = str_replace_all(state_id, "state_", "")
+)
+```
+
+
+### `pivot_*()` {#sec-pivot-functions}
+
+We've [already seen](#tidy-data) the purpose of the `pivot_longer()` function: taking wide data and reshaping it to be long.
+There is an equivalent to go from long to wide: `pivot_wider()`.
+Occassionally this is useful (though it is less common than creating long data).
+
+```{r}
+pivot_wider(
+    long_df,
+    names_from = month,
+    values_from = incidence,
+    names_glue = "{month}_inc"
+)
+```
+
+Here, the `names_glue` argument is making use of the `glue::glue()` function ([see above](#glue)) that is installed with `{tidyverse}`, but not loaded automatically for use by the users.
+
+### `map_*()` {#sec-map-functions}
+
+The `map_*()` functions come from the `{purrr}` package (a core part of the `{tidyverse}`), and are incredibly useful.
+They are relatively complicated, so there isn't enough space to go into full detail, but here we'll just outline enough so you can read more and understand what's going on.
+
+We've [already seen](#anonymous-functions) we can apply functions to each element of a vector (**atomic** or **list** vectors).
+The key points to note are the `.` preceding the `x` and `f` arguments.
+If we use `map()` we get a **list** returned, `map_dbl()` a **double vector**, `map_char()` a **character vector**, `map_dfr()` a **dataframe** etc.
+
+In the example below, we'll walk through `map_dfr()` as it's one of the more confusing variants due to the **return** requirements.
+
+```{r}
+map_dfr_example <- map_dfr(
+    .x = my_dbl_vec,
+    .f = function(.x) {
+        # Note we don't use , at the end of each line - it's as if we were
+        # running the code in the console
+        times_ten <- .x * 10
+        divide_ten <- .x / 10
+
+        # construct a tibble as normal (requires , between arguments)
+        tibble(
+            original_val = .x,
+            times_ten = times_ten,
+            divide_ten = divide_ten
+        )
+    }
+)
+
+map_dfr_example
+```
+
+What's happening under the hood is that `map_dfr()` is applying the [anonymous function](#anonymous-functions) we defined to each element in our vector and returning a **list** of **dataframes** that contains one row and three columns, i.e. for the first element, we would get this:
+
+```{r}
+list(map_dfr_example[1, ])
+```
+
+It then calls the `bind_rows()` function to *squash* all of those **dataframes** together, one row stacked on top of the next, to create one large **dataframe**.
+We could write the equivalent code like this:
+
+```{r}
+bind_rows(
+    map(
+    .x = my_dbl_vec,
+    .f = function(.x) {
+        # Note we don't use , at the end of each line - it's as if we were
+        # running the code in the console
+        times_ten <- .x * 10
+        divide_ten <- .x / 10
+
+        # construct a tibble as normal (requires , between arguments)
+        tibble(
+            original_val = .x,
+            times_ten = times_ten,
+            divide_ten = divide_ten
+        )
+    }
+)
+)
+```
+
+`map_dfc()` does exactly the same thing, but calls `bind_cols()` instead, to place the columns next to each other.
+
+There is one more important variant to go through: `pmap_*()`.
+If `map_*()` takes one vector as an argument, `pmap_*()` takes a **list** of arguments.
+What this means is that we can iterate through the elements of as many arguments as we'd like, *in sequence*.
+For example, let's multiply the elements of two **double** vectors together.
+
+```{r}
+# Create a second vector of numbers
+my_second_dbl_vec <- rnorm(length(my_dbl_vec), 20, 20)
+my_second_dbl_vec
+# Remind ourselves what our original vector looks like
+my_dbl_vec
+
+
+pmap_dbl(
+    .l = list(first_num = my_dbl_vec, sec_num = my_second_dbl_vec),
+    .f = function(first_num, sec_num) {
+        first_num * sec_num
+    }
+)
+```
+
+There are a couple of important points to note here:
+
+- All vectors need to be the same length
+- The function is applied to each element index of the input vectors, i.e., the first elements of the vectors are multiplied together, the second element of the vectors are multiplied together, and so on, until the last elements are reached.
+- We use `.l` instead of `.x` to denote we are passing a `list()` of vectors.
+- Our function specifies the names of the vectors in the `list()`, which are then used within the function itself (similar to how we used `.x` in our `map_*()` functions)
+
+::: {.callout-note collapse=true}
+As before, this is an unnecessary approach as `R` would vectorize the operation, but it is useful to demonstrate the principle.
+
+```{r}
+my_dbl_vec * my_second_dbl_vec
+```
+:::
+
+### `group_by()`
+
+### `nest()`
+
+### `dplyr::filter()`
+
+### `select()`
+
+### `{tidyselect}`
+#### `across()`
+
+#### `everything()`
+
+### `rename_with()`
+
+### `ggplot()`
+#### `facet_wrap()`
+
+### `magrittr::%>%`
+### `|>`
+
+### `%*%`
+
