@@ -11,7 +11,6 @@ The purpose of this section is to get you up-to-speed with `R`.
 If you're completely unfamiliar with `R` and RStudio, this should provide you with enough to get started and understand what's going on in the code (and you can always refer back to this page if you understandably get a little lost), and if you have some experience, then it should provide a sufficient description of the packages and functions that we use in this workshop.
 
 ## R
-### The basics
 
 Now you have `R` set installed and you can access it using RStudio, it's time to learn some of the core features of the language (see [below](#rstudio) for details about using RStudio).
 
@@ -19,14 +18,14 @@ Now you have `R` set installed and you can access it using RStudio, it's time to
 We'd strongly recommend you read [Hands-On Programming With R](https://rstudio-education.github.io/hopr) by Garett Grolemund and [R for DataScience](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund for a deeper understanding of the following concepts (and many more).
 :::
 
-#### Object & types
+### Objects & types introduction
 
 An object is anything you can create in R using code, whether that is a table you import from a **csv** file (that will get converted to a **dataframe**), or a **vector** you create within a script.
 Each object you create has a **type**.
 We've already mentioned two (**dataframes** and **vectors**), but there are plenty more.
 But before we get into object types, let's take a step back and look at types in general, thinking about individual elements and the fundamentals.
 
-##### Element types
+### Element types
 
 Generally in programming, we have two broad types of numbers: **floating point** and **integer** numbers, i.e., numbers with decimals, and whole numbers, respectively.
 In `R`, we have these number types, but a **floating point** number is called a **double**.
@@ -95,8 +94,8 @@ This means that despite `"1"` looking like the number `1`, it behaves like a **c
 "1" + 1
 ```
 
-##### Object types
-###### Vectors
+### Object types
+#### Vectors
 
 As mentioned, anything you can create in `R` is an object.
 For example, we can create an character object with the assignment operator (`<-`).
@@ -144,7 +143,7 @@ my_named_char_vec
 Because `R` saw the majority of the first elements in the **vector** were of type **character** it **coerced** the number to a **character**.
 This is super important to be aware of, as it can cause errors, particularly when coercion goes in the other direction i.e. trying to create a **numeric vector**.
 
-###### Lists
+#### Lists
 
 There is another type of **vector**: the **list**.
 Most people do not refer to **lists** as type of **vectors**, so we will only refer to them as **lists**, and **atomic vectors** will just be referred to as **vectors**.
@@ -174,7 +173,7 @@ It is often useful to name them, though, as it gives you some useful options whe
 If you're wondering why we are creating our list elements with the `=` operator, that's because we can think of this as an argument in the `list()` function, where the argument name is the name we want the element to have, and the argument value is the element itself.
 :::
 
-###### Dataframes
+### Dataframes
 
 **Dataframes** are the last key object type to learn about.
 A **dataframe** is technically a special type of list.
@@ -200,7 +199,7 @@ One nice feature of **dataframes** is that it will explicitly print the columns 
 str(my_dataframe)
 ```
 
-###### Matrices
+#### Matrices
 
 **Matrices** are crucial to many scientific fields, including epidemiology, as they are the basis of linear algebra.
 This course will use **matrix** multiplication extensively (notably [R Session 2](r-session-02.qmd)), so it is worth knowing how to create matrices.
@@ -297,16 +296,78 @@ my_dataframe$column_int[2]
 ```
 
 
-#### Packages
+### Packages
 
-- Installation
-- Loading
+Up until now, we've been getting to grips with the core concepts of objects, and indexing them.
+But when you're writing code, you'll want to do things that are relatively complicated to implement, such as solve a set of differential equations.
+Fortunately, for many areas of computing (and, indeed, epidemiology and statistics), many others have also struggled with the same issues and some have gone one to document their solutions in a way others can re-use them.
+This is the basis for **packages**.
+Someone has *packaged up* a set of functions for others to re-use.
 
-#### Functions
+We've mentioned the word **function** a number of time so far, and we haven't defined it, but that's [coming soon](#functions).
+For the moment, let's just look at how we can find, install, and load **packages**.
+
+#### Finding packages
+
+As [mentioned previously](install-r.qmd#r) CRAN is a place where many pieces of `R` code is documents and stored for others to download and use.
+Not only are the `R` programming language executables stored in CRAN, but so are user-defined **functions** that have been turned into **packages**.
+
+To find packages, you can go to the CRAN website and search by name, but there are far too many for that to be worthwhile - just Google what you want to do and add "r" to the end of your search query, and you'll likely find what you're looking for.
+Once you've found a package you want to download, next you need to install it.
+
+#### Installing packages
+
+Barring any super-niche packages, you should be able to use the following command(s):
+
+```{r}
+#| eval: false
+install.packages("package to download")
+# Download multiple by passing a vector of package names
+install.packages(c("package 1", "package 2"))
+```
+
+If for some reason you get an error message saying the package isn't available on CRAN, first, check for typos, and if you still get an error, you may need to download it directly from GitHub.
+Read [here](https://pak.r-lib.org/dev/reference/get-started.html#install-a-package-from-github) for more information about using the `{pak}` package to download packages from other sources.
+
+#### Loading packages
+
+Now you have your packages installed, you just need to load them to get any of their functionality.
+The easiest way is to place this code at the top of your script.
+
+```{r}
+#| eval: false
+# Quotations are not required, but can be used
+library(package to download)
+```
+
+Most of the time, this is fine, but occasionally you will run in to an issue where a function doesn't work as expected.
+Sometimes this is because of what's called a *namespace conflict* i.e., you have two functions with the same name loaded, and potentially you're using the wrong verion.
+
+For example, in base `R` (i.e, these functions come pre-installed when you set up `R`), there is a `filter()` function from the `{stats}` package (as mentioned, we'll denote this as `stats::filter()`).
+Throughout this workshop, you will see `library(tidyverse)` at the top of the pages to indicate the `{tidyverse}` set of packages are being loaded (this is actually a package that installs a bunch of related and useful packages for us).
+In `{dplyr}` (one of the packages loaded by `{tidyverse}`) there is also a function called `filter()`.
+Because `{dplyr}` was loaded after `{stats}` was loaded (because `{stats}` is automatically loaded when `R` is started), the `dplyr::filter()` function will take precedence.
+If we wanted to specifically use the `{stats}` version, we could write this:
+
+```{r}
+# Create a cosine wave with random noise
+raw_timeseries <- cos(pi * seq(-2, 2, length.out = 1000)) + rnorm(1000, sd = 0.5)
+
+# Calculate 20 day moving average using stats::filter()
+smooth_timeseries <- stats::filter(raw_timeseries, filter = rep(1/20, 20), sides = 1)
+
+# Plot raw data
+plot(raw_timeseries, col = "grey80")
+
+# Overlay smoothed data
+lines(smooth_timeseries, col = "red", lwd = 2)
+```
+
+### Functions
 
 - Anonymous functions
 
-#### Tidy data
+### Tidy data
 
 ### Core code used
 
