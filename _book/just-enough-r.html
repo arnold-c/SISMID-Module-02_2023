@@ -801,10 +801,112 @@ column_int int 1 2 3 4 5</code></pre>
 </div>
 </div>
 </section></section><section id="functions" class="level3"><h3 class="anchored" data-anchor-id="functions">Functions</h3>
-<ul>
-<li>Anonymous functions</li>
-</ul></section><section id="tidy-data" class="level3"><h3 class="anchored" data-anchor-id="tidy-data">Tidy data</h3>
+<p>As we’ve alluded to, <strong>functions</strong> are core to gaining <em>functionality</em> in <code>R</code>. We can always hand-write the code to complete a task, but if we have to repeat a task more than once, it can be tiresome to repeat the same code, particularly if it is a particularly complex task that requires many lines of code. This is where <strong>functions</strong> come in: they provide us with a mechanism to wrap up code into something that can be re-used. Not only does this reduce the amount of code we need to write, but by minimize code duplication, debugging becomes a lot easier as we only need to remember to make changes and correct one section of our codebase. Say, for example, you want to take a vector of numbers and calculate the cumulative sum e.g.;</p>
+<div class="cell" data-hash="just-enough-r_cache/html/unnamed-chunk-24_9b63fd18ae325808f644e310508cb8dc">
+<div class="sourceCode" id="cb83" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_dbl_vec</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<span></span>
+<span><span class="va">cumulative_sum</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">my_dbl_vec</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">cumulative_sum</span> <span class="op">&lt;-</span> <span class="va">cumulative_sum</span> <span class="op">+</span> <span class="va">i</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">cumulative_sum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre data-code-line-numbers=""><code>[1] 55</code></pre>
+</div>
+</div>
+<p>This is OK if we only do this calculation once, but it’s easy to imagine us wanting to repeat this calculation; for example, we might use calculate the cumulative sum of daily cases to get a weekly incidence over every week of a year. In this situation, we would want to create a function.</p>
+<div class="cell" data-hash="just-enough-r_cache/html/unnamed-chunk-25_1c406521a2f809f20e6c0578e657a391">
+<div class="sourceCode" id="cb85" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_cumsum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">vector</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">cumulative_sum</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span>    <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">my_dbl_vec</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">cumulative_sum</span> <span class="op">&lt;-</span> <span class="va">cumulative_sum</span> <span class="op">+</span> <span class="va">i</span></span>
+<span>    <span class="op">}</span></span>
+<span></span>
+<span>    <span class="va">cumulative_sum</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_cumsum</span><span class="op">(</span><span class="va">my_dbl_vec</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre data-code-line-numbers=""><code>[1] 55</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This is obviously a contrived example because, as with many basic operations in <code>R</code>, there is already a function written to perform this calculation that does it in a much more performant and safer manner: <code><a href="https://rdrr.io/r/base/cumsum.html">cumsum()</a></code></p>
+</div>
+</div>
+</div>
+<p>For many of the manipulations we will want to perform, a <strong>function</strong> has already been written by someone else and put into a <strong>package</strong> that we can download, as we’ve <a href="#packages">already seen</a>.</p>
+<section id="anonymous-functions" class="level4"><h4 class="anchored" data-anchor-id="anonymous-functions">Anonymous functions</h4>
+<p>There is a special class of functions called anonymous functions that are worth being aware of, as we will use them quite extensively throughout this workshop. As the name might suggest, <strong>anonymous functions</strong> are functions that are not named, and therefore, not saved for re-use. You may, understandably, be wondering why we would want to use them, given we just make the case for functions replacing repeatable blocks of code. In some instances, we want to be able to perform multiple computations that require creating intermediate objects, but because we only need to use them once, we don’t save them save to our environment, potentially causing issues with conflicts (e.g., accidentally using an object we didn’t mean to, or overwriting existing ones by re-using the same object name). This gets into the broader concept of local vs global scopes, but that is too far beyond the scope of this workshop: see <a href="https://rstudio-education.github.io/hopr/environments.html#scoping-rules">Hands-On Programming with R</a> and <a href="https://adv-r.hadley.nz/functions.html?q=lexical#lexical-scoping">Advanced R</a> for more information. Let’s look at an example to see when we might want to use an anonymous function.</p>
+<p>Throughout this workshop, we will make use of the <code>map_*()</code> series of functions from the <a href="https://purrr.tidyverse.org/">purrr</a> package. We’ll go into more detail about <code>purr::map()</code> <a href="#map-functions">shortly</a>, but for now, imagine we have a <strong>vector</strong> of numbers, and we want to add <code>5</code> to each value before and multiplying by <code>10</code>. The <code>map_dbl()</code> function takes a <strong>vector</strong> and a function, and outputs a <strong>double vector</strong>. We could write a function to perform this multiplication, but if we’re only going to do this operation once, it seems unnecessary.</p>
+<div class="cell" data-hash="just-enough-r_cache/html/unnamed-chunk-26_d5afb6dcce9dbfbf7983cd2ed7b23bd3">
+<div class="sourceCode" id="cb87" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span></span>
+<span>    .x <span class="op">=</span> <span class="va">my_dbl_vec</span>,</span>
+<span>    .f <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">add_five_val</span> <span class="op">&lt;-</span> <span class="va">.x</span> <span class="op">+</span> <span class="fl">5</span></span>
+<span></span>
+<span>        <span class="va">add_five_val</span> <span class="op">*</span> <span class="fl">10</span></span>
+<span>    <span class="op">}</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre data-code-line-numbers=""><code> [1]  60  70  80  90 100 110 120 130 140 150</code></pre>
+</div>
+<div class="sourceCode" id="cb89" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># only exists within the function</span></span>
+<span><span class="va">add_five_val</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre data-code-line-numbers=""><code>Error in eval(expr, envir, enclos): object 'add_five_val' not found</code></pre>
+</div>
+</div>
+<p>Here, we’ve specified the anonymous function to take the input <code>.x</code> and multiple each value by 10, and we did it without saving the function. This would be equivalent to writing this:</p>
+<div class="cell" data-hash="just-enough-r_cache/html/unnamed-chunk-27_9ef296c96c7d0dcfd4a7bca458a89b96">
+<div class="sourceCode" id="cb91" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">add_five_multiply_ten</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">add_five_val</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="fl">5</span></span>
+<span>    <span class="va">add_five_val</span> <span class="op">*</span> <span class="fl">10</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span></span>
+<span>    .x <span class="op">=</span> <span class="va">my_dbl_vec</span>,</span>
+<span>    .f <span class="op">=</span> <span class="op">~</span><span class="fu">add_five_multiply_ten</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre data-code-line-numbers=""><code> [1]  60  70  80  90 100 110 120 130 140 150</code></pre>
+</div>
+<div class="sourceCode" id="cb93" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># only exists within the function</span></span>
+<span><span class="va">add_five_val</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre data-code-line-numbers=""><code>Error in eval(expr, envir, enclos): object 'add_five_val' not found</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice the <code>~</code> used: this specifies that we want to pass arguments into our named function. Without it, we will get an error about <code>.x</code> not being found.</p>
+</div>
+</div>
+</section></section><section id="tidy-data" class="level3"><h3 class="anchored" data-anchor-id="tidy-data">Tidy data</h3>
 </section><section id="core-code-used" class="level3"><h3 class="anchored" data-anchor-id="core-code-used">Core code used</h3>
+<p><a id="map-functions"></a></p>
 <ul>
 <li>Why <a href="https://tidyverse.tidyverse.org">tidyverse</a>
 <ul>
@@ -1351,461 +1453,555 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb83" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="co">    html:</span></span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a><span class="co">        code-fold: false</span></span>
-<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="co">        code-line-numbers: false</span></span>
-<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a><span class="fu"># Just Enough R &amp; RStudio {.unnumbered}</span></span>
-<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>The purpose of this section is to get you up-to-speed with <span class="in">`R`</span>.</span>
-<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>If you're completely unfamiliar with <span class="in">`R`</span> and RStudio, this should provide you with enough to get started and understand what's going on in the code (and you can always refer back to this page if you understandably get a little lost), and if you have some experience, then it should provide a sufficient description of the packages and functions that we use in this workshop.</span>
-<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## R</span></span>
-<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a>Now you have <span class="in">`R`</span> set installed and you can access it using RStudio, it's time to learn some of the core features of the language (see <span class="co">[</span><span class="ot">below</span><span class="co">](#rstudio)</span> for details about using RStudio).</span>
-<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-17"><a href="#cb83-17" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb83-18"><a href="#cb83-18" aria-hidden="true" tabindex="-1"></a>We'd strongly recommend you read <span class="co">[</span><span class="ot">Hands-On Programming With R</span><span class="co">](https://rstudio-education.github.io/hopr)</span> by Garett Grolemund and <span class="co">[</span><span class="ot">R for DataScience</span><span class="co">](https://r4ds.hadley.nz/)</span> by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund for a deeper understanding of the following concepts (and many more).</span>
-<span id="cb83-19"><a href="#cb83-19" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb83-20"><a href="#cb83-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-21"><a href="#cb83-21" aria-hidden="true" tabindex="-1"></a><span class="fu">### Objects &amp; types introduction</span></span>
-<span id="cb83-22"><a href="#cb83-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-23"><a href="#cb83-23" aria-hidden="true" tabindex="-1"></a>An object is anything you can create in R using code, whether that is a table you import from a **csv** file (that will get converted to a **dataframe**), or a **vector** you create within a script.</span>
-<span id="cb83-24"><a href="#cb83-24" aria-hidden="true" tabindex="-1"></a>Each object you create has a **type**.</span>
-<span id="cb83-25"><a href="#cb83-25" aria-hidden="true" tabindex="-1"></a>We've already mentioned two (**dataframes** and **vectors**), but there are plenty more.</span>
-<span id="cb83-26"><a href="#cb83-26" aria-hidden="true" tabindex="-1"></a>But before we get into object types, let's take a step back and look at types in general, thinking about individual elements and the fundamentals.</span>
-<span id="cb83-27"><a href="#cb83-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-28"><a href="#cb83-28" aria-hidden="true" tabindex="-1"></a><span class="fu">### Element types</span></span>
-<span id="cb83-29"><a href="#cb83-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-30"><a href="#cb83-30" aria-hidden="true" tabindex="-1"></a>Generally in programming, we have two broad types of numbers: **floating point** and **integer** numbers, i.e., numbers with decimals, and whole numbers, respectively.</span>
-<span id="cb83-31"><a href="#cb83-31" aria-hidden="true" tabindex="-1"></a>In <span class="in">`R`</span>, we have these number types, but a **floating point** number is called a **double**.</span>
-<span id="cb83-32"><a href="#cb83-32" aria-hidden="true" tabindex="-1"></a>The **floating point** number is the default type <span class="in">`R`</span> assigns to number: look at the types assigned when we leave off a decimal place vs. specify type integer by ending a number with an <span class="in">`L`</span>.</span>
-<span id="cb83-33"><a href="#cb83-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-36"><a href="#cb83-36" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-37"><a href="#cb83-37" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="dv">1</span>)</span>
-<span id="cb83-38"><a href="#cb83-38" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(1L)</span>
-<span id="cb83-39"><a href="#cb83-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-40"><a href="#cb83-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-41"><a href="#cb83-41" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
-<span id="cb83-42"><a href="#cb83-42" aria-hidden="true" tabindex="-1"></a>Technically type **double** is a subset of type **numeric**, so you will often see people convert numbers to floating points using <span class="in">`as.numeric()`</span>, rather than <span class="in">`as.double()`</span>, but the different is semantics.</span>
-<span id="cb83-43"><a href="#cb83-43" aria-hidden="true" tabindex="-1"></a>You can confirm this using the command `typeof(as.numeric(10)) == typeof(as.double(10))semantics.</span>
-<span id="cb83-44"><a href="#cb83-44" aria-hidden="true" tabindex="-1"></a>You can confirm this using the command <span class="in">`typeof(as.numeric(10)) == typeof(as.double(10))`</span>.</span>
-<span id="cb83-45"><a href="#cb83-45" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb83-46"><a href="#cb83-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-47"><a href="#cb83-47" aria-hidden="true" tabindex="-1"></a>Integer types are not commonly used in <span class="in">`R`</span>, but there are occasions when you will want to use them e.g., when you need whole numbers of people in a simulation you may want to use integers to enforce this.</span>
-<span id="cb83-48"><a href="#cb83-48" aria-hidden="true" tabindex="-1"></a>Integers are also slightly more precise (unless very big or small), so when exactness in whole number is required, you may want to use integers.</span>
-<span id="cb83-49"><a href="#cb83-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-50"><a href="#cb83-50" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
-<span id="cb83-51"><a href="#cb83-51" aria-hidden="true" tabindex="-1"></a><span class="in">`R`</span> has some idiosyncrasies when it comes to numbers.</span>
-<span id="cb83-52"><a href="#cb83-52" aria-hidden="true" tabindex="-1"></a>For the most part, **doubles** are produced, but occasionally an **integer** will be produced when you are expecting a **double**.</span>
-<span id="cb83-53"><a href="#cb83-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-54"><a href="#cb83-54" aria-hidden="true" tabindex="-1"></a>For example:</span>
-<span id="cb83-55"><a href="#cb83-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-58"><a href="#cb83-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-59"><a href="#cb83-59" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="dv">1</span>)</span>
-<span id="cb83-60"><a href="#cb83-60" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
-<span id="cb83-61"><a href="#cb83-61" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>))</span>
-<span id="cb83-62"><a href="#cb83-62" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">1</span>))</span>
-<span id="cb83-63"><a href="#cb83-63" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-64"><a href="#cb83-64" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb83-65"><a href="#cb83-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-66"><a href="#cb83-66" aria-hidden="true" tabindex="-1"></a>Outside of numbers, we have **characters** (**strings**) and **boolean** types.</span>
-<span id="cb83-67"><a href="#cb83-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-68"><a href="#cb83-68" aria-hidden="true" tabindex="-1"></a>A **boolean** (also known as a **logical** in <span class="in">`R`</span>) is a <span class="in">`TRUE/FALSE`</span> statement.</span>
-<span id="cb83-69"><a href="#cb83-69" aria-hidden="true" tabindex="-1"></a>In <span class="in">`R`</span>, as in many programming languages, <span class="in">`TRUE`</span> is equal to a value of 1, and <span class="in">`FALSE`</span> equals <span class="in">`0`</span>.</span>
-<span id="cb83-70"><a href="#cb83-70" aria-hidden="true" tabindex="-1"></a>There are times when this comes in handy e.g. you need to calculate the number of people that responded to a question, and their responses is coded as <span class="in">`TRUE/FALSE`</span>, you can just sum the **vector** of responses (more on **vectors** shortly).</span>
-<span id="cb83-71"><a href="#cb83-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-72"><a href="#cb83-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-75"><a href="#cb83-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-76"><a href="#cb83-76" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">==</span> <span class="dv">1</span></span>
-<span id="cb83-77"><a href="#cb83-77" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span> <span class="sc">==</span> <span class="dv">0</span></span>
-<span id="cb83-78"><a href="#cb83-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-79"><a href="#cb83-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-80"><a href="#cb83-80" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Question" appearance="minimal"}</span>
-<span id="cb83-81"><a href="#cb83-81" aria-hidden="true" tabindex="-1"></a>Can you figure out what value will be returned for the command <span class="in">`(TRUE == 0) == FALSE`</span>?</span>
-<span id="cb83-82"><a href="#cb83-82" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb83-83"><a href="#cb83-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-84"><a href="#cb83-84" aria-hidden="true" tabindex="-1"></a>A **character** is anything in quotation marks.</span>
-<span id="cb83-85"><a href="#cb83-85" aria-hidden="true" tabindex="-1"></a>This would typically by letter, but is occasionally a number, or other symbol.</span>
-<span id="cb83-86"><a href="#cb83-86" aria-hidden="true" tabindex="-1"></a>Other languages make a distinction between **characters** and **strings**, but not <span class="in">`R`</span>.</span>
-<span id="cb83-87"><a href="#cb83-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-88"><a href="#cb83-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-91"><a href="#cb83-91" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-92"><a href="#cb83-92" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="st">"a"</span>)</span>
-<span id="cb83-93"><a href="#cb83-93" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="st">"1"</span>)</span>
-<span id="cb83-94"><a href="#cb83-94" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-95"><a href="#cb83-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-96"><a href="#cb83-96" aria-hidden="true" tabindex="-1"></a>It is important to note that characters are not **parsed** i.e., they are not interpreted by `R` as anything other than a **character**.</span>
-<span id="cb83-97"><a href="#cb83-97" aria-hidden="true" tabindex="-1"></a>This means that despite <span class="in">`"1"`</span> looking like the number <span class="in">`1`</span>, it behaves like a **character** in `R`, not a **double**, so we can't do addition etc. with it.</span>
-<span id="cb83-98"><a href="#cb83-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-99"><a href="#cb83-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-102"><a href="#cb83-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-103"><a href="#cb83-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| error: true</span></span>
-<span id="cb83-104"><a href="#cb83-104" aria-hidden="true" tabindex="-1"></a><span class="st">"1"</span> <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb83-105"><a href="#cb83-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-106"><a href="#cb83-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-107"><a href="#cb83-107" aria-hidden="true" tabindex="-1"></a><span class="fu">### Object types</span></span>
-<span id="cb83-108"><a href="#cb83-108" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Vectors</span></span>
-<span id="cb83-109"><a href="#cb83-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-110"><a href="#cb83-110" aria-hidden="true" tabindex="-1"></a>As mentioned, anything you can create in <span class="in">`R`</span> is an object.</span>
-<span id="cb83-111"><a href="#cb83-111" aria-hidden="true" tabindex="-1"></a>For example, we can create an character object with the assignment operator (<span class="in">`&lt;-`</span>).</span>
-<span id="cb83-112"><a href="#cb83-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-115"><a href="#cb83-115" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-116"><a href="#cb83-116" aria-hidden="true" tabindex="-1"></a>my_char_obj <span class="ot">&lt;-</span> <span class="st">"a"</span></span>
-<span id="cb83-117"><a href="#cb83-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-118"><a href="#cb83-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-119"><a href="#cb83-119" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
-<span id="cb83-120"><a href="#cb83-120" aria-hidden="true" tabindex="-1"></a>In other languages, <span class="in">`=`</span> is used for assignment.</span>
-<span id="cb83-121"><a href="#cb83-121" aria-hidden="true" tabindex="-1"></a>In <span class="in">`R`</span>, this is generally avoided to distinguish between creating objects (assignment), and specifying argument values (see the <span class="co">[</span><span class="ot">section on functions</span><span class="co">](#functions)</span>).</span>
-<span id="cb83-122"><a href="#cb83-122" aria-hidden="true" tabindex="-1"></a>However, despite what some purists may say, it really doesn't matter which one you use, from a practical standpoint.</span>
-<span id="cb83-123"><a href="#cb83-123" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb83-124"><a href="#cb83-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-125"><a href="#cb83-125" aria-hidden="true" tabindex="-1"></a>You will note that when we created our object, it did not return a value (unlike the previous examples, a value was not printed).</span>
-<span id="cb83-126"><a href="#cb83-126" aria-hidden="true" tabindex="-1"></a>To retrieve the value of the object (in this case, just print it), we just type out the object name.</span>
-<span id="cb83-127"><a href="#cb83-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-130"><a href="#cb83-130" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-131"><a href="#cb83-131" aria-hidden="true" tabindex="-1"></a>my_char_obj</span>
-<span id="cb83-132"><a href="#cb83-132" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-133"><a href="#cb83-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-134"><a href="#cb83-134" aria-hidden="true" tabindex="-1"></a>In this case, we just create an object with only one element.</span>
-<span id="cb83-135"><a href="#cb83-135" aria-hidden="true" tabindex="-1"></a>We can check this using the <span class="in">`length()`</span> function.</span>
-<span id="cb83-136"><a href="#cb83-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-139"><a href="#cb83-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-140"><a href="#cb83-140" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(my_char_obj)</span>
-<span id="cb83-141"><a href="#cb83-141" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-142"><a href="#cb83-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-143"><a href="#cb83-143" aria-hidden="true" tabindex="-1"></a>We could also create an **atomic vector** (commonly just called a **vector**, which we'll use from here-on in).</span>
-<span id="cb83-144"><a href="#cb83-144" aria-hidden="true" tabindex="-1"></a>In fact, <span class="in">`my_char_obj`</span> is actually an **vector**, i.e., it is a vector of length 1, as we've just seen.</span>
-<span id="cb83-145"><a href="#cb83-145" aria-hidden="true" tabindex="-1"></a>Generally, a **vector** is an object that contains multiple elements that each have the same type.</span>
-<span id="cb83-146"><a href="#cb83-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-149"><a href="#cb83-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-150"><a href="#cb83-150" aria-hidden="true" tabindex="-1"></a>my_char_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)</span>
-<span id="cb83-151"><a href="#cb83-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-152"><a href="#cb83-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-153"><a href="#cb83-153" aria-hidden="true" tabindex="-1"></a>As we'll see in the example below, we can give each element in a **vector** a name, and to highlight that vectors must contain elements of the same type, watch what happens here.</span>
-<span id="cb83-154"><a href="#cb83-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-157"><a href="#cb83-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-158"><a href="#cb83-158" aria-hidden="true" tabindex="-1"></a>my_named_char_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="st">"a"</span>, <span class="at">b =</span> <span class="st">"b"</span>, <span class="at">c =</span> <span class="st">"c"</span>, <span class="at">d =</span> <span class="dv">1</span>)</span>
-<span id="cb83-159"><a href="#cb83-159" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_named_char_vec)</span>
-<span id="cb83-160"><a href="#cb83-160" aria-hidden="true" tabindex="-1"></a>my_named_char_vec</span>
-<span id="cb83-161"><a href="#cb83-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-162"><a href="#cb83-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-163"><a href="#cb83-163" aria-hidden="true" tabindex="-1"></a>Because <span class="in">`R`</span> saw the majority of the first elements in the **vector** were of type **character** it **coerced** the number to a **character**.</span>
-<span id="cb83-164"><a href="#cb83-164" aria-hidden="true" tabindex="-1"></a>This is super important to be aware of, as it can cause errors, particularly when coercion goes in the other direction i.e. trying to create a **numeric vector**.</span>
-<span id="cb83-165"><a href="#cb83-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-166"><a href="#cb83-166" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Lists</span></span>
-<span id="cb83-167"><a href="#cb83-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-168"><a href="#cb83-168" aria-hidden="true" tabindex="-1"></a>There is another type of **vector**: the **list**.</span>
-<span id="cb83-169"><a href="#cb83-169" aria-hidden="true" tabindex="-1"></a>Most people do not refer to **lists** as type of **vectors**, so we will only refer to them as **lists**, and **atomic vectors** will just be referred to as **vectors**.</span>
-<span id="cb83-170"><a href="#cb83-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-171"><a href="#cb83-171" aria-hidden="true" tabindex="-1"></a>Unlike **vectors** there are no requirements about the form of **lists** i.e., each element of the **list** can be completely different.</span>
-<span id="cb83-172"><a href="#cb83-172" aria-hidden="true" tabindex="-1"></a>One element could store a **vector** of numbers, another a model object, another a **dataframe**, and another a **list** (i.e. a nested **list**).</span>
-<span id="cb83-173"><a href="#cb83-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-176"><a href="#cb83-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-177"><a href="#cb83-177" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb83-178"><a href="#cb83-178" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
-<span id="cb83-179"><a href="#cb83-179" aria-hidden="true" tabindex="-1"></a>    <span class="fu">glm</span>(mpg <span class="sc">~</span> <span class="fu">ordered</span>(cyl) <span class="sc">+</span> disp <span class="sc">+</span> hp, <span class="at">data =</span> mtcars),</span>
-<span id="cb83-180"><a href="#cb83-180" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">column_1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">column_2 =</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span>
-<span id="cb83-181"><a href="#cb83-181" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb83-182"><a href="#cb83-182" aria-hidden="true" tabindex="-1"></a>my_named_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb83-183"><a href="#cb83-183" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_vec =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
-<span id="cb83-184"><a href="#cb83-184" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_model =</span> <span class="fu">glm</span>(mpg <span class="sc">~</span> <span class="fu">ordered</span>(cyl) <span class="sc">+</span> disp <span class="sc">+</span> hp, <span class="at">data =</span> mtcars),</span>
-<span id="cb83-185"><a href="#cb83-185" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_dataframe =</span> <span class="fu">data.frame</span>(<span class="at">column_1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">column_2 =</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span>
-<span id="cb83-186"><a href="#cb83-186" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb83-187"><a href="#cb83-187" aria-hidden="true" tabindex="-1"></a>my_list</span>
-<span id="cb83-188"><a href="#cb83-188" aria-hidden="true" tabindex="-1"></a>my_named_list</span>
-<span id="cb83-189"><a href="#cb83-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-190"><a href="#cb83-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-191"><a href="#cb83-191" aria-hidden="true" tabindex="-1"></a>Similar to **vectors**, **lists** can be named, or unnamed, and also that we they display in slightly different ways: when unnamed, we get the notation `[[1]] ... [[3]]` to denote the different **list** elements, and with the **named list** we get <span class="in">`$my_vec ... $my_dataframe`</span>.</span>
-<span id="cb83-192"><a href="#cb83-192" aria-hidden="true" tabindex="-1"></a>It is often useful to name them, though, as it gives you some useful options when it comes to indexing and extracting values later.</span>
-<span id="cb83-193"><a href="#cb83-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-194"><a href="#cb83-194" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
-<span id="cb83-195"><a href="#cb83-195" aria-hidden="true" tabindex="-1"></a>If you're wondering why we are creating our list elements with the <span class="in">`=`</span> operator, that's because we can think of this as an argument in the <span class="in">`list()`</span> function, where the argument name is the name we want the element to have, and the argument value is the element itself.</span>
-<span id="cb83-196"><a href="#cb83-196" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb83-197"><a href="#cb83-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-198"><a href="#cb83-198" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dataframes</span></span>
-<span id="cb83-199"><a href="#cb83-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-200"><a href="#cb83-200" aria-hidden="true" tabindex="-1"></a>**Dataframes** are the last key object type to learn about.</span>
-<span id="cb83-201"><a href="#cb83-201" aria-hidden="true" tabindex="-1"></a>A **dataframe** is technically a special type of list.</span>
-<span id="cb83-202"><a href="#cb83-202" aria-hidden="true" tabindex="-1"></a>Effectively, it is a 2-D table where every column has to have elements of the same type (i.e., is a **vector**), but the columns can be different types to each other.</span>
-<span id="cb83-203"><a href="#cb83-203" aria-hidden="true" tabindex="-1"></a>The other important restriction is that all columns must be the same length, i.e. we have a rectangular **dataframe**.</span>
-<span id="cb83-204"><a href="#cb83-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-205"><a href="#cb83-205" aria-hidden="true" tabindex="-1"></a>As we've seen before, we can create a dataframe using this code, where <span class="in">`1:5`</span> is shorthand for a vector that contains the sequence of numbers from 1 to 5, inclusive (i.e., <span class="in">`c(1, 2, 3, 4, 5)`</span>).</span>
-<span id="cb83-206"><a href="#cb83-206" aria-hidden="true" tabindex="-1"></a>We could also write this sequence as <span class="in">`seq(1, 5, by = 1)`</span>, allowing us more control over the steps in the sequence.</span>
-<span id="cb83-207"><a href="#cb83-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-210"><a href="#cb83-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-211"><a href="#cb83-211" aria-hidden="true" tabindex="-1"></a>my_dataframe <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb83-212"><a href="#cb83-212" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_int =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
-<span id="cb83-213"><a href="#cb83-213" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_dbl =</span> <span class="fu">seq</span>(<span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">1</span>),</span>
-<span id="cb83-214"><a href="#cb83-214" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_3 =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb83-215"><a href="#cb83-215" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb83-216"><a href="#cb83-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-217"><a href="#cb83-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-218"><a href="#cb83-218" aria-hidden="true" tabindex="-1"></a>Like with every other object type, we can just type in the **dataframe's** name to return it's value, but this tim, let' explore the *structure* of the **dataframe** using the <span class="in">`str()`</span> function.</span>
-<span id="cb83-219"><a href="#cb83-219" aria-hidden="true" tabindex="-1"></a>This function can be used on any of the objects we've seen so far, and is particularly helpful when exploring **lists**.</span>
-<span id="cb83-220"><a href="#cb83-220" aria-hidden="true" tabindex="-1"></a>One nice feature of **dataframes** is that it will explicitly print the columns types.</span>
-<span id="cb83-221"><a href="#cb83-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-224"><a href="#cb83-224" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-225"><a href="#cb83-225" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_dataframe)</span>
-<span id="cb83-226"><a href="#cb83-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-227"><a href="#cb83-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-228"><a href="#cb83-228" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Matrices</span></span>
-<span id="cb83-229"><a href="#cb83-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-230"><a href="#cb83-230" aria-hidden="true" tabindex="-1"></a>**Matrices** are crucial to many scientific fields, including epidemiology, as they are the basis of linear algebra.</span>
-<span id="cb83-231"><a href="#cb83-231" aria-hidden="true" tabindex="-1"></a>This course will use **matrix** multiplication extensively (notably <span class="co">[</span><span class="ot">R Session 2</span><span class="co">](r-session-02.qmd)</span>), so it is worth knowing how to create matrices.</span>
-<span id="cb83-232"><a href="#cb83-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-233"><a href="#cb83-233" aria-hidden="true" tabindex="-1"></a>Much like vectors, all elements in a **matrix** should be the same type (or they will be coerced if possible, resulting in <span class="in">`NA`</span> if not).</span>
-<span id="cb83-234"><a href="#cb83-234" aria-hidden="true" tabindex="-1"></a>It is unusual to have a **non-numeric matrix** e.g., a **character matrix**, but it is possible.</span>
-<span id="cb83-235"><a href="#cb83-235" aria-hidden="true" tabindex="-1"></a>When we create our **matrix**, notice that it fills column-first, much like how we think of **matrices** in math (i.e., <span class="in">`i`</span> then <span class="in">`j`</span>).</span>
-<span id="cb83-236"><a href="#cb83-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-239"><a href="#cb83-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-240"><a href="#cb83-240" aria-hidden="true" tabindex="-1"></a>my_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
-<span id="cb83-241"><a href="#cb83-241" aria-hidden="true" tabindex="-1"></a>my_matrix</span>
-<span id="cb83-242"><a href="#cb83-242" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-243"><a href="#cb83-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-244"><a href="#cb83-244" aria-hidden="true" tabindex="-1"></a><span class="fu">### Indexing objects</span></span>
-<span id="cb83-245"><a href="#cb83-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-246"><a href="#cb83-246" aria-hidden="true" tabindex="-1"></a>We've got our objects, but now we want to do stuff with them.</span>
-<span id="cb83-247"><a href="#cb83-247" aria-hidden="true" tabindex="-1"></a>Without getting into too much detail about *Object-Oriented Programming* (e.g., the <span class="in">`S3`</span> class system in <span class="in">`R`</span>), there are three mains ways of indexing in <span class="in">`R`</span>:</span>
-<span id="cb83-248"><a href="#cb83-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-249"><a href="#cb83-249" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The single bracket <span class="in">`[]`</span></span>
-<span id="cb83-250"><a href="#cb83-250" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The double bracket <span class="in">`[[]]`</span></span>
-<span id="cb83-251"><a href="#cb83-251" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The dollar sign <span class="in">`$`</span></span>
-<span id="cb83-252"><a href="#cb83-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-253"><a href="#cb83-253" aria-hidden="true" tabindex="-1"></a>Which method we use depends on the type of object we have.</span>
-<span id="cb83-254"><a href="#cb83-254" aria-hidden="true" tabindex="-1"></a>Handily, <span class="in">`[]`</span> will work for pretty much everything, and we typically only use use <span class="in">`[[]]`</span> for **lists**.</span>
-<span id="cb83-255"><a href="#cb83-255" aria-hidden="true" tabindex="-1"></a>With both of these methods, we can use the *indices* i.e., the numbered position of the specific values/elements we want to extract, but if we have named objects, we can pass the names to the `[]` in a **vector**.</span>
-<span id="cb83-256"><a href="#cb83-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-259"><a href="#cb83-259" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-260"><a href="#cb83-260" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract elements 1 through 3 inclusively</span></span>
-<span id="cb83-261"><a href="#cb83-261" aria-hidden="true" tabindex="-1"></a>my_char_vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb83-262"><a href="#cb83-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-263"><a href="#cb83-263" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the same elements but using their names in a vector</span></span>
-<span id="cb83-264"><a href="#cb83-264" aria-hidden="true" tabindex="-1"></a>my_named_char_vec[<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)]</span>
-<span id="cb83-265"><a href="#cb83-265" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-266"><a href="#cb83-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-267"><a href="#cb83-267" aria-hidden="true" tabindex="-1"></a>Notice that when we index the named **vector** we get *both* the name *and* the value returned.</span>
-<span id="cb83-268"><a href="#cb83-268" aria-hidden="true" tabindex="-1"></a>Many times this is OK, but if we only wanted the value, then you'd index with <span class="in">`[[]]`</span>, but it is important to note that you can only pass *one* value to the brackets.</span>
-<span id="cb83-269"><a href="#cb83-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-272"><a href="#cb83-272" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-273"><a href="#cb83-273" aria-hidden="true" tabindex="-1"></a><span class="co">#| error: true</span></span>
-<span id="cb83-274"><a href="#cb83-274" aria-hidden="true" tabindex="-1"></a>my_named_char_vec[[<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)]]</span>
-<span id="cb83-275"><a href="#cb83-275" aria-hidden="true" tabindex="-1"></a>my_named_char_vec[[<span class="st">"a"</span>]]</span>
-<span id="cb83-276"><a href="#cb83-276" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-277"><a href="#cb83-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-278"><a href="#cb83-278" aria-hidden="true" tabindex="-1"></a>If you're wondering why go through the hassle, it's because values can change position in the list when we update inputs, such as **csv** datafiles, or needing to restructure code to make something else work.</span>
-<span id="cb83-279"><a href="#cb83-279" aria-hidden="true" tabindex="-1"></a>If we only index with the numeric indices, we run the risk of a silent error being returned i.e., a value is provided to us, but we don't know that it's referring to the wrong thing.</span>
-<span id="cb83-280"><a href="#cb83-280" aria-hidden="true" tabindex="-1"></a>Indexing with names mean that the element's position in the **vector** doesn't matter, and if it's accidentally been removed when we updated code, and error will be explicitly thrown as it won't be able to find the index.</span>
-<span id="cb83-281"><a href="#cb83-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-282"><a href="#cb83-282" aria-hidden="true" tabindex="-1"></a>When it comes to indexing **lists** and **dataframes** (remember, **dataframes** are just special **lists**, so the same methods are available to us), it is more common to use <span class="in">`[[]]`</span> and <span class="in">`$`</span>, though there are obviously occasions when <span class="in">`[]`</span> is useful.</span>
-<span id="cb83-283"><a href="#cb83-283" aria-hidden="true" tabindex="-1"></a>Let's look at <span class="in">`my_named_list`</span> first.</span>
-<span id="cb83-284"><a href="#cb83-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-287"><a href="#cb83-287" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-288"><a href="#cb83-288" aria-hidden="true" tabindex="-1"></a>my_named_list[<span class="dv">1</span>]</span>
-<span id="cb83-289"><a href="#cb83-289" aria-hidden="true" tabindex="-1"></a>my_named_list[<span class="st">"my_vec"</span>]</span>
-<span id="cb83-290"><a href="#cb83-290" aria-hidden="true" tabindex="-1"></a>my_named_list[[<span class="dv">1</span>]]</span>
-<span id="cb83-291"><a href="#cb83-291" aria-hidden="true" tabindex="-1"></a>my_named_list[[<span class="st">"my_vec"</span>]]</span>
-<span id="cb83-292"><a href="#cb83-292" aria-hidden="true" tabindex="-1"></a>my_named_list<span class="sc">$</span>my_vec</span>
-<span id="cb83-293"><a href="#cb83-293" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-294"><a href="#cb83-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-295"><a href="#cb83-295" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb83-296"><a href="#cb83-296" aria-hidden="true" tabindex="-1"></a>In the examples above, notice how both <span class="in">`[]`</span> methods returned the name of the element as well as the values (as it did before with the named **vector**).</span>
-<span id="cb83-297"><a href="#cb83-297" aria-hidden="true" tabindex="-1"></a>This is important as it means we need to extract the values from what is returned before we can do any further indexing i.e., to get the value <span class="in">`3`</span> from the **list** element <span class="in">`my_vec`</span>.</span>
-<span id="cb83-298"><a href="#cb83-298" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb83-299"><a href="#cb83-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-300"><a href="#cb83-300" aria-hidden="true" tabindex="-1"></a>We can do the same with the unnamed **list**, except the last two methods are not available as we do not have a name to use.</span>
-<span id="cb83-301"><a href="#cb83-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-304"><a href="#cb83-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-305"><a href="#cb83-305" aria-hidden="true" tabindex="-1"></a>my_list[<span class="dv">1</span>]</span>
-<span id="cb83-306"><a href="#cb83-306" aria-hidden="true" tabindex="-1"></a>my_list[[<span class="dv">1</span>]]</span>
-<span id="cb83-307"><a href="#cb83-307" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-308"><a href="#cb83-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-309"><a href="#cb83-309" aria-hidden="true" tabindex="-1"></a>Because a **dataframe** is a type of list where the column headers are the element names, we can use <span class="in">`[[]]`</span> and <span class="in">`$`</span> as with the named list.</span>
-<span id="cb83-310"><a href="#cb83-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-313"><a href="#cb83-313" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-314"><a href="#cb83-314" aria-hidden="true" tabindex="-1"></a>my_dataframe[<span class="dv">1</span>]</span>
-<span id="cb83-315"><a href="#cb83-315" aria-hidden="true" tabindex="-1"></a>my_dataframe[[<span class="dv">1</span>]]</span>
-<span id="cb83-316"><a href="#cb83-316" aria-hidden="true" tabindex="-1"></a>my_dataframe[<span class="st">"column_int"</span>]</span>
-<span id="cb83-317"><a href="#cb83-317" aria-hidden="true" tabindex="-1"></a>my_dataframe<span class="sc">$</span>column_int</span>
-<span id="cb83-318"><a href="#cb83-318" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-319"><a href="#cb83-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-320"><a href="#cb83-320" aria-hidden="true" tabindex="-1"></a>If we wanted to extract a particular value from a column, we can use the following methods.</span>
-<span id="cb83-321"><a href="#cb83-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-324"><a href="#cb83-324" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-325"><a href="#cb83-325" aria-hidden="true" tabindex="-1"></a><span class="co"># indexes i then j, just like in math</span></span>
-<span id="cb83-326"><a href="#cb83-326" aria-hidden="true" tabindex="-1"></a>my_dataframe[<span class="dv">2</span>, <span class="dv">1</span>]</span>
-<span id="cb83-327"><a href="#cb83-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-328"><a href="#cb83-328" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the second element from the first column</span></span>
-<span id="cb83-329"><a href="#cb83-329" aria-hidden="true" tabindex="-1"></a>my_dataframe[[<span class="dv">1</span>]][<span class="dv">2</span>]</span>
-<span id="cb83-330"><a href="#cb83-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-331"><a href="#cb83-331" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the second element from column_int, using the i, j procedure as before</span></span>
-<span id="cb83-332"><a href="#cb83-332" aria-hidden="true" tabindex="-1"></a>my_dataframe[<span class="dv">2</span>, <span class="st">"column_int"</span>]</span>
-<span id="cb83-333"><a href="#cb83-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-334"><a href="#cb83-334" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the second element from column_int</span></span>
-<span id="cb83-335"><a href="#cb83-335" aria-hidden="true" tabindex="-1"></a>my_dataframe<span class="sc">$</span>column_int[<span class="dv">2</span>]</span>
-<span id="cb83-336"><a href="#cb83-336" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-337"><a href="#cb83-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-338"><a href="#cb83-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-339"><a href="#cb83-339" aria-hidden="true" tabindex="-1"></a><span class="fu">### Packages</span></span>
-<span id="cb83-340"><a href="#cb83-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-341"><a href="#cb83-341" aria-hidden="true" tabindex="-1"></a>Up until now, we've been getting to grips with the core concepts of objects, and indexing them.</span>
-<span id="cb83-342"><a href="#cb83-342" aria-hidden="true" tabindex="-1"></a>But when you're writing code, you'll want to do things that are relatively complicated to implement, such as solve a set of differential equations.</span>
-<span id="cb83-343"><a href="#cb83-343" aria-hidden="true" tabindex="-1"></a>Fortunately, for many areas of computing (and, indeed, epidemiology and statistics), many others have also struggled with the same issues and some have gone one to document their solutions in a way others can re-use them.</span>
-<span id="cb83-344"><a href="#cb83-344" aria-hidden="true" tabindex="-1"></a>This is the basis for **packages**.</span>
-<span id="cb83-345"><a href="#cb83-345" aria-hidden="true" tabindex="-1"></a>Someone has *packaged up* a set of functions for others to re-use.</span>
-<span id="cb83-346"><a href="#cb83-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-347"><a href="#cb83-347" aria-hidden="true" tabindex="-1"></a>We've mentioned the word **function** a number of time so far, and we haven't defined it, but that's <span class="co">[</span><span class="ot">coming soon</span><span class="co">](#functions)</span>.</span>
-<span id="cb83-348"><a href="#cb83-348" aria-hidden="true" tabindex="-1"></a>For the moment, let's just look at how we can find, install, and load **packages**.</span>
-<span id="cb83-349"><a href="#cb83-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-350"><a href="#cb83-350" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Finding packages</span></span>
-<span id="cb83-351"><a href="#cb83-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-352"><a href="#cb83-352" aria-hidden="true" tabindex="-1"></a>As <span class="co">[</span><span class="ot">mentioned previously</span><span class="co">](install-r.qmd#r)</span> CRAN is a place where many pieces of <span class="in">`R`</span> code is documents and stored for others to download and use.</span>
-<span id="cb83-353"><a href="#cb83-353" aria-hidden="true" tabindex="-1"></a>Not only are the <span class="in">`R`</span> programming language executables stored in CRAN, but so are user-defined **functions** that have been turned into **packages**.</span>
-<span id="cb83-354"><a href="#cb83-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-355"><a href="#cb83-355" aria-hidden="true" tabindex="-1"></a>To find packages, you can go to the CRAN website and search by name, but there are far too many for that to be worthwhile - just Google what you want to do and add "r" to the end of your search query, and you'll likely find what you're looking for.</span>
-<span id="cb83-356"><a href="#cb83-356" aria-hidden="true" tabindex="-1"></a>Once you've found a package you want to download, next you need to install it.</span>
-<span id="cb83-357"><a href="#cb83-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-358"><a href="#cb83-358" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Installing packages</span></span>
-<span id="cb83-359"><a href="#cb83-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-360"><a href="#cb83-360" aria-hidden="true" tabindex="-1"></a>Barring any super-niche packages, you should be able to use the following command(s):</span>
-<span id="cb83-361"><a href="#cb83-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-364"><a href="#cb83-364" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-365"><a href="#cb83-365" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb83-366"><a href="#cb83-366" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"package to download"</span>)</span>
-<span id="cb83-367"><a href="#cb83-367" aria-hidden="true" tabindex="-1"></a><span class="co"># Download multiple by passing a vector of package names</span></span>
-<span id="cb83-368"><a href="#cb83-368" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"package 1"</span>, <span class="st">"package 2"</span>))</span>
-<span id="cb83-369"><a href="#cb83-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-370"><a href="#cb83-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-371"><a href="#cb83-371" aria-hidden="true" tabindex="-1"></a>If for some reason you get an error message saying the package isn't available on CRAN, first, check for typos, and if you still get an error, you may need to download it directly from GitHub.</span>
-<span id="cb83-372"><a href="#cb83-372" aria-hidden="true" tabindex="-1"></a>Read <span class="co">[</span><span class="ot">here</span><span class="co">](https://pak.r-lib.org/dev/reference/get-started.html#install-a-package-from-github)</span> for more information about using the <span class="in">`{pak}`</span> package to download packages from other sources.</span>
-<span id="cb83-373"><a href="#cb83-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-374"><a href="#cb83-374" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Loading packages</span></span>
-<span id="cb83-375"><a href="#cb83-375" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-376"><a href="#cb83-376" aria-hidden="true" tabindex="-1"></a>Now you have your packages installed, you just need to load them to get any of their functionality.</span>
-<span id="cb83-377"><a href="#cb83-377" aria-hidden="true" tabindex="-1"></a>The easiest way is to place this code at the top of your script.</span>
-<span id="cb83-378"><a href="#cb83-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-381"><a href="#cb83-381" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-382"><a href="#cb83-382" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb83-383"><a href="#cb83-383" aria-hidden="true" tabindex="-1"></a><span class="co"># Quotations are not required, but can be used</span></span>
-<span id="cb83-384"><a href="#cb83-384" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(package to download)</span>
-<span id="cb83-385"><a href="#cb83-385" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-386"><a href="#cb83-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-387"><a href="#cb83-387" aria-hidden="true" tabindex="-1"></a>Most of the time, this is fine, but occasionally you will run in to an issue where a function doesn't work as expected.</span>
-<span id="cb83-388"><a href="#cb83-388" aria-hidden="true" tabindex="-1"></a>Sometimes this is because of what's called a *namespace conflict* i.e., you have two functions with the same name loaded, and potentially you're using the wrong verion.</span>
-<span id="cb83-389"><a href="#cb83-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-390"><a href="#cb83-390" aria-hidden="true" tabindex="-1"></a>For example, in base <span class="in">`R`</span> (i.e, these functions come pre-installed when you set up <span class="in">`R`</span>), there is a <span class="in">`filter()`</span> function from the <span class="in">`{stats}`</span> package (as mentioned, we'll denote this as <span class="in">`stats::filter()`</span>).</span>
-<span id="cb83-391"><a href="#cb83-391" aria-hidden="true" tabindex="-1"></a>Throughout this workshop, you will see <span class="in">`library(tidyverse)`</span> at the top of the pages to indicate the <span class="in">`{tidyverse}`</span> set of packages are being loaded (this is actually a package that installs a bunch of related and useful packages for us).</span>
-<span id="cb83-392"><a href="#cb83-392" aria-hidden="true" tabindex="-1"></a>In <span class="in">`{dplyr}`</span> (one of the packages loaded by <span class="in">`{tidyverse}`</span>) there is also a function called <span class="in">`filter()`</span>.</span>
-<span id="cb83-393"><a href="#cb83-393" aria-hidden="true" tabindex="-1"></a>Because <span class="in">`{dplyr}`</span> was loaded after <span class="in">`{stats}`</span> was loaded (because <span class="in">`{stats}`</span> is automatically loaded when <span class="in">`R`</span> is started), the <span class="in">`dplyr::filter()`</span> function will take precedence.</span>
-<span id="cb83-394"><a href="#cb83-394" aria-hidden="true" tabindex="-1"></a>If we wanted to specifically use the <span class="in">`{stats}`</span> version, we could write this:</span>
-<span id="cb83-395"><a href="#cb83-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-398"><a href="#cb83-398" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb83-399"><a href="#cb83-399" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a cosine wave with random noise</span></span>
-<span id="cb83-400"><a href="#cb83-400" aria-hidden="true" tabindex="-1"></a>raw_timeseries <span class="ot">&lt;-</span> <span class="fu">cos</span>(pi <span class="sc">*</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">sd =</span> <span class="fl">0.5</span>)</span>
-<span id="cb83-401"><a href="#cb83-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-402"><a href="#cb83-402" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate 20 day moving average using stats::filter()</span></span>
-<span id="cb83-403"><a href="#cb83-403" aria-hidden="true" tabindex="-1"></a>smooth_timeseries <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">filter</span>(raw_timeseries, <span class="at">filter =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">20</span>, <span class="dv">20</span>), <span class="at">sides =</span> <span class="dv">1</span>)</span>
-<span id="cb83-404"><a href="#cb83-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-405"><a href="#cb83-405" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot raw data</span></span>
-<span id="cb83-406"><a href="#cb83-406" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(raw_timeseries, <span class="at">col =</span> <span class="st">"grey80"</span>)</span>
-<span id="cb83-407"><a href="#cb83-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-408"><a href="#cb83-408" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay smoothed data</span></span>
-<span id="cb83-409"><a href="#cb83-409" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(smooth_timeseries, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb83-410"><a href="#cb83-410" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb83-411"><a href="#cb83-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-412"><a href="#cb83-412" aria-hidden="true" tabindex="-1"></a><span class="fu">### Functions</span></span>
-<span id="cb83-413"><a href="#cb83-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-414"><a href="#cb83-414" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Anonymous functions</span>
-<span id="cb83-415"><a href="#cb83-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-416"><a href="#cb83-416" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tidy data</span></span>
-<span id="cb83-417"><a href="#cb83-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-418"><a href="#cb83-418" aria-hidden="true" tabindex="-1"></a><span class="fu">### Core code used</span></span>
-<span id="cb83-419"><a href="#cb83-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-420"><a href="#cb83-420" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Why <span class="in">`{tidyverse}`</span></span>
-<span id="cb83-421"><a href="#cb83-421" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Comprises multiple packages</span>
-<span id="cb83-422"><a href="#cb83-422" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Cheatsheets</span>
-<span id="cb83-423"><a href="#cb83-423" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`{ggplot2}`</span></span>
-<span id="cb83-424"><a href="#cb83-424" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`{dplyr}`</span></span>
-<span id="cb83-425"><a href="#cb83-425" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`{tidyr}`</span></span>
-<span id="cb83-426"><a href="#cb83-426" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`{purrr}`</span></span>
-<span id="cb83-427"><a href="#cb83-427" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Functions to explain with examples</span>
-<span id="cb83-428"><a href="#cb83-428" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`mutate()`</span></span>
-<span id="cb83-429"><a href="#cb83-429" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`across()`</span></span>
-<span id="cb83-430"><a href="#cb83-430" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`everything()`</span></span>
-<span id="cb83-431"><a href="#cb83-431" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`pivot_longer()`</span></span>
-<span id="cb83-432"><a href="#cb83-432" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`ggplot()`</span></span>
-<span id="cb83-433"><a href="#cb83-433" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`facet_wrap()`</span></span>
-<span id="cb83-434"><a href="#cb83-434" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`factor()`</span></span>
-<span id="cb83-435"><a href="#cb83-435" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`%&gt;%`</span></span>
-<span id="cb83-436"><a href="#cb83-436" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`%*%`</span></span>
-<span id="cb83-437"><a href="#cb83-437" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`tibble()`</span></span>
-<span id="cb83-438"><a href="#cb83-438" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`group_by()`</span></span>
-<span id="cb83-439"><a href="#cb83-439" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`nest()`</span></span>
-<span id="cb83-440"><a href="#cb83-440" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`map_*()`</span></span>
-<span id="cb83-441"><a href="#cb83-441" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`filter()`</span></span>
-<span id="cb83-442"><a href="#cb83-442" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`paste0()`</span></span>
-<span id="cb83-443"><a href="#cb83-443" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`rename_with()`</span></span>
-<span id="cb83-444"><a href="#cb83-444" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span>Anonymous functions</span>
-<span id="cb83-445"><a href="#cb83-445" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`str_replace_all()`</span></span>
-<span id="cb83-446"><a href="#cb83-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-447"><a href="#cb83-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-448"><a href="#cb83-448" aria-hidden="true" tabindex="-1"></a><span class="fu">## RStudio</span></span>
-<span id="cb83-449"><a href="#cb83-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-450"><a href="#cb83-450" aria-hidden="true" tabindex="-1"></a>There are a number of features in RStudio that will make your life easier.</span>
-<span id="cb83-451"><a href="#cb83-451" aria-hidden="true" tabindex="-1"></a>This section aims to highlight a few of them.</span>
-<span id="cb83-452"><a href="#cb83-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-453"><a href="#cb83-453" aria-hidden="true" tabindex="-1"></a><span class="fu">### RStudio projects</span></span>
-<span id="cb83-454"><a href="#cb83-454" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-455"><a href="#cb83-455" aria-hidden="true" tabindex="-1"></a>RStudio gives you the ability to turn a directory (that you are hopefully using to contain all your project, as <span class="co">[</span><span class="ot">mentioned in the next section</span><span class="co">](project-management.qmd#project-structure)</span>), into an *RStudio project*.</span>
-<span id="cb83-456"><a href="#cb83-456" aria-hidden="true" tabindex="-1"></a>One of the benefits of using *RStudio projects* is that you can easily switch between different projects and RStudio will start a new <span class="in">`R`</span> session, meaning that objects you created in your first project won't stick around, causing issues by existing in a place where they shouldn't.</span>
-<span id="cb83-457"><a href="#cb83-457" aria-hidden="true" tabindex="-1"></a>The other key benefit is that you can use the <span class="in">`{here}`</span> package to create relative file paths, for easier code sharing and increased reproducibility.</span>
-<span id="cb83-458"><a href="#cb83-458" aria-hidden="true" tabindex="-1"></a>See <span class="co">[</span><span class="ot">this section</span><span class="co">](project-management.qmd#here-package)</span> for more details about the <span class="in">`{here}`</span> package.</span>
-<span id="cb83-459"><a href="#cb83-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-460"><a href="#cb83-460" aria-hidden="true" tabindex="-1"></a>To create a new RStudio projet, simply open up RStudio, and click on the *"Project: (None)"* button in the top right corner.</span>
-<span id="cb83-461"><a href="#cb83-461" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-462"><a href="#cb83-462" aria-hidden="true" tabindex="-1"></a><span class="al">![Creating a new RStudio project - 1](./images/RStudio-new-project-01.png)</span></span>
-<span id="cb83-463"><a href="#cb83-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-464"><a href="#cb83-464" aria-hidden="true" tabindex="-1"></a>You will then be given the option to create the project in a *"New Directory"*, and *"Existing Directory"*, or from *"Version Control"*.</span>
-<span id="cb83-465"><a href="#cb83-465" aria-hidden="true" tabindex="-1"></a>If you've already created a project just for this workshop, then select *"Existing Directory"*, otherwise, create a new one.</span>
-<span id="cb83-466"><a href="#cb83-466" aria-hidden="true" tabindex="-1"></a>If you know about Git, then please feel free to use the last option, but options 1 &amp; 2 are most relevant for new users.</span>
-<span id="cb83-467"><a href="#cb83-467" aria-hidden="true" tabindex="-1"></a>Either way, we'd recommend reading through our <span class="co">[</span><span class="ot">project organization tips</span><span class="co">](project-management.qmd#project-structure)</span> about what this directory should look like/include.</span>
-<span id="cb83-468"><a href="#cb83-468" aria-hidden="true" tabindex="-1"></a>If you select *"New Directory"*, you probably want to select *"New Project"* on the next option, unless you have something specific in mind (like a *"Quarto Book"*, which is used for this website!).</span>
-<span id="cb83-469"><a href="#cb83-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-470"><a href="#cb83-470" aria-hidden="true" tabindex="-1"></a><span class="al">![Creating a new RStudio project - 2](./images/RStudio-new-project-02.png)</span>{width=70%}</span>
-<span id="cb83-471"><a href="#cb83-471" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-472"><a href="#cb83-472" aria-hidden="true" tabindex="-1"></a>Finally, choose the directory name and location, and you're in business (you should click the button in the bottom-left corner to *"Open in new session"* to make sure you're starting in a fresh environment).</span>
-<span id="cb83-473"><a href="#cb83-473" aria-hidden="true" tabindex="-1"></a>From here on out, when you open up a project, all the files you've created will be easily accessibly, both from the *"Files"* pane, as well as using <span class="co">[</span><span class="ot">relative paths</span><span class="co">](project-management.qmd#here-package)</span>.</span>
-<span id="cb83-474"><a href="#cb83-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-475"><a href="#cb83-475" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb83-476"><a href="#cb83-476" aria-hidden="true" tabindex="-1"></a>To reiterate our comments from the <span class="co">[</span><span class="ot">project organization tips</span><span class="co">](project-management.qmd#project-structure)</span> page, it's useful to have all your project directories in a single location on your computer, and make sure you do not have any spaces in the file or folder names.</span>
-<span id="cb83-477"><a href="#cb83-477" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb83-478"><a href="#cb83-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-479"><a href="#cb83-479" aria-hidden="true" tabindex="-1"></a><span class="fu">### RStudio keyboard shortcuts</span></span>
-<span id="cb83-480"><a href="#cb83-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-481"><a href="#cb83-481" aria-hidden="true" tabindex="-1"></a>There are many shortcuts available to RStudio users, but here are the key ones:</span>
-<span id="cb83-482"><a href="#cb83-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-483"><a href="#cb83-483" aria-hidden="true" tabindex="-1"></a>| Shortcut  | Command |</span>
-<span id="cb83-484"><a href="#cb83-484" aria-hidden="true" tabindex="-1"></a>|--------|--------|</span>
-<span id="cb83-485"><a href="#cb83-485" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + enter`</span>  | Send the section of code to the console to be run   |</span>
-<span id="cb83-486"><a href="#cb83-486" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + opt/alt + r`</span>  | Run all code |</span>
-<span id="cb83-487"><a href="#cb83-487" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + opt/alt + b`</span>  | Run all code from beginning to selected line |</span>
-<span id="cb83-488"><a href="#cb83-488" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + enter`</span>  | Run current chunk (when within a <span class="in">`Rmd`</span> or <span class="in">`Quarto`</span> notebook) |</span>
-<span id="cb83-489"><a href="#cb83-489" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + p`</span>  | Open the command palette (a place where you can search for different commands) |</span>
-<span id="cb83-490"><a href="#cb83-490" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + a`</span>  | Reformat selected code (useful to help keep things readable) |</span>
-<span id="cb83-491"><a href="#cb83-491" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + c`</span>  | Comment the selected lines |</span>
-<span id="cb83-492"><a href="#cb83-492" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + m`</span>  | Insert the pipe (<span class="in">`%&gt;%`</span>) operator (or <span class="in">`|&gt;`</span> if you have set up RStudio to use the base pipe by default)|</span>
-<span id="cb83-493"><a href="#cb83-493" aria-hidden="true" tabindex="-1"></a>| <span class="in">`opt/alt + -`</span>  | Insert the assignment operator (<span class="in">`&lt;-`</span>) |</span>
-<span id="cb83-494"><a href="#cb83-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-495"><a href="#cb83-495" aria-hidden="true" tabindex="-1"></a>: RStudio keyboard shortcuts {.striped .hover tbl-colwidths="<span class="co">[</span><span class="ot">25,75</span><span class="co">]</span>"}</span>
-<span id="cb83-496"><a href="#cb83-496" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-497"><a href="#cb83-497" aria-hidden="true" tabindex="-1"></a>The common shortcuts for saving and opening files/selecting all etc. also exist in RStudio with the standard keybindings.</span>
-<span id="cb83-498"><a href="#cb83-498" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-499"><a href="#cb83-499" aria-hidden="true" tabindex="-1"></a>To see the full list of keyboard shortcuts, you can go to *"Tools &gt; Keyboard Shortcuts Help"*.</span>
-<span id="cb83-500"><a href="#cb83-500" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-501"><a href="#cb83-501" aria-hidden="true" tabindex="-1"></a><span class="al">![RStudio keyboard shortcuts](./images/RStudio-keyboard-shortcuts.png)</span></span>
+<div class="sourceCode" id="cb95" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="co">    html:</span></span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="co">        code-fold: false</span></span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="co">        code-line-numbers: false</span></span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a><span class="fu"># Just Enough R &amp; RStudio {.unnumbered}</span></span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>The purpose of this section is to get you up-to-speed with <span class="in">`R`</span>.</span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>If you're completely unfamiliar with <span class="in">`R`</span> and RStudio, this should provide you with enough to get started and understand what's going on in the code (and you can always refer back to this page if you understandably get a little lost), and if you have some experience, then it should provide a sufficient description of the packages and functions that we use in this workshop.</span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## R</span></span>
+<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>Now you have <span class="in">`R`</span> set installed and you can access it using RStudio, it's time to learn some of the core features of the language (see <span class="co">[</span><span class="ot">below</span><span class="co">](#rstudio)</span> for details about using RStudio).</span>
+<span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb95-18"><a href="#cb95-18" aria-hidden="true" tabindex="-1"></a>We'd strongly recommend you read <span class="co">[</span><span class="ot">Hands-On Programming With R</span><span class="co">](https://rstudio-education.github.io/hopr)</span> by Garett Grolemund and <span class="co">[</span><span class="ot">R for DataScience</span><span class="co">](https://r4ds.hadley.nz/)</span> by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund for a deeper understanding of the following concepts (and many more).</span>
+<span id="cb95-19"><a href="#cb95-19" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-20"><a href="#cb95-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-21"><a href="#cb95-21" aria-hidden="true" tabindex="-1"></a><span class="fu">### Objects &amp; types introduction</span></span>
+<span id="cb95-22"><a href="#cb95-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-23"><a href="#cb95-23" aria-hidden="true" tabindex="-1"></a>An object is anything you can create in R using code, whether that is a table you import from a **csv** file (that will get converted to a **dataframe**), or a **vector** you create within a script.</span>
+<span id="cb95-24"><a href="#cb95-24" aria-hidden="true" tabindex="-1"></a>Each object you create has a **type**.</span>
+<span id="cb95-25"><a href="#cb95-25" aria-hidden="true" tabindex="-1"></a>We've already mentioned two (**dataframes** and **vectors**), but there are plenty more.</span>
+<span id="cb95-26"><a href="#cb95-26" aria-hidden="true" tabindex="-1"></a>But before we get into object types, let's take a step back and look at types in general, thinking about individual elements and the fundamentals.</span>
+<span id="cb95-27"><a href="#cb95-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-28"><a href="#cb95-28" aria-hidden="true" tabindex="-1"></a><span class="fu">### Element types</span></span>
+<span id="cb95-29"><a href="#cb95-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-30"><a href="#cb95-30" aria-hidden="true" tabindex="-1"></a>Generally in programming, we have two broad types of numbers: **floating point** and **integer** numbers, i.e., numbers with decimals, and whole numbers, respectively.</span>
+<span id="cb95-31"><a href="#cb95-31" aria-hidden="true" tabindex="-1"></a>In <span class="in">`R`</span>, we have these number types, but a **floating point** number is called a **double**.</span>
+<span id="cb95-32"><a href="#cb95-32" aria-hidden="true" tabindex="-1"></a>The **floating point** number is the default type <span class="in">`R`</span> assigns to number: look at the types assigned when we leave off a decimal place vs. specify type integer by ending a number with an <span class="in">`L`</span>.</span>
+<span id="cb95-33"><a href="#cb95-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-36"><a href="#cb95-36" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-37"><a href="#cb95-37" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="dv">1</span>)</span>
+<span id="cb95-38"><a href="#cb95-38" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(1L)</span>
+<span id="cb95-39"><a href="#cb95-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-40"><a href="#cb95-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-41"><a href="#cb95-41" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
+<span id="cb95-42"><a href="#cb95-42" aria-hidden="true" tabindex="-1"></a>Technically type **double** is a subset of type **numeric**, so you will often see people convert numbers to floating points using <span class="in">`as.numeric()`</span>, rather than <span class="in">`as.double()`</span>, but the different is semantics.</span>
+<span id="cb95-43"><a href="#cb95-43" aria-hidden="true" tabindex="-1"></a>You can confirm this using the command `typeof(as.numeric(10)) == typeof(as.double(10))semantics.</span>
+<span id="cb95-44"><a href="#cb95-44" aria-hidden="true" tabindex="-1"></a>You can confirm this using the command <span class="in">`typeof(as.numeric(10)) == typeof(as.double(10))`</span>.</span>
+<span id="cb95-45"><a href="#cb95-45" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-46"><a href="#cb95-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-47"><a href="#cb95-47" aria-hidden="true" tabindex="-1"></a>Integer types are not commonly used in <span class="in">`R`</span>, but there are occasions when you will want to use them e.g., when you need whole numbers of people in a simulation you may want to use integers to enforce this.</span>
+<span id="cb95-48"><a href="#cb95-48" aria-hidden="true" tabindex="-1"></a>Integers are also slightly more precise (unless very big or small), so when exactness in whole number is required, you may want to use integers.</span>
+<span id="cb95-49"><a href="#cb95-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-50"><a href="#cb95-50" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
+<span id="cb95-51"><a href="#cb95-51" aria-hidden="true" tabindex="-1"></a><span class="in">`R`</span> has some idiosyncrasies when it comes to numbers.</span>
+<span id="cb95-52"><a href="#cb95-52" aria-hidden="true" tabindex="-1"></a>For the most part, **doubles** are produced, but occasionally an **integer** will be produced when you are expecting a **double**.</span>
+<span id="cb95-53"><a href="#cb95-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-54"><a href="#cb95-54" aria-hidden="true" tabindex="-1"></a>For example:</span>
+<span id="cb95-55"><a href="#cb95-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-58"><a href="#cb95-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-59"><a href="#cb95-59" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="dv">1</span>)</span>
+<span id="cb95-60"><a href="#cb95-60" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb95-61"><a href="#cb95-61" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>))</span>
+<span id="cb95-62"><a href="#cb95-62" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">1</span>))</span>
+<span id="cb95-63"><a href="#cb95-63" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-64"><a href="#cb95-64" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-65"><a href="#cb95-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-66"><a href="#cb95-66" aria-hidden="true" tabindex="-1"></a>Outside of numbers, we have **characters** (**strings**) and **boolean** types.</span>
+<span id="cb95-67"><a href="#cb95-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-68"><a href="#cb95-68" aria-hidden="true" tabindex="-1"></a>A **boolean** (also known as a **logical** in <span class="in">`R`</span>) is a <span class="in">`TRUE/FALSE`</span> statement.</span>
+<span id="cb95-69"><a href="#cb95-69" aria-hidden="true" tabindex="-1"></a>In <span class="in">`R`</span>, as in many programming languages, <span class="in">`TRUE`</span> is equal to a value of 1, and <span class="in">`FALSE`</span> equals <span class="in">`0`</span>.</span>
+<span id="cb95-70"><a href="#cb95-70" aria-hidden="true" tabindex="-1"></a>There are times when this comes in handy e.g. you need to calculate the number of people that responded to a question, and their responses is coded as <span class="in">`TRUE/FALSE`</span>, you can just sum the **vector** of responses (more on **vectors** shortly).</span>
+<span id="cb95-71"><a href="#cb95-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-72"><a href="#cb95-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-75"><a href="#cb95-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-76"><a href="#cb95-76" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb95-77"><a href="#cb95-77" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span> <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb95-78"><a href="#cb95-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-79"><a href="#cb95-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-80"><a href="#cb95-80" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Question" appearance="minimal"}</span>
+<span id="cb95-81"><a href="#cb95-81" aria-hidden="true" tabindex="-1"></a>Can you figure out what value will be returned for the command <span class="in">`(TRUE == 0) == FALSE`</span>?</span>
+<span id="cb95-82"><a href="#cb95-82" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-83"><a href="#cb95-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-84"><a href="#cb95-84" aria-hidden="true" tabindex="-1"></a>A **character** is anything in quotation marks.</span>
+<span id="cb95-85"><a href="#cb95-85" aria-hidden="true" tabindex="-1"></a>This would typically by letter, but is occasionally a number, or other symbol.</span>
+<span id="cb95-86"><a href="#cb95-86" aria-hidden="true" tabindex="-1"></a>Other languages make a distinction between **characters** and **strings**, but not <span class="in">`R`</span>.</span>
+<span id="cb95-87"><a href="#cb95-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-88"><a href="#cb95-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-91"><a href="#cb95-91" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-92"><a href="#cb95-92" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="st">"a"</span>)</span>
+<span id="cb95-93"><a href="#cb95-93" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="st">"1"</span>)</span>
+<span id="cb95-94"><a href="#cb95-94" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-95"><a href="#cb95-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-96"><a href="#cb95-96" aria-hidden="true" tabindex="-1"></a>It is important to note that characters are not **parsed** i.e., they are not interpreted by `R` as anything other than a **character**.</span>
+<span id="cb95-97"><a href="#cb95-97" aria-hidden="true" tabindex="-1"></a>This means that despite <span class="in">`"1"`</span> looking like the number <span class="in">`1`</span>, it behaves like a **character** in `R`, not a **double**, so we can't do addition etc. with it.</span>
+<span id="cb95-98"><a href="#cb95-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-99"><a href="#cb95-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-102"><a href="#cb95-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-103"><a href="#cb95-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| error: true</span></span>
+<span id="cb95-104"><a href="#cb95-104" aria-hidden="true" tabindex="-1"></a><span class="st">"1"</span> <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb95-105"><a href="#cb95-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-106"><a href="#cb95-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-107"><a href="#cb95-107" aria-hidden="true" tabindex="-1"></a><span class="fu">### Object types</span></span>
+<span id="cb95-108"><a href="#cb95-108" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Vectors</span></span>
+<span id="cb95-109"><a href="#cb95-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-110"><a href="#cb95-110" aria-hidden="true" tabindex="-1"></a>As mentioned, anything you can create in <span class="in">`R`</span> is an object.</span>
+<span id="cb95-111"><a href="#cb95-111" aria-hidden="true" tabindex="-1"></a>For example, we can create an character object with the assignment operator (<span class="in">`&lt;-`</span>).</span>
+<span id="cb95-112"><a href="#cb95-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-115"><a href="#cb95-115" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-116"><a href="#cb95-116" aria-hidden="true" tabindex="-1"></a>my_char_obj <span class="ot">&lt;-</span> <span class="st">"a"</span></span>
+<span id="cb95-117"><a href="#cb95-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-118"><a href="#cb95-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-119"><a href="#cb95-119" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
+<span id="cb95-120"><a href="#cb95-120" aria-hidden="true" tabindex="-1"></a>In other languages, <span class="in">`=`</span> is used for assignment.</span>
+<span id="cb95-121"><a href="#cb95-121" aria-hidden="true" tabindex="-1"></a>In <span class="in">`R`</span>, this is generally avoided to distinguish between creating objects (assignment), and specifying argument values (see the <span class="co">[</span><span class="ot">section on functions</span><span class="co">](#functions)</span>).</span>
+<span id="cb95-122"><a href="#cb95-122" aria-hidden="true" tabindex="-1"></a>However, despite what some purists may say, it really doesn't matter which one you use, from a practical standpoint.</span>
+<span id="cb95-123"><a href="#cb95-123" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-124"><a href="#cb95-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-125"><a href="#cb95-125" aria-hidden="true" tabindex="-1"></a>You will note that when we created our object, it did not return a value (unlike the previous examples, a value was not printed).</span>
+<span id="cb95-126"><a href="#cb95-126" aria-hidden="true" tabindex="-1"></a>To retrieve the value of the object (in this case, just print it), we just type out the object name.</span>
+<span id="cb95-127"><a href="#cb95-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-130"><a href="#cb95-130" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-131"><a href="#cb95-131" aria-hidden="true" tabindex="-1"></a>my_char_obj</span>
+<span id="cb95-132"><a href="#cb95-132" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-133"><a href="#cb95-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-134"><a href="#cb95-134" aria-hidden="true" tabindex="-1"></a>In this case, we just create an object with only one element.</span>
+<span id="cb95-135"><a href="#cb95-135" aria-hidden="true" tabindex="-1"></a>We can check this using the <span class="in">`length()`</span> function.</span>
+<span id="cb95-136"><a href="#cb95-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-139"><a href="#cb95-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-140"><a href="#cb95-140" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(my_char_obj)</span>
+<span id="cb95-141"><a href="#cb95-141" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-142"><a href="#cb95-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-143"><a href="#cb95-143" aria-hidden="true" tabindex="-1"></a>We could also create an **atomic vector** (commonly just called a **vector**, which we'll use from here-on in).</span>
+<span id="cb95-144"><a href="#cb95-144" aria-hidden="true" tabindex="-1"></a>In fact, <span class="in">`my_char_obj`</span> is actually an **vector**, i.e., it is a vector of length 1, as we've just seen.</span>
+<span id="cb95-145"><a href="#cb95-145" aria-hidden="true" tabindex="-1"></a>Generally, a **vector** is an object that contains multiple elements that each have the same type.</span>
+<span id="cb95-146"><a href="#cb95-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-149"><a href="#cb95-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-150"><a href="#cb95-150" aria-hidden="true" tabindex="-1"></a>my_char_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)</span>
+<span id="cb95-151"><a href="#cb95-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-152"><a href="#cb95-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-153"><a href="#cb95-153" aria-hidden="true" tabindex="-1"></a>As we'll see in the example below, we can give each element in a **vector** a name, and to highlight that vectors must contain elements of the same type, watch what happens here.</span>
+<span id="cb95-154"><a href="#cb95-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-157"><a href="#cb95-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-158"><a href="#cb95-158" aria-hidden="true" tabindex="-1"></a>my_named_char_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="st">"a"</span>, <span class="at">b =</span> <span class="st">"b"</span>, <span class="at">c =</span> <span class="st">"c"</span>, <span class="at">d =</span> <span class="dv">1</span>)</span>
+<span id="cb95-159"><a href="#cb95-159" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_named_char_vec)</span>
+<span id="cb95-160"><a href="#cb95-160" aria-hidden="true" tabindex="-1"></a>my_named_char_vec</span>
+<span id="cb95-161"><a href="#cb95-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-162"><a href="#cb95-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-163"><a href="#cb95-163" aria-hidden="true" tabindex="-1"></a>Because <span class="in">`R`</span> saw the majority of the first elements in the **vector** were of type **character** it **coerced** the number to a **character**.</span>
+<span id="cb95-164"><a href="#cb95-164" aria-hidden="true" tabindex="-1"></a>This is super important to be aware of, as it can cause errors, particularly when coercion goes in the other direction i.e. trying to create a **numeric vector**.</span>
+<span id="cb95-165"><a href="#cb95-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-166"><a href="#cb95-166" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Lists</span></span>
+<span id="cb95-167"><a href="#cb95-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-168"><a href="#cb95-168" aria-hidden="true" tabindex="-1"></a>There is another type of **vector**: the **list**.</span>
+<span id="cb95-169"><a href="#cb95-169" aria-hidden="true" tabindex="-1"></a>Most people do not refer to **lists** as type of **vectors**, so we will only refer to them as **lists**, and **atomic vectors** will just be referred to as **vectors**.</span>
+<span id="cb95-170"><a href="#cb95-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-171"><a href="#cb95-171" aria-hidden="true" tabindex="-1"></a>Unlike **vectors** there are no requirements about the form of **lists** i.e., each element of the **list** can be completely different.</span>
+<span id="cb95-172"><a href="#cb95-172" aria-hidden="true" tabindex="-1"></a>One element could store a **vector** of numbers, another a model object, another a **dataframe**, and another a **list** (i.e. a nested **list**).</span>
+<span id="cb95-173"><a href="#cb95-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-176"><a href="#cb95-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-177"><a href="#cb95-177" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb95-178"><a href="#cb95-178" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb95-179"><a href="#cb95-179" aria-hidden="true" tabindex="-1"></a>    <span class="fu">glm</span>(mpg <span class="sc">~</span> <span class="fu">ordered</span>(cyl) <span class="sc">+</span> disp <span class="sc">+</span> hp, <span class="at">data =</span> mtcars),</span>
+<span id="cb95-180"><a href="#cb95-180" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">column_1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">column_2 =</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb95-181"><a href="#cb95-181" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-182"><a href="#cb95-182" aria-hidden="true" tabindex="-1"></a>my_named_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb95-183"><a href="#cb95-183" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_vec =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb95-184"><a href="#cb95-184" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_model =</span> <span class="fu">glm</span>(mpg <span class="sc">~</span> <span class="fu">ordered</span>(cyl) <span class="sc">+</span> disp <span class="sc">+</span> hp, <span class="at">data =</span> mtcars),</span>
+<span id="cb95-185"><a href="#cb95-185" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_dataframe =</span> <span class="fu">data.frame</span>(<span class="at">column_1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">column_2 =</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb95-186"><a href="#cb95-186" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-187"><a href="#cb95-187" aria-hidden="true" tabindex="-1"></a>my_list</span>
+<span id="cb95-188"><a href="#cb95-188" aria-hidden="true" tabindex="-1"></a>my_named_list</span>
+<span id="cb95-189"><a href="#cb95-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-190"><a href="#cb95-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-191"><a href="#cb95-191" aria-hidden="true" tabindex="-1"></a>Similar to **vectors**, **lists** can be named, or unnamed, and also that we they display in slightly different ways: when unnamed, we get the notation `[[1]] ... [[3]]` to denote the different **list** elements, and with the **named list** we get <span class="in">`$my_vec ... $my_dataframe`</span>.</span>
+<span id="cb95-192"><a href="#cb95-192" aria-hidden="true" tabindex="-1"></a>It is often useful to name them, though, as it gives you some useful options when it comes to indexing and extracting values later.</span>
+<span id="cb95-193"><a href="#cb95-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-194"><a href="#cb95-194" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
+<span id="cb95-195"><a href="#cb95-195" aria-hidden="true" tabindex="-1"></a>If you're wondering why we are creating our list elements with the <span class="in">`=`</span> operator, that's because we can think of this as an argument in the <span class="in">`list()`</span> function, where the argument name is the name we want the element to have, and the argument value is the element itself.</span>
+<span id="cb95-196"><a href="#cb95-196" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-197"><a href="#cb95-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-198"><a href="#cb95-198" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dataframes</span></span>
+<span id="cb95-199"><a href="#cb95-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-200"><a href="#cb95-200" aria-hidden="true" tabindex="-1"></a>**Dataframes** are the last key object type to learn about.</span>
+<span id="cb95-201"><a href="#cb95-201" aria-hidden="true" tabindex="-1"></a>A **dataframe** is technically a special type of list.</span>
+<span id="cb95-202"><a href="#cb95-202" aria-hidden="true" tabindex="-1"></a>Effectively, it is a 2-D table where every column has to have elements of the same type (i.e., is a **vector**), but the columns can be different types to each other.</span>
+<span id="cb95-203"><a href="#cb95-203" aria-hidden="true" tabindex="-1"></a>The other important restriction is that all columns must be the same length, i.e. we have a rectangular **dataframe**.</span>
+<span id="cb95-204"><a href="#cb95-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-205"><a href="#cb95-205" aria-hidden="true" tabindex="-1"></a>As we've seen before, we can create a dataframe using this code, where <span class="in">`1:5`</span> is shorthand for a vector that contains the sequence of numbers from 1 to 5, inclusive (i.e., <span class="in">`c(1, 2, 3, 4, 5)`</span>).</span>
+<span id="cb95-206"><a href="#cb95-206" aria-hidden="true" tabindex="-1"></a>We could also write this sequence as <span class="in">`seq(1, 5, by = 1)`</span>, allowing us more control over the steps in the sequence.</span>
+<span id="cb95-207"><a href="#cb95-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-210"><a href="#cb95-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-211"><a href="#cb95-211" aria-hidden="true" tabindex="-1"></a>my_dataframe <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb95-212"><a href="#cb95-212" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_int =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb95-213"><a href="#cb95-213" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_dbl =</span> <span class="fu">seq</span>(<span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">1</span>),</span>
+<span id="cb95-214"><a href="#cb95-214" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_3 =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb95-215"><a href="#cb95-215" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-216"><a href="#cb95-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-217"><a href="#cb95-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-218"><a href="#cb95-218" aria-hidden="true" tabindex="-1"></a>Like with every other object type, we can just type in the **dataframe's** name to return it's value, but this tim, let' explore the *structure* of the **dataframe** using the <span class="in">`str()`</span> function.</span>
+<span id="cb95-219"><a href="#cb95-219" aria-hidden="true" tabindex="-1"></a>This function can be used on any of the objects we've seen so far, and is particularly helpful when exploring **lists**.</span>
+<span id="cb95-220"><a href="#cb95-220" aria-hidden="true" tabindex="-1"></a>One nice feature of **dataframes** is that it will explicitly print the columns types.</span>
+<span id="cb95-221"><a href="#cb95-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-224"><a href="#cb95-224" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-225"><a href="#cb95-225" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_dataframe)</span>
+<span id="cb95-226"><a href="#cb95-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-227"><a href="#cb95-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-228"><a href="#cb95-228" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Matrices</span></span>
+<span id="cb95-229"><a href="#cb95-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-230"><a href="#cb95-230" aria-hidden="true" tabindex="-1"></a>**Matrices** are crucial to many scientific fields, including epidemiology, as they are the basis of linear algebra.</span>
+<span id="cb95-231"><a href="#cb95-231" aria-hidden="true" tabindex="-1"></a>This course will use **matrix** multiplication extensively (notably <span class="co">[</span><span class="ot">R Session 2</span><span class="co">](r-session-02.qmd)</span>), so it is worth knowing how to create matrices.</span>
+<span id="cb95-232"><a href="#cb95-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-233"><a href="#cb95-233" aria-hidden="true" tabindex="-1"></a>Much like vectors, all elements in a **matrix** should be the same type (or they will be coerced if possible, resulting in <span class="in">`NA`</span> if not).</span>
+<span id="cb95-234"><a href="#cb95-234" aria-hidden="true" tabindex="-1"></a>It is unusual to have a **non-numeric matrix** e.g., a **character matrix**, but it is possible.</span>
+<span id="cb95-235"><a href="#cb95-235" aria-hidden="true" tabindex="-1"></a>When we create our **matrix**, notice that it fills column-first, much like how we think of **matrices** in math (i.e., <span class="in">`i`</span> then <span class="in">`j`</span>).</span>
+<span id="cb95-236"><a href="#cb95-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-239"><a href="#cb95-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-240"><a href="#cb95-240" aria-hidden="true" tabindex="-1"></a>my_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb95-241"><a href="#cb95-241" aria-hidden="true" tabindex="-1"></a>my_matrix</span>
+<span id="cb95-242"><a href="#cb95-242" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-243"><a href="#cb95-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-244"><a href="#cb95-244" aria-hidden="true" tabindex="-1"></a><span class="fu">### Indexing objects</span></span>
+<span id="cb95-245"><a href="#cb95-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-246"><a href="#cb95-246" aria-hidden="true" tabindex="-1"></a>We've got our objects, but now we want to do stuff with them.</span>
+<span id="cb95-247"><a href="#cb95-247" aria-hidden="true" tabindex="-1"></a>Without getting into too much detail about *Object-Oriented Programming* (e.g., the <span class="in">`S3`</span> class system in <span class="in">`R`</span>), there are three mains ways of indexing in <span class="in">`R`</span>:</span>
+<span id="cb95-248"><a href="#cb95-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-249"><a href="#cb95-249" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The single bracket <span class="in">`[]`</span></span>
+<span id="cb95-250"><a href="#cb95-250" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The double bracket <span class="in">`[[]]`</span></span>
+<span id="cb95-251"><a href="#cb95-251" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The dollar sign <span class="in">`$`</span></span>
+<span id="cb95-252"><a href="#cb95-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-253"><a href="#cb95-253" aria-hidden="true" tabindex="-1"></a>Which method we use depends on the type of object we have.</span>
+<span id="cb95-254"><a href="#cb95-254" aria-hidden="true" tabindex="-1"></a>Handily, <span class="in">`[]`</span> will work for pretty much everything, and we typically only use use <span class="in">`[[]]`</span> for **lists**.</span>
+<span id="cb95-255"><a href="#cb95-255" aria-hidden="true" tabindex="-1"></a>With both of these methods, we can use the *indices* i.e., the numbered position of the specific values/elements we want to extract, but if we have named objects, we can pass the names to the `[]` in a **vector**.</span>
+<span id="cb95-256"><a href="#cb95-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-259"><a href="#cb95-259" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-260"><a href="#cb95-260" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract elements 1 through 3 inclusively</span></span>
+<span id="cb95-261"><a href="#cb95-261" aria-hidden="true" tabindex="-1"></a>my_char_vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb95-262"><a href="#cb95-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-263"><a href="#cb95-263" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the same elements but using their names in a vector</span></span>
+<span id="cb95-264"><a href="#cb95-264" aria-hidden="true" tabindex="-1"></a>my_named_char_vec[<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)]</span>
+<span id="cb95-265"><a href="#cb95-265" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-266"><a href="#cb95-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-267"><a href="#cb95-267" aria-hidden="true" tabindex="-1"></a>Notice that when we index the named **vector** we get *both* the name *and* the value returned.</span>
+<span id="cb95-268"><a href="#cb95-268" aria-hidden="true" tabindex="-1"></a>Many times this is OK, but if we only wanted the value, then you'd index with <span class="in">`[[]]`</span>, but it is important to note that you can only pass *one* value to the brackets.</span>
+<span id="cb95-269"><a href="#cb95-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-272"><a href="#cb95-272" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-273"><a href="#cb95-273" aria-hidden="true" tabindex="-1"></a><span class="co">#| error: true</span></span>
+<span id="cb95-274"><a href="#cb95-274" aria-hidden="true" tabindex="-1"></a>my_named_char_vec[[<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)]]</span>
+<span id="cb95-275"><a href="#cb95-275" aria-hidden="true" tabindex="-1"></a>my_named_char_vec[[<span class="st">"a"</span>]]</span>
+<span id="cb95-276"><a href="#cb95-276" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-277"><a href="#cb95-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-278"><a href="#cb95-278" aria-hidden="true" tabindex="-1"></a>If you're wondering why go through the hassle, it's because values can change position in the list when we update inputs, such as **csv** datafiles, or needing to restructure code to make something else work.</span>
+<span id="cb95-279"><a href="#cb95-279" aria-hidden="true" tabindex="-1"></a>If we only index with the numeric indices, we run the risk of a silent error being returned i.e., a value is provided to us, but we don't know that it's referring to the wrong thing.</span>
+<span id="cb95-280"><a href="#cb95-280" aria-hidden="true" tabindex="-1"></a>Indexing with names mean that the element's position in the **vector** doesn't matter, and if it's accidentally been removed when we updated code, and error will be explicitly thrown as it won't be able to find the index.</span>
+<span id="cb95-281"><a href="#cb95-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-282"><a href="#cb95-282" aria-hidden="true" tabindex="-1"></a>When it comes to indexing **lists** and **dataframes** (remember, **dataframes** are just special **lists**, so the same methods are available to us), it is more common to use <span class="in">`[[]]`</span> and <span class="in">`$`</span>, though there are obviously occasions when <span class="in">`[]`</span> is useful.</span>
+<span id="cb95-283"><a href="#cb95-283" aria-hidden="true" tabindex="-1"></a>Let's look at <span class="in">`my_named_list`</span> first.</span>
+<span id="cb95-284"><a href="#cb95-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-287"><a href="#cb95-287" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-288"><a href="#cb95-288" aria-hidden="true" tabindex="-1"></a>my_named_list[<span class="dv">1</span>]</span>
+<span id="cb95-289"><a href="#cb95-289" aria-hidden="true" tabindex="-1"></a>my_named_list[<span class="st">"my_vec"</span>]</span>
+<span id="cb95-290"><a href="#cb95-290" aria-hidden="true" tabindex="-1"></a>my_named_list[[<span class="dv">1</span>]]</span>
+<span id="cb95-291"><a href="#cb95-291" aria-hidden="true" tabindex="-1"></a>my_named_list[[<span class="st">"my_vec"</span>]]</span>
+<span id="cb95-292"><a href="#cb95-292" aria-hidden="true" tabindex="-1"></a>my_named_list<span class="sc">$</span>my_vec</span>
+<span id="cb95-293"><a href="#cb95-293" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-294"><a href="#cb95-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-295"><a href="#cb95-295" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb95-296"><a href="#cb95-296" aria-hidden="true" tabindex="-1"></a>In the examples above, notice how both <span class="in">`[]`</span> methods returned the name of the element as well as the values (as it did before with the named **vector**).</span>
+<span id="cb95-297"><a href="#cb95-297" aria-hidden="true" tabindex="-1"></a>This is important as it means we need to extract the values from what is returned before we can do any further indexing i.e., to get the value <span class="in">`3`</span> from the **list** element <span class="in">`my_vec`</span>.</span>
+<span id="cb95-298"><a href="#cb95-298" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-299"><a href="#cb95-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-300"><a href="#cb95-300" aria-hidden="true" tabindex="-1"></a>We can do the same with the unnamed **list**, except the last two methods are not available as we do not have a name to use.</span>
+<span id="cb95-301"><a href="#cb95-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-304"><a href="#cb95-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-305"><a href="#cb95-305" aria-hidden="true" tabindex="-1"></a>my_list[<span class="dv">1</span>]</span>
+<span id="cb95-306"><a href="#cb95-306" aria-hidden="true" tabindex="-1"></a>my_list[[<span class="dv">1</span>]]</span>
+<span id="cb95-307"><a href="#cb95-307" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-308"><a href="#cb95-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-309"><a href="#cb95-309" aria-hidden="true" tabindex="-1"></a>Because a **dataframe** is a type of list where the column headers are the element names, we can use <span class="in">`[[]]`</span> and <span class="in">`$`</span> as with the named list.</span>
+<span id="cb95-310"><a href="#cb95-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-313"><a href="#cb95-313" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-314"><a href="#cb95-314" aria-hidden="true" tabindex="-1"></a>my_dataframe[<span class="dv">1</span>]</span>
+<span id="cb95-315"><a href="#cb95-315" aria-hidden="true" tabindex="-1"></a>my_dataframe[[<span class="dv">1</span>]]</span>
+<span id="cb95-316"><a href="#cb95-316" aria-hidden="true" tabindex="-1"></a>my_dataframe[<span class="st">"column_int"</span>]</span>
+<span id="cb95-317"><a href="#cb95-317" aria-hidden="true" tabindex="-1"></a>my_dataframe<span class="sc">$</span>column_int</span>
+<span id="cb95-318"><a href="#cb95-318" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-319"><a href="#cb95-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-320"><a href="#cb95-320" aria-hidden="true" tabindex="-1"></a>If we wanted to extract a particular value from a column, we can use the following methods.</span>
+<span id="cb95-321"><a href="#cb95-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-324"><a href="#cb95-324" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-325"><a href="#cb95-325" aria-hidden="true" tabindex="-1"></a><span class="co"># indexes i then j, just like in math</span></span>
+<span id="cb95-326"><a href="#cb95-326" aria-hidden="true" tabindex="-1"></a>my_dataframe[<span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb95-327"><a href="#cb95-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-328"><a href="#cb95-328" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the second element from the first column</span></span>
+<span id="cb95-329"><a href="#cb95-329" aria-hidden="true" tabindex="-1"></a>my_dataframe[[<span class="dv">1</span>]][<span class="dv">2</span>]</span>
+<span id="cb95-330"><a href="#cb95-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-331"><a href="#cb95-331" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the second element from column_int, using the i, j procedure as before</span></span>
+<span id="cb95-332"><a href="#cb95-332" aria-hidden="true" tabindex="-1"></a>my_dataframe[<span class="dv">2</span>, <span class="st">"column_int"</span>]</span>
+<span id="cb95-333"><a href="#cb95-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-334"><a href="#cb95-334" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the second element from column_int</span></span>
+<span id="cb95-335"><a href="#cb95-335" aria-hidden="true" tabindex="-1"></a>my_dataframe<span class="sc">$</span>column_int[<span class="dv">2</span>]</span>
+<span id="cb95-336"><a href="#cb95-336" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-337"><a href="#cb95-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-338"><a href="#cb95-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-339"><a href="#cb95-339" aria-hidden="true" tabindex="-1"></a><span class="fu">### Packages</span></span>
+<span id="cb95-340"><a href="#cb95-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-341"><a href="#cb95-341" aria-hidden="true" tabindex="-1"></a>Up until now, we've been getting to grips with the core concepts of objects, and indexing them.</span>
+<span id="cb95-342"><a href="#cb95-342" aria-hidden="true" tabindex="-1"></a>But when you're writing code, you'll want to do things that are relatively complicated to implement, such as solve a set of differential equations.</span>
+<span id="cb95-343"><a href="#cb95-343" aria-hidden="true" tabindex="-1"></a>Fortunately, for many areas of computing (and, indeed, epidemiology and statistics), many others have also struggled with the same issues and some have gone one to document their solutions in a way others can re-use them.</span>
+<span id="cb95-344"><a href="#cb95-344" aria-hidden="true" tabindex="-1"></a>This is the basis for **packages**.</span>
+<span id="cb95-345"><a href="#cb95-345" aria-hidden="true" tabindex="-1"></a>Someone has *packaged up* a set of functions for others to re-use.</span>
+<span id="cb95-346"><a href="#cb95-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-347"><a href="#cb95-347" aria-hidden="true" tabindex="-1"></a>We've mentioned the word **function** a number of time so far, and we haven't defined it, but that's <span class="co">[</span><span class="ot">coming soon</span><span class="co">](#functions)</span>.</span>
+<span id="cb95-348"><a href="#cb95-348" aria-hidden="true" tabindex="-1"></a>For the moment, let's just look at how we can find, install, and load **packages**.</span>
+<span id="cb95-349"><a href="#cb95-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-350"><a href="#cb95-350" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Finding packages</span></span>
+<span id="cb95-351"><a href="#cb95-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-352"><a href="#cb95-352" aria-hidden="true" tabindex="-1"></a>As <span class="co">[</span><span class="ot">mentioned previously</span><span class="co">](install-r.qmd#r)</span> CRAN is a place where many pieces of <span class="in">`R`</span> code is documents and stored for others to download and use.</span>
+<span id="cb95-353"><a href="#cb95-353" aria-hidden="true" tabindex="-1"></a>Not only are the <span class="in">`R`</span> programming language executables stored in CRAN, but so are user-defined **functions** that have been turned into **packages**.</span>
+<span id="cb95-354"><a href="#cb95-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-355"><a href="#cb95-355" aria-hidden="true" tabindex="-1"></a>To find packages, you can go to the CRAN website and search by name, but there are far too many for that to be worthwhile - just Google what you want to do and add "r" to the end of your search query, and you'll likely find what you're looking for.</span>
+<span id="cb95-356"><a href="#cb95-356" aria-hidden="true" tabindex="-1"></a>Once you've found a package you want to download, next you need to install it.</span>
+<span id="cb95-357"><a href="#cb95-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-358"><a href="#cb95-358" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Installing packages</span></span>
+<span id="cb95-359"><a href="#cb95-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-360"><a href="#cb95-360" aria-hidden="true" tabindex="-1"></a>Barring any super-niche packages, you should be able to use the following command(s):</span>
+<span id="cb95-361"><a href="#cb95-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-364"><a href="#cb95-364" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-365"><a href="#cb95-365" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb95-366"><a href="#cb95-366" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"package to download"</span>)</span>
+<span id="cb95-367"><a href="#cb95-367" aria-hidden="true" tabindex="-1"></a><span class="co"># Download multiple by passing a vector of package names</span></span>
+<span id="cb95-368"><a href="#cb95-368" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"package 1"</span>, <span class="st">"package 2"</span>))</span>
+<span id="cb95-369"><a href="#cb95-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-370"><a href="#cb95-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-371"><a href="#cb95-371" aria-hidden="true" tabindex="-1"></a>If for some reason you get an error message saying the package isn't available on CRAN, first, check for typos, and if you still get an error, you may need to download it directly from GitHub.</span>
+<span id="cb95-372"><a href="#cb95-372" aria-hidden="true" tabindex="-1"></a>Read <span class="co">[</span><span class="ot">here</span><span class="co">](https://pak.r-lib.org/dev/reference/get-started.html#install-a-package-from-github)</span> for more information about using the <span class="in">`{pak}`</span> package to download packages from other sources.</span>
+<span id="cb95-373"><a href="#cb95-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-374"><a href="#cb95-374" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Loading packages</span></span>
+<span id="cb95-375"><a href="#cb95-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-376"><a href="#cb95-376" aria-hidden="true" tabindex="-1"></a>Now you have your packages installed, you just need to load them to get any of their functionality.</span>
+<span id="cb95-377"><a href="#cb95-377" aria-hidden="true" tabindex="-1"></a>The easiest way is to place this code at the top of your script.</span>
+<span id="cb95-378"><a href="#cb95-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-381"><a href="#cb95-381" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-382"><a href="#cb95-382" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb95-383"><a href="#cb95-383" aria-hidden="true" tabindex="-1"></a><span class="co"># Quotations are not required, but can be used</span></span>
+<span id="cb95-384"><a href="#cb95-384" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(package to download)</span>
+<span id="cb95-385"><a href="#cb95-385" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-386"><a href="#cb95-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-387"><a href="#cb95-387" aria-hidden="true" tabindex="-1"></a>Most of the time, this is fine, but occasionally you will run in to an issue where a function doesn't work as expected.</span>
+<span id="cb95-388"><a href="#cb95-388" aria-hidden="true" tabindex="-1"></a>Sometimes this is because of what's called a *namespace conflict* i.e., you have two functions with the same name loaded, and potentially you're using the wrong verion.</span>
+<span id="cb95-389"><a href="#cb95-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-390"><a href="#cb95-390" aria-hidden="true" tabindex="-1"></a>For example, in base <span class="in">`R`</span> (i.e, these functions come pre-installed when you set up <span class="in">`R`</span>), there is a <span class="in">`filter()`</span> function from the <span class="in">`{stats}`</span> package (as mentioned, we'll denote this as <span class="in">`stats::filter()`</span>).</span>
+<span id="cb95-391"><a href="#cb95-391" aria-hidden="true" tabindex="-1"></a>Throughout this workshop, you will see <span class="in">`library(tidyverse)`</span> at the top of the pages to indicate the <span class="in">`{tidyverse}`</span> set of packages are being loaded (this is actually a package that installs a bunch of related and useful packages for us).</span>
+<span id="cb95-392"><a href="#cb95-392" aria-hidden="true" tabindex="-1"></a>In <span class="in">`{dplyr}`</span> (one of the packages loaded by <span class="in">`{tidyverse}`</span>) there is also a function called <span class="in">`filter()`</span>.</span>
+<span id="cb95-393"><a href="#cb95-393" aria-hidden="true" tabindex="-1"></a>Because <span class="in">`{dplyr}`</span> was loaded after <span class="in">`{stats}`</span> was loaded (because <span class="in">`{stats}`</span> is automatically loaded when <span class="in">`R`</span> is started), the <span class="in">`dplyr::filter()`</span> function will take precedence.</span>
+<span id="cb95-394"><a href="#cb95-394" aria-hidden="true" tabindex="-1"></a>If we wanted to specifically use the <span class="in">`{stats}`</span> version, we could write this:</span>
+<span id="cb95-395"><a href="#cb95-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-398"><a href="#cb95-398" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-399"><a href="#cb95-399" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a cosine wave with random noise</span></span>
+<span id="cb95-400"><a href="#cb95-400" aria-hidden="true" tabindex="-1"></a>raw_timeseries <span class="ot">&lt;-</span> <span class="fu">cos</span>(pi <span class="sc">*</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">sd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb95-401"><a href="#cb95-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-402"><a href="#cb95-402" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate 20 day moving average using stats::filter()</span></span>
+<span id="cb95-403"><a href="#cb95-403" aria-hidden="true" tabindex="-1"></a>smooth_timeseries <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">filter</span>(raw_timeseries, <span class="at">filter =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">20</span>, <span class="dv">20</span>), <span class="at">sides =</span> <span class="dv">1</span>)</span>
+<span id="cb95-404"><a href="#cb95-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-405"><a href="#cb95-405" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot raw data</span></span>
+<span id="cb95-406"><a href="#cb95-406" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(raw_timeseries, <span class="at">col =</span> <span class="st">"grey80"</span>)</span>
+<span id="cb95-407"><a href="#cb95-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-408"><a href="#cb95-408" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay smoothed data</span></span>
+<span id="cb95-409"><a href="#cb95-409" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(smooth_timeseries, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb95-410"><a href="#cb95-410" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-411"><a href="#cb95-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-412"><a href="#cb95-412" aria-hidden="true" tabindex="-1"></a><span class="fu">### Functions</span></span>
+<span id="cb95-413"><a href="#cb95-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-414"><a href="#cb95-414" aria-hidden="true" tabindex="-1"></a>As we've alluded to, **functions** are core to gaining *functionality* in <span class="in">`R`</span>.</span>
+<span id="cb95-415"><a href="#cb95-415" aria-hidden="true" tabindex="-1"></a>We can always hand-write the code to complete a task, but if we have to repeat a task more than once, it can be tiresome to repeat the same code, particularly if it is a particularly complex task that requires many lines of code.</span>
+<span id="cb95-416"><a href="#cb95-416" aria-hidden="true" tabindex="-1"></a>This is where **functions** come in: they provide us with a mechanism to wrap up code into something that can be re-used.</span>
+<span id="cb95-417"><a href="#cb95-417" aria-hidden="true" tabindex="-1"></a>Not only does this reduce the amount of code we need to write, but by minimize code duplication, debugging becomes a lot easier as we only need to remember to make changes and correct one section of our codebase.</span>
+<span id="cb95-418"><a href="#cb95-418" aria-hidden="true" tabindex="-1"></a>Say, for example, you want to take a vector of numbers and calculate the cumulative sum e.g.; </span>
+<span id="cb95-419"><a href="#cb95-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-422"><a href="#cb95-422" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-423"><a href="#cb95-423" aria-hidden="true" tabindex="-1"></a>my_dbl_vec <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb95-424"><a href="#cb95-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-425"><a href="#cb95-425" aria-hidden="true" tabindex="-1"></a>cumulative_sum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb95-426"><a href="#cb95-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-427"><a href="#cb95-427" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(my_dbl_vec)) {</span>
+<span id="cb95-428"><a href="#cb95-428" aria-hidden="true" tabindex="-1"></a>    cumulative_sum <span class="ot">&lt;-</span> cumulative_sum <span class="sc">+</span> i</span>
+<span id="cb95-429"><a href="#cb95-429" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb95-430"><a href="#cb95-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-431"><a href="#cb95-431" aria-hidden="true" tabindex="-1"></a>cumulative_sum</span>
+<span id="cb95-432"><a href="#cb95-432" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-433"><a href="#cb95-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-434"><a href="#cb95-434" aria-hidden="true" tabindex="-1"></a>This is OK if we only do this calculation once, but it's easy to imagine us wanting to repeat this calculation; for example, we might use calculate the cumulative sum of daily cases to get a weekly incidence over every week of a year.</span>
+<span id="cb95-435"><a href="#cb95-435" aria-hidden="true" tabindex="-1"></a>In this situation, we would want to create a function.</span>
+<span id="cb95-436"><a href="#cb95-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-439"><a href="#cb95-439" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-440"><a href="#cb95-440" aria-hidden="true" tabindex="-1"></a>my_cumsum <span class="ot">&lt;-</span> <span class="cf">function</span>(vector) {</span>
+<span id="cb95-441"><a href="#cb95-441" aria-hidden="true" tabindex="-1"></a>    cumulative_sum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb95-442"><a href="#cb95-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-443"><a href="#cb95-443" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(my_dbl_vec)) {</span>
+<span id="cb95-444"><a href="#cb95-444" aria-hidden="true" tabindex="-1"></a>        cumulative_sum <span class="ot">&lt;-</span> cumulative_sum <span class="sc">+</span> i</span>
+<span id="cb95-445"><a href="#cb95-445" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb95-446"><a href="#cb95-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-447"><a href="#cb95-447" aria-hidden="true" tabindex="-1"></a>    cumulative_sum</span>
+<span id="cb95-448"><a href="#cb95-448" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb95-449"><a href="#cb95-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-450"><a href="#cb95-450" aria-hidden="true" tabindex="-1"></a><span class="fu">my_cumsum</span>(my_dbl_vec)</span>
+<span id="cb95-451"><a href="#cb95-451" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-452"><a href="#cb95-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-453"><a href="#cb95-453" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=true}</span>
+<span id="cb95-454"><a href="#cb95-454" aria-hidden="true" tabindex="-1"></a>This is obviously a contrived example because, as with many basic operations in <span class="in">`R`</span>, there is already a function written to perform this calculation that does it in a much more performant and safer manner: <span class="in">`cumsum()`</span></span>
+<span id="cb95-455"><a href="#cb95-455" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-456"><a href="#cb95-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-457"><a href="#cb95-457" aria-hidden="true" tabindex="-1"></a>For many of the manipulations we will want to perform, a **function** has already been written by someone else and put into a **package** that we can download, as we've <span class="co">[</span><span class="ot">already seen</span><span class="co">](#packages)</span>.</span>
+<span id="cb95-458"><a href="#cb95-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-459"><a href="#cb95-459" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Anonymous functions</span></span>
+<span id="cb95-460"><a href="#cb95-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-461"><a href="#cb95-461" aria-hidden="true" tabindex="-1"></a>There is a special class of functions called anonymous functions that are worth being aware of, as we will use them quite extensively throughout this workshop.</span>
+<span id="cb95-462"><a href="#cb95-462" aria-hidden="true" tabindex="-1"></a>As the name might suggest, **anonymous functions** are functions that are not named, and therefore, not saved for re-use.</span>
+<span id="cb95-463"><a href="#cb95-463" aria-hidden="true" tabindex="-1"></a>You may, understandably, be wondering why we would want to use them, given we just make the case for functions replacing repeatable blocks of code.</span>
+<span id="cb95-464"><a href="#cb95-464" aria-hidden="true" tabindex="-1"></a>In some instances, we want to be able to perform multiple computations that require creating intermediate objects, but because we only need to use them once, we don't save them save to our environment, potentially causing issues with conflicts (e.g., accidentally using an object we didn't mean to, or overwriting existing ones by re-using the same object name).</span>
+<span id="cb95-465"><a href="#cb95-465" aria-hidden="true" tabindex="-1"></a>This gets into the broader concept of local vs global scopes, but that is too far beyond the scope of this workshop: see <span class="co">[</span><span class="ot">Hands-On Programming with R</span><span class="co">](https://rstudio-education.github.io/hopr/environments.html#scoping-rules)</span> and <span class="co">[</span><span class="ot">Advanced R</span><span class="co">](https://adv-r.hadley.nz/functions.html?q=lexical#lexical-scoping)</span> for more information.</span>
+<span id="cb95-466"><a href="#cb95-466" aria-hidden="true" tabindex="-1"></a>Let's look at an example to see when we might want to use an anonymous function.</span>
+<span id="cb95-467"><a href="#cb95-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-468"><a href="#cb95-468" aria-hidden="true" tabindex="-1"></a>Throughout this workshop, we will make use of the <span class="in">`map_*()`</span> series of functions from the <span class="in">`{purrr}`</span> package.</span>
+<span id="cb95-469"><a href="#cb95-469" aria-hidden="true" tabindex="-1"></a>We'll go into more detail about <span class="in">`purr::map()`</span> <span class="co">[</span><span class="ot">shortly</span><span class="co">](#map-functions)</span>, but for now, imagine we have a **vector** of numbers, and we want to add <span class="in">`5`</span> to each value before and multiplying by <span class="in">`10`</span>.</span>
+<span id="cb95-470"><a href="#cb95-470" aria-hidden="true" tabindex="-1"></a>The <span class="in">`map_dbl()`</span> function takes a **vector** and a function, and outputs a **double vector**.</span>
+<span id="cb95-471"><a href="#cb95-471" aria-hidden="true" tabindex="-1"></a>We could write a function to perform this multiplication, but if we're only going to do this operation once, it seems unnecessary.</span>
+<span id="cb95-472"><a href="#cb95-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-475"><a href="#cb95-475" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-476"><a href="#cb95-476" aria-hidden="true" tabindex="-1"></a><span class="co">#| error: true</span></span>
+<span id="cb95-477"><a href="#cb95-477" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map_dbl</span>(</span>
+<span id="cb95-478"><a href="#cb95-478" aria-hidden="true" tabindex="-1"></a>    <span class="at">.x =</span> my_dbl_vec,</span>
+<span id="cb95-479"><a href="#cb95-479" aria-hidden="true" tabindex="-1"></a>    <span class="at">.f =</span> <span class="cf">function</span>(.x) {</span>
+<span id="cb95-480"><a href="#cb95-480" aria-hidden="true" tabindex="-1"></a>        add_five_val <span class="ot">&lt;-</span> .x <span class="sc">+</span> <span class="dv">5</span></span>
+<span id="cb95-481"><a href="#cb95-481" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-482"><a href="#cb95-482" aria-hidden="true" tabindex="-1"></a>        add_five_val <span class="sc">*</span> <span class="dv">10</span></span>
+<span id="cb95-483"><a href="#cb95-483" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb95-484"><a href="#cb95-484" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-485"><a href="#cb95-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-486"><a href="#cb95-486" aria-hidden="true" tabindex="-1"></a><span class="co"># only exists within the function</span></span>
+<span id="cb95-487"><a href="#cb95-487" aria-hidden="true" tabindex="-1"></a>add_five_val</span>
+<span id="cb95-488"><a href="#cb95-488" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-489"><a href="#cb95-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-490"><a href="#cb95-490" aria-hidden="true" tabindex="-1"></a>Here, we've specified the anonymous function to take the input <span class="in">`.x`</span> and multiple each value by 10, and we did it without saving the function.</span>
+<span id="cb95-491"><a href="#cb95-491" aria-hidden="true" tabindex="-1"></a>This would be equivalent to writing this:</span>
+<span id="cb95-492"><a href="#cb95-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-495"><a href="#cb95-495" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb95-496"><a href="#cb95-496" aria-hidden="true" tabindex="-1"></a><span class="co">#| error: true</span></span>
+<span id="cb95-497"><a href="#cb95-497" aria-hidden="true" tabindex="-1"></a>add_five_multiply_ten <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb95-498"><a href="#cb95-498" aria-hidden="true" tabindex="-1"></a>    add_five_val <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">5</span></span>
+<span id="cb95-499"><a href="#cb95-499" aria-hidden="true" tabindex="-1"></a>    add_five_val <span class="sc">*</span> <span class="dv">10</span></span>
+<span id="cb95-500"><a href="#cb95-500" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb95-501"><a href="#cb95-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-502"><a href="#cb95-502" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map_dbl</span>(</span>
+<span id="cb95-503"><a href="#cb95-503" aria-hidden="true" tabindex="-1"></a>    <span class="at">.x =</span> my_dbl_vec,</span>
+<span id="cb95-504"><a href="#cb95-504" aria-hidden="true" tabindex="-1"></a>    <span class="at">.f =</span> <span class="sc">~</span><span class="fu">add_five_multiply_ten</span>(.x)</span>
+<span id="cb95-505"><a href="#cb95-505" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-506"><a href="#cb95-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-507"><a href="#cb95-507" aria-hidden="true" tabindex="-1"></a><span class="co"># only exists within the function</span></span>
+<span id="cb95-508"><a href="#cb95-508" aria-hidden="true" tabindex="-1"></a>add_five_val</span>
+<span id="cb95-509"><a href="#cb95-509" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb95-510"><a href="#cb95-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-511"><a href="#cb95-511" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb95-512"><a href="#cb95-512" aria-hidden="true" tabindex="-1"></a>Notice the <span class="in">`~`</span> used: this specifies that we want to pass arguments into our named function.</span>
+<span id="cb95-513"><a href="#cb95-513" aria-hidden="true" tabindex="-1"></a>Without it, we will get an error about <span class="in">`.x`</span> not being found.</span>
+<span id="cb95-514"><a href="#cb95-514" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-515"><a href="#cb95-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-516"><a href="#cb95-516" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tidy data</span></span>
+<span id="cb95-517"><a href="#cb95-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-518"><a href="#cb95-518" aria-hidden="true" tabindex="-1"></a><span class="fu">### Core code used</span></span>
+<span id="cb95-519"><a href="#cb95-519" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-520"><a href="#cb95-520" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;a</span> <span class="er">id</span><span class="ot">=</span><span class="st">"map-functions"</span><span class="kw">/&gt;</span></span>
+<span id="cb95-521"><a href="#cb95-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-522"><a href="#cb95-522" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Why <span class="in">`{tidyverse}`</span></span>
+<span id="cb95-523"><a href="#cb95-523" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Comprises multiple packages</span>
+<span id="cb95-524"><a href="#cb95-524" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Cheatsheets</span>
+<span id="cb95-525"><a href="#cb95-525" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`{ggplot2}`</span></span>
+<span id="cb95-526"><a href="#cb95-526" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`{dplyr}`</span></span>
+<span id="cb95-527"><a href="#cb95-527" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`{tidyr}`</span></span>
+<span id="cb95-528"><a href="#cb95-528" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`{purrr}`</span></span>
+<span id="cb95-529"><a href="#cb95-529" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Functions to explain with examples</span>
+<span id="cb95-530"><a href="#cb95-530" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`mutate()`</span></span>
+<span id="cb95-531"><a href="#cb95-531" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`across()`</span></span>
+<span id="cb95-532"><a href="#cb95-532" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`everything()`</span></span>
+<span id="cb95-533"><a href="#cb95-533" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`pivot_longer()`</span></span>
+<span id="cb95-534"><a href="#cb95-534" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`ggplot()`</span></span>
+<span id="cb95-535"><a href="#cb95-535" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span><span class="in">`facet_wrap()`</span></span>
+<span id="cb95-536"><a href="#cb95-536" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`factor()`</span></span>
+<span id="cb95-537"><a href="#cb95-537" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`%&gt;%`</span></span>
+<span id="cb95-538"><a href="#cb95-538" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`%*%`</span></span>
+<span id="cb95-539"><a href="#cb95-539" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`tibble()`</span></span>
+<span id="cb95-540"><a href="#cb95-540" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`group_by()`</span></span>
+<span id="cb95-541"><a href="#cb95-541" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`nest()`</span></span>
+<span id="cb95-542"><a href="#cb95-542" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`map_*()`</span></span>
+<span id="cb95-543"><a href="#cb95-543" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`filter()`</span></span>
+<span id="cb95-544"><a href="#cb95-544" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`paste0()`</span></span>
+<span id="cb95-545"><a href="#cb95-545" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`rename_with()`</span></span>
+<span id="cb95-546"><a href="#cb95-546" aria-hidden="true" tabindex="-1"></a><span class="ss">        - </span>Anonymous functions</span>
+<span id="cb95-547"><a href="#cb95-547" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`str_replace_all()`</span></span>
+<span id="cb95-548"><a href="#cb95-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-549"><a href="#cb95-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-550"><a href="#cb95-550" aria-hidden="true" tabindex="-1"></a><span class="fu">## RStudio</span></span>
+<span id="cb95-551"><a href="#cb95-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-552"><a href="#cb95-552" aria-hidden="true" tabindex="-1"></a>There are a number of features in RStudio that will make your life easier.</span>
+<span id="cb95-553"><a href="#cb95-553" aria-hidden="true" tabindex="-1"></a>This section aims to highlight a few of them.</span>
+<span id="cb95-554"><a href="#cb95-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-555"><a href="#cb95-555" aria-hidden="true" tabindex="-1"></a><span class="fu">### RStudio projects</span></span>
+<span id="cb95-556"><a href="#cb95-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-557"><a href="#cb95-557" aria-hidden="true" tabindex="-1"></a>RStudio gives you the ability to turn a directory (that you are hopefully using to contain all your project, as <span class="co">[</span><span class="ot">mentioned in the next section</span><span class="co">](project-management.qmd#project-structure)</span>), into an *RStudio project*.</span>
+<span id="cb95-558"><a href="#cb95-558" aria-hidden="true" tabindex="-1"></a>One of the benefits of using *RStudio projects* is that you can easily switch between different projects and RStudio will start a new <span class="in">`R`</span> session, meaning that objects you created in your first project won't stick around, causing issues by existing in a place where they shouldn't.</span>
+<span id="cb95-559"><a href="#cb95-559" aria-hidden="true" tabindex="-1"></a>The other key benefit is that you can use the <span class="in">`{here}`</span> package to create relative file paths, for easier code sharing and increased reproducibility.</span>
+<span id="cb95-560"><a href="#cb95-560" aria-hidden="true" tabindex="-1"></a>See <span class="co">[</span><span class="ot">this section</span><span class="co">](project-management.qmd#here-package)</span> for more details about the <span class="in">`{here}`</span> package.</span>
+<span id="cb95-561"><a href="#cb95-561" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-562"><a href="#cb95-562" aria-hidden="true" tabindex="-1"></a>To create a new RStudio projet, simply open up RStudio, and click on the *"Project: (None)"* button in the top right corner.</span>
+<span id="cb95-563"><a href="#cb95-563" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-564"><a href="#cb95-564" aria-hidden="true" tabindex="-1"></a><span class="al">![Creating a new RStudio project - 1](./images/RStudio-new-project-01.png)</span></span>
+<span id="cb95-565"><a href="#cb95-565" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-566"><a href="#cb95-566" aria-hidden="true" tabindex="-1"></a>You will then be given the option to create the project in a *"New Directory"*, and *"Existing Directory"*, or from *"Version Control"*.</span>
+<span id="cb95-567"><a href="#cb95-567" aria-hidden="true" tabindex="-1"></a>If you've already created a project just for this workshop, then select *"Existing Directory"*, otherwise, create a new one.</span>
+<span id="cb95-568"><a href="#cb95-568" aria-hidden="true" tabindex="-1"></a>If you know about Git, then please feel free to use the last option, but options 1 &amp; 2 are most relevant for new users.</span>
+<span id="cb95-569"><a href="#cb95-569" aria-hidden="true" tabindex="-1"></a>Either way, we'd recommend reading through our <span class="co">[</span><span class="ot">project organization tips</span><span class="co">](project-management.qmd#project-structure)</span> about what this directory should look like/include.</span>
+<span id="cb95-570"><a href="#cb95-570" aria-hidden="true" tabindex="-1"></a>If you select *"New Directory"*, you probably want to select *"New Project"* on the next option, unless you have something specific in mind (like a *"Quarto Book"*, which is used for this website!).</span>
+<span id="cb95-571"><a href="#cb95-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-572"><a href="#cb95-572" aria-hidden="true" tabindex="-1"></a><span class="al">![Creating a new RStudio project - 2](./images/RStudio-new-project-02.png)</span>{width=70%}</span>
+<span id="cb95-573"><a href="#cb95-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-574"><a href="#cb95-574" aria-hidden="true" tabindex="-1"></a>Finally, choose the directory name and location, and you're in business (you should click the button in the bottom-left corner to *"Open in new session"* to make sure you're starting in a fresh environment).</span>
+<span id="cb95-575"><a href="#cb95-575" aria-hidden="true" tabindex="-1"></a>From here on out, when you open up a project, all the files you've created will be easily accessibly, both from the *"Files"* pane, as well as using <span class="co">[</span><span class="ot">relative paths</span><span class="co">](project-management.qmd#here-package)</span>.</span>
+<span id="cb95-576"><a href="#cb95-576" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-577"><a href="#cb95-577" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb95-578"><a href="#cb95-578" aria-hidden="true" tabindex="-1"></a>To reiterate our comments from the <span class="co">[</span><span class="ot">project organization tips</span><span class="co">](project-management.qmd#project-structure)</span> page, it's useful to have all your project directories in a single location on your computer, and make sure you do not have any spaces in the file or folder names.</span>
+<span id="cb95-579"><a href="#cb95-579" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb95-580"><a href="#cb95-580" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-581"><a href="#cb95-581" aria-hidden="true" tabindex="-1"></a><span class="fu">### RStudio keyboard shortcuts</span></span>
+<span id="cb95-582"><a href="#cb95-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-583"><a href="#cb95-583" aria-hidden="true" tabindex="-1"></a>There are many shortcuts available to RStudio users, but here are the key ones:</span>
+<span id="cb95-584"><a href="#cb95-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-585"><a href="#cb95-585" aria-hidden="true" tabindex="-1"></a>| Shortcut  | Command |</span>
+<span id="cb95-586"><a href="#cb95-586" aria-hidden="true" tabindex="-1"></a>|--------|--------|</span>
+<span id="cb95-587"><a href="#cb95-587" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + enter`</span>  | Send the section of code to the console to be run   |</span>
+<span id="cb95-588"><a href="#cb95-588" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + opt/alt + r`</span>  | Run all code |</span>
+<span id="cb95-589"><a href="#cb95-589" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + opt/alt + b`</span>  | Run all code from beginning to selected line |</span>
+<span id="cb95-590"><a href="#cb95-590" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + enter`</span>  | Run current chunk (when within a <span class="in">`Rmd`</span> or <span class="in">`Quarto`</span> notebook) |</span>
+<span id="cb95-591"><a href="#cb95-591" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + p`</span>  | Open the command palette (a place where you can search for different commands) |</span>
+<span id="cb95-592"><a href="#cb95-592" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + a`</span>  | Reformat selected code (useful to help keep things readable) |</span>
+<span id="cb95-593"><a href="#cb95-593" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + c`</span>  | Comment the selected lines |</span>
+<span id="cb95-594"><a href="#cb95-594" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cmd/ctrl + shift + m`</span>  | Insert the pipe (<span class="in">`%&gt;%`</span>) operator (or <span class="in">`|&gt;`</span> if you have set up RStudio to use the base pipe by default)|</span>
+<span id="cb95-595"><a href="#cb95-595" aria-hidden="true" tabindex="-1"></a>| <span class="in">`opt/alt + -`</span>  | Insert the assignment operator (<span class="in">`&lt;-`</span>) |</span>
+<span id="cb95-596"><a href="#cb95-596" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-597"><a href="#cb95-597" aria-hidden="true" tabindex="-1"></a>: RStudio keyboard shortcuts {.striped .hover tbl-colwidths="<span class="co">[</span><span class="ot">25,75</span><span class="co">]</span>"}</span>
+<span id="cb95-598"><a href="#cb95-598" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-599"><a href="#cb95-599" aria-hidden="true" tabindex="-1"></a>The common shortcuts for saving and opening files/selecting all etc. also exist in RStudio with the standard keybindings.</span>
+<span id="cb95-600"><a href="#cb95-600" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-601"><a href="#cb95-601" aria-hidden="true" tabindex="-1"></a>To see the full list of keyboard shortcuts, you can go to *"Tools &gt; Keyboard Shortcuts Help"*.</span>
+<span id="cb95-602"><a href="#cb95-602" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-603"><a href="#cb95-603" aria-hidden="true" tabindex="-1"></a><span class="al">![RStudio keyboard shortcuts](./images/RStudio-keyboard-shortcuts.png)</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

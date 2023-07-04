@@ -365,11 +365,105 @@ lines(smooth_timeseries, col = "red", lwd = 2)
 
 ### Functions
 
-- Anonymous functions
+As we've alluded to, **functions** are core to gaining *functionality* in `R`.
+We can always hand-write the code to complete a task, but if we have to repeat a task more than once, it can be tiresome to repeat the same code, particularly if it is a particularly complex task that requires many lines of code.
+This is where **functions** come in: they provide us with a mechanism to wrap up code into something that can be re-used.
+Not only does this reduce the amount of code we need to write, but by minimize code duplication, debugging becomes a lot easier as we only need to remember to make changes and correct one section of our codebase.
+Say, for example, you want to take a vector of numbers and calculate the cumulative sum e.g.; 
+
+```{r}
+my_dbl_vec <- 1:10
+
+cumulative_sum <- 0
+
+for(i in seq_along(my_dbl_vec)) {
+    cumulative_sum <- cumulative_sum + i
+}
+
+cumulative_sum
+```
+
+This is OK if we only do this calculation once, but it's easy to imagine us wanting to repeat this calculation; for example, we might use calculate the cumulative sum of daily cases to get a weekly incidence over every week of a year.
+In this situation, we would want to create a function.
+
+```{r}
+my_cumsum <- function(vector) {
+    cumulative_sum <- 0
+
+    for(i in seq_along(my_dbl_vec)) {
+        cumulative_sum <- cumulative_sum + i
+    }
+
+    cumulative_sum
+}
+
+my_cumsum(my_dbl_vec)
+```
+
+::: {.callout-note collapse=true}
+This is obviously a contrived example because, as with many basic operations in `R`, there is already a function written to perform this calculation that does it in a much more performant and safer manner: `cumsum()`
+:::
+
+For many of the manipulations we will want to perform, a **function** has already been written by someone else and put into a **package** that we can download, as we've [already seen](#packages).
+
+#### Anonymous functions
+
+There is a special class of functions called anonymous functions that are worth being aware of, as we will use them quite extensively throughout this workshop.
+As the name might suggest, **anonymous functions** are functions that are not named, and therefore, not saved for re-use.
+You may, understandably, be wondering why we would want to use them, given we just make the case for functions replacing repeatable blocks of code.
+In some instances, we want to be able to perform multiple computations that require creating intermediate objects, but because we only need to use them once, we don't save them save to our environment, potentially causing issues with conflicts (e.g., accidentally using an object we didn't mean to, or overwriting existing ones by re-using the same object name).
+This gets into the broader concept of local vs global scopes, but that is too far beyond the scope of this workshop: see [Hands-On Programming with R](https://rstudio-education.github.io/hopr/environments.html#scoping-rules) and [Advanced R](https://adv-r.hadley.nz/functions.html?q=lexical#lexical-scoping) for more information.
+Let's look at an example to see when we might want to use an anonymous function.
+
+Throughout this workshop, we will make use of the `map_*()` series of functions from the `{purrr}` package.
+We'll go into more detail about `purr::map()` [shortly](#map-functions), but for now, imagine we have a **vector** of numbers, and we want to add `5` to each value before and multiplying by `10`.
+The `map_dbl()` function takes a **vector** and a function, and outputs a **double vector**.
+We could write a function to perform this multiplication, but if we're only going to do this operation once, it seems unnecessary.
+
+```{r}
+#| error: true
+purrr::map_dbl(
+    .x = my_dbl_vec,
+    .f = function(.x) {
+        add_five_val <- .x + 5
+
+        add_five_val * 10
+    }
+)
+
+# only exists within the function
+add_five_val
+```
+
+Here, we've specified the anonymous function to take the input `.x` and multiple each value by 10, and we did it without saving the function.
+This would be equivalent to writing this:
+
+```{r}
+#| error: true
+add_five_multiply_ten <- function(x) {
+    add_five_val <- x + 5
+    add_five_val * 10
+}
+
+purrr::map_dbl(
+    .x = my_dbl_vec,
+    .f = ~add_five_multiply_ten(.x)
+)
+
+# only exists within the function
+add_five_val
+```
+
+::: {.callout-warning}
+Notice the `~` used: this specifies that we want to pass arguments into our named function.
+Without it, we will get an error about `.x` not being found.
+:::
 
 ### Tidy data
 
 ### Core code used
+
+<a id="map-functions"/>
 
 - Why `{tidyverse}`
     - Comprises multiple packages
