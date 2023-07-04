@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Callum Arnold">
-<meta name="dcterms.date" content="2023-06-07">
 
-<title>SISMID Module 2 Materials (2023)</title>
+<title>SISMID Module 2 Materials (2023) - Just Enough RStudio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./exercise-requirements.html" rel="next">
+<link href="./just-enough-r.html" rel="next">
+<link href="./install-r.html" rel="prev">
 <link href="././images/sismid2023-logo-green.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -112,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><strong>Welcome</strong></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./exercise-requirements.html">Pre-Requisites</a></li><li class="breadcrumb-item"><a href="./just-enough-rstudio.html">Just Enough RStudio</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -151,7 +151,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><strong>Welcome</strong></span></a>
   </div>
 </li>
@@ -178,7 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./just-enough-rstudio.html" class="sidebar-item-text sidebar-link">
+  <a href="./just-enough-rstudio.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Just Enough RStudio</span></a>
   </div>
 </li>
@@ -311,23 +311,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Page Items</h2>
    
   <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome"><strong>Welcome</strong></a>
-  <ul class="collapse">
-  <li><a href="#workshop-pre-requisites" id="toc-workshop-pre-requisites" class="nav-link" data-scroll-target="#workshop-pre-requisites">Workshop Pre-Requisites</a></li>
-  <li><a href="#tips-about-the-website" id="toc-tips-about-the-website" class="nav-link" data-scroll-target="#tips-about-the-website">Tips About the Website</a></li>
-  <li><a href="#keywords-code-and-other-formatting" id="toc-keywords-code-and-other-formatting" class="nav-link" data-scroll-target="#keywords-code-and-other-formatting">Keywords, Code, and Other Formatting</a></li>
-  <li><a href="#about-the-instructors" id="toc-about-the-instructors" class="nav-link" data-scroll-target="#about-the-instructors">About the Instructors</a></li>
-  </ul></li>
+  <li><a href="#rstudio-projects" id="toc-rstudio-projects" class="nav-link active" data-scroll-target="#rstudio-projects">RStudio projects</a></li>
+  <li><a href="#rstudio-keyboard-shortcuts" id="toc-rstudio-keyboard-shortcuts" class="nav-link" data-scroll-target="#rstudio-keyboard-shortcuts">RStudio keyboard shortcuts</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-Module-02_2023/edit/main/index.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-Module-02_2023/edit/main/just-enough-rstudio.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">SISMID Module 2 Materials (2023)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Mathematical Models of Infectious Diseases</p>
+<div class="quarto-title-block"><div><h1 class="title">Just Enough RStudio</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -348,12 +342,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-title-meta">
 
       
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">June 7, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -361,79 +349,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="welcome" class="level1 unnumbered">
-<h1 class="unnumbered"><strong>Welcome</strong></h1>
-<p>Hello!</p>
-<p>Welcome to this website that accompanies the <a href="https://si.biostat.washington.edu/suminst/archives/SISMID2023/MD2302">2023 Summer Institute in Modeling for Infectious Diseases (SISMID) Module 2: Mathematical Models of Infectious Diseases</a>. This website contains both the lecture notes, so you can refer back to them at a later date, and the exercises that we will be completing throughout the module.</p>
-<section id="workshop-pre-requisites" class="level2">
-<h2 class="anchored" data-anchor-id="workshop-pre-requisites">Workshop Pre-Requisites</h2>
-<p>As there is a reasonable amount of material to cover, and a relatively short amount of time to cover it in, there are some pre-requisite tasks to get set up ahead of the workshop.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>There are a number of features in RStudio that will make your life easier. This section aims to highlight a few of them.</p>
+<section id="rstudio-projects" class="level2">
+<h2 class="anchored" data-anchor-id="rstudio-projects">RStudio projects</h2>
+<p>RStudio gives you the ability to turn a directory (that you are hopefully using to contain all your project, as <a href="./project-management.html#project-structure">mentioned in the next section</a>), into an <em>RStudio project</em>. One of the benefits of using <em>RStudio projects</em> is that you can easily switch between different projects and RStudio will start a new <code>R</code> session, meaning that objects you created in your first project won’t stick around, causing issues by existing in a place where they shouldn’t. The other key benefit is that you can use the <code>{here}</code> package to create relative file paths, for easier code sharing and increased reproducibility. See <a href="./project-management.html#here-package">this section</a> for more details about the <code>{here}</code> package.</p>
+<p>To create a new RStudio projet, simply open up RStudio, and click on the <em>“Project: (None)”</em> button in the top right corner.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-new-project-01.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Creating a new RStudio project - 1</figcaption>
+</figure>
 </div>
-<div class="callout-title-container flex-fill">
-Important
+<p>You will then be given the option to create the project in a <em>“New Directory”</em>, and <em>“Existing Directory”</em>, or from <em>“Version Control”</em>. If you’ve already created a project just for this workshop, then select <em>“Existing Directory”</em>, otherwise, create a new one. If you know about Git, then please feel free to use the last option, but options 1 &amp; 2 are most relevant for new users. Either way, we’d recommend reading through our <a href="./project-management.html#project-structure">project organization tips</a> about what this directory should look like/include. If you select <em>“New Directory”</em>, you probably want to select <em>“New Project”</em> on the next option, unless you have something specific in mind (like a <em>“Quarto Book”</em>, which is used for this website!).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-new-project-02.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Creating a new RStudio project - 2</figcaption>
+</figure>
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Everyone should refer to the <a href="./exercise-requirements.html">Exercise Requirements</a> page, particularly the <a href="./exercise-requirements.html#r-packages">R Packages</a> and <a href="./exercise-requirements.html#data-files">Data Files</a> sections to ensure you have the neccessary packages and data files installed for the exercises.</p>
-</div>
-</div>
-<p>Firstly, this workshop requires some prior understanding of the R programming languages, as well as a working installation of R. If you do not have any experience, please refer to the <a href="./install-r.html">Installing R</a> and <a href="./just-enough-rstudio.html">Just Enough RStudio</a> &amp; <a href="./just-enough-r.html">Just Enought R</a> pages of the Pre-Requisites section.</p>
-<p>It is also highly recommended that you read the <a href="./project-management.html">Organizing A Project</a> page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.</p>
-<p>Please set aside about an hour to go through these materials and get set up. You should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it’s worth including some buffer time in case you run into issues. If you are completely new to R, this could take an hour or so, but is certainly worth the time investment: it will be hard to follow some of the exercises if you do not understand what the code is doing.</p>
-</section>
-<section id="tips-about-the-website" class="level2">
-<h2 class="anchored" data-anchor-id="tips-about-the-website">Tips About the Website</h2>
-<p>There are a number of useful features throughout this website to help you.</p>
-<p>Firstly, in sections where there is <code>R</code> code showing, clicking on the text <code>▶ Code</code> above the code block will hide the code if open (the default), or show the code if hidden.</p>
-<p>Secondly, in the top right corner of each code block, there is a button that looks like a clipboard. Clicking this button will copy the code to your clipboard, so you can paste it into your own R session.</p>
-<p>Finally, within the code blocks (and, in fact, in the regular text like this section), functions (e.g.&nbsp;<code>list()</code>, <code>pivot_longer()</code>) that come from a package (i.e., ones we didn’t write) show up in a different color. In most cases, you can hover your cursor over them (on the part next the the parentheses e.g., <code>ode()</code> from the line <code>deSolve::ode()</code>), and if they become underlined, you can click on them to go to the documentation for that function. This is like searching for the documentation from your R console using <code>?ode</code>.</p>
-</section>
-<section id="keywords-code-and-other-formatting" class="level2">
-<h2 class="anchored" data-anchor-id="keywords-code-and-other-formatting">Keywords, Code, and Other Formatting</h2>
-<p>Throughout the book, you’ll see some keywords, code, and other points that I’ll try to delineate with the following formatting:</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This will be a note, and will be used to highlight important points, or to provide additional information.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled" title="SET">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-SET
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This will be an instruction to set certain parameters or values in the R code, or for the interactive plots.</p>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Instruction">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Instruction
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This will be a general instruction.</p>
-</div>
-</div>
+<p>Finally, choose the directory name and location, and you’re in business (you should click the button in the bottom-left corner to <em>“Open in new session”</em> to make sure you’re starting in a fresh environment). From here on out, when you open up a project, all the files you’ve created will be easily accessibly, both from the <em>“Files”</em> pane, as well as using <a href="./project-management.html#here-package">relative paths</a>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -444,95 +378,76 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This will be used to highlight a useful tip.</p>
+<p>To reiterate our comments from the <a href="./project-management.html#project-structure">project organization tips</a> page, it’s useful to have all your project directories in a single location on your computer, and make sure you do not have any spaces in the file or folder names.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This will provide a warning that you may get an unexpected result if you’re not careful.</p>
-</div>
-</div>
-<p>It is worth noting that some of these callouts may be collapsible. You can tell a callout is collapsible if there is a little <code>&gt;</code> or <code>⋁</code> in the top right corner of the callout i.e.,</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>This is an example of a collapsible callout that defaults to being collapsed.</p>
-</div>
-</div>
-</div>
-<ul>
-<li><code>code</code> will be used to highlight code.</li>
-<li><code>{package::function()}</code> will be used to denote a specific package and function, e.g., <code>{dplyr::mutate()}</code> denotes the <code>mutate()</code> function from the <code>{dplyr}</code> package.
-<ul>
-<li>Often the <code>function()</code> will be listed without the package, as there are <code>library()</code> calls at the top of each page indicating the packages used in that page, and the majority of functions will not cause conflicts, i.e., there are not packages with functions of the same name.</li>
-</ul></li>
-<li><strong>Bold</strong> will be used to highlight keywords and phrases, e.g., <strong>Git</strong> or <strong>GitHub</strong>.
-<ul>
-<li><strong>Bold</strong> will also be highlighted in this way, e.g., <strong>commits</strong> or <strong>pushed</strong> being the result of the code <code>git commit</code> or <code>git push</code></li>
-</ul></li>
-<li><strong><em>Bold-italics</em></strong> will be used to highlight file names, e.g., <strong><em>README.md</em></strong> or <strong><em>LICENSE</em></strong>.</li>
-<li><em>Italics</em> will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command.</li>
-</ul>
 </section>
-<section id="about-the-instructors" class="level2">
-<h2 class="anchored" data-anchor-id="about-the-instructors">About the Instructors</h2>
-<div class="container">
-<div class="box" style="--width: 50%">
-<h3 style="margin-top:0px; text-align: center" class="anchored">
-<a href="https://www.weact.org/person/micaela-martinez">Dr.&nbsp;Micaela Martinez</a>
-</h3>
-<p><img src="./images/MicaelaMartinez.jpg" style="width: 100%"></p>
-<p>Dr.&nbsp;Matinez is the Director of Environmental Health at WE ACT for Environmental Justice.</p>
-<p>Dr.&nbsp;Martinez earned her Ph.D.&nbsp;in Ecology &amp; Evolution in 2015 at the University of Michigan, and did her postdoctoral training at Princeton University. Before joining WE ACT, she served as an Assistant Professor at Columbia University Mailman School of Public Health, followed by Emory University, in the Dept. of Biology. Since 2017, Dr.&nbsp;Martinez has been supported by the prestigious NIH Director’s Early Independence Award. Over the past decade, her research has focused on infectious disease ecology, climate change, maternal and infant health, social justice, and environmental impacts on health (including biological rhythms).</p>
-</div>
-<div class="box" style="--width: 50%">
-<h3 style="margin-top:0px; text-align: center" class="anchored">
-<a href="https://www.huck.psu.edu/people/matthew-ferrari">Dr.&nbsp;Matt Ferrari</a>
-</h3>
-<p><img src="./images/MattFerrari.jpg" style="width: 100%"></p>
-<p>Dr.&nbsp;Ferrari is the Director of the Center for Infectious Disease Dynamics at The Pennsylvania State University.</p>
-<p>Dr Ferrari’s lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.</p>
-</div>
-</div>
-<p><br></p>
-<div class="container">
-<div style="width: 25%">
-
-</div>
-<div class="box" style="--width: 50%">
-<h3 style="margin-top:0px; text-align: center" class="anchored">
-<a href="https://callumarnold.com">Callum Arnold</a>
-</h3>
-<p><img src="./images/CallumArnold.jpg" style="width: 100%"></p>
-<p>Callum is a 3rd Year PhD student in Dr.&nbsp;Ferrari’s lab at the Pennsylvania State University.</p>
-<p>Callum’s work examines how the methods used to define groups and differences among individuals affect the understanding and detection of outbreaks.</p>
-</div>
-<div style="width: 25%">
-
-</div>
+<section id="rstudio-keyboard-shortcuts" class="level2">
+<h2 class="anchored" data-anchor-id="rstudio-keyboard-shortcuts">RStudio keyboard shortcuts</h2>
+<p>There are many shortcuts available to RStudio users, but here are the key ones:</p>
+<table class="table-striped table-hover table">
+<caption>RStudio keyboard shortcuts</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Shortcut</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cmd/ctrl + enter</code></td>
+<td>Send the section of code to the console to be run</td>
+</tr>
+<tr class="even">
+<td><code>cmd/ctrl + opt/alt + r</code></td>
+<td>Run all code</td>
+</tr>
+<tr class="odd">
+<td><code>cmd/ctrl + opt/alt + b</code></td>
+<td>Run all code from beginning to selected line</td>
+</tr>
+<tr class="even">
+<td><code>cmd/ctrl + shift + enter</code></td>
+<td>Run current chunk (when within a <code>Rmd</code> or <code>Quarto</code> notebook)</td>
+</tr>
+<tr class="odd">
+<td><code>cmd/ctrl + shift + p</code></td>
+<td>Open the command palette (a place where you can search for different commands)</td>
+</tr>
+<tr class="even">
+<td><code>cmd/ctrl + shift + a</code></td>
+<td>Reformat selected code (useful to help keep things readable)</td>
+</tr>
+<tr class="odd">
+<td><code>cmd/ctrl + shift + c</code></td>
+<td>Comment the selected lines</td>
+</tr>
+<tr class="even">
+<td><code>cmd/ctrl + shift + m</code></td>
+<td>Insert the pipe (<code>%&gt;%</code>) operator (or <code>|&gt;</code> if you have set up RStudio to use the base pipe by default)</td>
+</tr>
+<tr class="odd">
+<td><code>opt/alt + -</code></td>
+<td>Insert the assignment operator (<code>&lt;-</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>The common shortcuts for saving and opening files/selecting all etc. also exist in RStudio with the standard keybindings.</p>
+<p>To see the full list of keyboard shortcuts, you can go to <em>“Tools &gt; Keyboard Shortcuts Help”</em>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-keyboard-shortcuts.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">RStudio keyboard shortcuts</figcaption>
+</figure>
 </div>
 
 
 <!-- -->
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -937,133 +852,70 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./install-r.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Install and Setup R &amp; RStudio</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./exercise-requirements.html" class="pagination-link">
-        <span class="nav-page-text">Exercise Requirements</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./just-enough-r.html" class="pagination-link">
+        <span class="nav-page-text">Just Enough R &amp; RStudio</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu"># **Welcome** {.unnumbered}</span></span>
+<div class="sourceCode" id="cb1" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu"># Just Enough RStudio {.unnumbered}</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>Hello!</span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a>Welcome to this website that accompanies the <span class="co">[</span><span class="ot">2023 Summer Institute in Modeling for Infectious Diseases (SISMID) Module 2: Mathematical Models of Infectious Diseases</span><span class="co">](https://si.biostat.washington.edu/suminst/archives/SISMID2023/MD2302)</span>.</span>
-<span id="cb1-6"><a href="#cb1-6"></a>This website contains both the lecture notes, so you can refer back to them at a later date, and the exercises that we will be completing throughout the module.</span>
+<span id="cb1-3"><a href="#cb1-3"></a>There are a number of features in RStudio that will make your life easier.</span>
+<span id="cb1-4"><a href="#cb1-4"></a>This section aims to highlight a few of them.</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">## RStudio projects</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">## Workshop Pre-Requisites</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a>As there is a reasonable amount of material to cover, and a relatively short amount of time to cover it in, there are some pre-requisite tasks to get set up ahead of the workshop.</span>
-<span id="cb1-11"><a href="#cb1-11"></a></span>
-<span id="cb1-12"><a href="#cb1-12"></a>::: {.callout-important}</span>
-<span id="cb1-13"><a href="#cb1-13"></a>Everyone should refer to the  <span class="co">[</span><span class="ot">Exercise Requirements</span><span class="co">](exercise-requirements.qmd)</span> page, particularly the <span class="co">[</span><span class="ot">R Packages</span><span class="co">](exercise-requirements.qmd#r-packages)</span> and <span class="co">[</span><span class="ot">Data Files</span><span class="co">](exercise-requirements.qmd#data-files)</span> sections to ensure you have the neccessary packages and data files installed for the exercises.</span>
-<span id="cb1-14"><a href="#cb1-14"></a>:::</span>
-<span id="cb1-15"><a href="#cb1-15"></a></span>
-<span id="cb1-16"><a href="#cb1-16"></a>Firstly, this workshop requires some prior understanding of the R programming languages, as well as a working installation of R.</span>
-<span id="cb1-17"><a href="#cb1-17"></a>If you do not have any experience, please refer to the <span class="co">[</span><span class="ot">Installing R</span><span class="co">](install-r.qmd)</span> and <span class="co">[</span><span class="ot">Just Enough RStudio</span><span class="co">](just-enough-rstudio.qmd)</span> &amp; <span class="co">[</span><span class="ot">Just Enought R</span><span class="co">](just-enough-r.qmd)</span> pages of the Pre-Requisites section.</span>
-<span id="cb1-18"><a href="#cb1-18"></a></span>
-<span id="cb1-19"><a href="#cb1-19"></a>It is also highly recommended that you read the <span class="co">[</span><span class="ot">Organizing A Project</span><span class="co">](project-management.qmd)</span> page for how to structure your code as you go through the exercises: we provide some guidelines to make your code easier to understand and navigate, both for yourself, and for others.</span>
-<span id="cb1-20"><a href="#cb1-20"></a></span>
-<span id="cb1-21"><a href="#cb1-21"></a>Please set aside about an hour to go through these materials and get set up.</span>
-<span id="cb1-22"><a href="#cb1-22"></a>You should be able to do this in about 15 minutes if you are already experienced with R, but as with all things computational, it's worth including some buffer time in case you run into issues.</span>
-<span id="cb1-23"><a href="#cb1-23"></a>If you are completely new to R, this could take an hour or so, but is certainly worth the time investment: it will be hard to follow some of the exercises if you do not understand what the code is doing.</span>
+<span id="cb1-8"><a href="#cb1-8"></a>RStudio gives you the ability to turn a directory (that you are hopefully using to contain all your project, as <span class="co">[</span><span class="ot">mentioned in the next section</span><span class="co">](project-management.qmd#project-structure)</span>), into an *RStudio project*.</span>
+<span id="cb1-9"><a href="#cb1-9"></a>One of the benefits of using *RStudio projects* is that you can easily switch between different projects and RStudio will start a new <span class="in">`R`</span> session, meaning that objects you created in your first project won't stick around, causing issues by existing in a place where they shouldn't.</span>
+<span id="cb1-10"><a href="#cb1-10"></a>The other key benefit is that you can use the <span class="in">`{here}`</span> package to create relative file paths, for easier code sharing and increased reproducibility.</span>
+<span id="cb1-11"><a href="#cb1-11"></a>See <span class="co">[</span><span class="ot">this section</span><span class="co">](project-management.qmd#here-package)</span> for more details about the <span class="in">`{here}`</span> package.</span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a>To create a new RStudio projet, simply open up RStudio, and click on the *"Project: (None)"* button in the top right corner.</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="al">![Creating a new RStudio project - 1](./images/RStudio-new-project-01.png)</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>You will then be given the option to create the project in a *"New Directory"*, and *"Existing Directory"*, or from *"Version Control"*.</span>
+<span id="cb1-18"><a href="#cb1-18"></a>If you've already created a project just for this workshop, then select *"Existing Directory"*, otherwise, create a new one.</span>
+<span id="cb1-19"><a href="#cb1-19"></a>If you know about Git, then please feel free to use the last option, but options 1 &amp; 2 are most relevant for new users.</span>
+<span id="cb1-20"><a href="#cb1-20"></a>Either way, we'd recommend reading through our <span class="co">[</span><span class="ot">project organization tips</span><span class="co">](project-management.qmd#project-structure)</span> about what this directory should look like/include.</span>
+<span id="cb1-21"><a href="#cb1-21"></a>If you select *"New Directory"*, you probably want to select *"New Project"* on the next option, unless you have something specific in mind (like a *"Quarto Book"*, which is used for this website!).</span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="al">![Creating a new RStudio project - 2](./images/RStudio-new-project-02.png)</span>{width=70%}</span>
 <span id="cb1-24"><a href="#cb1-24"></a></span>
-<span id="cb1-25"><a href="#cb1-25"></a><span class="fu">## Tips About the Website</span></span>
-<span id="cb1-26"><a href="#cb1-26"></a></span>
-<span id="cb1-27"><a href="#cb1-27"></a>There are a number of useful features throughout this website to help you.</span>
-<span id="cb1-28"><a href="#cb1-28"></a></span>
-<span id="cb1-29"><a href="#cb1-29"></a>Firstly, in sections where there is <span class="in">`R`</span> code showing, clicking on the text <span class="in">`▶ Code`</span> above the code block will hide the code if open (the default), or show the code if hidden.</span>
-<span id="cb1-30"><a href="#cb1-30"></a></span>
-<span id="cb1-31"><a href="#cb1-31"></a>Secondly, in the top right corner of each code block, there is a button that looks like a clipboard.</span>
-<span id="cb1-32"><a href="#cb1-32"></a>Clicking this button will copy the code to your clipboard, so you can paste it into your own R session.</span>
+<span id="cb1-25"><a href="#cb1-25"></a>Finally, choose the directory name and location, and you're in business (you should click the button in the bottom-left corner to *"Open in new session"* to make sure you're starting in a fresh environment).</span>
+<span id="cb1-26"><a href="#cb1-26"></a>From here on out, when you open up a project, all the files you've created will be easily accessibly, both from the *"Files"* pane, as well as using <span class="co">[</span><span class="ot">relative paths</span><span class="co">](project-management.qmd#here-package)</span>.</span>
+<span id="cb1-27"><a href="#cb1-27"></a></span>
+<span id="cb1-28"><a href="#cb1-28"></a>::: {.callout-tip}</span>
+<span id="cb1-29"><a href="#cb1-29"></a>To reiterate our comments from the <span class="co">[</span><span class="ot">project organization tips</span><span class="co">](project-management.qmd#project-structure)</span> page, it's useful to have all your project directories in a single location on your computer, and make sure you do not have any spaces in the file or folder names.</span>
+<span id="cb1-30"><a href="#cb1-30"></a>:::</span>
+<span id="cb1-31"><a href="#cb1-31"></a></span>
+<span id="cb1-32"><a href="#cb1-32"></a><span class="fu">## RStudio keyboard shortcuts</span></span>
 <span id="cb1-33"><a href="#cb1-33"></a></span>
-<span id="cb1-34"><a href="#cb1-34"></a>Finally, within the code blocks (and, in fact, in the regular text like this section), functions (e.g. <span class="in">`list()`</span>, <span class="in">`pivot_longer()`</span>) that come from a package (i.e., ones we didn't write) show up in a different color.</span>
-<span id="cb1-35"><a href="#cb1-35"></a>In most cases, you can hover your cursor over them (on the part next the the parentheses e.g., <span class="in">`ode()`</span> from the line <span class="in">`deSolve::ode()`</span>), and if they become underlined, you can click on them to go to the documentation for that function.</span>
-<span id="cb1-36"><a href="#cb1-36"></a>This is like searching for the documentation from your R console using <span class="in">`?ode`</span>.</span>
-<span id="cb1-37"><a href="#cb1-37"></a></span>
-<span id="cb1-38"><a href="#cb1-38"></a><span class="fu">## Keywords, Code, and Other Formatting</span></span>
-<span id="cb1-39"><a href="#cb1-39"></a></span>
-<span id="cb1-40"><a href="#cb1-40"></a>Throughout the book, you'll see some keywords, code, and other points that I'll try to delineate with the following formatting:</span>
-<span id="cb1-41"><a href="#cb1-41"></a></span>
-<span id="cb1-42"><a href="#cb1-42"></a>::: {.callout-note}</span>
-<span id="cb1-43"><a href="#cb1-43"></a>This will be a note, and will be used to highlight important points, or to provide additional information.</span>
-<span id="cb1-44"><a href="#cb1-44"></a>:::</span>
-<span id="cb1-45"><a href="#cb1-45"></a></span>
-<span id="cb1-46"><a href="#cb1-46"></a>::: {.callout-note title="SET"}</span>
-<span id="cb1-47"><a href="#cb1-47"></a>This will be an instruction to set certain parameters or values in the R code, or for the interactive plots.</span>
-<span id="cb1-48"><a href="#cb1-48"></a>:::</span>
+<span id="cb1-34"><a href="#cb1-34"></a>There are many shortcuts available to RStudio users, but here are the key ones:</span>
+<span id="cb1-35"><a href="#cb1-35"></a></span>
+<span id="cb1-36"><a href="#cb1-36"></a>| Shortcut  | Command |</span>
+<span id="cb1-37"><a href="#cb1-37"></a>|--------|--------|</span>
+<span id="cb1-38"><a href="#cb1-38"></a>| <span class="in">`cmd/ctrl + enter`</span>  | Send the section of code to the console to be run   |</span>
+<span id="cb1-39"><a href="#cb1-39"></a>| <span class="in">`cmd/ctrl + opt/alt + r`</span>  | Run all code |</span>
+<span id="cb1-40"><a href="#cb1-40"></a>| <span class="in">`cmd/ctrl + opt/alt + b`</span>  | Run all code from beginning to selected line |</span>
+<span id="cb1-41"><a href="#cb1-41"></a>| <span class="in">`cmd/ctrl + shift + enter`</span>  | Run current chunk (when within a <span class="in">`Rmd`</span> or <span class="in">`Quarto`</span> notebook) |</span>
+<span id="cb1-42"><a href="#cb1-42"></a>| <span class="in">`cmd/ctrl + shift + p`</span>  | Open the command palette (a place where you can search for different commands) |</span>
+<span id="cb1-43"><a href="#cb1-43"></a>| <span class="in">`cmd/ctrl + shift + a`</span>  | Reformat selected code (useful to help keep things readable) |</span>
+<span id="cb1-44"><a href="#cb1-44"></a>| <span class="in">`cmd/ctrl + shift + c`</span>  | Comment the selected lines |</span>
+<span id="cb1-45"><a href="#cb1-45"></a>| <span class="in">`cmd/ctrl + shift + m`</span>  | Insert the pipe (<span class="in">`%&gt;%`</span>) operator (or <span class="in">`|&gt;`</span> if you have set up RStudio to use the base pipe by default)|</span>
+<span id="cb1-46"><a href="#cb1-46"></a>| <span class="in">`opt/alt + -`</span>  | Insert the assignment operator (<span class="in">`&lt;-`</span>) |</span>
+<span id="cb1-47"><a href="#cb1-47"></a></span>
+<span id="cb1-48"><a href="#cb1-48"></a>: RStudio keyboard shortcuts {.striped .hover tbl-colwidths="<span class="co">[</span><span class="ot">25,75</span><span class="co">]</span>"}</span>
 <span id="cb1-49"><a href="#cb1-49"></a></span>
-<span id="cb1-50"><a href="#cb1-50"></a>::: {.callout-note title="Instruction" appearance="minimal"}</span>
-<span id="cb1-51"><a href="#cb1-51"></a>This will be a general instruction.</span>
-<span id="cb1-52"><a href="#cb1-52"></a>:::</span>
+<span id="cb1-50"><a href="#cb1-50"></a>The common shortcuts for saving and opening files/selecting all etc. also exist in RStudio with the standard keybindings.</span>
+<span id="cb1-51"><a href="#cb1-51"></a></span>
+<span id="cb1-52"><a href="#cb1-52"></a>To see the full list of keyboard shortcuts, you can go to *"Tools &gt; Keyboard Shortcuts Help"*.</span>
 <span id="cb1-53"><a href="#cb1-53"></a></span>
-<span id="cb1-54"><a href="#cb1-54"></a>::: {.callout-tip}</span>
-<span id="cb1-55"><a href="#cb1-55"></a>This will be used to highlight a useful tip.</span>
-<span id="cb1-56"><a href="#cb1-56"></a>:::</span>
-<span id="cb1-57"><a href="#cb1-57"></a></span>
-<span id="cb1-58"><a href="#cb1-58"></a>::: {.callout-warning}</span>
-<span id="cb1-59"><a href="#cb1-59"></a>This will provide a warning that you may get an unexpected result if you're not careful.</span>
-<span id="cb1-60"><a href="#cb1-60"></a>:::</span>
-<span id="cb1-61"><a href="#cb1-61"></a></span>
-<span id="cb1-62"><a href="#cb1-62"></a>It is worth noting that some of these callouts may be collapsible.</span>
-<span id="cb1-63"><a href="#cb1-63"></a>You can tell a callout is collapsible if there is a little <span class="in">`&gt;`</span> or <span class="in">`⋁`</span> in the top right corner of the callout i.e.,</span>
-<span id="cb1-64"><a href="#cb1-64"></a></span>
-<span id="cb1-65"><a href="#cb1-65"></a>::: {.callout-note collapse="true"}</span>
-<span id="cb1-66"><a href="#cb1-66"></a>This is an example of a collapsible callout that defaults to being collapsed.</span>
-<span id="cb1-67"><a href="#cb1-67"></a>:::</span>
-<span id="cb1-68"><a href="#cb1-68"></a></span>
-<span id="cb1-69"><a href="#cb1-69"></a><span class="ss">- </span><span class="in">`code`</span> will be used to highlight code.</span>
-<span id="cb1-70"><a href="#cb1-70"></a><span class="ss">- </span><span class="in">`{package::function()}`</span> will be used to denote a specific package and function, e.g., <span class="in">`{dplyr::mutate()}`</span> denotes the <span class="in">`mutate()`</span> function from the <span class="in">`{dplyr}`</span> package.</span>
-<span id="cb1-71"><a href="#cb1-71"></a><span class="ss">    - </span>Often the <span class="in">`function()`</span> will be listed without the package, as there are <span class="in">`library()`</span> calls at the top of each page indicating the packages used in that page, and the majority of functions will not cause conflicts, i.e., there are not packages with functions of the same name.</span>
-<span id="cb1-72"><a href="#cb1-72"></a><span class="ss">- </span>**Bold** will be used to highlight keywords and phrases, e.g., **Git** or **GitHub**.</span>
-<span id="cb1-73"><a href="#cb1-73"></a><span class="ss">    - </span>**Bold** will also be highlighted in this way, e.g., **commits** or **pushed** being the result of the code <span class="in">`git commit`</span> or <span class="in">`git push`</span> </span>
-<span id="cb1-74"><a href="#cb1-74"></a><span class="ss">- </span>***Bold-italics*** will be used to highlight file names, e.g., ***README.md*** or ***LICENSE***.</span>
-<span id="cb1-75"><a href="#cb1-75"></a><span class="ss">- </span>*Italics* will be used for emphasis in certain circumstances, e.g., signifying a question from an interactive terminal command.</span>
-<span id="cb1-76"><a href="#cb1-76"></a></span>
-<span id="cb1-77"><a href="#cb1-77"></a><span class="fu">## About the Instructors</span></span>
-<span id="cb1-78"><a href="#cb1-78"></a></span>
-<span id="cb1-79"><a href="#cb1-79"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"container"</span><span class="kw">&gt;</span></span>
-<span id="cb1-80"><a href="#cb1-80"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"box"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"--width: 50%"</span><span class="kw">&gt;</span></span>
-<span id="cb1-81"><a href="#cb1-81"></a><span class="kw">&lt;h3</span> <span class="er">style</span><span class="ot">=</span><span class="st">"margin-top:0px; text-align: center"</span><span class="kw">&gt;</span><span class="co">[</span><span class="ot">Dr. Micaela Martinez</span><span class="co">](https://www.weact.org/person/micaela-martinez)</span><span class="kw">&lt;/h3&gt;</span></span>
-<span id="cb1-82"><a href="#cb1-82"></a></span>
-<span id="cb1-83"><a href="#cb1-83"></a><span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"./images/MicaelaMartinez.jpg"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 100%"</span><span class="kw">/&gt;</span></span>
-<span id="cb1-84"><a href="#cb1-84"></a></span>
-<span id="cb1-85"><a href="#cb1-85"></a>Dr. Matinez is the Director of Environmental Health at WE ACT for Environmental Justice.</span>
-<span id="cb1-86"><a href="#cb1-86"></a></span>
-<span id="cb1-87"><a href="#cb1-87"></a>Dr. Martinez earned her Ph.D. in Ecology &amp; Evolution in 2015 at the University of Michigan, and did her postdoctoral training at Princeton University.</span>
-<span id="cb1-88"><a href="#cb1-88"></a>Before joining WE ACT, she served as an Assistant Professor at Columbia University Mailman School of Public Health, followed by Emory University, in the Dept. of Biology.</span>
-<span id="cb1-89"><a href="#cb1-89"></a>Since 2017, Dr. Martinez has been supported by the prestigious NIH Director’s Early Independence Award.</span>
-<span id="cb1-90"><a href="#cb1-90"></a>Over the past decade, her research has focused on infectious disease ecology, climate change, maternal and infant health, social justice, and environmental impacts on health (including biological rhythms). </span>
-<span id="cb1-91"><a href="#cb1-91"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb1-92"><a href="#cb1-92"></a></span>
-<span id="cb1-93"><a href="#cb1-93"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"box"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"--width: 50%"</span><span class="kw">&gt;</span></span>
-<span id="cb1-94"><a href="#cb1-94"></a><span class="kw">&lt;h3</span> <span class="er">style</span><span class="ot">=</span><span class="st">"margin-top:0px; text-align: center"</span><span class="kw">&gt;</span><span class="co">[</span><span class="ot">Dr. Matt Ferrari</span><span class="co">](https://www.huck.psu.edu/people/matthew-ferrari)</span><span class="kw">&lt;/h3&gt;</span></span>
-<span id="cb1-95"><a href="#cb1-95"></a></span>
-<span id="cb1-96"><a href="#cb1-96"></a><span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"./images/MattFerrari.jpg"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 100%"</span><span class="kw">/&gt;</span></span>
-<span id="cb1-97"><a href="#cb1-97"></a></span>
-<span id="cb1-98"><a href="#cb1-98"></a>Dr. Ferrari is the Director of the Center for Infectious Disease Dynamics at The Pennsylvania State University.</span>
-<span id="cb1-99"><a href="#cb1-99"></a></span>
-<span id="cb1-100"><a href="#cb1-100"></a>Dr Ferrari's lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.</span>
-<span id="cb1-101"><a href="#cb1-101"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb1-102"><a href="#cb1-102"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb1-103"><a href="#cb1-103"></a></span>
-<span id="cb1-104"><a href="#cb1-104"></a><span class="kw">&lt;br&gt;</span></span>
-<span id="cb1-105"><a href="#cb1-105"></a></span>
-<span id="cb1-106"><a href="#cb1-106"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"container"</span><span class="kw">&gt;</span></span>
-<span id="cb1-107"><a href="#cb1-107"></a><span class="kw">&lt;div</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 25%"</span><span class="kw">&gt;</span></span>
-<span id="cb1-108"><a href="#cb1-108"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb1-109"><a href="#cb1-109"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"box"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"--width: 50%"</span><span class="kw">&gt;</span></span>
-<span id="cb1-110"><a href="#cb1-110"></a><span class="kw">&lt;h3</span> <span class="er">style</span><span class="ot">=</span><span class="st">"margin-top:0px; text-align: center"</span><span class="kw">&gt;</span><span class="co">[</span><span class="ot">Callum Arnold</span><span class="co">](https://callumarnold.com)</span><span class="kw">&lt;/h3&gt;</span></span>
-<span id="cb1-111"><a href="#cb1-111"></a></span>
-<span id="cb1-112"><a href="#cb1-112"></a><span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"./images/CallumArnold.jpg"</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 100%"</span><span class="kw">/&gt;</span></span>
-<span id="cb1-113"><a href="#cb1-113"></a></span>
-<span id="cb1-114"><a href="#cb1-114"></a>Callum is a 3rd Year PhD student in Dr. Ferrari's lab at the Pennsylvania State University.</span>
-<span id="cb1-115"><a href="#cb1-115"></a></span>
-<span id="cb1-116"><a href="#cb1-116"></a>Callum's work examines how the methods used to define groups and differences among individuals affect the understanding and detection of outbreaks.</span>
-<span id="cb1-117"><a href="#cb1-117"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb1-118"><a href="#cb1-118"></a><span class="kw">&lt;div</span> <span class="er">style</span><span class="ot">=</span><span class="st">"width: 25%"</span><span class="kw">&gt;</span></span>
-<span id="cb1-119"><a href="#cb1-119"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb1-120"><a href="#cb1-120"></a><span class="kw">&lt;/div&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-54"><a href="#cb1-54"></a><span class="al">![RStudio keyboard shortcuts](./images/RStudio-keyboard-shortcuts.png)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -16,6 +16,7 @@ book:
       chapters:
         - exercise-requirements.qmd
         - install-r.qmd
+        - just-enough-rstudio.qmd
         - just-enough-r.qmd
         - project-management.qmd
     - part: "Day 1"
