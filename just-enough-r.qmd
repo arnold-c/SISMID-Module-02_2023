@@ -1,3 +1,10 @@
+---
+format:
+    html:
+        code-fold: false
+        code-line-numbers: false
+---
+
 # Just Enough R & RStudio {.unnumbered}
 
 The purpose of this section is to get you up-to-speed with `R`.
@@ -6,28 +13,289 @@ If you're completely unfamiliar with `R` and RStudio, this should provide you wi
 ## R
 ### The basics
 
+Now you have `R` set installed and you can access it using RStudio, it's time to learn some of the core features of the language (see [below](#rstudio) for details about using RStudio).
+
+::: {.callout-tip}
+We'd strongly recommend you read [Hands-On Programming With R](https://rstudio-education.github.io/hopr) by Garett Grolemund and [R for DataScience](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund for a deeper understanding of the following concepts (and many more).
+:::
+
 #### Object & types
 
-- What is an object
-- Creating objects
-- What are types
-    - element types
-        - numeric/double
-        - ints (not often used in R)
-        - factors
-        - character
-        - string
-        - boolean
-    - object types
-        - vector
-        - list
-        - dataframe
-        - 
+An object is anything you can create in R using code, whether that is a table you import from a **csv** file (that will get converted to a **dataframe**), or a **vector** you create within a script.
+Each object you create has a **type**.
+We've already mentioned two (**dataframes** and **vectors**), but there are plenty more.
+But before we get into object types, let's take a step back and look at types in general, thinking about individual elements and the fundamentals.
 
-#### Indexing vectors, lists, and dataframes
+##### Element types
 
-- How are they different
-    - Main point is vectors vs lists
+Generally in programming, we have two broad types of numbers: **floating point** and **integer** numbers, i.e., numbers with decimals, and whole numbers, respectively.
+In `R`, we have these number types, but a **floating point** number is called a **double**.
+The **floating point** number is the default type `R` assigns to number: look at the types assigned when we leave off a decimal place vs. specify type integer by ending a number with an `L`.
+
+```{r}
+typeof(1)
+typeof(1L)
+```
+
+::: {.callout-note collapse=true}
+Technically type **double** is a subset of type **numeric**, so you will often see people convert numbers to floating points using `as.numeric()`, rather than `as.double()`, but the different is semantics.
+You can confirm this using the command `typeof(as.numeric(10)) == typeof(as.double(10))semantics.
+You can confirm this using the command `typeof(as.numeric(10)) == typeof(as.double(10))`.
+:::
+
+Integer types are not commonly used in `R`, but there are occasions when you will want to use them e.g., when you need whole numbers of people in a simulation you may want to use integers to enforce this.
+Integers are also slightly more precise (unless very big or small), so when exactness in whole number is required, you may want to use integers.
+
+::: {.callout-note collapse=true}
+`R` has some idiosyncrasies when it comes to numbers.
+For the most part, **doubles** are produced, but occasionally an **integer** will be produced when you are expecting a **double**.
+
+For example:
+
+```{r}
+typeof(1)
+typeof(1:10)
+typeof(seq(1, 10))
+typeof(seq(1, 10, by = 1))
+```
+:::
+
+Outside of numbers, we have **characters** (**strings**) and **boolean** types.
+
+A **boolean** (also known as a **logical** in `R`) is a `TRUE/FALSE` statement.
+In `R`, as in many programming languages, `TRUE` is equal to a value of 1, and `FALSE` equals `0`.
+There are times when this comes in handy e.g. you need to calculate the number of people that responded to a question, and their responses is coded as `TRUE/FALSE`, you can just sum the **vector** of responses (more on **vectors** shortly).
+
+
+```{r}
+TRUE == 1
+FALSE == 0
+```
+
+::: {.callout-tip title="Question" appearance="minimal"}
+Can you figure out what value will be returned for the command `(TRUE == 0) == FALSE`?
+:::
+
+A **character** is anything in quotation marks.
+This would typically by letter, but is occasionally a number, or other symbol.
+Other languages make a distinction between **characters** and **strings**, but not `R`.
+
+
+```{r}
+typeof("a")
+typeof("1")
+```
+
+It is important to note that characters are not **parsed** i.e., they are not interpreted by `R` as anything other than a **character**.
+This means that despite `"1"` looking like the number `1`, it behaves like a **character** in `R`, not a **double**, so we can't do addition etc. with it.
+
+
+```{r}
+#| error: true
+"1" + 1
+```
+
+##### Object types
+###### Vectors
+
+As mentioned, anything you can create in `R` is an object.
+For example, we can create an character object with the assignment operator (`<-`).
+
+```{r}
+my_char_obj <- "a"
+```
+
+::: {.callout-note collapse=true}
+In other languages, `=` is used for assignment.
+In `R`, this is generally avoided to distinguish between creating objects (assignment), and specifying argument values (see the [section on functions](#functions)).
+However, despite what some purists may say, it really doesn't matter which one you use, from a practical standpoint.
+:::
+
+You will note that when we created our object, it did not return a value (unlike the previous examples, a value was not printed).
+To retrieve the value of the object (in this case, just print it), we just type out the object name.
+
+```{r}
+my_char_obj
+```
+
+In this case, we just create an object with only one element.
+We can check this using the `length()` function.
+
+```{r}
+length(my_char_obj)
+```
+
+We could also create an **atomic vector** (commonly just called a **vector**, which we'll use from here-on in).
+In fact, `my_char_obj` is actually an **vector**, i.e., it is a vector of length 1, as we've just seen.
+Generally, a **vector** is an object that contains multiple elements that each have the same type.
+
+```{r}
+my_char_vec <- c("a", "b", "c")
+```
+
+As we'll see in the example below, we can give each element in a **vector** a name, and to highlight that vectors must contain elements of the same type, watch what happens here.
+
+```{r}
+my_named_char_vec <- c(a = "a", b = "b", c = "c", d = 1)
+names(my_named_char_vec)
+my_named_char_vec
+```
+
+Because `R` saw the majority of the first elements in the **vector** were of type **character** it **coerced** the number to a **character**.
+This is super important to be aware of, as it can cause errors, particularly when coercion goes in the other direction i.e. trying to create a **numeric vector**.
+
+###### Lists
+
+There is another type of **vector**: the **list**.
+Most people do not refer to **lists** as type of **vectors**, so we will only refer to them as **lists**, and **atomic vectors** will just be referred to as **vectors**.
+
+Unlike **vectors** there are no requirements about the form of **lists** i.e., each element of the **list** can be completely different.
+One element could store a **vector** of numbers, another a model object, another a **dataframe**, and another a **list** (i.e. a nested **list**).
+
+```{r}
+my_list <- list(
+    c(1, 2, 3, 4, 5),
+    glm(mpg ~ ordered(cyl) + disp + hp, data = mtcars),
+    data.frame(column_1 = 1:5, column_2 = 6:10)
+)
+my_named_list <- list(
+    my_vec = c(1, 2, 3, 4, 5),
+    my_model = glm(mpg ~ ordered(cyl) + disp + hp, data = mtcars),
+    my_dataframe = data.frame(column_1 = 1:5, column_2 = 6:10)
+)
+my_list
+my_named_list
+```
+
+Similar to **vectors**, **lists** can be named, or unnamed, and also that we they display in slightly different ways: when unnamed, we get the notation `[[1]] ... [[3]]` to denote the different **list** elements, and with the **named list** we get `$my_vec ... $my_dataframe`.
+It is often useful to name them, though, as it gives you some useful options when it comes to indexing and extracting values later.
+
+::: {.callout-note collapse=true}
+If you're wondering why we are creating our list elements with the `=` operator, that's because we can think of this as an argument in the `list()` function, where the argument name is the name we want the element to have, and the argument value is the element itself.
+:::
+
+###### Dataframes
+
+**Dataframes** are the last key object type to learn about.
+A **dataframe** is technically a special type of list.
+Effectively, it is a 2-D table where every column has to have elements of the same type (i.e., is a **vector**), but the columns can be different types to each other.
+The other important restriction is that all columns must be the same length, i.e. we have a rectangular **dataframe**.
+
+As we've seen before, we can create a dataframe using this code, where `1:5` is shorthand for a vector that contains the sequence of numbers from 1 to 5, inclusive (i.e., `c(1, 2, 3, 4, 5)`).
+We could also write this sequence as `seq(1, 5, by = 1)`, allowing us more control over the steps in the sequence.
+
+```{r}
+my_dataframe <- data.frame(
+    column_int = 1:5,
+    column_dbl = seq(6, 10, 1),
+    column_3 = letters[1:5]
+)
+```
+
+Like with every other object type, we can just type in the **dataframe's** name to return it's value, but this tim, let' explore the *structure* of the **dataframe** using the `str()` function.
+This function can be used on any of the objects we've seen so far, and is particularly helpful when exploring **lists**.
+One nice feature of **dataframes** is that it will explicitly print the columns types.
+
+```{r}
+str(my_dataframe)
+```
+
+###### Matrices
+
+**Matrices** are crucial to many scientific fields, including epidemiology, as they are the basis of linear algebra.
+This course will use **matrix** multiplication extensively (notably [R Session 2](r-session-02.qmd)), so it is worth knowing how to create matrices.
+
+Much like vectors, all elements in a **matrix** should be the same type (or they will be coerced if possible, resulting in `NA` if not).
+It is unusual to have a **non-numeric matrix** e.g., a **character matrix**, but it is possible.
+When we create our **matrix**, notice that it fills column-first, much like how we think of **matrices** in math (i.e., `i` then `j`).
+
+```{r}
+my_matrix <- matrix(1:8, nrow = 2)
+my_matrix
+```
+
+### Indexing objects
+
+We've got our objects, but now we want to do stuff with them.
+Without getting into too much detail about *Object-Oriented Programming* (e.g., the `S3` class system in `R`), there are three mains ways of indexing in `R`:
+
+- The single bracket `[]`
+- The double bracket `[[]]`
+- The dollar sign `$`
+
+Which method we use depends on the type of object we have.
+Handily, `[]` will work for pretty much everything, and we typically only use use `[[]]` for **lists**.
+With both of these methods, we can use the *indices* i.e., the numbered position of the specific values/elements we want to extract, but if we have named objects, we can pass the names to the `[]` in a **vector**.
+
+```{r}
+# Extract elements 1 through 3 inclusively
+my_char_vec[1:3]
+
+# Extract the same elements but using their names in a vector
+my_named_char_vec[c("a", "b", "c")]
+```
+
+Notice that when we index the named **vector** we get *both* the name *and* the value returned.
+Many times this is OK, but if we only wanted the value, then you'd index with `[[]]`, but it is important to note that you can only pass *one* value to the brackets.
+
+```{r}
+#| error: true
+my_named_char_vec[[c("a", "b")]]
+my_named_char_vec[["a"]]
+```
+
+If you're wondering why go through the hassle, it's because values can change position in the list when we update inputs, such as **csv** datafiles, or needing to restructure code to make something else work.
+If we only index with the numeric indices, we run the risk of a silent error being returned i.e., a value is provided to us, but we don't know that it's referring to the wrong thing.
+Indexing with names mean that the element's position in the **vector** doesn't matter, and if it's accidentally been removed when we updated code, and error will be explicitly thrown as it won't be able to find the index.
+
+When it comes to indexing **lists** and **dataframes** (remember, **dataframes** are just special **lists**, so the same methods are available to us), it is more common to use `[[]]` and `$`, though there are obviously occasions when `[]` is useful.
+Let's look at `my_named_list` first.
+
+```{r}
+my_named_list[1]
+my_named_list["my_vec"]
+my_named_list[[1]]
+my_named_list[["my_vec"]]
+my_named_list$my_vec
+```
+
+::: {.callout-note}
+In the examples above, notice how both `[]` methods returned the name of the element as well as the values (as it did before with the named **vector**).
+This is important as it means we need to extract the values from what is returned before we can do any further indexing i.e., to get the value `3` from the **list** element `my_vec`.
+:::
+
+We can do the same with the unnamed **list**, except the last two methods are not available as we do not have a name to use.
+
+```{r}
+my_list[1]
+my_list[[1]]
+```
+
+Because a **dataframe** is a type of list where the column headers are the element names, we can use `[[]]` and `$` as with the named list.
+
+```{r}
+my_dataframe[1]
+my_dataframe[[1]]
+my_dataframe["column_int"]
+my_dataframe$column_int
+```
+
+If we wanted to extract a particular value from a column, we can use the following methods.
+
+```{r}
+# indexes i then j, just like in math
+my_dataframe[2, 1]
+
+# Extract the second element from the first column
+my_dataframe[[1]][2]
+
+# Extract the second element from column_int, using the i, j procedure as before
+my_dataframe[2, "column_int"]
+
+# Extract the second element from column_int
+my_dataframe$column_int[2]
+```
+
 
 #### Packages
 
@@ -114,9 +382,8 @@ There are many shortcuts available to RStudio users, but here are the key ones:
 | `cmd/ctrl + shift + p`  | Open the command palette (a place where you can search for different commands) |
 | `cmd/ctrl + shift + a`  | Reformat selected code (useful to help keep things readable) |
 | `cmd/ctrl + shift + c`  | Comment the selected lines |
-| `cmd/ctrl + shift + m`  | Insert the pipe (`%>%`) operator|
+| `cmd/ctrl + shift + m`  | Insert the pipe (`%>%`) operator (or `|>` if you have set up RStudio to use the base pipe by default)|
 | `opt/alt + -`  | Insert the assignment operator (`<-`) |
-
 
 : RStudio keyboard shortcuts {.striped .hover tbl-colwidths="[25,75]"}
 

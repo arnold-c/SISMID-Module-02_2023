@@ -61,7 +61,6 @@ First, we assume that the epidemic is started by a single infectious individual 
 On average, this individual infects $R_0$ others.
 The probability a particular individual escaped infection is therefore $e^{-R_0 / N}$.
 
-
 If $Z$ individuals have been infected, the probability of an individual escaping infection from all potential sources is $e^{-Z R_0 / N}$.
 It follows that at the end of the epidemic a proportion $R(\infty) = Z / N$ have been infected and the fraction remaining susceptible is $S(\infty) = e^{-R(\infty) R_0}$, which is equal to $2 - R(\infty)$.
 
