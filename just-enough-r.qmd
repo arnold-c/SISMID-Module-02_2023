@@ -158,16 +158,17 @@ Let's use the `mtcars` dataset (that comes installed with `R`), and turn the num
 Don't worry about what `$` is doing; we'll come to that [later](#indexing-objects)
 
 ```{r}
-mtcars$cyl
-mtcars$cyl <- ordered(mtcars$cyl)
-mtcars$cyl
+my_mtcars <- mtcars
+my_mtcars$cyl
+my_mtcars$cyl <- ordered(my_mtcars$cyl)
+my_mtcars$cyl
 ```
 
 If we wanted to directly specify the ordering of the groups, we can do this using the `levels` argument i.e.
 
 ```{r}
-mtcars$cyl <- ordered(mtcars$cyl, levels = c(8, 6, 4))
-mtcars$cyl
+my_mtcars$cyl <- ordered(my_mtcars$cyl, levels = c(8, 6, 4))
+my_mtcars$cyl
 ```
 
 To create a **factor**, just replace the `ordered()` call with `factor()`
@@ -189,7 +190,7 @@ my_list <- list(
 )
 my_named_list <- list(
     my_vec = c(1, 2, 3, 4, 5),
-    my_model = glm(mpg ~ ordered(cyl) + disp + hp, data = mtcars),
+    my_model = glm(mpg ~ ordered(cyl) + disp + hp, data = my_mtcars),
     my_dataframe = data.frame(column_1 = 1:5, column_2 = 6:10)
 )
 my_list
@@ -375,6 +376,8 @@ The easiest way is to place this code at the top of your script.
 # Quotations are not required, but can be used
 library(package to download)
 ```
+
+<a id="namespace-conflict"/>
 
 Most of the time, this is fine, but occasionally you will run in to an issue where a function doesn't work as expected.
 Sometimes this is because of what's called a *namespace conflict* i.e., you have two functions with the same name loaded, and potentially you're using the wrong verion.
@@ -569,6 +572,70 @@ The **tibble** is a modern reincarnation of the **dataframes** that is slightly 
 We will use the terms interchangeably, as most people will just talk about **dataframes**, as for the most part, they can be treated identically.
 Use the same syntax as the `data.frame()` function to create the **tibble**.
 
+### `dplyr::filter()`
+
+If we wanted to take a subset of rows of a **dataframe**, we would use the `dplyr::filter()` function.
+Here, we're listing the package it's coming from, as there are some other packages that also export their own version of the `filter()` function.
+However, for all the code in this workshop, there aren't any concerns about [**namespace conflicts**](#namespace-conflict), so we won't use it from here on in.
+
+The `filter()` function is relatively simple to work with: you specify the **dataframe** variable you want to subset by, the filtering criteria, and that's it.
+If we include multiple arguments, they get treated as *AND* statements (`&`), so all conditions need to be met.
+
+```{r}
+filter(
+    long_df,
+    month == "july",
+    incidence > 410
+    # equivalent to: month == "july" & incidence > 410
+)
+```
+
+We can filter using **OR** statements (`|`), so if either condition returns `TRUE`, then it will be included in the subset.
+
+```{r}
+filter(
+    long_df,
+    month == "july" | incidence > 600
+)
+```
+
+
+### `select()`
+
+If, instead, we wanted to subset of columns of a **dataframe**, we would use the `dplyr::select()` function.
+
+Let's say, from our wide incidence data, we only want the state's ID and their August incidence.
+We can directly select the columns this way.
+
+```{r}
+select(
+    wide_df,
+    state_id, aug_inc
+)
+```
+
+But in this case, it would be more efficient (for us) to tell `R` the columns we *don't* want.
+We can do that using the `-` sign.
+
+```{r}
+select(
+    wide_df,
+    -july_inc
+)
+```
+
+If there were multiple columns we didn't want, we would pass them in a vector.
+
+```{r}
+select(
+    wide_df,
+    -c(july_inc, aug_inc)
+)
+```
+
+When it comes to selecting columns, the `{tidyselect}` package has a few very handy functions for us.
+To understand when they are most useful, let's first look at the `mutate()` function, and then we'll highlight how to use the different column selection functions available to use through `{tidyselect}`.
+
 ### `mutate()`
 
 If we have a **dataframe** and want to add or edit a column, we use the `mutate()` function.
@@ -618,7 +685,7 @@ char_df <- mutate(
 
 char_df
 ```
-### `glue::glue()`
+### `glue::glue()` {#sec-glue}
 
 `glue()` is a function that comes installed with `{tidyverse}`, but is not loaded automatically, so you have to reference it explicitly by either using `library(glue)` or the `::` notation shown below.
 It serves the same purpose as the base `paste0()`, but in a slightly different syntax.
@@ -647,6 +714,110 @@ mutate(
 )
 ```
 
+### `across()`
+
+Above, we were only **mutating** a single column at a time, which is what we often do.
+But, sometimes we want to apply the exact same transformation to multiple columns.
+For example, say we wanted to turn our monthly incidence data into the average weekly incidence.
+We could write out each transformation by hand, but when there are more than two columns, this gets rather tedious and introduces the opportunity for mistakes when copying code (one of our motivations for using functions).
+The `tidyselect::across()` function allows us to specify the columns we want to apply the transformation, and the function (can be named or anonymous), and that's it.
+
+There are a couple of points to understand about the code below:
+
+- Note the `.` preceding the `cols`, `fns`, and `x`
+- Each column is passed to the `.x` value in the function argument
+- `~` is required to pass arguments into the function. In this case it is an anonymous function using the [`map_*()` syntax](#sec-map-functions).
+
+```{r}
+mutate(
+    wide_df,
+    across(
+        .cols = c(july_inc, aug_inc),
+        .fns = ~.x * 7 / 30
+    )
+)
+```
+
+### `everything()`
+
+If we wanted to select every column in a dataframe, we would use the `everything()` function.
+This may not seem helpful initially, but there are occasions when it's very useful.
+For instance, in the previous example we still specified the exact columns we wanted to transform.
+However, if there were five times as many, we wouldn't want to do that.
+Do note that if we replaced this with `everything()`, we would also `mutate()` our `state_id` column, which we probably don't want to do, so we could combine it with the `-` selection seen previously.
+
+### `contains()`
+
+Another very handy function is the `tidyselect::contains()` function.
+This allows us to specify a string that the column names must *contain* for them to be selected.
+We could change the above example to look like this:
+
+```{r}
+mutate(
+    wide_df,
+    across(
+        .cols = contains("_inc"),
+        .fns = ~.x * 7 / 30
+    )
+)
+```
+
+### `rename_with()`
+
+If we wanted to rename columns of a **dataframe**, we can use the `rename()` function.
+However, like the previous `{tidyselect}` examples, sometimes we want to apply the same renaming scheme (function) to the columns.
+`rename_with()` allows us to pass a function to multiple columns at once, achieving what we want with minimal effort, and without needing to use `across()`.
+
+```{r}
+rename_with(
+    wide_df,
+    .cols = contains("_inc"),
+    .fn = ~str_replace_all(.x, "_inc", "_incidence")
+)
+```
+
+::: {.callout-important}
+Hopefully you are noticing a pattern between the `{tidyselect}`-type functions.
+When you need to apply a function to multiple columns in a **dataframe**, you will select the columns with the `.cols` argument, and pass the function to the `.fn(s)` argument with the `~` symbol indicating you are using the `.x` to represent the column in the function (yes, there is a touch of ambiguity between `.fns` and `.fn`, but the general pattern holds).
+This will be useful when we look at the `map_*()` family of functions.
+:::
+
+### `magrittr::%>%`
+The `%>%` operator is an interesting and very useful function that comes installed (and loaded) with the `{tidyverse}` package (technically from the `{magrittr}` package from within the `{tidyverse}`).
+It allows us to chain together operations without needing to create intermediate objects.
+Say for example we have our wide incidence data and want to add data for September before turning it into a **long dataframe**, we could create and intermediate object before using the `pivot_longer()` function from before, but we might not want to create another object that we don't really care about.
+This is when we would want to use a pipe, as it takes the output of one operation and *pipes* it into the next one.
+
+```{r}
+mutate(
+    wide_df,
+    sep_inc = round(aug_inc * 1.2 + rnorm(52, 0, 10), digits = 0)
+    ) %>%
+    pivot_longer(
+        cols = c(july_inc, aug_inc, sep_inc),
+        names_to = "month",
+        values_to = "incidence",
+        names_pattern = "(.*)_inc",
+        data = .
+    )
+```
+
+By default, the previous object gets input into the first argument of the next function, but here we've shown that you can manipulate the position the object is *piped* into by specify the argument using the `.` syntax.
+
+### `|>`
+
+In `R` version 4.1.0, the `|>` was added as the base pipe operator.
+It works slightly differently to `%>%`, and frankly, is less powerful and less common (at the moment), so we won't use it in this workshop.
+
+### `group_by()`
+
+If we have groups in our **dataframe** and want to apply some function to each group's data, we can use the `group_by()` function.
+For example, if we wanted to calculate the mean and median incidence in our fake data from earlier, but group it by the month.
+
+```{r}
+group_by(long_df, month) %>%
+    summarize(mean = mean(incidence), median = median(incidence))
+```
 
 ### `pivot_*()` {#sec-pivot-functions}
 
@@ -663,7 +834,7 @@ pivot_wider(
 )
 ```
 
-Here, the `names_glue` argument is making use of the `glue::glue()` function ([see above](#glue)) that is installed with `{tidyverse}`, but not loaded automatically for use by the users.
+Here, the `names_glue` argument is making use of the `glue::glue()` function ([see above](#sec-glue)) that is installed with `{tidyverse}`, but not loaded automatically for use by the users.
 
 ### `map_*()` {#sec-map-functions}
 
@@ -765,26 +936,77 @@ my_dbl_vec * my_second_dbl_vec
 ```
 :::
 
-### `group_by()`
-
 ### `nest()`
 
-### `dplyr::filter()`
+Nesting is a relatively complex, but powerful, concept, particularly when combined with the `map_*()` functions.
+Commonly, as in this workshop, it is used to apply a model function to multiple different datasets, and store them all in one **dataframe** for easy of manipulation.
+What it effectively does is group your existing **dataframe** by a variable, and then shrink all the columns (except the grouping column), into a single list column, leaving you with as many rows as there are distinct groups.
+Each element of the new list column is itself a small **dataframe** that contains all the original variables and data, but only those that are relevant for the group.
+Hopefully this example will make it clearer.
+Here, we'll take the `mtcars` dataset, and like before, we'll group by the `cyl` variable, but this time we'll nest the rest of the data.
 
-### `select()`
+```{r}
+nested_mtcars <- nest(mtcars, data = -cyl)
+nested_mtcars
+```
 
-### `{tidyselect}`
-#### `across()`
+We can see we've nested all columns, *except* cyl.
+Looking at the `data` column for just the first row (`cyl == 6`), we see we have a list with one item: the rest of the data that's relevant to the rows where `cyl == 6`
 
-#### `everything()`
+```{r}
+nested_mtcars[1, ]$data
+```
 
-### `rename_with()`
+Now we can use `map` to fit a model to this subsetted data.
+
+```{r}
+mutate(
+    nested_mtcars,
+    model_fit = map(data, ~glm(mpg ~ hp + wt + ordered(carb), data = .x))
+)
+```
+
+This creates a **list** column (because we used the `map()` function, which returns a list) that contains the relevant model fits.
+
+::: {.callout-important}
+It is important to note that there is also a function called `nest_by()`.
+However, it also returns a `rowwise` **tibble**, so we would need to use normal `mutate()` syntax (and explicitly return a list column) to get the same effect as before.
+
+```{r}
+nest_by(mtcars, .by = cyl) %>%
+    mutate(model_fit = list(glm(mpg ~ hp + wt + ordered(carb), data = data)))
+```
+:::
+
 
 ### `ggplot()`
 #### `facet_wrap()`
 
-### `magrittr::%>%`
-### `|>`
-
 ### `%*%`
 
+This is the matrix multiplication operator.
+It works exactly as you'd expect given matrix multiplication rules.
+As such, you can use it on any combination of vectors and matrices.
+
+::: {.callout-important}
+As you can see below, `R` treats vectors as dimensionless, and will try to convert it to either a *row* or *column* vector, depending on what makes sense for the matrix multiplication
+:::
+
+```{r}
+my_dbl_vec %*% my_second_dbl_vec
+```
+
+```{r}
+#| error: true
+my_matrix <- matrix(1:60, nrow = 10)
+my_matrix
+my_dbl_vec
+
+my_dbl_vec %*% my_matrix
+
+my_matrix %*% my_dbl_vec
+
+my_matrix %*% t(my_dbl_vec)
+
+t(my_matrix) %*% my_dbl_vec
+```
