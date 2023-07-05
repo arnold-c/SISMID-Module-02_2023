@@ -1599,6 +1599,19 @@ Note
 <span id="cb30-28"><a href="#cb30-28"></a>    <span class="fu">unnest</span>(<span class="fu">c</span>(data, predictions))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An important point to note is that our data is biweekly <strong>incidence</strong> (new cases in time period), whereas out SIR model produces <strong>prevalence</strong> (total cases at any time point), so we are not actually fitting the same types of data! This is a common source of error in interpretation when people fit models to data. We are doing this here purely for simplicity’s sake - in practice you would want to convert the simulation output to incidence to fit based on incidence!</p>
+</div>
+</div>
 <div class="cell page-columns page-full" data-hash="r-session-03_cache/html/unnamed-chunk-30_e609bac49022b77e1be507e29795b799">
 <details open=""><summary>Code</summary><div class="sourceCode cell-code" id="cb31" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Create a dataframe to store the positions of the text labels</span></span>
 <span id="cb31-2"><a href="#cb31-2"></a>niamey_preds_labels <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
@@ -2712,83 +2725,89 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb32-673"><a href="#cb32-673"></a>    <span class="fu">unnest</span>(<span class="fu">c</span>(data, predictions))</span>
 <span id="cb32-674"><a href="#cb32-674"></a><span class="in">```</span></span>
 <span id="cb32-675"><a href="#cb32-675"></a></span>
-<span id="cb32-678"><a href="#cb32-678"></a><span class="in">```{r}</span></span>
-<span id="cb32-679"><a href="#cb32-679"></a><span class="co">#| column: body</span></span>
-<span id="cb32-680"><a href="#cb32-680"></a><span class="co">#| out-width: 100%</span></span>
-<span id="cb32-681"><a href="#cb32-681"></a><span class="co"># Create a dataframe to store the positions of the text labels</span></span>
-<span id="cb32-682"><a href="#cb32-682"></a>niamey_preds_labels <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb32-683"><a href="#cb32-683"></a>    <span class="at">site =</span> <span class="fu">c</span>(<span class="st">"Site_3"</span>, <span class="st">"Site_2"</span>),</span>
-<span id="cb32-684"><a href="#cb32-684"></a>    <span class="at">x_label =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="fl">6.5</span>),</span>
-<span id="cb32-685"><a href="#cb32-685"></a>    <span class="at">x_arrow_just =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="sc">-</span><span class="fl">0.5</span>),</span>
-<span id="cb32-686"><a href="#cb32-686"></a>    <span class="at">x_arrow_end =</span> <span class="fu">c</span>(<span class="fl">8.8</span>, <span class="fl">7.75</span>),</span>
-<span id="cb32-687"><a href="#cb32-687"></a>    <span class="at">y_label =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">600</span>),</span>
-<span id="cb32-688"><a href="#cb32-688"></a>    <span class="at">y_arrow_just =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">15</span>, <span class="sc">-</span><span class="dv">70</span>),</span>
-<span id="cb32-689"><a href="#cb32-689"></a>    <span class="at">y_arrow_end =</span> <span class="fu">c</span>(<span class="dv">29</span>, <span class="dv">290</span>),</span>
-<span id="cb32-690"><a href="#cb32-690"></a>    <span class="at">commentary =</span> <span class="fu">c</span>(<span class="st">"**Observed"</span>, <span class="st">"**Predicted"</span>),</span>
-<span id="cb32-691"><a href="#cb32-691"></a>    <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"grey20"</span>, niamey_site_colors[<span class="st">"Site_2"</span>])</span>
-<span id="cb32-692"><a href="#cb32-692"></a>)</span>
-<span id="cb32-693"><a href="#cb32-693"></a></span>
-<span id="cb32-694"><a href="#cb32-694"></a><span class="fu">ggplot</span>(niamey_predictions, <span class="fu">aes</span>(<span class="at">x =</span> biweek, <span class="at">group =</span> site)) <span class="sc">+</span></span>
-<span id="cb32-695"><a href="#cb32-695"></a>    <span class="co"># Plot the actual data in color</span></span>
-<span id="cb32-696"><a href="#cb32-696"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> cases, <span class="at">color =</span> site)) <span class="sc">+</span></span>
-<span id="cb32-697"><a href="#cb32-697"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> cases, <span class="at">color =</span> site), <span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb32-698"><a href="#cb32-698"></a>    <span class="co"># Plot the best-fit model predictions in black</span></span>
-<span id="cb32-699"><a href="#cb32-699"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> I), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb32-700"><a href="#cb32-700"></a>    <span class="fu">scale_color_manual</span>(</span>
-<span id="cb32-701"><a href="#cb32-701"></a>        <span class="at">values =</span> niamey_site_colors, <span class="at">aesthetics =</span> <span class="fu">c</span>(<span class="st">"color"</span>, <span class="st">"fill"</span>)</span>
-<span id="cb32-702"><a href="#cb32-702"></a>    ) <span class="sc">+</span></span>
-<span id="cb32-703"><a href="#cb32-703"></a>    <span class="co"># Place each site on it's own subplot and change labels</span></span>
-<span id="cb32-704"><a href="#cb32-704"></a>    <span class="fu">facet_wrap</span>(</span>
-<span id="cb32-705"><a href="#cb32-705"></a>        <span class="sc">~</span>site, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_y"</span>,</span>
-<span id="cb32-706"><a href="#cb32-706"></a>        <span class="at">labeller =</span> <span class="fu">as_labeller</span>(niamey_site_labels)</span>
-<span id="cb32-707"><a href="#cb32-707"></a>    ) <span class="sc">+</span></span>
-<span id="cb32-708"><a href="#cb32-708"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Biweek"</span>, <span class="at">y =</span> <span class="st">"Number of Case"</span>) <span class="sc">+</span></span>
-<span id="cb32-709"><a href="#cb32-709"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb32-710"><a href="#cb32-710"></a>    ggtext<span class="sc">::</span><span class="fu">geom_textbox</span>(</span>
-<span id="cb32-711"><a href="#cb32-711"></a>        <span class="at">data =</span> niamey_preds_labels,</span>
-<span id="cb32-712"><a href="#cb32-712"></a>        <span class="fu">aes</span>(</span>
-<span id="cb32-713"><a href="#cb32-713"></a>            <span class="at">label =</span> <span class="fu">paste0</span>(</span>
-<span id="cb32-714"><a href="#cb32-714"></a>                <span class="st">"&lt;span style = </span><span class="sc">\"</span><span class="st">color:"</span>,</span>
-<span id="cb32-715"><a href="#cb32-715"></a>                color,</span>
-<span id="cb32-716"><a href="#cb32-716"></a>                <span class="st">"</span><span class="sc">\"</span><span class="st">&gt;"</span>,</span>
-<span id="cb32-717"><a href="#cb32-717"></a>                commentary,</span>
-<span id="cb32-718"><a href="#cb32-718"></a>                <span class="st">" Cases**"</span>,</span>
-<span id="cb32-719"><a href="#cb32-719"></a>                <span class="st">"&lt;/span&gt;"</span></span>
-<span id="cb32-720"><a href="#cb32-720"></a>            ),</span>
-<span id="cb32-721"><a href="#cb32-721"></a>            <span class="at">x =</span> x_label, <span class="at">y =</span> y_label</span>
-<span id="cb32-722"><a href="#cb32-722"></a>        ),</span>
-<span id="cb32-723"><a href="#cb32-723"></a>        <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">box.colour =</span> <span class="cn">NA</span></span>
-<span id="cb32-724"><a href="#cb32-724"></a>    ) <span class="sc">+</span></span>
-<span id="cb32-725"><a href="#cb32-725"></a>    <span class="fu">geom_curve</span>(</span>
-<span id="cb32-726"><a href="#cb32-726"></a>        <span class="at">data =</span> niamey_preds_labels,</span>
-<span id="cb32-727"><a href="#cb32-727"></a>        <span class="fu">aes</span>(</span>
-<span id="cb32-728"><a href="#cb32-728"></a>            <span class="at">x =</span> x_label <span class="sc">+</span> x_arrow_just, <span class="at">xend =</span> x_arrow_end,</span>
-<span id="cb32-729"><a href="#cb32-729"></a>            <span class="at">y =</span> y_label <span class="sc">+</span> y_arrow_just, <span class="at">yend =</span> y_arrow_end</span>
-<span id="cb32-730"><a href="#cb32-730"></a>        ),</span>
-<span id="cb32-731"><a href="#cb32-731"></a>        <span class="at">linewidth =</span> <span class="fl">0.75</span>,</span>
-<span id="cb32-732"><a href="#cb32-732"></a>        <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>, <span class="st">"cm"</span>)),</span>
-<span id="cb32-733"><a href="#cb32-733"></a>        <span class="at">curvature =</span> <span class="fu">list</span>(<span class="fl">0.25</span>),</span>
-<span id="cb32-734"><a href="#cb32-734"></a>        <span class="at">color =</span> <span class="st">"grey20"</span></span>
-<span id="cb32-735"><a href="#cb32-735"></a>    )</span>
-<span id="cb32-736"><a href="#cb32-736"></a><span class="in">```</span></span>
-<span id="cb32-737"><a href="#cb32-737"></a></span>
-<span id="cb32-738"><a href="#cb32-738"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"exercise"</span><span class="kw">&gt;</span></span>
-<span id="cb32-739"><a href="#cb32-739"></a></span>
-<span id="cb32-740"><a href="#cb32-740"></a><span class="fu">### Exercise 5 </span></span>
-<span id="cb32-741"><a href="#cb32-741"></a></span>
-<span id="cb32-742"><a href="#cb32-742"></a><span class="kw">&lt;/div&gt;</span></span>
+<span id="cb32-676"><a href="#cb32-676"></a>::: {.callout-important}</span>
+<span id="cb32-677"><a href="#cb32-677"></a>An important point to note is that our data is biweekly **incidence** (new cases in time period), whereas out SIR model produces **prevalence** (total cases at any time point), so we are not actually fitting the same types of data!</span>
+<span id="cb32-678"><a href="#cb32-678"></a>This is a common source of error in interpretation when people fit models to data.</span>
+<span id="cb32-679"><a href="#cb32-679"></a>We are doing this here purely for simplicity's sake - in practice you would want to convert the simulation output to incidence to fit based on incidence!</span>
+<span id="cb32-680"><a href="#cb32-680"></a>:::</span>
+<span id="cb32-681"><a href="#cb32-681"></a></span>
+<span id="cb32-684"><a href="#cb32-684"></a><span class="in">```{r}</span></span>
+<span id="cb32-685"><a href="#cb32-685"></a><span class="co">#| column: body</span></span>
+<span id="cb32-686"><a href="#cb32-686"></a><span class="co">#| out-width: 100%</span></span>
+<span id="cb32-687"><a href="#cb32-687"></a><span class="co"># Create a dataframe to store the positions of the text labels</span></span>
+<span id="cb32-688"><a href="#cb32-688"></a>niamey_preds_labels <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb32-689"><a href="#cb32-689"></a>    <span class="at">site =</span> <span class="fu">c</span>(<span class="st">"Site_3"</span>, <span class="st">"Site_2"</span>),</span>
+<span id="cb32-690"><a href="#cb32-690"></a>    <span class="at">x_label =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="fl">6.5</span>),</span>
+<span id="cb32-691"><a href="#cb32-691"></a>    <span class="at">x_arrow_just =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="sc">-</span><span class="fl">0.5</span>),</span>
+<span id="cb32-692"><a href="#cb32-692"></a>    <span class="at">x_arrow_end =</span> <span class="fu">c</span>(<span class="fl">8.8</span>, <span class="fl">7.75</span>),</span>
+<span id="cb32-693"><a href="#cb32-693"></a>    <span class="at">y_label =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">600</span>),</span>
+<span id="cb32-694"><a href="#cb32-694"></a>    <span class="at">y_arrow_just =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">15</span>, <span class="sc">-</span><span class="dv">70</span>),</span>
+<span id="cb32-695"><a href="#cb32-695"></a>    <span class="at">y_arrow_end =</span> <span class="fu">c</span>(<span class="dv">29</span>, <span class="dv">290</span>),</span>
+<span id="cb32-696"><a href="#cb32-696"></a>    <span class="at">commentary =</span> <span class="fu">c</span>(<span class="st">"**Observed"</span>, <span class="st">"**Predicted"</span>),</span>
+<span id="cb32-697"><a href="#cb32-697"></a>    <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"grey20"</span>, niamey_site_colors[<span class="st">"Site_2"</span>])</span>
+<span id="cb32-698"><a href="#cb32-698"></a>)</span>
+<span id="cb32-699"><a href="#cb32-699"></a></span>
+<span id="cb32-700"><a href="#cb32-700"></a><span class="fu">ggplot</span>(niamey_predictions, <span class="fu">aes</span>(<span class="at">x =</span> biweek, <span class="at">group =</span> site)) <span class="sc">+</span></span>
+<span id="cb32-701"><a href="#cb32-701"></a>    <span class="co"># Plot the actual data in color</span></span>
+<span id="cb32-702"><a href="#cb32-702"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> cases, <span class="at">color =</span> site)) <span class="sc">+</span></span>
+<span id="cb32-703"><a href="#cb32-703"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> cases, <span class="at">color =</span> site), <span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb32-704"><a href="#cb32-704"></a>    <span class="co"># Plot the best-fit model predictions in black</span></span>
+<span id="cb32-705"><a href="#cb32-705"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> I), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb32-706"><a href="#cb32-706"></a>    <span class="fu">scale_color_manual</span>(</span>
+<span id="cb32-707"><a href="#cb32-707"></a>        <span class="at">values =</span> niamey_site_colors, <span class="at">aesthetics =</span> <span class="fu">c</span>(<span class="st">"color"</span>, <span class="st">"fill"</span>)</span>
+<span id="cb32-708"><a href="#cb32-708"></a>    ) <span class="sc">+</span></span>
+<span id="cb32-709"><a href="#cb32-709"></a>    <span class="co"># Place each site on it's own subplot and change labels</span></span>
+<span id="cb32-710"><a href="#cb32-710"></a>    <span class="fu">facet_wrap</span>(</span>
+<span id="cb32-711"><a href="#cb32-711"></a>        <span class="sc">~</span>site, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_y"</span>,</span>
+<span id="cb32-712"><a href="#cb32-712"></a>        <span class="at">labeller =</span> <span class="fu">as_labeller</span>(niamey_site_labels)</span>
+<span id="cb32-713"><a href="#cb32-713"></a>    ) <span class="sc">+</span></span>
+<span id="cb32-714"><a href="#cb32-714"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Biweek"</span>, <span class="at">y =</span> <span class="st">"Number of Case"</span>) <span class="sc">+</span></span>
+<span id="cb32-715"><a href="#cb32-715"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb32-716"><a href="#cb32-716"></a>    ggtext<span class="sc">::</span><span class="fu">geom_textbox</span>(</span>
+<span id="cb32-717"><a href="#cb32-717"></a>        <span class="at">data =</span> niamey_preds_labels,</span>
+<span id="cb32-718"><a href="#cb32-718"></a>        <span class="fu">aes</span>(</span>
+<span id="cb32-719"><a href="#cb32-719"></a>            <span class="at">label =</span> <span class="fu">paste0</span>(</span>
+<span id="cb32-720"><a href="#cb32-720"></a>                <span class="st">"&lt;span style = </span><span class="sc">\"</span><span class="st">color:"</span>,</span>
+<span id="cb32-721"><a href="#cb32-721"></a>                color,</span>
+<span id="cb32-722"><a href="#cb32-722"></a>                <span class="st">"</span><span class="sc">\"</span><span class="st">&gt;"</span>,</span>
+<span id="cb32-723"><a href="#cb32-723"></a>                commentary,</span>
+<span id="cb32-724"><a href="#cb32-724"></a>                <span class="st">" Cases**"</span>,</span>
+<span id="cb32-725"><a href="#cb32-725"></a>                <span class="st">"&lt;/span&gt;"</span></span>
+<span id="cb32-726"><a href="#cb32-726"></a>            ),</span>
+<span id="cb32-727"><a href="#cb32-727"></a>            <span class="at">x =</span> x_label, <span class="at">y =</span> y_label</span>
+<span id="cb32-728"><a href="#cb32-728"></a>        ),</span>
+<span id="cb32-729"><a href="#cb32-729"></a>        <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">box.colour =</span> <span class="cn">NA</span></span>
+<span id="cb32-730"><a href="#cb32-730"></a>    ) <span class="sc">+</span></span>
+<span id="cb32-731"><a href="#cb32-731"></a>    <span class="fu">geom_curve</span>(</span>
+<span id="cb32-732"><a href="#cb32-732"></a>        <span class="at">data =</span> niamey_preds_labels,</span>
+<span id="cb32-733"><a href="#cb32-733"></a>        <span class="fu">aes</span>(</span>
+<span id="cb32-734"><a href="#cb32-734"></a>            <span class="at">x =</span> x_label <span class="sc">+</span> x_arrow_just, <span class="at">xend =</span> x_arrow_end,</span>
+<span id="cb32-735"><a href="#cb32-735"></a>            <span class="at">y =</span> y_label <span class="sc">+</span> y_arrow_just, <span class="at">yend =</span> y_arrow_end</span>
+<span id="cb32-736"><a href="#cb32-736"></a>        ),</span>
+<span id="cb32-737"><a href="#cb32-737"></a>        <span class="at">linewidth =</span> <span class="fl">0.75</span>,</span>
+<span id="cb32-738"><a href="#cb32-738"></a>        <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>, <span class="st">"cm"</span>)),</span>
+<span id="cb32-739"><a href="#cb32-739"></a>        <span class="at">curvature =</span> <span class="fu">list</span>(<span class="fl">0.25</span>),</span>
+<span id="cb32-740"><a href="#cb32-740"></a>        <span class="at">color =</span> <span class="st">"grey20"</span></span>
+<span id="cb32-741"><a href="#cb32-741"></a>    )</span>
+<span id="cb32-742"><a href="#cb32-742"></a><span class="in">```</span></span>
 <span id="cb32-743"><a href="#cb32-743"></a></span>
-<span id="cb32-744"><a href="#cb32-744"></a>To make things easier, we have assumed the infectious period is known to be 14 days.</span>
-<span id="cb32-745"><a href="#cb32-745"></a>In terms of years, $\text{D} = \frac{14}{365} \approx 0.0384$, and the recovery rate is the inverse i.e., $\gamma = \frac{14}{365}$.</span>
-<span id="cb32-746"><a href="#cb32-746"></a>Now, modify the code above to estimate $\gamma$ and $\beta$ simultaneously.</span>
+<span id="cb32-744"><a href="#cb32-744"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"exercise"</span><span class="kw">&gt;</span></span>
+<span id="cb32-745"><a href="#cb32-745"></a></span>
+<span id="cb32-746"><a href="#cb32-746"></a><span class="fu">### Exercise 5 </span></span>
 <span id="cb32-747"><a href="#cb32-747"></a></span>
-<span id="cb32-748"><a href="#cb32-748"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"exercise"</span><span class="kw">&gt;</span></span>
+<span id="cb32-748"><a href="#cb32-748"></a><span class="kw">&lt;/div&gt;</span></span>
 <span id="cb32-749"><a href="#cb32-749"></a></span>
-<span id="cb32-750"><a href="#cb32-750"></a><span class="fu">### Exercise 6  </span></span>
-<span id="cb32-751"><a href="#cb32-751"></a></span>
-<span id="cb32-752"><a href="#cb32-752"></a><span class="kw">&lt;/div&gt;</span></span>
+<span id="cb32-750"><a href="#cb32-750"></a>To make things easier, we have assumed the infectious period is known to be 14 days.</span>
+<span id="cb32-751"><a href="#cb32-751"></a>In terms of years, $\text{D} = \frac{14}{365} \approx 0.0384$, and the recovery rate is the inverse i.e., $\gamma = \frac{14}{365}$.</span>
+<span id="cb32-752"><a href="#cb32-752"></a>Now, modify the code above to estimate $\gamma$ and $\beta$ simultaneously.</span>
 <span id="cb32-753"><a href="#cb32-753"></a></span>
-<span id="cb32-754"><a href="#cb32-754"></a>What happens if one or both of the other unknowns ($S_0$ and $I_0$) is fixed instead of $\gamma$?</span>
+<span id="cb32-754"><a href="#cb32-754"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"exercise"</span><span class="kw">&gt;</span></span>
+<span id="cb32-755"><a href="#cb32-755"></a></span>
+<span id="cb32-756"><a href="#cb32-756"></a><span class="fu">### Exercise 6  </span></span>
+<span id="cb32-757"><a href="#cb32-757"></a></span>
+<span id="cb32-758"><a href="#cb32-758"></a><span class="kw">&lt;/div&gt;</span></span>
+<span id="cb32-759"><a href="#cb32-759"></a></span>
+<span id="cb32-760"><a href="#cb32-760"></a>What happens if one or both of the other unknowns ($S_0$ and $I_0$) is fixed instead of $\gamma$?</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
