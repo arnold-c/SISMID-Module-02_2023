@@ -652,7 +652,7 @@ niamey_preds_labels <- tibble(
     y_label = c(110, 600),
     y_arrow_just = c(-15, -70),
     y_arrow_end = c(29, 290),
-    commentary = c("**Observed", "**Predicted"),
+    commentary = c("**Predicted", "**Observed"),
     color = c("grey20", niamey_site_colors["Site_2"])
 )
 
