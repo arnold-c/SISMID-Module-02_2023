@@ -10,8 +10,9 @@ format:
 The purpose of this section is to get you up-to-speed with `R`.
 If you're completely unfamiliar with `R` and RStudio, this should provide you with enough to get started and understand what's going on in the code (and you can always refer back to this page if you understandably get a little lost), and if you have some experience, then it should provide a sufficient description of the packages and functions that we use in this workshop.
 
-
 Now you have `R` set installed and you can access it using RStudio, it's time to learn some of the core features of the language (see [below](#rstudio) for details about using RStudio).
+
+<a id="suggested-reading"/>
 
 ::: {.callout-tip}
 We'd strongly recommend you read [Hands-On Programming With R](https://rstudio-education.github.io/hopr) by Garett Grolemund and [R for DataScience](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund for a deeper understanding of the following concepts (and many more).
@@ -951,7 +952,7 @@ nested_mtcars
 ```
 
 We can see we've nested all columns, *except* cyl.
-Looking at the `data` column for just the first row (`cyl == 6`), we see we have a list with one item: the rest of the data that's relevant to the rows where `cyl == 6`
+Looking at the `data` column for just the first row (`cyl == 6`), we see we have a list with one item: the rest of the data that's relevant to the rows where `cyl == 6` (notice the `[[1]]` above the **tibble**).
 
 ```{r}
 nested_mtcars[1, ]$data
@@ -980,7 +981,133 @@ nest_by(mtcars, .by = cyl) %>%
 
 
 ### `ggplot()`
-#### `facet_wrap()`
+
+To create out plots, we can use the base `plot()` functions, but `{ggplot2}` package provides a clean and consistent interface to plotting that has many benefits.
+In essence, plots are built up in layers, with each stacking on top of the previous.
+
+To initialize a plot, we simply use the `ggplot()` function call, that creates the background of a figure.
+Now we need to add data, and **geoms** to interpret that data.
+
+Let's use the `mtcars` dataset again.
+
+```{r}
+mtcars
+```
+
+Looking at the data, we might be interested in how the `mpg` of a car is affected by it horsepower (`hp`).
+To add data, we just use the `ggplot()` function argument `data = mtcars`.
+We also need to tell `ggplot()` how to map the data points to the figure, i.e., the values for the `x` and `y` axes.
+
+**Because this depends on the underlying data, this must go within an argument called `aes()` i.e., `aes(x = hp, y = mpg)`**.
+
+To add a layer to show the data, we add a **geom**.
+In this case, because we have continuous independent and dependent variables, we could use the `geom_point()` **geom**, that will give us a scatter plot.
+Much like basic arithmetic, we *add* layers using the `+` operator.
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(data = mtcars, aes(x = hp, y = mpg)) +
+    geom_point()
+```
+
+Now let's imagine we wanted to explore this relationship, but separated by engine type (the `vs` column).
+We can use color to separate these points.
+Because this is an argument that depends on the underlying data, again, this must be placed *within* `aes()`.
+
+```{r}
+#| column: body
+#| out-width: 100%
+ggplot(data = mtcars, aes(x = hp, y = mpg, color = vs)) +
+    geom_point()
+```
+
+What you'll notice here is that despite `vs` being a binary choice, because it is of type **double**, `ggplot()` interprets this as a number, so provides a continuous color scale.
+To correct this, let's convert `vs` into a factor before plotting.
+
+```{r}
+#| column: body
+#| out-width: 100%
+mtcars %>%
+    mutate(vs = factor(vs)) %>%
+    ggplot(aes(x = hp, y = mpg, color = vs)) +
+    geom_point()
+```
+
+We can change the theme by layering in more information, as we did with the other plotting layers.
+Here, let's change the background to white, and add some different colors.
+We'll also change the size of the points.
+
+```{r}
+#| column: body
+#| out-width: 100%
+mtcars %>%
+    mutate(vs = factor(vs)) %>%
+    ggplot(aes(x = hp, y = mpg, color = vs)) +
+    geom_point(size = 5) +
+    theme_minimal() +
+    # We don't need to specify the relationship between the levels and the colors
+    # and labels, but it means we're less likely to make a mistake in interpretation
+    # and labelling
+    scale_color_manual(
+        values = c("0" = "#6b3df5ff", "1" = "#f5c13cff"),
+        labels = c("0" = "V-Shaped", "1" = "Straight")
+    )
+```
+
+Imagine we wanted to use one more grouping: automatic vs manual transmission (`am`).
+Rather than adding yet another color, we could do something called a `facet_wrap()`, which creates separate panels for each group.
+Adding this to a `ggplot()` is very easy - it's just another `+` operation!
+As before, we will add labels for easier interpretation.
+
+```{r}
+#| column: body
+#| out-width: 100%
+mtcars %>%
+    mutate(vs = factor(vs)) %>%
+    ggplot(aes(x = hp, y = mpg, color = vs)) +
+    geom_point(size = 5) +
+    theme_minimal() +
+    # We don't need to specify the relationship between the levels and the colors
+    # and labels, but it means we're less likely to make a mistake in interpretation
+    # and labelling
+    scale_color_manual(
+        values = c("0" = "#6b3df5ff", "1" = "#f5c13cff"),
+        labels = c("0" = "V-Shaped", "1" = "Straight")
+    ) +
+    facet_wrap(~am, labeller = as_labeller(c("0" = "Automatic", "1" = "Manual")))
+```
+
+This is looking much better, but we might want to add a line to show the trends within the groups.
+Again, this is as simple as adding another layer.
+One thing to note about the plot below, because we specified the `data` and `aes()` arguments in the original `ggplot()` function call, those data relationships will also be applied to our new **geom**.
+We could just as easily write them within the `geom_*()` explicitly, but then we would have to do that for each `geom_*()` in our plot, which is unnecessary when they all have the same data relationships.
+To demonstrate this, let's also make a small modification so that only the points are colored, and the lines are all red.
+To do that, we will remove `color = vs` from the global `aes()`, and add it to one specific to `geom_point()`.
+But because we still want to fit a linear model to the different engine types (`vs`) separately, we will add `group = vs` to the `geom_smooth(aes(), ...)` call, to let `ggplot()` know to treat them as separate groups for the `geom_smooth()`
+Because the line color doesn't depend on the data, it is not in an `aes()` argument call.
+
+```{r}
+#| column: body
+#| out-width: 100%
+mtcars %>%
+    mutate(vs = factor(vs)) %>%
+    ggplot(aes(x = hp, y = mpg)) +
+    geom_point(aes(color = vs), size = 5) +
+    geom_smooth(aes(group = vs), color = "red", method = "lm") +
+    theme_minimal() +
+    # We don't need to specify the relationship between the levels and the colors
+    # and labels, but it means we're less likely to make a mistake in interpretation
+    # and labelling
+    scale_color_manual(
+        values = c("0" = "#6b3df5ff", "1" = "#f5c13cff"),
+        labels = c("0" = "V-Shaped", "1" = "Straight")
+    ) +
+    facet_wrap(~am, labeller = as_labeller(c("0" = "Automatic", "1" = "Manual")))
+```
+
+As you can see, once you get used to it, the layering system makes it relatively intuitive to build complex and interesting plots.
+We've only stratched the surface here, so be sure to read the [suggested books](#suggested-reading) and the [`{ggplot2}` cheatsheet](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf) for more information.
 
 ### `%*%`
 
