@@ -327,7 +327,7 @@ viewof reset = Inputs.button([
 ])
 viewof S0 = Inputs.range(
     [500, 15000],
-    {value: reset_S, step: 50, label: md`${tex`S(0)`}`}
+    {value: reset_S, step: 1, label: md`${tex`S(0)`}`}
 )
 
 viewof I0 = Inputs.range(
@@ -576,6 +576,13 @@ niamey_optims %>%
     opt_horizontal_padding(scale = 3) %>%
     cols_align("center")
 ```
+
+::: {.callout-note}
+You may have noticed that you can achieve slightly different results for the optimal parameter values using the interactive plot than are being presented here (though they are very similar).
+This is because while the optimization code is running in `R`, the interactive plot and the calculation of the SSE is implemented using JavaScript.
+Therefore, despite using the same underlying model structure, the answers will vary slightly, because the ODE solvers are different, resulting in different model simulations.
+The difference is not enough to be concerned with here, but it is a point that's worth being aware of when you build your own models - you may want to perform sensitivity to confirm that your model implementation is not driving the magnitude of the results you see, and the inferences you make.
+:::
 
 ```{r}
 niamey_predictions <- niamey_optims %>%
