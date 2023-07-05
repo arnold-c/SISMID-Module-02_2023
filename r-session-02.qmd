@@ -1690,7 +1690,7 @@ To start, let's write out our differential equation:
 $\mathbf{v}$ doesn't have any state terms in the equation, so it is already evaluated at $\text{dfe}$.
 $\mathbf{f}|_{\text{dfe}}$ involves subsituting $S_i$ for the equilibrium population distribution that balances the births and aging processes.
 
-This translates to the function we [defined earlier](#ngm-function)
+This translates to the function we [defined earlier](#ngm-function).
 
 ### Mean age of infection `R` code {#sec-mean-age-r-code}
 
