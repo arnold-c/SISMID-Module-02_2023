@@ -1016,8 +1016,8 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 3]
 state_id int 1 2 3 4 5 6
-july_inc int 396 407 396 425 410 414
-aug_inc  int 609 608 593 573 608 592</code></pre>
+july_inc int 415 378 392 390 412 387
+aug_inc  int 588 569 597 617 600 591</code></pre>
 </div>
 </div>
 <p>Instead, we reshape this into a <strong>long dataframe</strong> so that there is a column for the state ID, a column for the month, and a column for the incidence (that is associated with <em>both</em> the state <em>and</em> the month). Using the <a href="https://tidyr.tidyverse.org">tidyr</a> package, we could reshape this <strong>wide dataframe</strong> to be a <strong>long dataframe</strong> (see <a href="#sec-pivot-functions">this section</a> for more information about the <code>pivot_*()</code> functions)</p>
@@ -1038,7 +1038,7 @@ aug_inc  int 609 608 593 573 608 592</code></pre>
 <pre data-code-line-numbers=""><code>tibble [104, 3]
 state_id  int 1 1 2 2 3 3
 month     chr july aug july aug july aug
-incidence int 396 609 407 608 396 593</code></pre>
+incidence int 415 588 378 569 392 597</code></pre>
 </div>
 </div>
 <p>You will notice that our new dataframe contains three columns still, but is longer than previously; two time as long, in fact.</p>
@@ -1090,10 +1090,10 @@ Note
 <span>    <span class="co"># equivalent to: month == "july" &amp; incidence &gt; 410</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code>tibble [10, 3]
-state_id  int 4 6 18 23 30 42
+<pre data-code-line-numbers=""><code>tibble [12, 3]
+state_id  int 1 5 13 16 29 30
 month     chr july july july july july july
-incidence int 425 414 419 417 417 422</code></pre>
+incidence int 415 412 424 413 419 411</code></pre>
 </div>
 </div>
 <p>We can filter using <strong>OR</strong> statements (<code>|</code>), so if either condition returns <code>TRUE</code>, then it will be included in the subset.</p>
@@ -1103,10 +1103,10 @@ incidence int 425 414 419 417 417 422</code></pre>
 <span>    <span class="va">month</span> <span class="op">==</span> <span class="st">"july"</span> <span class="op">|</span> <span class="va">incidence</span> <span class="op">&gt;</span> <span class="fl">600</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code>tibble [81, 3]
-state_id  int 1 1 2 2 3 4
-month     chr july aug july aug july july
-incidence int 396 609 407 608 396 425</code></pre>
+<pre data-code-line-numbers=""><code>tibble [80, 3]
+state_id  int 1 2 3 4 4 5
+month     chr july july july july aug july
+incidence int 415 378 392 390 617 412</code></pre>
 </div>
 </div>
 </section><section id="select" class="level3"><h3 class="anchored" data-anchor-id="select"><code>select()</code></h3>
@@ -1120,7 +1120,7 @@ incidence int 396 609 407 608 396 425</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 2]
 state_id int 1 2 3 4 5 6
-aug_inc  int 609 608 593 573 608 592</code></pre>
+aug_inc  int 588 569 597 617 600 591</code></pre>
 </div>
 </div>
 <p>But in this case, it would be more efficient (for us) to tell <code>R</code> the columns we <em>don’t</em> want. We can do that using the <code>-</code> sign.</p>
@@ -1132,7 +1132,7 @@ aug_inc  int 609 608 593 573 608 592</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 2]
 state_id int 1 2 3 4 5 6
-aug_inc  int 609 608 593 573 608 592</code></pre>
+aug_inc  int 588 569 597 617 600 591</code></pre>
 </div>
 </div>
 <p>If there were multiple columns we didn’t want, we would pass them in a vector.</p>
@@ -1158,9 +1158,9 @@ state_id int 1 2 3 4 5 6</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 4]
 state_id int 1 2 3 4 5 6
-july_inc int 396 407 396 425 410 414
-aug_inc  int 609 608 593 573 608 592
-sep_inc  dbl 729 737 725 685 723 702</code></pre>
+july_inc int 415 378 392 390 412 387
+aug_inc  int 588 569 597 617 600 591
+sep_inc  dbl 704 679 728 746 705 704</code></pre>
 </div>
 <div class="sourceCode" id="cb123" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># add random September incidence</span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
@@ -1170,9 +1170,9 @@ sep_inc  dbl 729 737 725 685 723 702</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 4]
 state_id int 1 2 3 4 5 6
-july_inc int 396 407 396 425 410 414
-aug_inc  int 609 608 593 573 608 592
-sep_inc  int 695 701 703 693 714 681</code></pre>
+july_inc int 415 378 392 390 412 387
+aug_inc  int 588 569 597 617 600 591
+sep_inc  int 719 707 699 688 684 678</code></pre>
 </div>
 </div>
 <p>If we wanted to update a column, we can do that by specifying the column on both sides of the equals sign.</p>
@@ -1185,8 +1185,8 @@ sep_inc  int 695 701 703 693 714 681</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 3]
 state_id int 1 2 3 4 5 6
-july_inc int 396 407 396 425 410 414
-aug_inc  dbl 607 604 577 582 616 593</code></pre>
+july_inc int 415 378 392 390 412 387
+aug_inc  dbl 588 588 586 618 595 580</code></pre>
 </div>
 </div>
 <p>One crucial thing to note is that <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> applies our function/operation to each row simultaneously, so the new column’s value only depends on the <em>row’s</em> original values (or the vector in the case of the second example that didn’t use the values from the data).</p>
@@ -1205,7 +1205,7 @@ aug_inc  dbl 607 604 577 582 616 593</code></pre>
 <pre data-code-line-numbers=""><code>tibble [104, 3]
 state_id  chr state_1 state_1 state_2 state_2 state_3 state_3
 month     chr july aug july aug july aug
-incidence int 396 609 407 608 396 593</code></pre>
+incidence int 415 588 378 569 392 597</code></pre>
 </div>
 </div>
 </section><section id="sec-glue" class="level3"><h3 class="anchored" data-anchor-id="sec-glue"><code>glue::glue()</code></h3>
@@ -1221,7 +1221,7 @@ incidence int 396 609 407 608 396 593</code></pre>
 <pre data-code-line-numbers=""><code>tibble [104, 3]
 state_id  chr state_1 state_1 state_2 state_2 state_3 state_3
 month     chr july aug july aug july aug
-incidence int 396 609 407 608 396 593</code></pre>
+incidence int 415 588 378 569 392 597</code></pre>
 </div>
 </div>
 </section><section id="str_replace_all" class="level3"><h3 class="anchored" data-anchor-id="str_replace_all"><code>str_replace_all()</code></h3>
@@ -1236,7 +1236,7 @@ incidence int 396 609 407 608 396 593</code></pre>
 <pre data-code-line-numbers=""><code>tibble [104, 4]
 state_id       chr state_1 state_1 state_2 state_2 state_3 state_3
 month          chr july aug july aug july aug
-incidence      int 396 609 407 608 396 593
+incidence      int 415 588 378 569 392 597
 clean_state_id chr 1 1 2 2 3 3</code></pre>
 </div>
 </div>
@@ -1261,8 +1261,8 @@ clean_state_id chr 1 1 2 2 3 3</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 3]
 state_id int 1 2 3 4 5 6
-july_inc dbl 92.4 94.966667 92.4 99.166667 95.666667 96.6
-aug_inc  dbl 142.1 141.866667 138.366667 133.7 141.866667 138.133333</code></pre>
+july_inc dbl 96.833333 88.2 91.466667 91 96.133333 90.3
+aug_inc  dbl 137.2 132.766667 139.3 143.966667 140 137.9</code></pre>
 </div>
 </div>
 </section><section id="everything" class="level3"><h3 class="anchored" data-anchor-id="everything"><code>everything()</code></h3>
@@ -1280,8 +1280,8 @@ aug_inc  dbl 142.1 141.866667 138.366667 133.7 141.866667 138.133333</code></pre
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 3]
 state_id int 1 2 3 4 5 6
-july_inc dbl 92.4 94.966667 92.4 99.166667 95.666667 96.6
-aug_inc  dbl 142.1 141.866667 138.366667 133.7 141.866667 138.133333</code></pre>
+july_inc dbl 96.833333 88.2 91.466667 91 96.133333 90.3
+aug_inc  dbl 137.2 132.766667 139.3 143.966667 140 137.9</code></pre>
 </div>
 </div>
 </section><section id="rename_with" class="level3"><h3 class="anchored" data-anchor-id="rename_with"><code>rename_with()</code></h3>
@@ -1295,8 +1295,8 @@ aug_inc  dbl 142.1 141.866667 138.366667 133.7 141.866667 138.133333</code></pre
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>data.frame [52, 3]
 state_id       int 1 2 3 4 5 6
-july_incidence int 396 407 396 425 410 414
-aug_incidence  int 609 608 593 573 608 592</code></pre>
+july_incidence int 415 378 392 390 412 387
+aug_incidence  int 588 569 597 617 600 591</code></pre>
 </div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -1330,7 +1330,7 @@ Important
 <pre data-code-line-numbers=""><code>tibble [156, 3]
 state_id  int 1 1 1 2 2 2
 month     chr july aug sep july aug sep
-incidence dbl 396 609 718 407 608 740</code></pre>
+incidence dbl 415 588 712 378 569 683</code></pre>
 </div>
 </div>
 <p>By default, the previous object gets input into the first argument of the next function, but here we’ve shown that you can manipulate the position the object is <em>piped</em> into by specify the argument using the <code>.</code> syntax.</p>
@@ -1344,8 +1344,8 @@ incidence dbl 396 609 718 407 608 740</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>tibble [2, 3]
 month  chr aug july
-mean   dbl 600.365385 398.634615
-median dbl 601.5 398.5</code></pre>
+mean   dbl 601.961538 398.75
+median dbl 602.5 399</code></pre>
 </div>
 </div>
 </section><section id="sec-pivot-functions" class="level3"><h3 class="anchored" data-anchor-id="sec-pivot-functions"><code>pivot_*()</code></h3>
@@ -1360,8 +1360,8 @@ median dbl 601.5 398.5</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>tibble [52, 3]
 state_id int 1 2 3 4 5 6
-july_inc int 396 407 396 425 410 414
-aug_inc  int 609 608 593 573 608 592</code></pre>
+july_inc int 415 378 392 390 412 387
+aug_inc  int 588 569 597 617 600 591</code></pre>
 </div>
 </div>
 <p>Here, the <code>names_glue</code> argument is making use of the <code><a href="https://glue.tidyverse.org/reference/glue.html">glue::glue()</a></code> function (<a href="#sec-glue">see above</a>) that is installed with <a href="https://tidyverse.tidyverse.org">tidyverse</a>, but not loaded automatically for use by the users.</p>
@@ -1440,8 +1440,8 @@ divide_ten   dbl 0.1 0.2 0.3 0.4 0.5 0.6</code></pre>
 <span><span class="va">my_second_dbl_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">my_dbl_vec</span><span class="op">)</span>, <span class="fl">20</span>, <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="va">my_second_dbl_vec</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code> [1] 12.979198 27.946345 36.557893 15.085330 85.973460  1.615478 34.285937
- [8] 18.496920 27.329521 15.585563</code></pre>
+<pre data-code-line-numbers=""><code> [1]   8.419314  43.545524   1.264063   8.340100  56.061453 -20.173278
+ [7]  -8.867562   7.976201  45.321283  -7.873282</code></pre>
 </div>
 <div class="sourceCode" id="cb153" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Remind ourselves what our original vector looks like</span></span>
 <span><span class="va">my_dbl_vec</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1455,8 +1455,8 @@ divide_ten   dbl 0.1 0.2 0.3 0.4 0.5 0.6</code></pre>
 <span>    <span class="op">}</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code> [1]  12.979198  55.892689 109.673679  60.341320 429.867302   9.692868
- [7] 240.001561 147.975359 245.965690 155.855628</code></pre>
+<pre data-code-line-numbers=""><code> [1]    8.419314   87.091049    3.792190   33.360398  280.307265 -121.039670
+ [7]  -62.072932   63.809607  407.891547  -78.732821</code></pre>
 </div>
 </div>
 <p>There are a couple of important points to note here:</p>
@@ -1482,8 +1482,8 @@ Note
 <div class="cell" data-hash="just-enough-r_cache/html/unnamed-chunk-54_23ff0d7af3f2fecf1b527a208b411726">
 <div class="sourceCode" id="cb157"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_dbl_vec</span> <span class="op">*</span> <span class="va">my_second_dbl_vec</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  12.979198  55.892689 109.673679  60.341320 429.867302   9.692868
- [7] 240.001561 147.975359 245.965690 155.855628</code></pre>
+<pre><code> [1]    8.419314   87.091049    3.792190   33.360398  280.307265 -121.039670
+ [7]  -62.072932   63.809607  407.891547  -78.732821</code></pre>
 </div>
 </div>
 </div>
@@ -1685,7 +1685,7 @@ Important
 <div class="sourceCode" id="cb176" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_dbl_vec</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">my_second_dbl_vec</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre data-code-line-numbers=""><code>         [,1]
-[1,] 1468.245</code></pre>
+[1,] 622.8259</code></pre>
 </div>
 </div>
 <div class="cell" data-hash="just-enough-r_cache/html/unnamed-chunk-67_df43c2a2b4e7db75ea5758edaac93897">
