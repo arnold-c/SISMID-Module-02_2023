@@ -15,7 +15,7 @@ If you want to get more in-depth, there are some suggested readings at the end t
 There are many ways to structure a project, but we would recommend that each project has its own folder (directory), and all your project directories sit in a single place.
 For example, you could have a directory called ***Repos*** that holds all of your projects.
 That way, when you want to find a specific project, it's easy and in one place.
-As part of this, we recommend you read the section about [RStudio projects](just-enough-r.qmd#rstudio-projects).
+As part of this, we recommend you read the section about [RStudio projects](just-enough-rstudio.qmd#rstudio-projects).
 
 ::: {.callout-important}
 It is crucial that this folder does not live in a cloud-synced folder e.g., in OneDrive.

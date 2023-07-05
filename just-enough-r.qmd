@@ -10,7 +10,7 @@ format:
 The purpose of this section is to get you up-to-speed with `R`.
 If you're completely unfamiliar with `R` and RStudio, this should provide you with enough to get started and understand what's going on in the code (and you can always refer back to this page if you understandably get a little lost), and if you have some experience, then it should provide a sufficient description of the packages and functions that we use in this workshop.
 
-Now you have `R` set installed and you can access it using RStudio, it's time to learn some of the core features of the language (see [below](#rstudio) for details about using RStudio).
+Now you have `R` set installed and you can access it and are familiar with RStudio, it's time to learn some of the core features of the language.
 
 <a id="suggested-reading"/>
 
@@ -390,6 +390,8 @@ Because `{dplyr}` was loaded after `{stats}` was loaded (because `{stats}` is au
 If we wanted to specifically use the `{stats}` version, we could write this:
 
 ```{r}
+#| column: body
+#| out-width: 100%
 # Create a cosine wave with random noise
 raw_timeseries <- cos(pi * seq(-2, 2, length.out = 1000)) + rnorm(1000, sd = 0.5)
 
@@ -971,7 +973,7 @@ This creates a **list** column (because we used the `map()` function, which retu
 
 ::: {.callout-important}
 It is important to note that there is also a function called `nest_by()`.
-However, it also returns a `rowwise` **tibble**, so we would need to use normal `mutate()` syntax (and explicitly return a list column) to get the same effect as before.
+However, it  returns a `rowwise` **tibble**, i.e., any later manipulations will be applied on a row-by-row basis, unlike a standard **tibble** that applies the manipulation to every row all at once, so we would need to use normal `mutate()` syntax (and explicitly return a list column) to get the same effect as before.
 
 ```{r}
 nest_by(mtcars, .by = cyl) %>%
@@ -1116,7 +1118,7 @@ It works exactly as you'd expect given matrix multiplication rules.
 As such, you can use it on any combination of vectors and matrices.
 
 ::: {.callout-important}
-As you can see below, `R` treats vectors as dimensionless, and will try to convert it to either a *row* or *column* vector, depending on what makes sense for the matrix multiplication
+As you can see below, `R` treats vectors as dimensionless, and will try to convert it to *either* a row *or* column vector, depending on what makes sense for the matrix multiplication
 :::
 
 ```{r}

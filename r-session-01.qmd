@@ -400,7 +400,7 @@ Sometimes that is unavoidable (e.g., you had to look up how to do a particular t
 
 
 As you're going through the code, if you don't understand what a particular function does, try looking up the documentation for it!
-You can do this by clicking on the function within the website (as described [above](#quarto-tips)), or by typing `?function_name` into the R console (Google also is your friend here!).
+You can do this by clicking on the function within the website (as described [in the intro](index.qmd#tips-about-the-website)), or by typing `?function_name` into the R console (Google also is your friend here!).
 
 ### Adding in demographics {#sec-ex-add-demographics}
 
