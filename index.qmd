@@ -66,6 +66,13 @@ You can tell a callout is collapsible if there is a little `>` or `⋁` in the t
 This is an example of a collapsible callout that defaults to being collapsed.
 :::
 
+<div class="exercise">
+<p style="font-size:18pt; font-weight: bold">Exercise:</p>
+
+**Exercises that require you to complete missing sections of code, or answer a question, will be highlighted like this in [R Session 2](r-session-02.qmd) and [R Session 3](r-session-03.qmd)**
+</div>
+
+
 - `code` will be used to highlight code.
 - `{package::function()}` will be used to denote a specific package and function, e.g., `{dplyr::mutate()}` denotes the `mutate()` function from the `{dplyr}` package.
     - Often the `function()` will be listed without the package, as there are `library()` calls at the top of each page indicating the packages used in that page, and the majority of functions will not cause conflicts, i.e., there are not packages with functions of the same name.
