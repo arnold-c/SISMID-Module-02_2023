@@ -1177,21 +1177,6 @@ If you've done everything correctly, you should get $R_0 =$ `r update_age_R0`.
 This is higher than previously.
 Does this match your intuition, given our changes to the beta matrix?
 
-:::{.callout-warning}
-The following is Aaron's original code which provides slightly different results.
-:::
-
-```{r}
-F_mat <- diag(update_age_equil_n) %*% update_age_beta_mat +
-    update_age_params[["aging_mat"]] -
-    diag(diag(update_age_params[["aging_mat"]]))
-
-V_mat <- diag(update_age_params[["recovery"]] - diag(update_age_params[["aging_mat"]]))
-
-# R0 approximately 6.53
-max(Re(eigen(solve(V_mat, F_mat), only.values = TRUE)$values))
-```
-
 ## R0 and the Mean Age of Infection
 
 To develop some intuition about the relationship between $R_0$ and the mean age of infection, let's play with an interactive plot.
@@ -1589,24 +1574,6 @@ round(tail(multistage_sonly_pop$pop, 1)) == sum(multistage_stable_n)
 
 The following lines then compute $R_0$ using the next generation matrix method.
 This calculation comes from a recipe described in detail previously [@diekmann2000mathematical; @heesterbeekBriefHistoryR02002; @bjornstadAdvancedNextGenerationMatrix2018; @heffernanPerspectivesBasicReproductive2005; @hurfordNextgenerationToolsEvolutionary2009] (we would recommend starting with [@bjornstadAdvancedNextGenerationMatrix2018; and @heffernanPerspectivesBasicReproductive2005]).
-
-::: {.callout-warning}
-This is Aaron's original code and gives slightly different results than the calculations below.
-:::
-
-```{r}
-F_mat <- diag(multistage_stable_n) %*% multistage_params[["beta_mat"]] +
-    multistage_params[["aging_mat"]] -
-    diag(diag(multistage_params[["aging_mat"]]))
-
-V_mat <- diag(multistage_params[["recovery"]] - diag(multistage_params[["aging_mat"]]))
-
-max(
-    Re(
-        eigen(solve(V_mat, F_mat), only.values = TRUE)$values
-    )
-)
-```
 
 The steps below are copied from [@bjornstadAdvancedNextGenerationMatrix2018]
 
