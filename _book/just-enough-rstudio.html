@@ -8,7 +8,7 @@
 
 <meta name="author" content="Callum Arnold">
 
-<title>SISMID Module 2 Materials (2023) - The Basics of R</title>
+<title>SISMID Module 2 Materials (2023) - Just Enough RStudio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./project-management.html" rel="next">
+<link href="./just-enough-r.html" rel="next">
 <link href="./install-r.html" rel="prev">
 <link href="././images/sismid2023-logo-green.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -112,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./exercise-requirements.html">Pre-Requisites</a></li><li class="breadcrumb-item"><a href="./basics-of-r.html">The Basics of R</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./exercise-requirements.html">Pre-Requisites</a></li><li class="breadcrumb-item"><a href="./just-enough-rstudio.html">Just Enough RStudio</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -132,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="./">SISMID Module 2 Materials (2023)</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/arnold-c/SISMID-02_2023" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/arnold-c/SISMID-Module-02_2023" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
@@ -173,19 +173,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./install-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install R</span></a>
+ <span class="menu-text">Install and Setup R &amp; RStudio</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./basics-of-r.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">The Basics of R</span></a>
+  <a href="./just-enough-rstudio.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Just Enough RStudio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./just-enough-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Just Enough R</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project-management.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Setting Up A Project</span></a>
+ <span class="menu-text">Organizing A Project</span></a>
   </div>
 </li>
       </ul>
@@ -301,14 +307,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Page Items</h2>
+   
+  <ul>
+  <li><a href="#rstudio-projects" id="toc-rstudio-projects" class="nav-link active" data-scroll-target="#rstudio-projects">RStudio projects</a></li>
+  <li><a href="#rstudio-keyboard-shortcuts" id="toc-rstudio-keyboard-shortcuts" class="nav-link" data-scroll-target="#rstudio-keyboard-shortcuts">RStudio keyboard shortcuts</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-Module-02_2023/edit/main/just-enough-rstudio.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">The Basics of R</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Just Enough RStudio</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -336,10 +349,106 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p>There are a number of features in RStudio that will make your life easier. This section aims to highlight a few of them.</p>
+<section id="rstudio-projects" class="level2">
+<h2 class="anchored" data-anchor-id="rstudio-projects">RStudio projects</h2>
+<p>RStudio gives you the ability to turn a directory (that you are hopefully using to contain all your project, as <a href="./project-management.html#project-structure">mentioned in the next section</a>), into an <em>RStudio project</em>. One of the benefits of using <em>RStudio projects</em> is that you can easily switch between different projects and RStudio will start a new <code>R</code> session, meaning that objects you created in your first project won’t stick around, causing issues by existing in a place where they shouldn’t. The other key benefit is that you can use the <code>{here}</code> package to create relative file paths, for easier code sharing and increased reproducibility. See <a href="./project-management.html#here-package">this section</a> for more details about the <code>{here}</code> package.</p>
+<p>To create a new RStudio projet, simply open up RStudio, and click on the <em>“Project: (None)”</em> button in the top right corner.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-new-project-01.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Creating a new RStudio project - 1</figcaption>
+</figure>
+</div>
+<p>You will then be given the option to create the project in a <em>“New Directory”</em>, and <em>“Existing Directory”</em>, or from <em>“Version Control”</em>. If you’ve already created a project just for this workshop, then select <em>“Existing Directory”</em>, otherwise, create a new one. If you know about Git, then please feel free to use the last option, but options 1 &amp; 2 are most relevant for new users. Either way, we’d recommend reading through our <a href="./project-management.html#project-structure">project organization tips</a> about what this directory should look like/include. If you select <em>“New Directory”</em>, you probably want to select <em>“New Project”</em> on the next option, unless you have something specific in mind (like a <em>“Quarto Book”</em>, which is used for this website!).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-new-project-02.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Creating a new RStudio project - 2</figcaption>
+</figure>
+</div>
+<p>Finally, choose the directory name and location, and you’re in business (you should click the button in the bottom-left corner to <em>“Open in new session”</em> to make sure you’re starting in a fresh environment). From here on out, when you open up a project, all the files you’ve created will be easily accessibly, both from the <em>“Files”</em> pane, as well as using <a href="./project-management.html#here-package">relative paths</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To reiterate our comments from the <a href="./project-management.html#project-structure">project organization tips</a> page, it’s useful to have all your project directories in a single location on your computer, and make sure you do not have any spaces in the file or folder names.</p>
+</div>
+</div>
+</section>
+<section id="rstudio-keyboard-shortcuts" class="level2">
+<h2 class="anchored" data-anchor-id="rstudio-keyboard-shortcuts">RStudio keyboard shortcuts</h2>
+<p>There are many shortcuts available to RStudio users, but here are the key ones:</p>
+<table class="table-striped table-hover table">
+<caption>RStudio keyboard shortcuts</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Shortcut</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cmd/ctrl + enter</code></td>
+<td>Send the section of code to the console to be run</td>
+</tr>
+<tr class="even">
+<td><code>cmd/ctrl + opt/alt + r</code></td>
+<td>Run all code</td>
+</tr>
+<tr class="odd">
+<td><code>cmd/ctrl + opt/alt + b</code></td>
+<td>Run all code from beginning to selected line</td>
+</tr>
+<tr class="even">
+<td><code>cmd/ctrl + shift + enter</code></td>
+<td>Run current chunk (when within a <code>Rmd</code> or <code>Quarto</code> notebook)</td>
+</tr>
+<tr class="odd">
+<td><code>cmd/ctrl + shift + p</code></td>
+<td>Open the command palette (a place where you can search for different commands)</td>
+</tr>
+<tr class="even">
+<td><code>cmd/ctrl + shift + a</code></td>
+<td>Reformat selected code (useful to help keep things readable)</td>
+</tr>
+<tr class="odd">
+<td><code>cmd/ctrl + shift + c</code></td>
+<td>Comment the selected lines</td>
+</tr>
+<tr class="even">
+<td><code>cmd/ctrl + shift + m</code></td>
+<td>Insert the pipe (<code>%&gt;%</code>) operator (or <code>|&gt;</code> if you have set up RStudio to use the base pipe by default)</td>
+</tr>
+<tr class="odd">
+<td><code>opt/alt + -</code></td>
+<td>Insert the assignment operator (<code>&lt;-</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>The common shortcuts for saving and opening files/selecting all etc. also exist in RStudio with the standard keybindings.</p>
+<p>To see the full list of keyboard shortcuts, you can go to <em>“Tools &gt; Keyboard Shortcuts Help”</em>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RStudio-keyboard-shortcuts.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">RStudio keyboard shortcuts</figcaption>
+</figure>
+</div>
 
 
 <!-- -->
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -744,20 +853,73 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./install-r.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Install R</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Install and Setup R &amp; RStudio</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./project-management.html" class="pagination-link">
-        <span class="nav-page-text">Setting Up A Project</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./just-enough-r.html" class="pagination-link">
+        <span class="nav-page-text">Just Enough R</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu"># The Basics of R {.unnumbered}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1" data-shortcodes="false" data-code-line-numbers=""><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu"># Just Enough RStudio {.unnumbered}</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>There are a number of features in RStudio that will make your life easier.</span>
+<span id="cb1-4"><a href="#cb1-4"></a>This section aims to highlight a few of them.</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">## RStudio projects</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a>RStudio gives you the ability to turn a directory (that you are hopefully using to contain all your project, as <span class="co">[</span><span class="ot">mentioned in the next section</span><span class="co">](project-management.qmd#project-structure)</span>), into an *RStudio project*.</span>
+<span id="cb1-9"><a href="#cb1-9"></a>One of the benefits of using *RStudio projects* is that you can easily switch between different projects and RStudio will start a new <span class="in">`R`</span> session, meaning that objects you created in your first project won't stick around, causing issues by existing in a place where they shouldn't.</span>
+<span id="cb1-10"><a href="#cb1-10"></a>The other key benefit is that you can use the <span class="in">`{here}`</span> package to create relative file paths, for easier code sharing and increased reproducibility.</span>
+<span id="cb1-11"><a href="#cb1-11"></a>See <span class="co">[</span><span class="ot">this section</span><span class="co">](project-management.qmd#here-package)</span> for more details about the <span class="in">`{here}`</span> package.</span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a>To create a new RStudio projet, simply open up RStudio, and click on the *"Project: (None)"* button in the top right corner.</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="al">![Creating a new RStudio project - 1](./images/RStudio-new-project-01.png)</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>You will then be given the option to create the project in a *"New Directory"*, and *"Existing Directory"*, or from *"Version Control"*.</span>
+<span id="cb1-18"><a href="#cb1-18"></a>If you've already created a project just for this workshop, then select *"Existing Directory"*, otherwise, create a new one.</span>
+<span id="cb1-19"><a href="#cb1-19"></a>If you know about Git, then please feel free to use the last option, but options 1 &amp; 2 are most relevant for new users.</span>
+<span id="cb1-20"><a href="#cb1-20"></a>Either way, we'd recommend reading through our <span class="co">[</span><span class="ot">project organization tips</span><span class="co">](project-management.qmd#project-structure)</span> about what this directory should look like/include.</span>
+<span id="cb1-21"><a href="#cb1-21"></a>If you select *"New Directory"*, you probably want to select *"New Project"* on the next option, unless you have something specific in mind (like a *"Quarto Book"*, which is used for this website!).</span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="al">![Creating a new RStudio project - 2](./images/RStudio-new-project-02.png)</span>{width=70%}</span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a>Finally, choose the directory name and location, and you're in business (you should click the button in the bottom-left corner to *"Open in new session"* to make sure you're starting in a fresh environment).</span>
+<span id="cb1-26"><a href="#cb1-26"></a>From here on out, when you open up a project, all the files you've created will be easily accessibly, both from the *"Files"* pane, as well as using <span class="co">[</span><span class="ot">relative paths</span><span class="co">](project-management.qmd#here-package)</span>.</span>
+<span id="cb1-27"><a href="#cb1-27"></a></span>
+<span id="cb1-28"><a href="#cb1-28"></a>::: {.callout-tip}</span>
+<span id="cb1-29"><a href="#cb1-29"></a>To reiterate our comments from the <span class="co">[</span><span class="ot">project organization tips</span><span class="co">](project-management.qmd#project-structure)</span> page, it's useful to have all your project directories in a single location on your computer, and make sure you do not have any spaces in the file or folder names.</span>
+<span id="cb1-30"><a href="#cb1-30"></a>:::</span>
+<span id="cb1-31"><a href="#cb1-31"></a></span>
+<span id="cb1-32"><a href="#cb1-32"></a><span class="fu">## RStudio keyboard shortcuts</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a></span>
+<span id="cb1-34"><a href="#cb1-34"></a>There are many shortcuts available to RStudio users, but here are the key ones:</span>
+<span id="cb1-35"><a href="#cb1-35"></a></span>
+<span id="cb1-36"><a href="#cb1-36"></a>| Shortcut  | Command |</span>
+<span id="cb1-37"><a href="#cb1-37"></a>|--------|--------|</span>
+<span id="cb1-38"><a href="#cb1-38"></a>| <span class="in">`cmd/ctrl + enter`</span>  | Send the section of code to the console to be run   |</span>
+<span id="cb1-39"><a href="#cb1-39"></a>| <span class="in">`cmd/ctrl + opt/alt + r`</span>  | Run all code |</span>
+<span id="cb1-40"><a href="#cb1-40"></a>| <span class="in">`cmd/ctrl + opt/alt + b`</span>  | Run all code from beginning to selected line |</span>
+<span id="cb1-41"><a href="#cb1-41"></a>| <span class="in">`cmd/ctrl + shift + enter`</span>  | Run current chunk (when within a <span class="in">`Rmd`</span> or <span class="in">`Quarto`</span> notebook) |</span>
+<span id="cb1-42"><a href="#cb1-42"></a>| <span class="in">`cmd/ctrl + shift + p`</span>  | Open the command palette (a place where you can search for different commands) |</span>
+<span id="cb1-43"><a href="#cb1-43"></a>| <span class="in">`cmd/ctrl + shift + a`</span>  | Reformat selected code (useful to help keep things readable) |</span>
+<span id="cb1-44"><a href="#cb1-44"></a>| <span class="in">`cmd/ctrl + shift + c`</span>  | Comment the selected lines |</span>
+<span id="cb1-45"><a href="#cb1-45"></a>| <span class="in">`cmd/ctrl + shift + m`</span>  | Insert the pipe (<span class="in">`%&gt;%`</span>) operator (or <span class="in">`|&gt;`</span> if you have set up RStudio to use the base pipe by default)|</span>
+<span id="cb1-46"><a href="#cb1-46"></a>| <span class="in">`opt/alt + -`</span>  | Insert the assignment operator (<span class="in">`&lt;-`</span>) |</span>
+<span id="cb1-47"><a href="#cb1-47"></a></span>
+<span id="cb1-48"><a href="#cb1-48"></a>: RStudio keyboard shortcuts {.striped .hover tbl-colwidths="<span class="co">[</span><span class="ot">25,75</span><span class="co">]</span>"}</span>
+<span id="cb1-49"><a href="#cb1-49"></a></span>
+<span id="cb1-50"><a href="#cb1-50"></a>The common shortcuts for saving and opening files/selecting all etc. also exist in RStudio with the standard keybindings.</span>
+<span id="cb1-51"><a href="#cb1-51"></a></span>
+<span id="cb1-52"><a href="#cb1-52"></a>To see the full list of keyboard shortcuts, you can go to *"Tools &gt; Keyboard Shortcuts Help"*.</span>
+<span id="cb1-53"><a href="#cb1-53"></a></span>
+<span id="cb1-54"><a href="#cb1-54"></a><span class="al">![RStudio keyboard shortcuts](./images/RStudio-keyboard-shortcuts.png)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/arnold-c/SISMID-02_2023/edit/main/basics-of-r.qmd" class="toc-action">Edit this page</a></p></div></div></div></div></footer><script src="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.js" defer="true"></script>
+<script src="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.js" defer="true"></script>
 </body></html>

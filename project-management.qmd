@@ -1,1 +1,118 @@
-# Setting Up A Project {.unnumbered}
+---
+format:
+    html:
+        code-line-numbers: false
+---
+
+# Organizing A Project {.unnumbered}
+
+The purpose of this workshop is not to teach you how to manage everything about your modeling project.
+However, there are some tips that we think are useful and should reduce the amount of time you spend on finding and managing files, allowing you to focus more on the work at hand.
+If you want to get more in-depth, there are some suggested readings at the end that could be a starting point for further exploration.
+
+## Project Structure
+
+There are many ways to structure a project, but we would recommend that each project has its own folder (directory), and all your project directories sit in a single place.
+For example, you could have a directory called ***Repos*** that holds all of your projects.
+That way, when you want to find a specific project, it's easy and in one place.
+As part of this, we recommend you read the section about [RStudio projects](just-enough-r.qmd#rstudio-projects).
+
+::: {.callout-important}
+It is crucial that this folder does not live in a cloud-synced folder e.g., in OneDrive.
+Cloud accounts have an unfortunate habit of creating sync errors and often rename files to circumvent issues with merging differing copies.
+This will ruin any chance you have of using Git in the future, which is highly recommended, as Git relies on the file names being the same.
+:::
+
+A suggested layout could look like this (where `${HOME}` denotes your home directory, i.e., `~/` on MacOS/Linux, and `C:/` on Windows):
+
+```bash
+${HOME}/
+└── Documents/
+    └── Repos/
+        └── Proj/
+            ├── data/
+            ├── figs/
+            ├── funs/
+            ├── out/
+            └── src/
+                ├── cleaning.R
+                └── analysis.R
+```
+
+### ***data/***
+
+An important idea is that you should treat your data as read-only.
+You and your team have likely worked hard to collect the data and it’s easy to make a changes along the way that you either forget about, or need to reverse.
+As most projects span a long time between the data collection and analysis stages, it can be very difficult and time-consuming to try and reverse engineer exactly what changes have been made if the data files are directly edited.
+Therefore, to save yourself effort and help make your work reproducible, once the data is collected it should not be edited; all the work should happen in your code, allowing it to be easily checked.
+
+<a id="here-package"/>
+
+::: {.callout-tip}
+When you are reading in data files in your cleaning and analysis scripts, it is good practice to use *relative paths*.
+This means that if you share your code with others, everything should still work for them.
+If you use explicit paths e.g. `read_csv("/Users/callumarnold/Documents/Repos/SISMID_2023/data/niamey.csv")` then this won't work for your collaborators, as they don't have the same computer set up as you!
+
+A package we recommend using in `R` is the `{here}` package, which would turn the above code into `read_csv(here::here("data", "niamey.csv"))`.
+Not only is this easier to read, but it leverages the principle that our projects are self-contained in their own folders and uses file paths that are *relative to the root of the project*, so it works regardless of where people install the project folder to.
+:::
+
+### ***src/***
+
+It is common practice to keep your scripts (*source code*) in a folder named ***src/***.
+Following this practice will make it easier for others to navigate your code, helping create a reproducible work environment.
+The files in here may be scripts to clean the data (remember, we are treating data as *read-only*), and others to produce the analysis.
+In our workshop, it would be a good idea to have a different file for each exercise e.g., ***r-session-01.R***
+
+### Other subdirectories
+
+- ***funs/***: this contains the functions you write and might want to reference.
+The idea is to create functions so that can give code a meaningful name.
+It also helps if you need to repeat a code chunk multiple times, especially if you need to edit it at some point, as you can just call the function rather than typing it out each time.
+- ***out/***: this contains files that are produced from the original data e.g. cleaned data files.
+You can then call them in your analysis scripts.
+- ***figs/***: this contains figures that may be generated from your scripts.
+
+## Naming Files
+
+Part of structuring a project is having creating file names that are easy to read; both for you *and* the computer.
+On that note, get rid of any spaces in your file and folder names!
+They make it much trickier to work with when you want to use them in code, whether that's using `bash`/`zsh` for moving files quickly or using Git via the command line, or loading them in analysis scripts.
+
+Jenny Bryan (of University of British Columbia and RStudio/Posit) has great slides [here](https://speakerdeck.com/jennybc/how-to-name-files) on the topic, but in summary:
+
+- *KISS* (Keep It Simple Stupid): use simple and consistent file names
+    - It needs to be machine readable
+    - It needs to be human readable
+    - It needs to order well in a directory (e.g., left-pad numbers)
+- No special characters and no spaces!
+- Use `YYYY-MM-DD` date format
+    - File systems will automatically order them sensibly
+    - Unambiguous, which is particularly important with international collaborators 
+- Use `-` to delimit words and `_` to delimit sections
+    - i.e. ***2019-01-19_my-data.csv***
+- Left-pad numbers
+    - i.e. ***01_my-data.csv*** vs ***1_my-data.csv***
+    - If you don’t, file orders get messed up when you get to double-digits
+
+## Other Resources
+### Git
+
+Git is an essential component of reproducible computation research, although it is very much out of the scope of this workshop.
+Think of it as a more powerful version of tracked changes for your code, merged with some of the collaborative abilities of Google Docs.
+If you would like to learn more about what it is, and how you could add it to your workflow, Callum created a small online book to accompany a Git and GitHub workshop he developed for Penn State.
+The link can be found [here](https://psu-git.callumarnold.com/), and this will be continuously updated to add more complicated workflows and troubleshooting tips.
+
+Jenny Bryan and co put togther a fantastic resource about using Git with R [here](https://happygitwithr.com/).
+It has more of a focus on R and the use of R-specific tools and packages to help with Git (e.g. the `{usethis}` package), but is still plenty general for anyone to learn about Git and best practices.
+
+## Project Structure
+
+- Callum wrote a short blog post about reproducible work that can be found [here](https://callumarnold.com/posts/2019-08-15-an-introduction-to-reproducible-research/repro-research#structuring-a-project).
+The section about Jupyter notebooks are unlikely to be relevant to R users, but the rest is still useful.
+
+## `{renv}`
+
+`{renv}` is a package that helps manage your project's dependencies by creating a self-contained environment for your project.
+What this means is that each project will have a list of the required packages and their versions, and when you share your project with others, they can install the packages you used in your project with a single command (`renv::restore()`).
+To find out more about `{renv}`, visit the website [here](https://rstudio.github.io/renv/).
