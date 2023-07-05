@@ -257,12 +257,14 @@ closed_sir_model <- function (time, state , params, ...) {
     dur_inf <- 14 / 365
     gamma <- 1 / dur_inf
 
+    new_inf <- beta * S * I
+
     # Calculate the ODEs
-    dSdt <- - beta * S * I
-    dIdt <- beta * S * I - (gamma * I)
+    dSdt <- -new_inf
+    dIdt <- new_inf - (gamma * I)
 
     # Return the ODEs
-    return(list(c(dSdt, dIdt)))
+    return(list(c(dSdt, dIdt, new_inf)))
 }
 ```
 
@@ -495,10 +497,12 @@ sse_sir <- function(params, data){
     # Convert biweekly time series into annual time scale
     # Daily time scale has requires beta values to be too small - doesn't 
     # optimize well
-    t <- data$biweek * 14 / 365
+    dt <- 0.01
+    max_biweek <- max(data$biweek)
+    t <- seq(0, max_biweek * 14, dt) / 365
     
-    # Extract the number of actual cases
-    cases <- data$cases
+    # Extract the number of observed incidence
+    obs_inc <- data$cases
 
     # Note the parameters are updated throughout the optimization process by
     # the optim() function
@@ -511,16 +515,31 @@ sse_sir <- function(params, data){
     
     # Fit SIR model to the parameters
     sol <- deSolve::ode(
-            y = c(S = S_init, I = I_init),
+            y = c(S = S_init, I = I_init, new_inf = 0),
             times = t,
             func = closed_sir_model,
             parms = beta,
-            hmax = 1/120
-        ) 
+            # Use rk4 as fixed time steps, which is important for indexing
+            method = "rk4"
+        )
+    
+    # Extract the cumulative incidence
+    cum_inc <- sol[, "new_inf"]
 
+    # Find the indices of the cumulative incidence to extract
+    biweek_index <- seq(1, max_biweek) * (14 / dt) + 1
 
-    # Calculate sum of squared errors that is returned to the optim() function
-    sum((sol[, 3] - cases)^2)
+    # Index cumulative incidence to get the values at the end of the biweeks
+    biweek_cum_inc <- cum_inc[biweek_index]
+
+    # Calculate the biweekly incidence by using the difference between
+    # consecutive biweeks. Need to manually prepend first week's incidence
+    # and add in the initial number of infectious individuals, as ODE model
+    # only returns the cumulative differences, which is 0 at the start.
+    biweek_inc <- c(biweek_cum_inc[1] + I_init, diff(biweek_cum_inc, lag = 1))
+
+    # return SSE of predicted vs observed incidence
+    return(sum((biweek_inc - obs_inc)^2))
 }
 ```
 
@@ -537,7 +556,7 @@ Finally, we plot these fits against the data.
 
 ```{r}
 # Initial guess
-sse_optim_params <- c(beta = log(0.05), S_init = log(5000), I_init = log(1))
+sse_optim_params <- c(beta = log(0.055), S_init = log(5000), I_init = log(1))
 
 # Create a dataframe of optimized parameters
 niamey_optims <- niamey_df %>%
@@ -601,7 +620,7 @@ niamey_predictions <- niamey_optims %>%
 
                 # Return a dataframe of model solutions
                 as_tibble(ode(
-                    y = c(S = S_init, I = I_init),
+                    y = c(S = S_init, I = I_init, new_inf = 0),
                     times = site_times,
                     func = closed_sir_model,
                     parms = beta,
@@ -627,10 +646,10 @@ We are doing this here purely for simplicity's sake - in practice you would want
 # Create a dataframe to store the positions of the text labels
 niamey_preds_labels <- tibble(
     site = c("Site_3", "Site_2"),
-    x_label = c(7, 6.5),
+    x_label = c(8, 6.5),
     x_arrow_just = c(-0.5, -0.5),
-    x_arrow_end = c(8.8, 7.75),
-    y_label = c(120, 600),
+    x_arrow_end = c(10, 7.75),
+    y_label = c(110, 600),
     y_arrow_just = c(-15, -70),
     y_arrow_end = c(29, 290),
     commentary = c("**Observed", "**Predicted"),
