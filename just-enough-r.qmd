@@ -392,6 +392,11 @@ If we wanted to specifically use the `{stats}` version, we could write this:
 ```{r}
 #| column: body
 #| out-width: 100%
+# Set the seed for the document so we get the same random numbers sampled
+# each time we run the script (assuming it's run in its entirety from start
+# to finish)
+set.seed(1234)
+
 # Create a cosine wave with random noise
 raw_timeseries <- cos(pi * seq(-2, 2, length.out = 1000)) + rnorm(1000, sd = 0.5)
 

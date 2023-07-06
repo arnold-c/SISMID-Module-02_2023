@@ -709,9 +709,8 @@ ages_beta_mat %>%
     as.data.frame.table() %>%
     mutate(
         age_contactor = rep(ages, 30),
-        # Repeat each age in ages vector 30 times, and place in a list, then 
-        # unlist to be stacked into a single dataframe column
-        age_contactee = unlist(purrr::map(.x = ages, ~rep(.x, 30))),
+        # Repeat each age in ages vector 30 times before moving to next
+        age_contactee = rep(ages, each = 30)
     ) %>%
     ggplot(aes(x = age_contactor, y = age_contactee, z = Freq)) +
     geom_contour_filled(bins = 8) +
@@ -811,7 +810,8 @@ aging_mat %>%
     as.data.frame.table() %>%
     mutate(
         age_recipient = rep(ages, 30),
-        age_source = unlist(purrr::map(.x = ages, ~rep(.x, 30)))
+        # Repeat each age in ages vector 30 times before moving to next
+        age_source = rep(ages, each = 30)
     ) %>%
     ggplot(aes(x = age_source, y = age_recipient, z = Freq)) +
     geom_contour_filled() +

@@ -850,25 +850,24 @@ div.csl-indent {
 </details>
 </div>
 <p><a id="fig-beta-mat"></a></p>
-<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-22_e0fb11d7fdde3073df155184bee48846">
+<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-22_457f3072dd2aaf48d29812e2573e123e">
 <details open=""><summary>Code</summary><div class="sourceCode cell-code" id="cb19" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>ages_beta_mat <span class="sc">%&gt;%</span></span>
 <span id="cb19-2"><a href="#cb19-2"></a>    <span class="co"># Turn into a data.frame so we can use ggplot()</span></span>
 <span id="cb19-3"><a href="#cb19-3"></a>    <span class="fu">as.data.frame.table</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb19-4"><a href="#cb19-4"></a>    <span class="fu">mutate</span>(</span>
 <span id="cb19-5"><a href="#cb19-5"></a>        <span class="at">age_contactor =</span> <span class="fu">rep</span>(ages, <span class="dv">30</span>),</span>
-<span id="cb19-6"><a href="#cb19-6"></a>        <span class="co"># Repeat each age in ages vector 30 times, and place in a list, then </span></span>
-<span id="cb19-7"><a href="#cb19-7"></a>        <span class="co"># unlist to be stacked into a single dataframe column</span></span>
-<span id="cb19-8"><a href="#cb19-8"></a>        <span class="at">age_contactee =</span> <span class="fu">unlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(<span class="at">.x =</span> ages, <span class="sc">~</span><span class="fu">rep</span>(.x, <span class="dv">30</span>))),</span>
-<span id="cb19-9"><a href="#cb19-9"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb19-10"><a href="#cb19-10"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age_contactor, <span class="at">y =</span> age_contactee, <span class="at">z =</span> Freq)) <span class="sc">+</span></span>
-<span id="cb19-11"><a href="#cb19-11"></a>    <span class="fu">geom_contour_filled</span>(<span class="at">bins =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb19-12"><a href="#cb19-12"></a>    <span class="fu">scale_fill_brewer</span>(</span>
-<span id="cb19-13"><a href="#cb19-13"></a>        <span class="at">palette =</span> <span class="st">"Reds"</span>,</span>
-<span id="cb19-14"><a href="#cb19-14"></a>        <span class="co"># Don't drop unused bins as useful for ensuring extremities properly</span></span>
-<span id="cb19-15"><a href="#cb19-15"></a>        <span class="co"># binned</span></span>
-<span id="cb19-16"><a href="#cb19-16"></a>        <span class="at">drop =</span> <span class="cn">FALSE</span></span>
-<span id="cb19-17"><a href="#cb19-17"></a>    ) <span class="sc">+</span></span>
-<span id="cb19-18"><a href="#cb19-18"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age of Contactor"</span>, <span class="at">y =</span> <span class="st">"Age of Contactee"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-6"><a href="#cb19-6"></a>        <span class="co"># Repeat each age in ages vector 30 times before moving to next</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>        <span class="at">age_contactee =</span> <span class="fu">rep</span>(ages, <span class="at">each =</span> <span class="dv">30</span>)</span>
+<span id="cb19-8"><a href="#cb19-8"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age_contactor, <span class="at">y =</span> age_contactee, <span class="at">z =</span> Freq)) <span class="sc">+</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a>    <span class="fu">geom_contour_filled</span>(<span class="at">bins =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb19-11"><a href="#cb19-11"></a>    <span class="fu">scale_fill_brewer</span>(</span>
+<span id="cb19-12"><a href="#cb19-12"></a>        <span class="at">palette =</span> <span class="st">"Reds"</span>,</span>
+<span id="cb19-13"><a href="#cb19-13"></a>        <span class="co"># Don't drop unused bins as useful for ensuring extremities properly</span></span>
+<span id="cb19-14"><a href="#cb19-14"></a>        <span class="co"># binned</span></span>
+<span id="cb19-15"><a href="#cb19-15"></a>        <span class="at">drop =</span> <span class="cn">FALSE</span></span>
+<span id="cb19-16"><a href="#cb19-16"></a>    ) <span class="sc">+</span></span>
+<span id="cb19-17"><a href="#cb19-17"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age of Contactor"</span>, <span class="at">y =</span> <span class="st">"Age of Contactee"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-body">
 <p><img src="r-session-02_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
@@ -972,20 +971,21 @@ Note
 [6,]  0.0  0.0  0.0  0.0  0.2 -0.06666667</code></pre>
 </div>
 </div>
-<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-29_b4bd10806ad1ca16c47d270596f4787e">
+<div class="cell page-columns page-full" data-hash="r-session-02_cache/html/unnamed-chunk-29_45e39e508074216cc253105e6398d622">
 <details open=""><summary>Code</summary><div class="sourceCode cell-code" id="cb28" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>aging_mat <span class="sc">%&gt;%</span></span>
 <span id="cb28-2"><a href="#cb28-2"></a>    <span class="fu">as.data.frame.table</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb28-3"><a href="#cb28-3"></a>    <span class="fu">mutate</span>(</span>
 <span id="cb28-4"><a href="#cb28-4"></a>        <span class="at">age_recipient =</span> <span class="fu">rep</span>(ages, <span class="dv">30</span>),</span>
-<span id="cb28-5"><a href="#cb28-5"></a>        <span class="at">age_source =</span> <span class="fu">unlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(<span class="at">.x =</span> ages, <span class="sc">~</span><span class="fu">rep</span>(.x, <span class="dv">30</span>)))</span>
-<span id="cb28-6"><a href="#cb28-6"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb28-7"><a href="#cb28-7"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age_source, <span class="at">y =</span> age_recipient, <span class="at">z =</span> Freq)) <span class="sc">+</span></span>
-<span id="cb28-8"><a href="#cb28-8"></a>    <span class="fu">geom_contour_filled</span>() <span class="sc">+</span></span>
-<span id="cb28-9"><a href="#cb28-9"></a>    <span class="fu">scale_fill_brewer</span>(</span>
-<span id="cb28-10"><a href="#cb28-10"></a>        <span class="at">palette =</span> <span class="st">"RdBu"</span>,</span>
-<span id="cb28-11"><a href="#cb28-11"></a>        <span class="at">drop =</span> <span class="cn">FALSE</span></span>
-<span id="cb28-12"><a href="#cb28-12"></a>    ) <span class="sc">+</span></span>
-<span id="cb28-13"><a href="#cb28-13"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Source Age Group"</span>, <span class="at">y =</span> <span class="st">"Recipient Age Group"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-5"><a href="#cb28-5"></a>        <span class="co"># Repeat each age in ages vector 30 times before moving to next</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a>        <span class="at">age_source =</span> <span class="fu">rep</span>(ages, <span class="at">each =</span> <span class="dv">30</span>)</span>
+<span id="cb28-7"><a href="#cb28-7"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb28-8"><a href="#cb28-8"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age_source, <span class="at">y =</span> age_recipient, <span class="at">z =</span> Freq)) <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9"></a>    <span class="fu">geom_contour_filled</span>() <span class="sc">+</span></span>
+<span id="cb28-10"><a href="#cb28-10"></a>    <span class="fu">scale_fill_brewer</span>(</span>
+<span id="cb28-11"><a href="#cb28-11"></a>        <span class="at">palette =</span> <span class="st">"RdBu"</span>,</span>
+<span id="cb28-12"><a href="#cb28-12"></a>        <span class="at">drop =</span> <span class="cn">FALSE</span></span>
+<span id="cb28-13"><a href="#cb28-13"></a>    ) <span class="sc">+</span></span>
+<span id="cb28-14"><a href="#cb28-14"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Source Age Group"</span>, <span class="at">y =</span> <span class="st">"Recipient Age Group"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-body">
 <p><img src="r-session-02_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
@@ -2048,23 +2048,23 @@ Note about <code>map()</code>
 <span id="cb70-18"><a href="#cb70-18"></a>    <span class="fu">cols_align</span>(<span class="st">"center"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-body">
 
-<div id="mhbtqktzag" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mhbtqktzag table {
+<div id="acpdjoovgv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#acpdjoovgv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mhbtqktzag thead, #mhbtqktzag tbody, #mhbtqktzag tfoot, #mhbtqktzag tr, #mhbtqktzag td, #mhbtqktzag th {
+#acpdjoovgv thead, #acpdjoovgv tbody, #acpdjoovgv tfoot, #acpdjoovgv tr, #acpdjoovgv td, #acpdjoovgv th {
   border-style: none;
 }
 
-#mhbtqktzag p {
+#acpdjoovgv p {
   margin: 0;
   padding: 0;
 }
 
-#mhbtqktzag .gt_table {
+#acpdjoovgv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2090,12 +2090,12 @@ Note about <code>map()</code>
   border-left-color: #D3D3D3;
 }
 
-#mhbtqktzag .gt_caption {
+#acpdjoovgv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mhbtqktzag .gt_title {
+#acpdjoovgv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2107,7 +2107,7 @@ Note about <code>map()</code>
   border-bottom-width: 0;
 }
 
-#mhbtqktzag .gt_subtitle {
+#acpdjoovgv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2119,7 +2119,7 @@ Note about <code>map()</code>
   border-top-width: 0;
 }
 
-#mhbtqktzag .gt_heading {
+#acpdjoovgv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2131,13 +2131,13 @@ Note about <code>map()</code>
   border-right-color: #D3D3D3;
 }
 
-#mhbtqktzag .gt_bottom_border {
+#acpdjoovgv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #5F5F5F;
 }
 
-#mhbtqktzag .gt_col_headings {
+#acpdjoovgv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #5F5F5F;
@@ -2152,7 +2152,7 @@ Note about <code>map()</code>
   border-right-color: #D3D3D3;
 }
 
-#mhbtqktzag .gt_col_heading {
+#acpdjoovgv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2172,7 +2172,7 @@ Note about <code>map()</code>
   overflow-x: hidden;
 }
 
-#mhbtqktzag .gt_column_spanner_outer {
+#acpdjoovgv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2184,15 +2184,15 @@ Note about <code>map()</code>
   padding-right: 4px;
 }
 
-#mhbtqktzag .gt_column_spanner_outer:first-child {
+#acpdjoovgv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mhbtqktzag .gt_column_spanner_outer:last-child {
+#acpdjoovgv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mhbtqktzag .gt_column_spanner {
+#acpdjoovgv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #5F5F5F;
@@ -2204,11 +2204,11 @@ Note about <code>map()</code>
   width: 100%;
 }
 
-#mhbtqktzag .gt_spanner_row {
+#acpdjoovgv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mhbtqktzag .gt_group_heading {
+#acpdjoovgv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -2234,7 +2234,7 @@ Note about <code>map()</code>
   text-align: left;
 }
 
-#mhbtqktzag .gt_empty_group_heading {
+#acpdjoovgv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2249,15 +2249,15 @@ Note about <code>map()</code>
   vertical-align: middle;
 }
 
-#mhbtqktzag .gt_from_md > :first-child {
+#acpdjoovgv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mhbtqktzag .gt_from_md > :last-child {
+#acpdjoovgv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mhbtqktzag .gt_row {
+#acpdjoovgv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -2276,7 +2276,7 @@ Note about <code>map()</code>
   overflow-x: hidden;
 }
 
-#mhbtqktzag .gt_stub {
+#acpdjoovgv .gt_stub {
   color: #FFFFFF;
   background-color: #5F5F5F;
   font-size: 100%;
@@ -2289,7 +2289,7 @@ Note about <code>map()</code>
   padding-right: 15px;
 }
 
-#mhbtqktzag .gt_stub_row_group {
+#acpdjoovgv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2303,15 +2303,15 @@ Note about <code>map()</code>
   vertical-align: top;
 }
 
-#mhbtqktzag .gt_row_group_first td {
+#acpdjoovgv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mhbtqktzag .gt_row_group_first th {
+#acpdjoovgv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mhbtqktzag .gt_summary_row {
+#acpdjoovgv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2321,16 +2321,16 @@ Note about <code>map()</code>
   padding-right: 15px;
 }
 
-#mhbtqktzag .gt_first_summary_row {
+#acpdjoovgv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #5F5F5F;
 }
 
-#mhbtqktzag .gt_first_summary_row.thick {
+#acpdjoovgv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mhbtqktzag .gt_last_summary_row {
+#acpdjoovgv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -2340,7 +2340,7 @@ Note about <code>map()</code>
   border-bottom-color: #5F5F5F;
 }
 
-#mhbtqktzag .gt_grand_summary_row {
+#acpdjoovgv .gt_grand_summary_row {
   color: #333333;
   background-color: #D5D5D5;
   text-transform: inherit;
@@ -2350,7 +2350,7 @@ Note about <code>map()</code>
   padding-right: 15px;
 }
 
-#mhbtqktzag .gt_first_grand_summary_row {
+#acpdjoovgv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -2360,7 +2360,7 @@ Note about <code>map()</code>
   border-top-color: #5F5F5F;
 }
 
-#mhbtqktzag .gt_last_grand_summary_row_top {
+#acpdjoovgv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -2370,11 +2370,11 @@ Note about <code>map()</code>
   border-bottom-color: #5F5F5F;
 }
 
-#mhbtqktzag .gt_striped {
+#acpdjoovgv .gt_striped {
   background-color: #F4F4F4;
 }
 
-#mhbtqktzag .gt_table_body {
+#acpdjoovgv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #5F5F5F;
@@ -2383,7 +2383,7 @@ Note about <code>map()</code>
   border-bottom-color: #5F5F5F;
 }
 
-#mhbtqktzag .gt_footnotes {
+#acpdjoovgv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2397,7 +2397,7 @@ Note about <code>map()</code>
   border-right-color: #D3D3D3;
 }
 
-#mhbtqktzag .gt_footnote {
+#acpdjoovgv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2406,7 +2406,7 @@ Note about <code>map()</code>
   padding-right: 15px;
 }
 
-#mhbtqktzag .gt_sourcenotes {
+#acpdjoovgv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2420,7 +2420,7 @@ Note about <code>map()</code>
   border-right-color: #D3D3D3;
 }
 
-#mhbtqktzag .gt_sourcenote {
+#acpdjoovgv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2428,63 +2428,63 @@ Note about <code>map()</code>
   padding-right: 15px;
 }
 
-#mhbtqktzag .gt_left {
+#acpdjoovgv .gt_left {
   text-align: left;
 }
 
-#mhbtqktzag .gt_center {
+#acpdjoovgv .gt_center {
   text-align: center;
 }
 
-#mhbtqktzag .gt_right {
+#acpdjoovgv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mhbtqktzag .gt_font_normal {
+#acpdjoovgv .gt_font_normal {
   font-weight: normal;
 }
 
-#mhbtqktzag .gt_font_bold {
+#acpdjoovgv .gt_font_bold {
   font-weight: bold;
 }
 
-#mhbtqktzag .gt_font_italic {
+#acpdjoovgv .gt_font_italic {
   font-style: italic;
 }
 
-#mhbtqktzag .gt_super {
+#acpdjoovgv .gt_super {
   font-size: 65%;
 }
 
-#mhbtqktzag .gt_footnote_marks {
+#acpdjoovgv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mhbtqktzag .gt_asterisk {
+#acpdjoovgv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mhbtqktzag .gt_indent_1 {
+#acpdjoovgv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mhbtqktzag .gt_indent_2 {
+#acpdjoovgv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mhbtqktzag .gt_indent_3 {
+#acpdjoovgv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mhbtqktzag .gt_indent_4 {
+#acpdjoovgv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mhbtqktzag .gt_indent_5 {
+#acpdjoovgv .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -3986,109 +3986,109 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb86-753"><a href="#cb86-753"></a>    <span class="fu">as.data.frame.table</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb86-754"><a href="#cb86-754"></a>    <span class="fu">mutate</span>(</span>
 <span id="cb86-755"><a href="#cb86-755"></a>        <span class="at">age_contactor =</span> <span class="fu">rep</span>(ages, <span class="dv">30</span>),</span>
-<span id="cb86-756"><a href="#cb86-756"></a>        <span class="co"># Repeat each age in ages vector 30 times, and place in a list, then </span></span>
-<span id="cb86-757"><a href="#cb86-757"></a>        <span class="co"># unlist to be stacked into a single dataframe column</span></span>
-<span id="cb86-758"><a href="#cb86-758"></a>        <span class="at">age_contactee =</span> <span class="fu">unlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(<span class="at">.x =</span> ages, <span class="sc">~</span><span class="fu">rep</span>(.x, <span class="dv">30</span>))),</span>
-<span id="cb86-759"><a href="#cb86-759"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb86-760"><a href="#cb86-760"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age_contactor, <span class="at">y =</span> age_contactee, <span class="at">z =</span> Freq)) <span class="sc">+</span></span>
-<span id="cb86-761"><a href="#cb86-761"></a>    <span class="fu">geom_contour_filled</span>(<span class="at">bins =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb86-762"><a href="#cb86-762"></a>    <span class="fu">scale_fill_brewer</span>(</span>
-<span id="cb86-763"><a href="#cb86-763"></a>        <span class="at">palette =</span> <span class="st">"Reds"</span>,</span>
-<span id="cb86-764"><a href="#cb86-764"></a>        <span class="co"># Don't drop unused bins as useful for ensuring extremities properly</span></span>
-<span id="cb86-765"><a href="#cb86-765"></a>        <span class="co"># binned</span></span>
-<span id="cb86-766"><a href="#cb86-766"></a>        <span class="at">drop =</span> <span class="cn">FALSE</span></span>
-<span id="cb86-767"><a href="#cb86-767"></a>    ) <span class="sc">+</span></span>
-<span id="cb86-768"><a href="#cb86-768"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age of Contactor"</span>, <span class="at">y =</span> <span class="st">"Age of Contactee"</span>)</span>
-<span id="cb86-769"><a href="#cb86-769"></a><span class="in">```</span></span>
-<span id="cb86-770"><a href="#cb86-770"></a></span>
-<span id="cb86-771"><a href="#cb86-771"></a>::: {.callout-note collapse="false"}</span>
-<span id="cb86-772"><a href="#cb86-772"></a>You could also use the <span class="in">`filled.contour()`</span> base-R function to plot the beta matrix without needing to do any dataframe modifications, but it doesn't look as nice ...</span>
-<span id="cb86-773"><a href="#cb86-773"></a></span>
-<span id="cb86-776"><a href="#cb86-776"></a><span class="in">```{r}</span></span>
-<span id="cb86-777"><a href="#cb86-777"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb86-778"><a href="#cb86-778"></a><span class="fu">filled.contour</span>(</span>
-<span id="cb86-779"><a href="#cb86-779"></a>    ages, ages, ages_beta_mat,</span>
-<span id="cb86-780"><a href="#cb86-780"></a>    <span class="at">plot.title =</span> <span class="fu">title</span>(</span>
-<span id="cb86-781"><a href="#cb86-781"></a>        <span class="at">xlab =</span> <span class="st">"Age of Contactor"</span>,</span>
-<span id="cb86-782"><a href="#cb86-782"></a>        <span class="at">ylab =</span> <span class="st">"Age of Contactee"</span></span>
-<span id="cb86-783"><a href="#cb86-783"></a>    )</span>
-<span id="cb86-784"><a href="#cb86-784"></a>)</span>
-<span id="cb86-785"><a href="#cb86-785"></a><span class="in">```</span></span>
-<span id="cb86-786"><a href="#cb86-786"></a>:::</span>
-<span id="cb86-787"><a href="#cb86-787"></a></span>
-<span id="cb86-788"><a href="#cb86-788"></a>We'll assume that, at the time of introduction, all children are susceptible, as are adults over 45, but that individuals aged 20--45 have seen the pathogen before and are immune.</span>
-<span id="cb86-789"><a href="#cb86-789"></a>The vector <span class="in">`yinit`</span> expresses these initial conditions.</span>
-<span id="cb86-790"><a href="#cb86-790"></a></span>
-<span id="cb86-793"><a href="#cb86-793"></a><span class="in">```{r}</span></span>
-<span id="cb86-794"><a href="#cb86-794"></a><span class="co"># Create a long vector of initial states with only one</span></span>
-<span id="cb86-795"><a href="#cb86-795"></a><span class="co"># initial infection in age 50</span></span>
-<span id="cb86-796"><a href="#cb86-796"></a>demog_yinit_ages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb86-797"><a href="#cb86-797"></a>    <span class="at">S =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">100</span>, <span class="dv">20</span>), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">200</span>, <span class="dv">5</span>)),</span>
-<span id="cb86-798"><a href="#cb86-798"></a>    <span class="at">I =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="dv">1</span>, <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>)),</span>
-<span id="cb86-799"><a href="#cb86-799"></a>    <span class="at">R =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">20</span>), <span class="fu">rep</span>(<span class="dv">1000</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5</span>))</span>
-<span id="cb86-800"><a href="#cb86-800"></a>)</span>
-<span id="cb86-801"><a href="#cb86-801"></a><span class="in">```</span></span>
-<span id="cb86-802"><a href="#cb86-802"></a></span>
-<span id="cb86-803"><a href="#cb86-803"></a>Note that we're starting out with 1 infected individual in the 26th age class (age 50).</span>
-<span id="cb86-804"><a href="#cb86-804"></a></span>
-<span id="cb86-805"><a href="#cb86-805"></a>The codes that follow will be a bit easier to follow if we introduce some indexes that will allow us to pick out certain bits of the <span class="in">`yinit`</span> vector.</span>
-<span id="cb86-806"><a href="#cb86-806"></a></span>
-<span id="cb86-809"><a href="#cb86-809"></a><span class="in">```{r}</span></span>
-<span id="cb86-810"><a href="#cb86-810"></a><span class="co"># Create vectors of indices relating to each state</span></span>
-<span id="cb86-811"><a href="#cb86-811"></a><span class="co"># (ordered S1-80, I1-80, R1-80)</span></span>
-<span id="cb86-812"><a href="#cb86-812"></a>sindex <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span></span>
-<span id="cb86-813"><a href="#cb86-813"></a>iindex <span class="ot">&lt;-</span> <span class="dv">31</span><span class="sc">:</span><span class="dv">60</span></span>
-<span id="cb86-814"><a href="#cb86-814"></a>rindex <span class="ot">&lt;-</span> <span class="dv">61</span><span class="sc">:</span><span class="dv">90</span></span>
-<span id="cb86-815"><a href="#cb86-815"></a><span class="co"># Create vectors of indices relating to age group</span></span>
-<span id="cb86-816"><a href="#cb86-816"></a>juvies <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span></span>
-<span id="cb86-817"><a href="#cb86-817"></a>adults <span class="ot">&lt;-</span> <span class="dv">21</span><span class="sc">:</span><span class="dv">30</span></span>
-<span id="cb86-818"><a href="#cb86-818"></a><span class="in">```</span></span>
-<span id="cb86-819"><a href="#cb86-819"></a></span>
-<span id="cb86-820"><a href="#cb86-820"></a>Now, to capture the aging process, it's convenient to define another matrix to hold the rates of movement between age classes.</span>
-<span id="cb86-821"><a href="#cb86-821"></a>Generally, this matrix would look like this:</span>
-<span id="cb86-822"><a href="#cb86-822"></a></span>
-<span id="cb86-823"><a href="#cb86-823"></a>$$</span>
-<span id="cb86-824"><a href="#cb86-824"></a>\begin{pmatrix}</span>
-<span id="cb86-825"><a href="#cb86-825"></a>    -\alpha_1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0<span class="sc">\\</span></span>
-<span id="cb86-826"><a href="#cb86-826"></a>    \alpha_1 &amp; -\alpha_2 &amp; 0 &amp; \cdots &amp; 0<span class="sc">\\</span></span>
-<span id="cb86-827"><a href="#cb86-827"></a>    0 &amp; \alpha_2 &amp; -\alpha_3 &amp; \cdots &amp; 0<span class="sc">\\</span></span>
-<span id="cb86-828"><a href="#cb86-828"></a>    \vdots &amp;  &amp; \ddots &amp; \ddots &amp; \vdots <span class="sc">\\</span></span>
-<span id="cb86-829"><a href="#cb86-829"></a>    0 &amp; \cdots &amp; &amp; \alpha_{29} &amp; -\alpha_{30}<span class="sc">\\</span></span>
-<span id="cb86-830"><a href="#cb86-830"></a>\end{pmatrix}</span>
-<span id="cb86-831"><a href="#cb86-831"></a>$${#eq-aging-mat}</span>
+<span id="cb86-756"><a href="#cb86-756"></a>        <span class="co"># Repeat each age in ages vector 30 times before moving to next</span></span>
+<span id="cb86-757"><a href="#cb86-757"></a>        <span class="at">age_contactee =</span> <span class="fu">rep</span>(ages, <span class="at">each =</span> <span class="dv">30</span>)</span>
+<span id="cb86-758"><a href="#cb86-758"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb86-759"><a href="#cb86-759"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age_contactor, <span class="at">y =</span> age_contactee, <span class="at">z =</span> Freq)) <span class="sc">+</span></span>
+<span id="cb86-760"><a href="#cb86-760"></a>    <span class="fu">geom_contour_filled</span>(<span class="at">bins =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb86-761"><a href="#cb86-761"></a>    <span class="fu">scale_fill_brewer</span>(</span>
+<span id="cb86-762"><a href="#cb86-762"></a>        <span class="at">palette =</span> <span class="st">"Reds"</span>,</span>
+<span id="cb86-763"><a href="#cb86-763"></a>        <span class="co"># Don't drop unused bins as useful for ensuring extremities properly</span></span>
+<span id="cb86-764"><a href="#cb86-764"></a>        <span class="co"># binned</span></span>
+<span id="cb86-765"><a href="#cb86-765"></a>        <span class="at">drop =</span> <span class="cn">FALSE</span></span>
+<span id="cb86-766"><a href="#cb86-766"></a>    ) <span class="sc">+</span></span>
+<span id="cb86-767"><a href="#cb86-767"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age of Contactor"</span>, <span class="at">y =</span> <span class="st">"Age of Contactee"</span>)</span>
+<span id="cb86-768"><a href="#cb86-768"></a><span class="in">```</span></span>
+<span id="cb86-769"><a href="#cb86-769"></a></span>
+<span id="cb86-770"><a href="#cb86-770"></a>::: {.callout-note collapse="false"}</span>
+<span id="cb86-771"><a href="#cb86-771"></a>You could also use the <span class="in">`filled.contour()`</span> base-R function to plot the beta matrix without needing to do any dataframe modifications, but it doesn't look as nice ...</span>
+<span id="cb86-772"><a href="#cb86-772"></a></span>
+<span id="cb86-775"><a href="#cb86-775"></a><span class="in">```{r}</span></span>
+<span id="cb86-776"><a href="#cb86-776"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb86-777"><a href="#cb86-777"></a><span class="fu">filled.contour</span>(</span>
+<span id="cb86-778"><a href="#cb86-778"></a>    ages, ages, ages_beta_mat,</span>
+<span id="cb86-779"><a href="#cb86-779"></a>    <span class="at">plot.title =</span> <span class="fu">title</span>(</span>
+<span id="cb86-780"><a href="#cb86-780"></a>        <span class="at">xlab =</span> <span class="st">"Age of Contactor"</span>,</span>
+<span id="cb86-781"><a href="#cb86-781"></a>        <span class="at">ylab =</span> <span class="st">"Age of Contactee"</span></span>
+<span id="cb86-782"><a href="#cb86-782"></a>    )</span>
+<span id="cb86-783"><a href="#cb86-783"></a>)</span>
+<span id="cb86-784"><a href="#cb86-784"></a><span class="in">```</span></span>
+<span id="cb86-785"><a href="#cb86-785"></a>:::</span>
+<span id="cb86-786"><a href="#cb86-786"></a></span>
+<span id="cb86-787"><a href="#cb86-787"></a>We'll assume that, at the time of introduction, all children are susceptible, as are adults over 45, but that individuals aged 20--45 have seen the pathogen before and are immune.</span>
+<span id="cb86-788"><a href="#cb86-788"></a>The vector <span class="in">`yinit`</span> expresses these initial conditions.</span>
+<span id="cb86-789"><a href="#cb86-789"></a></span>
+<span id="cb86-792"><a href="#cb86-792"></a><span class="in">```{r}</span></span>
+<span id="cb86-793"><a href="#cb86-793"></a><span class="co"># Create a long vector of initial states with only one</span></span>
+<span id="cb86-794"><a href="#cb86-794"></a><span class="co"># initial infection in age 50</span></span>
+<span id="cb86-795"><a href="#cb86-795"></a>demog_yinit_ages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb86-796"><a href="#cb86-796"></a>    <span class="at">S =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">100</span>, <span class="dv">20</span>), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">200</span>, <span class="dv">5</span>)),</span>
+<span id="cb86-797"><a href="#cb86-797"></a>    <span class="at">I =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="dv">1</span>, <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>)),</span>
+<span id="cb86-798"><a href="#cb86-798"></a>    <span class="at">R =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">20</span>), <span class="fu">rep</span>(<span class="dv">1000</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5</span>))</span>
+<span id="cb86-799"><a href="#cb86-799"></a>)</span>
+<span id="cb86-800"><a href="#cb86-800"></a><span class="in">```</span></span>
+<span id="cb86-801"><a href="#cb86-801"></a></span>
+<span id="cb86-802"><a href="#cb86-802"></a>Note that we're starting out with 1 infected individual in the 26th age class (age 50).</span>
+<span id="cb86-803"><a href="#cb86-803"></a></span>
+<span id="cb86-804"><a href="#cb86-804"></a>The codes that follow will be a bit easier to follow if we introduce some indexes that will allow us to pick out certain bits of the <span class="in">`yinit`</span> vector.</span>
+<span id="cb86-805"><a href="#cb86-805"></a></span>
+<span id="cb86-808"><a href="#cb86-808"></a><span class="in">```{r}</span></span>
+<span id="cb86-809"><a href="#cb86-809"></a><span class="co"># Create vectors of indices relating to each state</span></span>
+<span id="cb86-810"><a href="#cb86-810"></a><span class="co"># (ordered S1-80, I1-80, R1-80)</span></span>
+<span id="cb86-811"><a href="#cb86-811"></a>sindex <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span></span>
+<span id="cb86-812"><a href="#cb86-812"></a>iindex <span class="ot">&lt;-</span> <span class="dv">31</span><span class="sc">:</span><span class="dv">60</span></span>
+<span id="cb86-813"><a href="#cb86-813"></a>rindex <span class="ot">&lt;-</span> <span class="dv">61</span><span class="sc">:</span><span class="dv">90</span></span>
+<span id="cb86-814"><a href="#cb86-814"></a><span class="co"># Create vectors of indices relating to age group</span></span>
+<span id="cb86-815"><a href="#cb86-815"></a>juvies <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb86-816"><a href="#cb86-816"></a>adults <span class="ot">&lt;-</span> <span class="dv">21</span><span class="sc">:</span><span class="dv">30</span></span>
+<span id="cb86-817"><a href="#cb86-817"></a><span class="in">```</span></span>
+<span id="cb86-818"><a href="#cb86-818"></a></span>
+<span id="cb86-819"><a href="#cb86-819"></a>Now, to capture the aging process, it's convenient to define another matrix to hold the rates of movement between age classes.</span>
+<span id="cb86-820"><a href="#cb86-820"></a>Generally, this matrix would look like this:</span>
+<span id="cb86-821"><a href="#cb86-821"></a></span>
+<span id="cb86-822"><a href="#cb86-822"></a>$$</span>
+<span id="cb86-823"><a href="#cb86-823"></a>\begin{pmatrix}</span>
+<span id="cb86-824"><a href="#cb86-824"></a>    -\alpha_1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0<span class="sc">\\</span></span>
+<span id="cb86-825"><a href="#cb86-825"></a>    \alpha_1 &amp; -\alpha_2 &amp; 0 &amp; \cdots &amp; 0<span class="sc">\\</span></span>
+<span id="cb86-826"><a href="#cb86-826"></a>    0 &amp; \alpha_2 &amp; -\alpha_3 &amp; \cdots &amp; 0<span class="sc">\\</span></span>
+<span id="cb86-827"><a href="#cb86-827"></a>    \vdots &amp;  &amp; \ddots &amp; \ddots &amp; \vdots <span class="sc">\\</span></span>
+<span id="cb86-828"><a href="#cb86-828"></a>    0 &amp; \cdots &amp; &amp; \alpha_{29} &amp; -\alpha_{30}<span class="sc">\\</span></span>
+<span id="cb86-829"><a href="#cb86-829"></a>\end{pmatrix}</span>
+<span id="cb86-830"><a href="#cb86-830"></a>$${#eq-aging-mat}</span>
+<span id="cb86-831"><a href="#cb86-831"></a></span>
 <span id="cb86-832"><a href="#cb86-832"></a></span>
-<span id="cb86-833"><a href="#cb86-833"></a></span>
-<span id="cb86-836"><a href="#cb86-836"></a><span class="in">```{r}</span></span>
-<span id="cb86-837"><a href="#cb86-837"></a><span class="co"># Create a diagonal matrix that holds the rates of aging out of each age class</span></span>
-<span id="cb86-838"><a href="#cb86-838"></a><span class="co"># The rows represent the age class you're in, the columns represent the age</span></span>
-<span id="cb86-839"><a href="#cb86-839"></a><span class="co"># class you're moving to</span></span>
-<span id="cb86-840"><a href="#cb86-840"></a>aging_mat <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> da_ages)</span>
-<span id="cb86-841"><a href="#cb86-841"></a></span>
-<span id="cb86-842"><a href="#cb86-842"></a><span class="co"># Fill in the rates of aging into each age class</span></span>
-<span id="cb86-843"><a href="#cb86-843"></a>aging_mat[<span class="fu">row</span>(aging_mat) <span class="sc">-</span> <span class="fu">col</span>(aging_mat) <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">head</span>(da_ages, <span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb86-844"><a href="#cb86-844"></a><span class="in">```</span></span>
-<span id="cb86-845"><a href="#cb86-845"></a></span>
-<span id="cb86-846"><a href="#cb86-846"></a>Have a look at the aging matrix, for example by doing:</span>
-<span id="cb86-847"><a href="#cb86-847"></a></span>
-<span id="cb86-850"><a href="#cb86-850"></a><span class="in">```{r}</span></span>
-<span id="cb86-851"><a href="#cb86-851"></a><span class="co"># Move fast through the 1-year age classes - negatives are moves out, positives</span></span>
-<span id="cb86-852"><a href="#cb86-852"></a><span class="co"># are moves in. Cannot move between non-adjacent age classes</span></span>
-<span id="cb86-853"><a href="#cb86-853"></a>aging_mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb86-854"><a href="#cb86-854"></a><span class="in">```</span></span>
-<span id="cb86-855"><a href="#cb86-855"></a></span>
-<span id="cb86-858"><a href="#cb86-858"></a><span class="in">```{r}</span></span>
-<span id="cb86-859"><a href="#cb86-859"></a><span class="co"># Move slowly between the wider age classes</span></span>
-<span id="cb86-860"><a href="#cb86-860"></a>aging_mat[<span class="dv">25</span><span class="sc">:</span><span class="dv">30</span>, <span class="dv">25</span><span class="sc">:</span><span class="dv">30</span>]</span>
-<span id="cb86-861"><a href="#cb86-861"></a><span class="in">```</span></span>
-<span id="cb86-862"><a href="#cb86-862"></a></span>
-<span id="cb86-865"><a href="#cb86-865"></a><span class="in">```{r}</span></span>
-<span id="cb86-866"><a href="#cb86-866"></a><span class="co">#| column: body</span></span>
-<span id="cb86-867"><a href="#cb86-867"></a><span class="co">#| out-width: 100%</span></span>
-<span id="cb86-868"><a href="#cb86-868"></a>aging_mat <span class="sc">%&gt;%</span></span>
-<span id="cb86-869"><a href="#cb86-869"></a>    <span class="fu">as.data.frame.table</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb86-870"><a href="#cb86-870"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb86-871"><a href="#cb86-871"></a>        <span class="at">age_recipient =</span> <span class="fu">rep</span>(ages, <span class="dv">30</span>),</span>
-<span id="cb86-872"><a href="#cb86-872"></a>        <span class="at">age_source =</span> <span class="fu">unlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(<span class="at">.x =</span> ages, <span class="sc">~</span><span class="fu">rep</span>(.x, <span class="dv">30</span>)))</span>
+<span id="cb86-835"><a href="#cb86-835"></a><span class="in">```{r}</span></span>
+<span id="cb86-836"><a href="#cb86-836"></a><span class="co"># Create a diagonal matrix that holds the rates of aging out of each age class</span></span>
+<span id="cb86-837"><a href="#cb86-837"></a><span class="co"># The rows represent the age class you're in, the columns represent the age</span></span>
+<span id="cb86-838"><a href="#cb86-838"></a><span class="co"># class you're moving to</span></span>
+<span id="cb86-839"><a href="#cb86-839"></a>aging_mat <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> da_ages)</span>
+<span id="cb86-840"><a href="#cb86-840"></a></span>
+<span id="cb86-841"><a href="#cb86-841"></a><span class="co"># Fill in the rates of aging into each age class</span></span>
+<span id="cb86-842"><a href="#cb86-842"></a>aging_mat[<span class="fu">row</span>(aging_mat) <span class="sc">-</span> <span class="fu">col</span>(aging_mat) <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">head</span>(da_ages, <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb86-843"><a href="#cb86-843"></a><span class="in">```</span></span>
+<span id="cb86-844"><a href="#cb86-844"></a></span>
+<span id="cb86-845"><a href="#cb86-845"></a>Have a look at the aging matrix, for example by doing:</span>
+<span id="cb86-846"><a href="#cb86-846"></a></span>
+<span id="cb86-849"><a href="#cb86-849"></a><span class="in">```{r}</span></span>
+<span id="cb86-850"><a href="#cb86-850"></a><span class="co"># Move fast through the 1-year age classes - negatives are moves out, positives</span></span>
+<span id="cb86-851"><a href="#cb86-851"></a><span class="co"># are moves in. Cannot move between non-adjacent age classes</span></span>
+<span id="cb86-852"><a href="#cb86-852"></a>aging_mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb86-853"><a href="#cb86-853"></a><span class="in">```</span></span>
+<span id="cb86-854"><a href="#cb86-854"></a></span>
+<span id="cb86-857"><a href="#cb86-857"></a><span class="in">```{r}</span></span>
+<span id="cb86-858"><a href="#cb86-858"></a><span class="co"># Move slowly between the wider age classes</span></span>
+<span id="cb86-859"><a href="#cb86-859"></a>aging_mat[<span class="dv">25</span><span class="sc">:</span><span class="dv">30</span>, <span class="dv">25</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb86-860"><a href="#cb86-860"></a><span class="in">```</span></span>
+<span id="cb86-861"><a href="#cb86-861"></a></span>
+<span id="cb86-864"><a href="#cb86-864"></a><span class="in">```{r}</span></span>
+<span id="cb86-865"><a href="#cb86-865"></a><span class="co">#| column: body</span></span>
+<span id="cb86-866"><a href="#cb86-866"></a><span class="co">#| out-width: 100%</span></span>
+<span id="cb86-867"><a href="#cb86-867"></a>aging_mat <span class="sc">%&gt;%</span></span>
+<span id="cb86-868"><a href="#cb86-868"></a>    <span class="fu">as.data.frame.table</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb86-869"><a href="#cb86-869"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb86-870"><a href="#cb86-870"></a>        <span class="at">age_recipient =</span> <span class="fu">rep</span>(ages, <span class="dv">30</span>),</span>
+<span id="cb86-871"><a href="#cb86-871"></a>        <span class="co"># Repeat each age in ages vector 30 times before moving to next</span></span>
+<span id="cb86-872"><a href="#cb86-872"></a>        <span class="at">age_source =</span> <span class="fu">rep</span>(ages, <span class="at">each =</span> <span class="dv">30</span>)</span>
 <span id="cb86-873"><a href="#cb86-873"></a>    ) <span class="sc">%&gt;%</span></span>
 <span id="cb86-874"><a href="#cb86-874"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age_source, <span class="at">y =</span> age_recipient, <span class="at">z =</span> Freq)) <span class="sc">+</span></span>
 <span id="cb86-875"><a href="#cb86-875"></a>    <span class="fu">geom_contour_filled</span>() <span class="sc">+</span></span>
@@ -5375,4 +5375,3 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 <script src="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.js" defer="true"></script>
-</body></html>

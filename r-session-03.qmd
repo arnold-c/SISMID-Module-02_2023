@@ -2,7 +2,7 @@
 subtitle: "Estimation"
 abstract-title: ""
 abstract: |
-    *Materials adapted from John Drake and Pej Rohani*
+    *Materials adapted from John Drake and Pej Rohani [@drakeEstimation2019]*
 execute:
     warning: false
 metadata-files: 
