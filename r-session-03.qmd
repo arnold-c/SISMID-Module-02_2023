@@ -284,6 +284,7 @@ ojs_define(niamey_data = ojs_niamey)
 ```
 
 ```{ojs}
+//| echo: false
 filtered_niamey_data = aq.table(niamey_data)
     .filter(aq.escape(d => d.site == site_select))
 ```
@@ -347,7 +348,8 @@ viewof site_select = Inputs.select(
     {label: "Select a site:"}
 )
 
-beta = (beta_input / 365) * 10 ** (-3)
+// convert to daily time scale as easier to manipulate
+beta = (beta_input / 365) * (10 ** (-3))
 
 md`${tex`R_0 = ${R0_str}`}`
 ```
@@ -376,8 +378,10 @@ import { aq, op } from '@uwdata/arquero'
 ```{ojs}
 //| echo: false
 function sir(dydt, y, t) {
-    dydt[0] = - beta * y[0] * y[1] 
-    dydt[1] = beta * y[0] * y[1] - gamma * y[1]
+    dydt[3] = beta * y[0] * y[1]
+
+    dydt[0] = - dydt[3]
+    dydt[1] = dydt[3] - gamma * y[1]
     dydt[2] = gamma * y[1]
 }
 ```
@@ -389,28 +393,21 @@ function simulate(f, t0, y0, dt, tmax) {
     var y = y0
     var i = 0
 
-    var tsim = [t0]
     var ysim = [y0]
 
     for (t = t0 + dt; t <= tmax; t += dt) {
         ysim.push(odeRK4([], ysim[i], f, dt))
-        tsim.push(t)
         i += 1
     }
 
-    var biweek = tsim.map(d => d / 14)
-    
-    return aq.table({
-        tday: tsim,
-        Biweek: biweek,
-        "Number of Individuals": ysim.map(d => d[1]),
-    })
+    // return cumulative infections
+    return ysim.map(d => d[3])
 }
 ```
 
 ```{ojs}
 //| echo: false
-sir_sol = simulate(sir, 0, [S0, I0, 0.0], dt, tmax)
+sir_sol = simulate(sir, 0, [S0, I0, 0.0, 0.0], dt, tmax)
 ```
 
 ```{ojs}
@@ -425,16 +422,24 @@ siteColors = ["#1b9e77", "#d95f02", "#7570b3"]
 times = Array.from({length: 17}, (_, i) => i * 14).slice(1)
 tindex = times.map((e, i) => e * (1 / dt))
 
-preds = tindex.map((i) => sir_sol.array("Number of Individuals")[i])
+cum_inc = tindex.map((i) => sir_sol[i])
+
+preds = [cum_inc[0] + I0, ...cum_inc.map((e, i) => cum_inc[i] - cum_inc[i-1]).slice(1)]
+
+sir_tbl = aq.table({
+    Biweek: times.map(t => t / 14),
+    "Cumulative Incidence": cum_inc,
+    "Number of Individuals": preds
+})
 
 sim_sse = [({
     sse: sse(
             filtered_niamey_data.array("Number of Individuals"),
             preds
         ).toPrecision(4),
-    Biweek: 2,
+    Biweek: 3,
     "Number of Individuals": Math.max(
-        ...sir_sol.array("Number of Individuals"),
+        ...sir_tbl.array("Number of Individuals"),
         ...filtered_niamey_data.array("Number of Individuals")
     ) * 0.9
 })]
@@ -458,7 +463,7 @@ Plot.plot({
     height: 670,
     marks: [
         Plot.lineY(
-            sir_sol,
+            sir_tbl,
             {x: "Biweek", y: "Number of Individuals", stroke: "#4d4d4dff", strokeWidth: 6, strokeOpacity: 0.8}
         ),
         Plot.dot(
@@ -556,44 +561,44 @@ Finally, we plot these fits against the data.
 
 ```{r}
 # Initial guess
-sse_optim_params <- c(beta = log(0.055), S_init = log(5000), I_init = log(1))
-
-# Create a dataframe of optimized parameters
-niamey_optims <- niamey_df %>%
-    # Create a nested dataframe i.e. one row for each site, and the data column
-    # now is a list column that contains a separate dataframe of times and
-    # cases for each site
-    nest(data = -site) %>%
-    mutate(
-        # Map the optim() function call to each of the separate dataframes
-        # stored in the nested data column we just created
-        fit = map(data, ~optim(sse_optim_params, sse_sir, data = .x)),
-        # Map the exp() function to each of the model fits just created, and
-        # output to a dataframe instead of a list (like in map()), for easier
-        # use in the plottinge predictions later
-        map_dfr(fit, ~exp(.x$par))
-    )
+#sse_optim_params <- c(beta = log(0.055), S_init = log(5000), I_init = log(1))
+#
+## Create a dataframe of optimized parameters
+#niamey_optims <- niamey_df %>%
+#    # Create a nested dataframe i.e. one row for each site, and the data column
+#    # now is a list column that contains a separate dataframe of times and
+#    # cases for each site
+#    nest(data = -site) %>%
+#    mutate(
+#        # Map the optim() function call to each of the separate dataframes
+#        # stored in the nested data column we just created
+#        fit = map(data, ~optim(sse_optim_params, sse_sir, data = .x)),
+#        # Map the exp() function to each of the model fits just created, and
+#        # output to a dataframe instead of a list (like in map()), for easier
+#        # use in the plottinge predictions later
+#        map_dfr(fit, ~exp(.x$par))
+#    )
 ```
 
 ```{r}
-niamey_optims %>%
-    select(-c(data, fit)) %>%
-    mutate(site = str_replace_all(site, "_", " ")) %>%
-    gt() %>%
-    fmt_number(columns = -site, decimals = 3) %>%
-    fmt_scientific(columns = beta) %>%
-    # Relabel the column headers
-    cols_label(
-        site = md("**Site**"), 
-        beta = md("**Beta**"),
-        S_init = md("**Initial S**"),
-        I_init = md("**Initial I**")
-    ) %>%
-    # Apply style to the table with gray alternating rows
-    opt_stylize(style = 1, color = 'gray') %>%
-    # Increate space between columns
-    opt_horizontal_padding(scale = 3) %>%
-    cols_align("center")
+#niamey_optims %>%
+#    select(-c(data, fit)) %>%
+#    mutate(site = str_replace_all(site, "_", " ")) %>%
+#    gt() %>%
+#    fmt_number(columns = -site, decimals = 3) %>%
+#    fmt_scientific(columns = beta) %>%
+#    # Relabel the column headers
+#    cols_label(
+#        site = md("**Site**"), 
+#        beta = md("**Beta**"),
+#        S_init = md("**Initial S**"),
+#        I_init = md("**Initial I**")
+#    ) %>%
+#    # Apply style to the table with gray alternating rows
+#    opt_stylize(style = 1, color = 'gray') %>%
+#    # Increate space between columns
+#    opt_horizontal_padding(scale = 3) %>%
+#    cols_align("center")
 ```
 
 ::: {.callout-note}
@@ -604,37 +609,37 @@ The difference is not enough to be concerned with here, but it is a point that's
 :::
 
 ```{r}
-niamey_predictions <- niamey_optims %>%
-    mutate(
-        # For each of the different site's nested dataframes, fit the SIR model
-        # with the optimal parameters to get best fit predictions
-        predictions = pmap(
-            .l = list(
-                S_init = S_init,
-                I_init = I_init,
-                beta = beta,
-                time_data = data
-            ),
-            .f = function(S_init, I_init, beta, time_data)  {
-                site_times <- time_data$biweek * 14 / 365
-
-                # Return a dataframe of model solutions
-                as_tibble(ode(
-                    y = c(S = S_init, I = I_init, new_inf = 0),
-                    times = site_times,
-                    func = closed_sir_model,
-                    parms = beta,
-                    hmax = 1/120
-                )) %>%
-                # Make sure all values are numeric for plotting purposes
-                mutate(across(everything(), as.numeric)) %>%
-                mutate(
-                    incidence = ifelse(row_number() == 1, new_inf[1], diff(new_inf, lag = 1))
-                )
-            }
-            )
-    ) %>%
-    unnest(c(data, predictions))
+#niamey_predictions <- niamey_optims %>%
+#    mutate(
+#        # For each of the different site's nested dataframes, fit the SIR model
+#        # with the optimal parameters to get best fit predictions
+#        predictions = pmap(
+#            .l = list(
+#                S_init = S_init,
+#                I_init = I_init,
+#                beta = beta,
+#                time_data = data
+#            ),
+#            .f = function(S_init, I_init, beta, time_data)  {
+#                site_times <- time_data$biweek * 14 / 365
+#
+#                # Return a dataframe of model solutions
+#                as_tibble(ode(
+#                    y = c(S = S_init, I = I_init, new_inf = 0),
+#                    times = site_times,
+#                    func = closed_sir_model,
+#                    parms = beta,
+#                    hmax = 1/120
+#                )) %>%
+#                # Make sure all values are numeric for plotting purposes
+#                mutate(across(everything(), as.numeric)) %>%
+#                mutate(
+#                    incidence = ifelse(row_number() == 1, new_inf[1], diff(new_inf, lag = 1))
+#                )
+#            }
+#            )
+#    ) %>%
+#    unnest(c(data, predictions))
 ```
 
 ::: {.callout-important}
@@ -647,60 +652,60 @@ We are doing this here purely for simplicity's sake - in practice you would want
 #| column: body
 #| out-width: 100%
 # Create a dataframe to store the positions of the text labels
-niamey_preds_labels <- tibble(
-    site = c("Site_1", "Site_2"),
-    x_label = c(6.5, 6.5),
-    x_arrow_just = c(-0.5, -0.5),
-    x_arrow_end = c(7, 7.75),
-    y_label = c(900, 600),
-    y_arrow_just = c(-80, -70),
-    y_arrow_end = c(350, 290),
-    commentary = c("**Predicted", "**Observed"),
-    color = c("grey20", niamey_site_colors["Site_2"])
-)
-
-ggplot(niamey_predictions, aes(x = biweek, group = site)) +
-    # Plot the actual data in color
-    geom_line(aes(y = cases, color = site)) +
-    geom_point(aes(y = cases, color = site), size = 4, alpha = 0.8) +
-    # Plot the best-fit model predictions in black
-    geom_line(aes(y = incidence), color = "black") +
-    scale_color_manual(
-        values = niamey_site_colors, aesthetics = c("color", "fill")
-    ) +
-    # Place each site on it's own subplot and change labels
-    facet_wrap(
-        ~site, ncol = 1, scales = "free_y",
-        labeller = as_labeller(niamey_site_labels)
-    ) +
-    labs(x = "Biweek", y = "Number of Case") +
-    theme(legend.position = "none") +
-    ggtext::geom_textbox(
-        data = niamey_preds_labels,
-        aes(
-            label = paste0(
-                "<span style = \"color:",
-                color,
-                "\">",
-                commentary,
-                " Cases**",
-                "</span>"
-            ),
-            x = x_label, y = y_label
-        ),
-        size = 4, fill = NA, box.colour = NA
-    ) +
-    geom_curve(
-        data = niamey_preds_labels,
-        aes(
-            x = x_label + x_arrow_just, xend = x_arrow_end,
-            y = y_label + y_arrow_just, yend = y_arrow_end
-        ),
-        linewidth = 0.75,
-        arrow = arrow(length = unit(0.2, "cm")),
-        curvature = list(0.25),
-        color = "grey20"
-    )
+#niamey_preds_labels <- tibble(
+#    site = c("Site_1", "Site_2"),
+#    x_label = c(6.5, 6.5),
+#    x_arrow_just = c(-0.5, -0.5),
+#    x_arrow_end = c(7, 7.75),
+#    y_label = c(900, 600),
+#    y_arrow_just = c(-80, -70),
+#    y_arrow_end = c(350, 290),
+#    commentary = c("**Predicted", "**Observed"),
+#    color = c("grey20", niamey_site_colors["Site_2"])
+#)
+#
+#ggplot(niamey_predictions, aes(x = biweek, group = site)) +
+#    # Plot the actual data in color
+#    geom_line(aes(y = cases, color = site)) +
+#    geom_point(aes(y = cases, color = site), size = 4, alpha = 0.8) +
+#    # Plot the best-fit model predictions in black
+#    geom_line(aes(y = incidence), color = "black") +
+#    scale_color_manual(
+#        values = niamey_site_colors, aesthetics = c("color", "fill")
+#    ) +
+#    # Place each site on it's own subplot and change labels
+#    facet_wrap(
+#        ~site, ncol = 1, scales = "free_y",
+#        labeller = as_labeller(niamey_site_labels)
+#    ) +
+#    labs(x = "Biweek", y = "Number of Case") +
+#    theme(legend.position = "none") +
+#    ggtext::geom_textbox(
+#        data = niamey_preds_labels,
+#        aes(
+#            label = paste0(
+#                "<span style = \"color:",
+#                color,
+#                "\">",
+#                commentary,
+#                " Cases**",
+#                "</span>"
+#            ),
+#            x = x_label, y = y_label
+#        ),
+#        size = 4, fill = NA, box.colour = NA
+#    ) +
+#    geom_curve(
+#        data = niamey_preds_labels,
+#        aes(
+#            x = x_label + x_arrow_just, xend = x_arrow_end,
+#            y = y_label + y_arrow_just, yend = y_arrow_end
+#        ),
+#        linewidth = 0.75,
+#        arrow = arrow(length = unit(0.2, "cm")),
+#        curvature = list(0.25),
+#        color = "grey20"
+#    )
 ```
 
 <div class="exercise">
