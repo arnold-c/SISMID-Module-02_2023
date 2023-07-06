@@ -627,7 +627,10 @@ niamey_predictions <- niamey_optims %>%
                     hmax = 1/120
                 )) %>%
                 # Make sure all values are numeric for plotting purposes
-                mutate(across(everything(), as.numeric))
+                mutate(across(everything(), as.numeric)) %>%
+                mutate(
+                    incidence = ifelse(row_number() == 1, new_inf[1], diff(new_inf, lag = 1))
+                )
             }
             )
     ) %>%
@@ -645,13 +648,13 @@ We are doing this here purely for simplicity's sake - in practice you would want
 #| out-width: 100%
 # Create a dataframe to store the positions of the text labels
 niamey_preds_labels <- tibble(
-    site = c("Site_3", "Site_2"),
-    x_label = c(8, 6.5),
+    site = c("Site_1", "Site_2"),
+    x_label = c(6.5, 6.5),
     x_arrow_just = c(-0.5, -0.5),
-    x_arrow_end = c(10, 7.75),
-    y_label = c(110, 600),
-    y_arrow_just = c(-15, -70),
-    y_arrow_end = c(29, 290),
+    x_arrow_end = c(7, 7.75),
+    y_label = c(900, 600),
+    y_arrow_just = c(-80, -70),
+    y_arrow_end = c(350, 290),
     commentary = c("**Predicted", "**Observed"),
     color = c("grey20", niamey_site_colors["Site_2"])
 )
@@ -661,7 +664,7 @@ ggplot(niamey_predictions, aes(x = biweek, group = site)) +
     geom_line(aes(y = cases, color = site)) +
     geom_point(aes(y = cases, color = site), size = 4, alpha = 0.8) +
     # Plot the best-fit model predictions in black
-    geom_line(aes(y = I), color = "black") +
+    geom_line(aes(y = incidence), color = "black") +
     scale_color_manual(
         values = niamey_site_colors, aesthetics = c("color", "fill")
     ) +
