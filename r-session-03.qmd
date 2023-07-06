@@ -586,7 +586,7 @@ niamey_optims %>%
     mutate(site = str_replace_all(site, "_", " ")) %>%
     gt() %>%
     fmt_number(columns = -site, decimals = 3) %>%
-    fmt_scientific(columns = beta) %>%
+    fmt_scientific(columns = beta, decimals = 3) %>%
     # Relabel the column headers
     cols_label(
         site = md("**Site**"), 
