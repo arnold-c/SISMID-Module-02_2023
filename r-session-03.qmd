@@ -643,9 +643,9 @@ niamey_predictions <- niamey_optims %>%
 ```
 
 ::: {.callout-important}
-An important point to note is that our data is biweekly **incidence** (new cases in time period), whereas out SIR model produces **prevalence** (total cases at any time point), so we are not actually fitting the same types of data!
+An important point to note is that our data is biweekly **incidence** (new cases in time period), whereas out SIR model produces **prevalence** (total cases at any time point).
+To account for this, our SIR model returns the cumulative incidence (line 32 of the model code), and our objective function extracts the biweekly incidence (lines 41-54), to ensure we are fitting the same data!
 This is a common source of error in interpretation when people fit models to data.
-We are doing this here purely for simplicity's sake - in practice you would want to convert the simulation output to incidence to fit based on incidence!
 :::
 
 ```{r}
