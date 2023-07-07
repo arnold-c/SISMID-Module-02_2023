@@ -35,6 +35,41 @@
     "text": "About the Instructors\n\n\n\nDr. Micaela Martinez\n\n\nDr. Matinez is the Director of Environmental Health at WE ACT for Environmental Justice.\nDr. Martinez earned her Ph.D. in Ecology & Evolution in 2015 at the University of Michigan, and did her postdoctoral training at Princeton University. Before joining WE ACT, she served as an Assistant Professor at Columbia University Mailman School of Public Health, followed by Emory University, in the Dept. of Biology. Since 2017, Dr. Martinez has been supported by the prestigious NIH Director’s Early Independence Award. Over the past decade, her research has focused on infectious disease ecology, climate change, maternal and infant health, social justice, and environmental impacts on health (including biological rhythms).\n\n\n\nDr. Matt Ferrari\n\n\nDr. Ferrari is the Director of the Center for Infectious Disease Dynamics at The Pennsylvania State University.\nDr Ferrari’s lab does research on both the application of quantitative modeling and analysis to inform public health policy and the basic ecology of parasites and infectious diseases at the Center for Infectious Disease Dynamics at The Pennsylvania State University.\n\n\n\n\n\n\n\n\n\nCallum Arnold\n\n\nCallum is a 3rd Year PhD student in Dr. Ferrari’s lab at the Pennsylvania State University.\nCallum’s work examines how the methods used to define groups and differences among individuals affect the understanding and detection of outbreaks."
   },
   {
+    "objectID": "schedule.html#before-class",
+    "href": "schedule.html#before-class",
+    "title": "Workshop Schedule",
+    "section": "Before class",
+    "text": "Before class\nPlease see pre-requisites on the course website"
+  },
+  {
+    "objectID": "schedule.html#day-01-monday",
+    "href": "schedule.html#day-01-monday",
+    "title": "Workshop Schedule",
+    "section": "Day 01 – Monday",
+    "text": "Day 01 – Monday\n\n\n\n\n\n\n\n\nTime\nSection\n\n\n\n\n8:30 - 9:30am\nLecture 1: Intro to Modeling by Micaela Martinez\n\n\n9:30 - 10am\nLecture 2: Basics of SIR Models by Matt Ferrari (first half)\n\n\n10 - 10:30pm\ncoffee break\n\n\n10:30am - 11am\nLecture 2: Basics of SIR Models by Matt Ferrari (second half)\n\n\n11 - 12pm\nR Session 1: Intro to modeling by Callum Arnold\n\n\n12 - 1:30pm\nlunch on your own\n\n\n1:30pm - 2pm\nR Session 1: Intro to modeling (continued) by Callum Arnold\n\n\n2pm - 3pm\nLecture 3: Vaccination & Interventions by Micaela Martinez\n\n\n3 - 4:15pm\nFinish R exercises and work on group assignment for R Session 1.\n\n\n4:15pm - 5pm\nGroup Assignment debrief for R Session 1"
+  },
+  {
+    "objectID": "schedule.html#day-02-tuesday",
+    "href": "schedule.html#day-02-tuesday",
+    "title": "Workshop Schedule",
+    "section": "Day 02 – Tuesday",
+    "text": "Day 02 – Tuesday\n\n\n\n\n\n\n\n\nTime\nSection\n\n\n\n\n8:30am - 9:30am\nLecture 4: Heterogeneity in Models by Callum Arnold\n\n\n9:30 - 10am\nLecture 5: Heterogeneity expanded (age structure and the force of infection) by Matt Ferrari (first half)\n\n\n10 - 10:30am\nCoffee Break\n\n\n10:30am - 11am\nLecture 5: Heterogeneity expanded (age structure and the force of infection) by Matt Ferrari (second half)\n\n\n11 - 12am\nR Session 2: Heterogeneity and age structure by Callum Arnold\n\n\n12 - 1:30pm\nlunch on your own\n\n\n1:30 - 2:30pm\nLecture 6: Parameter Estimation (estimating \\(R_0\\)) by Matt Ferrari\n\n\n2:30 - 3:30pm\nR Session 3: Parameter estimation by Callum Arnold\n\n\n3:30pm - 4:15pm\nFinish R exercises from the day and work on group assignment for R Sessions 2 and 3\n\n\n4:15pm - 5pm\nGroup Assignment debrief for R Session 2"
+  },
+  {
+    "objectID": "schedule.html#day-03-wednesday",
+    "href": "schedule.html#day-03-wednesday",
+    "title": "Workshop Schedule",
+    "section": "Day 03 – Wednesday",
+    "text": "Day 03 – Wednesday\n\n\n\n\n\n\n\n\nTime\nSection\n\n\n\n\n8:30am - 9:30am\nLecture 7: Confronting models with data by Micaela Martinez\n\n\n9:30am - 10am\nLecture 8: Stochasticity and Uncertainty lecture by Micaela Martinez and Matt Ferrari (first half)\n\n\n10am - 10:30am\nCoffee break\n\n\n10:30am - 11am\nLecture 8: Stochasticity and Uncertainty lecture by Micaela Martinez and Matt Ferrari (first half)\n\n\n11am - 12am\nGroup Assignment debrief for R Session 3 and any other discussion points\n\n\n\nClass Ends Noon on Wednesday"
+  },
+  {
+    "objectID": "schedule.html#group-assignments",
+    "href": "schedule.html#group-assignments",
+    "title": "Workshop Schedule",
+    "section": "Group assignments",
+    "text": "Group assignments\n\nEach individual should create a slide deck to address each of the following questions for each of the day’s R exercises.\nEach group should develop consensus slides to present when we come together as a class.\nGroups will be asked to share their intuition gained.\n\nQuestions:\n\nWhat were the top two take-away messages you gained from this R exercise?\nWhat was the most unexpected/non-intuitive thing you learned from this R exercise?"
+  },
+  {
     "objectID": "exercise-requirements.html#r-packages",
     "href": "exercise-requirements.html#r-packages",
     "title": "Exercise Requirements",
