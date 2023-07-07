@@ -12,7 +12,7 @@ book:
   date: "6/07/2023"
   chapters:
     - index.qmd
-    - part: schedule.qmd
+    - schedule.qmd
     - part: "Pre-Requisites"
       chapters:
         - exercise-requirements.qmd
