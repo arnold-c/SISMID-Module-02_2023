@@ -47,6 +47,7 @@ book:
     pinned: true
   reader-mode: true
   favicon: ./images/sismid2023-logo-green.png
+  google-analytics: "G-EVYBCCRZHE"
 
 # Default for table of contents
 toc: true
