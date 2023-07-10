@@ -9,3 +9,4 @@ format:
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQsXxxyAwK5sgLV52lGPadbaCmmkwr9vcJ8kPCmphWgpSIwBwS8mSPsF7wAKg75Pzz6o1LFayBU6KZ_/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1023" height="606" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 ```
 
+[Download slides](./slides/L04_Heterogeneity-in-models.pdf)
