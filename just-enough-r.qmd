@@ -598,7 +598,7 @@ filter(
 )
 ```
 
-We can filter using **OR** statements (`|`), so if either condition returns `TRUE`, then it will be included in the subset.
+We can filter using *OR* statements (`|`), so if either condition returns `TRUE`, then it will be included in the subset.
 
 ```{r}
 filter(

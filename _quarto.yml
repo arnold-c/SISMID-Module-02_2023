@@ -12,6 +12,7 @@ book:
   date: "6/07/2023"
   chapters:
     - index.qmd
+    - schedule.qmd
     - part: "Pre-Requisites"
       chapters:
         - exercise-requirements.qmd
@@ -46,6 +47,7 @@ book:
     pinned: true
   reader-mode: true
   favicon: ./images/sismid2023-logo-green.png
+  google-analytics: "G-EVYBCCRZHE"
 
 # Default for table of contents
 toc: true

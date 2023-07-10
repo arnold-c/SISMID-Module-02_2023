@@ -91,7 +91,7 @@ purrr::pwalk(
         state = 1:4,
         xadjust = rep(0.05, 4),
         yadjust = rep(-0.175, 4),
-        label = rep(c("lambda", "gamma"), 2),
+        label = rep(c("lambda", "gamma"), each = 2),
         label_subscript = rep(c("a", "b"), 2)
     ),
     .f = function(state, xadjust, yadjust, label, label_subscript) {
