@@ -10,3 +10,5 @@ metadata-files:
 ```{=html}
 <iframe class="slide-deck" src="https://docs.google.com/presentation/d/e/2PACX-1vTEfegBxb9YyMhUTuvbjSZ_JbLjJCiCefKRXeii6cuAS3eZ476piNwD_52NeKvgiQ/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1023" height="606" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 ```
+
+[Download slides](./slides/L03_Herd-immunity-vaccination.pdf)

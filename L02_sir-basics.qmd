@@ -11,3 +11,4 @@ metadata-files:
 <iframe class="slide-deck" src="https://docs.google.com/presentation/d/e/2PACX-1vQOl4BNcAaSIVsPmnnilROMOZZbnt--v9L7oPXTxFwM4jhM93gDZCL0KzvM8k8vCw/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1023" height="606" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 ```
 
+[Download slides](./slides/L02_Basic-SIR-dynamics.pdf)
